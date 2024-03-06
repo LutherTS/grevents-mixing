@@ -1,23 +1,12 @@
-import type { MetaFunction } from "@remix-run/node";
-
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Grevents (mixing)" },
-    {
-      name: "description",
-      content:
-        "Welcome to Grevents, this time as a first Remix development experience",
-    },
-  ];
-};
 
 export default function HomePage() {
   return (
     <>
       <H1>Welcome to Grevents.</H1>
+      <p className="mt-2">Start the demonstration at the links below.</p>
+      <PageLink href={`/users/LePapier/dashboard`}>Go to my dashboard</PageLink>
       <PageLink href={`/sign-in`}>Sign in</PageLink>
       <PageLink href={`/sign-up`}>Sign up</PageLink>
       <div className="mt-8">
