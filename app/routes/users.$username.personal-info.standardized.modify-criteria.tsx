@@ -23,7 +23,7 @@ export default function ModifyCriteriaStandardizedPage() {
       <PageLink href={`/users/${data.username}/personal-info/standardized`}>
         Cancel
       </PageLink>
-      {/* I'll find a way to make these paths relative within this here paramaterized route later. */}
+      {/* I'll find a way to make this path relative within this here paramaterized route later. */}
     </>
   );
 }

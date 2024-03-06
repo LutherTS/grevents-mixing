@@ -21,6 +21,7 @@ export default function PersonalInfoCustomizedPage() {
       </PageLink>
 
       <PageLink href={`modify-criteria`}>Modify</PageLink>
+      <PageLink href={`add-criteria`}>Add customized criteria</PageLink>
       <PageLink href={`/users/${data.username}/personal-info`}>
         To Personal Info
       </PageLink>

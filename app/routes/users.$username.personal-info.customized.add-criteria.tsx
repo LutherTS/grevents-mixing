@@ -9,12 +9,12 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   return { username };
 };
 
-export default function ModifyCriteriaCustomizedPage() {
+export default function AddCriteriaCustomizedPage() {
   const data = useLoaderData<typeof loader>();
 
   return (
     <>
-      <H1>Welcome to {data.username}&apos;s Modify Criteria Customized.</H1>
+      <H1>Welcome to {data.username}&apos;s Add Criteria Customized.</H1>
 
       <PageLink href={`/users/${data.username}/dashboard`}>
         back to dashboard (for now)
