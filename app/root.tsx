@@ -1,4 +1,4 @@
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -16,6 +16,17 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
   { rel: "stylesheet", href: "/fonts/inter/inter.css" },
 ];
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Grevents (mixing)" },
+    {
+      name: "description",
+      content:
+        "Welcome to Grevents, this time as a first Remix development experience",
+    },
+  ];
+};
 
 export default function App() {
   return (

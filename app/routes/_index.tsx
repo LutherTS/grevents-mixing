@@ -1,18 +1,5 @@
-import type { MetaFunction } from "@remix-run/node";
-
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Grevents (mixing)" },
-    {
-      name: "description",
-      content:
-        "Welcome to Grevents, this time as a first Remix development experience",
-    },
-  ];
-};
 
 export default function HomePage() {
   return (
