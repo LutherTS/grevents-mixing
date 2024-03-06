@@ -9,16 +9,18 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   return { username };
 };
 
-export default function ProfilePage() {
+export default function BlocksPage() {
   const data = useLoaderData<typeof loader>();
 
   return (
     <>
-      <H1>Welcome to {data.username}&apos;s Profile.</H1>
+      <H1>Welcome to {data.username}&apos;s Blocks.</H1>
 
       <PageLink href={`/users/${data.username}/dashboard`}>
         back to dashboard (for now)
       </PageLink>
+
+      <PageLink href={`/users/${data.username}/friends`}>See friends</PageLink>
     </>
   );
 }

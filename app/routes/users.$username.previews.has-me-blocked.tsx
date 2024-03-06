@@ -9,16 +9,18 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   return { username };
 };
 
-export default function FriendsPage() {
+export default function HasMeBlockedPreviewPage() {
   const data = useLoaderData<typeof loader>();
 
   return (
     <>
-      <H1>Welcome to {data.username}&apos;s Friends.</H1>
+      <H1>Welcome to {data.username}&apos;s Has-Me-Blocked Preview.</H1>
 
       <PageLink href={`/users/${data.username}/dashboard`}>
         back to dashboard (for now)
       </PageLink>
+
+      <PageLink href={`/users/${data.username}/previews`}>To Previews</PageLink>
     </>
   );
 }
