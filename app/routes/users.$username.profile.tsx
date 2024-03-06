@@ -8,12 +8,12 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   return { username };
 };
 
-export default function SignUpPage() {
+export default function ProfilePage() {
   const data = useLoaderData<typeof loader>();
 
   return (
     <>
-      <H1>Welcome to {data.username}&apos;s Dashboard.</H1>
+      <H1>Welcome to {data.username}&apos;s Profile.</H1>
     </>
   );
 }
