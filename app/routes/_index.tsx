@@ -5,6 +5,8 @@ export default function HomePage() {
   return (
     <>
       <H1>Welcome to Grevents.</H1>
+      <p className="mt-2">Start the demonstration at the links below.</p>
+      <PageLink href={`/users/LePapier/dashboard`}>Go to my dashboard</PageLink>
       <PageLink href={`/sign-in`}>Sign in</PageLink>
       <PageLink href={`/sign-up`}>Sign up</PageLink>
       <div className="mt-8">

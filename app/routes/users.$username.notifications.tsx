@@ -9,18 +9,16 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   return { username };
 };
 
-export default function ProfilePage() {
+export default function NotificationsPage() {
   const data = useLoaderData<typeof loader>();
 
   return (
     <>
-      <H1>Welcome to {data.username}&apos;s Modify App-Wide Name.</H1>
+      <H1>Welcome to {data.username}&apos;s Notifications.</H1>
 
       <PageLink href={`/users/${data.username}/dashboard`}>
         back to dashboard (for now)
       </PageLink>
-      <PageLink href={`/users/${data.username}/dashboard`}>Cancel</PageLink>
-      {/* I'll find a way to make this path relative within this here paramaterized route later. */}
     </>
   );
 }
