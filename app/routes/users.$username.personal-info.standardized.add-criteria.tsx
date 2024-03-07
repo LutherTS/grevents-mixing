@@ -20,9 +20,7 @@ export default function AddCriteriaStandardizedPage() {
         back to dashboard (for now)
       </PageLink>
 
-      <PageLink href={`/users/${data.username}/personal-info/standardized`}>
-        Cancel
-      </PageLink>
+      <PageLink href={`..`}>Cancel</PageLink>
     </>
   );
 }

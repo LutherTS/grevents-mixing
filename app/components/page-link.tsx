@@ -2,10 +2,12 @@ import { Link } from "@remix-run/react";
 
 export function PageLink({
   href,
+  relative,
   children,
   specifiedClasses,
 }: {
   href: string;
+  relative?: "route" | "path";
   children: React.ReactNode;
   specifiedClasses?: string;
 }) {
@@ -14,7 +16,7 @@ export function PageLink({
       <div>
         <Link
           to={href}
-          relative="path"
+          relative={relative ? relative : "path"}
           className={
             specifiedClasses
               ? specifiedClasses

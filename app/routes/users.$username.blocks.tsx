@@ -19,7 +19,7 @@ export default function BlocksPage() {
         back to dashboard (for now)
       </PageLink>
 
-      <PageLink href={`/users/${data.username}/friends`}>See friends</PageLink>
+      <PageLink href={`../friends`}>See friends</PageLink>
     </>
   );
 }

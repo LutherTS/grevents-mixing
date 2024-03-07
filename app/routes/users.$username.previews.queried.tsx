@@ -20,10 +20,8 @@ export default function QueriedPage() {
         back to dashboard (for now)
       </PageLink>
 
-      <PageLink href={`/users/${data.username}/previews`}>To Previews</PageLink>
-      <PageLink href={`/users/${data.username}/profile`}>
-        To Your Profile
-      </PageLink>
+      <PageLink href={`..`}>To Previews</PageLink>
+      <PageLink href={`../../profile`}>To Your Profile</PageLink>
     </>
   );
 }

@@ -24,12 +24,8 @@ export default function DashboardPage() {
         back to dashboard (for now)
       </PageLink>
 
-      <PageLink href={`/users/${data.username}/personal-info/customized`}>
-        To Customized criteria
-      </PageLink>
-      <PageLink href={`/users/${data.username}/personal-info`}>
-        To Personal Info
-      </PageLink>
+      <PageLink href={`..`}>To Customized criteria</PageLink>
+      <PageLink href={`../..`}>To Personal Info</PageLink>
     </>
   );
 }

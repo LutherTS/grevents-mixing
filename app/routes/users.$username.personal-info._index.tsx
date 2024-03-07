@@ -20,12 +20,8 @@ export default function PersonalInfoPage() {
         back to dashboard (for now)
       </PageLink>
 
-      <PageLink href={`/users/${data.username}/personal-info/standardized`}>
-        To Standardized criteria
-      </PageLink>
-      <PageLink href={`/users/${data.username}/personal-info/customized`}>
-        To Customized criteria
-      </PageLink>
+      <PageLink href={`standardized`}>To Standardized criteria</PageLink>
+      <PageLink href={`customized`}>To Customized criteria</PageLink>
     </>
   );
 }
