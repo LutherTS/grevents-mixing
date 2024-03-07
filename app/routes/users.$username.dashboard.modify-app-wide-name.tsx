@@ -19,7 +19,7 @@ export default function ProfilePage() {
       <PageLink href={`/users/${data.username}/dashboard`}>
         back to dashboard (for now)
       </PageLink>
-      <PageLink href={`/users/${data.username}/dashboard`}>Cancel</PageLink>
+      <PageLink href={`..`}>Cancel</PageLink>
       {/* I'll find a way to make this path relative within this here paramaterized route later. 
       Here's the solution below:
       import { useLocation } from "@remix-run/react";

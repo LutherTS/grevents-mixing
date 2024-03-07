@@ -14,6 +14,7 @@ export function PageLink({
       <div>
         <Link
           to={href}
+          relative="path"
           className={
             specifiedClasses
               ? specifiedClasses
