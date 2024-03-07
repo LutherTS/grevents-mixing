@@ -24,8 +24,8 @@ export default function DashboardPage() {
         back to dashboard (for now)
       </PageLink>
 
-      <PageLink href={`..`}>To Customized criteria</PageLink>
-      <PageLink href={`../..`}>To Personal Info</PageLink>
+      <PageLink href={`../..`}>To Customized criteria</PageLink>
+      <PageLink href={`../../..`}>To Personal Info</PageLink>
     </>
   );
 }
