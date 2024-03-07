@@ -23,7 +23,9 @@ export default function FriendsPage() {
       <PageLink href={`/users/${data.username}/blocks`}>
         See blocked users
       </PageLink>
-      <PageLink href={`find`}>Search for contacts</PageLink>
+      <PageLink href={`/users/${data.username}/friends/find`}>
+        Search for contacts
+      </PageLink>
     </>
   );
 }

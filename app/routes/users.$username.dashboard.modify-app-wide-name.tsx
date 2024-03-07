@@ -30,6 +30,7 @@ export default function ProfilePage() {
       console.log(parentPath); //
       /users/LePapier
       But that's not a solution to me. If it truly is that relative paths can go backwards at all, I'm honestly better of not confusing myself including them in this project.
+      Alright. I'm reverting this right now.
       */}
     </>
   );

@@ -16,7 +16,9 @@ export default function DashboardPage() {
     <>
       <H1>Welcome to {data.username}&apos;s Dashboard.</H1>
 
-      <PageLink href={`modify-app-wide-name`}>App-wide name *</PageLink>
+      <PageLink href={`/users/${data.username}/dashboard/modify-app-wide-name`}>
+        App-wide name *
+      </PageLink>
       <p className="mt-2">{data.username} (for now)</p>
       <PageLink href={`/users/${data.username}/personal-info`}>
         More personal info

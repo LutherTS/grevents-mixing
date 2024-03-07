@@ -20,19 +20,27 @@ export default function PreviewsPage() {
         back to dashboard (for now)
       </PageLink>
 
-      <PageLink href={`none`}>To &quot;none&quot; preview</PageLink>
-      <PageLink href={`friend`}>To &quot;friend&quot; preview</PageLink>
-      <PageLink href={`irl`}>To &quot;irl&quot; preview</PageLink>
-      <PageLink href={`i-am-blocking`}>
+      <PageLink href={`/users/${data.username}/previews/none`}>
+        To &quot;none&quot; preview
+      </PageLink>
+      <PageLink href={`/users/${data.username}/previews/friend`}>
+        To &quot;friend&quot; preview
+      </PageLink>
+      <PageLink href={`/users/${data.username}/previews/irl`}>
+        To &quot;irl&quot; preview
+      </PageLink>
+      <PageLink href={`/users/${data.username}/previews/i-am-blocking`}>
         To &quot;i-am-blocking&quot; preview
       </PageLink>
-      <PageLink href={`has-me-blocked`}>
+      <PageLink href={`/users/${data.username}/previews/has-me-blocked`}>
         To &quot;has-me-blocked&quot; preview
       </PageLink>
-      <PageLink href={`blocking-blocked`}>
+      <PageLink href={`/users/${data.username}/previews/blocking-blocked`}>
         To &quot;blocking-blocked&quot; preview
       </PageLink>
-      <PageLink href={`queried`}>To queried previews</PageLink>
+      <PageLink href={`/users/${data.username}/previews/queried`}>
+        To queried previews
+      </PageLink>
       <PageLink href={`/users/${data.username}/friends/find`}>
         Search for contacts
       </PageLink>
