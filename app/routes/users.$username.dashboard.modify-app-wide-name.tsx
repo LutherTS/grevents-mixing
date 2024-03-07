@@ -20,7 +20,17 @@ export default function ProfilePage() {
         back to dashboard (for now)
       </PageLink>
       <PageLink href={`/users/${data.username}/dashboard`}>Cancel</PageLink>
-      {/* I'll find a way to make this path relative within this here paramaterized route later. */}
+      {/* I'll find a way to make this path relative within this here paramaterized route later. 
+      Here's the solution below:
+      import { useLocation } from "@remix-run/react";
+      const location = useLocation();
+      console.log(location); //
+      Object { pathname: "/users/LePapier/blocks", search: "", hash: "", state: null, key: "7jg8tp51" }
+      const parentPath = location.pathname.split("/").slice(0, -1).join("/");
+      console.log(parentPath); //
+      /users/LePapier
+      But that's not a solution to me. If it truly is that relative paths can go backwards at all, I'm honestly better of not confusing myself including them in this project.
+      */}
     </>
   );
 }

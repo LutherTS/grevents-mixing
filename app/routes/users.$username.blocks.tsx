@@ -11,7 +11,6 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
 export default function BlocksPage() {
   const data = useLoaderData<typeof loader>();
-
   return (
     <>
       <H1>Welcome to {data.username}&apos;s Blocks.</H1>
