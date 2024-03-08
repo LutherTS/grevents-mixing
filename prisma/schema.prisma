@@ -25,10 +25,8 @@ model User {
   createdAt            DateTime     @default(now())
   updatedAt            DateTime     @updatedAt
 
-  userFirstId          String       @unique @default(uuid())
-  userLastId           String       @unique @default(uuid())
-  userFirstLastIds     Contact?     @relation("UserFirstLastIds")
-  @@unique([userFirstId, userLastId])
+  contactFirsts        Contact[] @relation("UserFirst")
+  contactLasts         Contact[] @relation("UserLast")
 
   questions            Question[]
 
@@ -56,10 +54,15 @@ model Contact {
   mirrorId             String?      @unique
   mirror               Contact?     @relation("MirrorContactId", fields: [mirrorId], references: [id])
   original             Contact?     @relation("MirrorContactId")
+  // Since this is cyclic, it is to be understood as: 
+  // Other is my mirror, but when I'm its mirror other is my original.
 
-  userFirstId         String    
-  userLastId          String    
-  userFirstLastIds    User          @relation("UserFirstLastIds", fields: [userFirstId, userLastId], references: [userFirstId, userLastId])
+  userFirstId          String    
+  userFirst            User         @relation("UserFirst", fields: [userFirstId], references: [id])
+
+  userLastId           String
+  userLast             User         @relation("UserLast", fields: [userLastId], references: [id])   
+
   @@unique([userFirstId, userLastId])
 
   userQuestionFriends        UserQuestionFriend[]
