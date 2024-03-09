@@ -19,6 +19,8 @@ export default function NotificationsPage() {
       <PageLink href={`/users/${data.username}/dashboard`}>
         back to dashboard (for now)
       </PageLink>
+
+      <PageLink href={`../requests`}>To requests</PageLink>
     </>
   );
 }

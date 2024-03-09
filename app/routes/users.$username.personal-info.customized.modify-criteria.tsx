@@ -20,10 +20,7 @@ export default function ModifyCriteriaCustomizedPage() {
         back to dashboard (for now)
       </PageLink>
 
-      <PageLink href={`/users/${data.username}/personal-info/customized`}>
-        Cancel
-      </PageLink>
-      {/* I'll find a way to make this path relative within this here paramaterized route later. */}
+      <PageLink href={`..`}>Cancel</PageLink>
     </>
   );
 }

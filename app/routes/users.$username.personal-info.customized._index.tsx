@@ -22,13 +22,8 @@ export default function PersonalInfoCustomizedPage() {
 
       <PageLink href={`modify-criteria`}>Modify</PageLink>
       <PageLink href={`add-criteria`}>Add customized criteria</PageLink>
-      <PageLink href={`/users/${data.username}/personal-info`}>
-        To Personal Info
-      </PageLink>
-      <PageLink href={`/users/${data.username}/personal-info/standardized`}>
-        To Standardized criteria
-      </PageLink>
-      {/* I'll find a way to make these paths relative within this here paramaterized route later. */}
+      <PageLink href={`..`}>To Personal Info</PageLink>
+      <PageLink href={`../standardized`}>To Standardized criteria</PageLink>
     </>
   );
 }

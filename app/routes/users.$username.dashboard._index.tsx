@@ -18,14 +18,10 @@ export default function DashboardPage() {
 
       <PageLink href={`modify-app-wide-name`}>App-wide name *</PageLink>
       <p className="mt-2">{data.username} (for now)</p>
-      <PageLink href={`/users/${data.username}/personal-info`}>
-        More personal info
-      </PageLink>
-      <PageLink href={`/users/${data.username}/friends`}>My friends</PageLink>
-      <PageLink href={`/users/${data.username}/requests`}>My requests</PageLink>
-      <PageLink href={`/users/${data.username}/notifications`}>
-        My notifications
-      </PageLink>
+      <PageLink href={`../personal-info`}>More personal info</PageLink>
+      <PageLink href={`../friends`}>My friends</PageLink>
+      <PageLink href={`../requests`}>My requests</PageLink>
+      <PageLink href={`../notifications`}>My notifications</PageLink>
       <PageLink href={`/`}>Return home</PageLink>
     </>
   );

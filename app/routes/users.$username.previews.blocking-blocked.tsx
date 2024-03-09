@@ -20,7 +20,7 @@ export default function BlockingBlockedPage() {
         back to dashboard (for now)
       </PageLink>
 
-      <PageLink href={`/users/${data.username}/previews`}>To Previews</PageLink>
+      <PageLink href={`..`}>To Previews</PageLink>
     </>
   );
 }

@@ -33,9 +33,7 @@ export default function PreviewsPage() {
         To &quot;blocking-blocked&quot; preview
       </PageLink>
       <PageLink href={`queried`}>To queried previews</PageLink>
-      <PageLink href={`/users/${data.username}/friends/find`}>
-        Search for contacts
-      </PageLink>
+      <PageLink href={`../friends/find`}>Search for contacts</PageLink>
     </>
   );
 }

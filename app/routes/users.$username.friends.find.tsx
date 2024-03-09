@@ -20,10 +20,8 @@ export default function FindContactsPage() {
         back to dashboard (for now)
       </PageLink>
 
-      <PageLink href={`/users/${data.username}/friends`}>See friends</PageLink>
-      <PageLink href={`/users/${data.username}/previews`}>
-        See previews
-      </PageLink>
+      <PageLink href={`..`}>See friends</PageLink>
+      <PageLink href={`../../previews`}>See previews</PageLink>
     </>
   );
 }
