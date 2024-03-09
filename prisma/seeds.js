@@ -2,6 +2,8 @@ import { PrismaClient } from "@prisma/client";
 const db = new PrismaClient();
 
 async function seed() {
+  console.log(`Beginning seeds...`);
+
   console.log(`Seeding users...`);
 
   // “me” / LePapier
@@ -97,7 +99,8 @@ async function seed() {
 
   // Fiona / FioTriangle
   // no contacts, no answers
-  // for creating contacts during testing for contact notifications
+  // for creating contacts during testing
+  // for contact notifications
 
   const fioTriangle = await db.user.create({
     data: {
@@ -790,7 +793,299 @@ async function seed() {
 
   console.log(`Contacts seeds complete.`);
 
+  console.log(`Seeding questions...`);
+
+  // First name / native
+
+  const firstName = await db.question.create({
+    data: {
+      name: "First name",
+      state: "LIVE",
+      kind: "NATIVE",
+    },
+  });
+  console.log(`"${firstName.name}" question created.`);
+
+  // Work number / native
+  // for no preexisting native not irl criteria from user yet
+
+  const workNumber = await db.question.create({
+    data: {
+      name: "Work number",
+      state: "LIVE",
+      kind: "NATIVE",
+    },
+  });
+  console.log(`"${workNumber.name}" question created.`);
+
+  // Email address / native
+
+  const emailAddress = await db.question.create({
+    data: {
+      name: "Email address",
+      state: "LIVE",
+      kind: "NATIVE",
+    },
+  });
+  console.log(`"${emailAddress.name}" question created.`);
+
+  // Other email address / native
+
+  const otherEmailAddress = await db.question.create({
+    data: {
+      name: "Other email address",
+      state: "LIVE",
+      kind: "NATIVE",
+    },
+  });
+  console.log(`"${otherEmailAddress.name}" question created.`);
+
+  // Last name / native / irl
+
+  const lastName = await db.question.create({
+    data: {
+      name: "Last name",
+      state: "LIVE",
+      kind: "NATIVEIRL",
+    },
+  });
+  console.log(`"${lastName.name}" question created.`);
+
+  // Phone number / native / irl
+  // for no preexisting native not irl criteria from user yet
+
+  const phoneNumber = await db.question.create({
+    data: {
+      name: "Phone number",
+      state: "LIVE",
+      kind: "NATIVEIRL",
+    },
+  });
+  console.log(`"${phoneNumber.name}" question created.`);
+
+  // Address / native / irl
+
+  const address = await db.question.create({
+    data: {
+      name: "Address",
+      state: "LIVE",
+      kind: "NATIVEIRL",
+    },
+  });
+  console.log(`"${address.name}" question created.`);
+
+  // Other address / native / irl
+
+  const otherAddress = await db.question.create({
+    data: {
+      name: "Other address",
+      state: "LIVE",
+      kind: "NATIVEIRL",
+    },
+  });
+  console.log(`"${otherAddress.name}" question created.`);
+
+  // Birthday / pseudo
+
+  const birthday = await db.question.create({
+    data: {
+      name: "Birthday",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+  console.log(`"${birthday.name}" question created.`);
+
+  // Birthdate / pseudo
+
+  const birthdate = await db.question.create({
+    data: {
+      name: "Birthdate",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+  console.log(`"${birthdate.name}" question created.`);
+
+  // Father's birthday / pseudo
+  // for no preexisting pseudonative criteria from user yet
+  // for not irl purposes
+
+  const fathersBirthday = await db.question.create({
+    data: {
+      name: "Father's birthday",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+  console.log(`"${fathersBirthday.name}" question created.`);
+
+  // Mother's birthday / pseudo
+
+  const mothersBirthday = await db.question.create({
+    data: {
+      name: "Mother's birthday",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+  console.log(`"${mothersBirthday.name}" question created.`);
+
+  // Girlfriend's birthday / pseudo
+
+  const girlfriendsBirthday = await db.question.create({
+    data: {
+      name: "Girlfriend's birthday",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+  console.log(`"${girlfriendsBirthday.name}" question created.`);
+
+  // Crush's birthday / pseudo
+
+  const crushsBirthday = await db.question.create({
+    data: {
+      name: "Crush's birthday",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+  console.log(`"${crushsBirthday.name}" question created.`);
+
+  // Father's birthdate / pseudo
+  // for no preexisting pseudonative criteria from user yet
+  // for irl purposes
+
+  const fathersBirthdate = await db.question.create({
+    data: {
+      name: "Father's birthdate",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+  console.log(`"${fathersBirthdate.name}" question created.`);
+
+  // Mother's birthdate / pseudo
+
+  const mothersBirthdate = await db.question.create({
+    data: {
+      name: "Mother's birthdate",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+  console.log(`"${mothersBirthdate.name}" question created.`);
+
+  // Girlfriend's birthdate / pseudo
+
+  const girlfriendsBirthdate = await db.question.create({
+    data: {
+      name: "Girlfriend's birthdate",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+  console.log(`"${girlfriendsBirthdate.name}" question created.`);
+
+  // Crush's birthdate / pseudo
+
+  const crushsBirthdate = await db.question.create({
+    data: {
+      name: "Crush's birthdate",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+  console.log(`"${crushsBirthdate.name}" question created.`);
+
+  // Favorite actor / pseudo
+
+  const favoriteActor = await db.question.create({
+    data: {
+      name: "Favorite actor",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+  console.log(`"${favoriteActor.name}" question created.`);
+
+  // Favorite actress / pseudo
+
+  const favoriteActress = await db.question.create({
+    data: {
+      name: "Favorite actress",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+  console.log(`"${favoriteActress.name}" question created.`);
+
+  // Favorite anime character / pseudo
+
+  const favoriteAnimeCharacter = await db.question.create({
+    data: {
+      name: "Favorite anime character",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+  console.log(`"${favoriteAnimeCharacter.name}" question created.`);
+
+  // Favorite anime waifu / pseudo
+
+  const favoriteAnimeWaifu = await db.question.create({
+    data: {
+      name: "Favorite anime waifu",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+  console.log(`"${favoriteAnimeWaifu.name}" question created.`);
+
+  // Favorite anime series / pseudo
+
+  const favoriteAnimeSeries = await db.question.create({
+    data: {
+      name: "Favorite anime series",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+  console.log(`"${favoriteAnimeSeries.name}" question created.`);
+
+  // Favorite anime franchise / pseudo
+
+  const favoriteAnimeFranchise = await db.question.create({
+    data: {
+      name: "Favorite anime franchise",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+  console.log(`"${favoriteAnimeFranchise.name}" question created.`);
+
+  // Favorite anime studio / pseudo
+  // for no preexisting custom criteria from user yet
+
+  const favoriteAnimeStudio = await db.question.create({
+    data: {
+      name: "Favorite anime studio",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+  console.log(`"${favoriteAnimeStudio.name}" question created.`);
+
+  console.log(`Questions seeds complete.`);
+
   console.log(`Initial seeds complete.`);
 }
 
 seed();
+
+// rm ./prisma/dev.db
+// npx prisma db push
+// node prisma/seeds.js
+
+// npx prisma studio
