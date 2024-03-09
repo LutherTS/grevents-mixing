@@ -19,7 +19,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${lePapier.username} created.`);
 
   // Alice / Alice-chan
 
@@ -34,7 +33,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${aliceChan.username} created.`);
 
   // Bianca / Trovounette
 
@@ -49,7 +47,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${trovounette.username} created.`);
 
   // Candice / Candi
 
@@ -64,7 +61,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${candi.username} created.`);
 
   // Danny / D-Dan
 
@@ -79,7 +75,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${dDan.username} created.`);
 
   // Elijah / El-Hadj
   // for creating contacts through find
@@ -95,7 +90,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${elHadj.username} created.`);
 
   // Fiona / FioTriangle
   // no contacts, no answers
@@ -113,7 +107,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${fioTriangle.username} created.`);
 
   // Grace / Gracie-babie
   // no contacts, no answers
@@ -130,7 +123,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${gracieBabie.username} created.`);
 
   /* Hector / Hectavus manually created on the Sign-In page.
   const hector = await db.user.create({
@@ -157,7 +149,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${lucario.username} created.`);
 
   // Malcolm / MisterX
 
@@ -172,7 +163,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${misterX.username} created.`);
 
   // Nancy / Nonyes
 
@@ -187,7 +177,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${nonyes.username} created.`);
 
   // Ophelia / Ophelia-swan
 
@@ -202,7 +191,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${opheliaSwan.username} created.`);
 
   // Pamela / Pimpampoum
 
@@ -217,7 +205,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${pimpampoum.username} created.`);
 
   console.log(`Users seeds complete.`);
 
@@ -241,7 +228,6 @@ async function seed() {
       kind: "IRL",
     },
   });
-  console.log(`${lePapier.username} to ${aliceChan.username} contact created.`);
 
   const aliceChanToLePapier = await db.contact.create({
     data: {
@@ -259,7 +245,6 @@ async function seed() {
       kind: "IRL",
     },
   });
-  console.log(`${aliceChan.username} to ${lePapier.username} contact created.`);
 
   await Promise.all([
     await db.contact.update({
@@ -289,9 +274,6 @@ async function seed() {
       },
     }),
   ]);
-  console.log(
-    `${lePapier.username} to ${aliceChan.username} contacts connected.`
-  );
 
   // “me” and Bianca / relation combination “friend”
 
@@ -311,9 +293,6 @@ async function seed() {
       kind: "FRIEND",
     },
   });
-  console.log(
-    `${lePapier.username} to ${trovounette.username} contact created.`
-  );
 
   const trovounetteToLePapier = await db.contact.create({
     data: {
@@ -331,9 +310,6 @@ async function seed() {
       kind: "FRIEND",
     },
   });
-  console.log(
-    `${trovounette.username} to ${lePapier.username} contact created.`
-  );
 
   await Promise.all([
     await db.contact.update({
@@ -363,9 +339,6 @@ async function seed() {
       },
     }),
   ]);
-  console.log(
-    `${lePapier.username} to ${trovounette.username} contacts connected.`
-  );
 
   // “me” and Candice / relation combination “none”
 
@@ -385,7 +358,6 @@ async function seed() {
       kind: "NONE",
     },
   });
-  console.log(`${lePapier.username} to ${candi.username} contact created.`);
 
   const candiToLePapier = await db.contact.create({
     data: {
@@ -403,7 +375,6 @@ async function seed() {
       kind: "NONE",
     },
   });
-  console.log(`${candi.username} to ${lePapier.username} contact created.`);
 
   await Promise.all([
     await db.contact.update({
@@ -431,7 +402,6 @@ async function seed() {
       },
     }),
   ]);
-  console.log(`${lePapier.username} to ${candi.username} contacts connected.`);
 
   // “me” and Danny / relation combination nonexistent
 
@@ -461,7 +431,6 @@ async function seed() {
       kind: "FRIEND",
     },
   });
-  console.log(`${lePapier.username} to ${lucario.username} contact created.`);
 
   const lucarioToLePapier = await db.contact.create({
     data: {
@@ -479,7 +448,6 @@ async function seed() {
       kind: "FRIEND",
     },
   });
-  console.log(`${lucario.username} to ${lePapier.username} contact created.`);
 
   await Promise.all([
     await db.contact.update({
@@ -509,9 +477,6 @@ async function seed() {
       },
     }),
   ]);
-  console.log(
-    `${lePapier.username} to ${lucario.username} contacts connected.`
-  );
 
   // “me” and Malcolm / relation combination “irl”
 
@@ -531,7 +496,6 @@ async function seed() {
       kind: "IRL",
     },
   });
-  console.log(`${lePapier.username} to ${misterX.username} contact created.`);
 
   const misterXToLePapier = await db.contact.create({
     data: {
@@ -549,7 +513,6 @@ async function seed() {
       kind: "IRL",
     },
   });
-  console.log(`${misterX.username} to ${lePapier.username} contact created.`);
 
   await Promise.all([
     await db.contact.update({
@@ -579,9 +542,6 @@ async function seed() {
       },
     }),
   ]);
-  console.log(
-    `${lePapier.username} to ${misterX.username} contacts connected.`
-  );
 
   // “me” and Nancy / relation combination “blocking”
 
@@ -602,7 +562,6 @@ async function seed() {
       blocking: true,
     },
   });
-  console.log(`${lePapier.username} to ${nonyes.username} contact created.`);
 
   const nonyesToLePapier = await db.contact.create({
     data: {
@@ -621,7 +580,6 @@ async function seed() {
       blocking: false,
     },
   });
-  console.log(`${nonyes.username} to ${lePapier.username} contact created.`);
 
   await Promise.all([
     await db.contact.update({
@@ -650,7 +608,6 @@ async function seed() {
       },
     }),
   ]);
-  console.log(`${lePapier.username} to ${nonyes.username} contacts connected.`);
 
   // “me” and Ophelia / relation combination “blocked”
 
@@ -671,9 +628,6 @@ async function seed() {
       blocking: false,
     },
   });
-  console.log(
-    `${lePapier.username} to ${opheliaSwan.username} contact created.`
-  );
 
   const opheliaSwanToLePapier = await db.contact.create({
     data: {
@@ -692,9 +646,6 @@ async function seed() {
       blocking: true,
     },
   });
-  console.log(
-    `${opheliaSwan.username} to ${lePapier.username} contact created.`
-  );
 
   await Promise.all([
     await db.contact.update({
@@ -723,9 +674,6 @@ async function seed() {
       },
     }),
   ]);
-  console.log(
-    `${lePapier.username} to ${opheliaSwan.username} contacts connected.`
-  );
 
   // “me” and Pamela / relation combination “blocking-and-blocked”
 
@@ -746,9 +694,6 @@ async function seed() {
       blocking: true,
     },
   });
-  console.log(
-    `${lePapier.username} to ${pimpampoum.username} contact created.`
-  );
 
   const pimpampoumToLePapier = await db.contact.create({
     data: {
@@ -767,9 +712,6 @@ async function seed() {
       blocking: true,
     },
   });
-  console.log(
-    `${pimpampoum.username} to ${lePapier.username} contact created.`
-  );
 
   await Promise.all([
     await db.contact.update({
@@ -799,9 +741,6 @@ async function seed() {
       },
     }),
   ]);
-  console.log(
-    `${lePapier.username} to ${pimpampoum.username} contacts connected.`
-  );
 
   console.log(`Contacts seeds complete.`);
 
@@ -816,7 +755,6 @@ async function seed() {
       kind: "NATIVE",
     },
   });
-  console.log(`"${firstName.name}" question created.`);
 
   // Work number / native
   // for no preexisting native not irl criteria from user yet
@@ -828,7 +766,6 @@ async function seed() {
       kind: "NATIVE",
     },
   });
-  console.log(`"${workNumber.name}" question created.`);
 
   // Email address / native
 
@@ -839,7 +776,6 @@ async function seed() {
       kind: "NATIVE",
     },
   });
-  console.log(`"${emailAddress.name}" question created.`);
 
   // Other email address / native
 
@@ -850,7 +786,6 @@ async function seed() {
       kind: "NATIVE",
     },
   });
-  console.log(`"${otherEmailAddress.name}" question created.`);
 
   // Last name / native / irl
 
@@ -861,7 +796,6 @@ async function seed() {
       kind: "NATIVEIRL",
     },
   });
-  console.log(`"${lastName.name}" question created.`);
 
   // Phone number / native / irl
   // for no preexisting native not irl criteria from user yet
@@ -873,7 +807,6 @@ async function seed() {
       kind: "NATIVEIRL",
     },
   });
-  console.log(`"${phoneNumber.name}" question created.`);
 
   // Address / native / irl
 
@@ -884,7 +817,6 @@ async function seed() {
       kind: "NATIVEIRL",
     },
   });
-  console.log(`"${address.name}" question created.`);
 
   // Other address / native / irl
 
@@ -895,7 +827,6 @@ async function seed() {
       kind: "NATIVEIRL",
     },
   });
-  console.log(`"${otherAddress.name}" question created.`);
 
   // Birthday / pseudo
 
@@ -906,7 +837,6 @@ async function seed() {
       kind: "CUSTOM",
     },
   });
-  console.log(`"${birthday.name}" question created.`);
 
   // Birthdate / pseudo
 
@@ -917,7 +847,6 @@ async function seed() {
       kind: "CUSTOM",
     },
   });
-  console.log(`"${birthdate.name}" question created.`);
 
   // Father's birthday / pseudo
   // for no preexisting pseudonative criteria from user yet
@@ -930,7 +859,6 @@ async function seed() {
       kind: "CUSTOM",
     },
   });
-  console.log(`"${fathersBirthday.name}" question created.`);
 
   // Mother's birthday / pseudo
 
@@ -941,7 +869,6 @@ async function seed() {
       kind: "CUSTOM",
     },
   });
-  console.log(`"${mothersBirthday.name}" question created.`);
 
   // Girlfriend's birthday / pseudo
 
@@ -952,7 +879,6 @@ async function seed() {
       kind: "CUSTOM",
     },
   });
-  console.log(`"${girlfriendsBirthday.name}" question created.`);
 
   // Crush's birthday / pseudo
 
@@ -963,7 +889,6 @@ async function seed() {
       kind: "CUSTOM",
     },
   });
-  console.log(`"${crushsBirthday.name}" question created.`);
 
   // Father's birthdate / pseudo
   // for no preexisting pseudonative criteria from user yet
@@ -976,7 +901,6 @@ async function seed() {
       kind: "CUSTOM",
     },
   });
-  console.log(`"${fathersBirthdate.name}" question created.`);
 
   // Mother's birthdate / pseudo
 
@@ -987,7 +911,6 @@ async function seed() {
       kind: "CUSTOM",
     },
   });
-  console.log(`"${mothersBirthdate.name}" question created.`);
 
   // Girlfriend's birthdate / pseudo
 
@@ -998,7 +921,6 @@ async function seed() {
       kind: "CUSTOM",
     },
   });
-  console.log(`"${girlfriendsBirthdate.name}" question created.`);
 
   // Crush's birthdate / pseudo
 
@@ -1009,7 +931,6 @@ async function seed() {
       kind: "CUSTOM",
     },
   });
-  console.log(`"${crushsBirthdate.name}" question created.`);
 
   // Favorite actor / pseudo
 
@@ -1020,7 +941,6 @@ async function seed() {
       kind: "CUSTOM",
     },
   });
-  console.log(`"${favoriteActor.name}" question created.`);
 
   // Favorite actress / pseudo
 
@@ -1031,7 +951,6 @@ async function seed() {
       kind: "CUSTOM",
     },
   });
-  console.log(`"${favoriteActress.name}" question created.`);
 
   // Favorite anime character / pseudo
 
@@ -1042,7 +961,6 @@ async function seed() {
       kind: "CUSTOM",
     },
   });
-  console.log(`"${favoriteAnimeCharacter.name}" question created.`);
 
   // Favorite anime waifu / pseudo
 
@@ -1053,7 +971,6 @@ async function seed() {
       kind: "CUSTOM",
     },
   });
-  console.log(`"${favoriteAnimeWaifu.name}" question created.`);
 
   // Favorite anime series / pseudo
 
@@ -1064,7 +981,6 @@ async function seed() {
       kind: "CUSTOM",
     },
   });
-  console.log(`"${favoriteAnimeSeries.name}" question created.`);
 
   // Favorite anime franchise / pseudo
 
@@ -1075,7 +991,6 @@ async function seed() {
       kind: "CUSTOM",
     },
   });
-  console.log(`"${favoriteAnimeFranchise.name}" question created.`);
 
   // Favorite anime studio / pseudo
   // for no preexisting custom criteria from user yet
@@ -1087,7 +1002,6 @@ async function seed() {
       kind: "CUSTOM",
     },
   });
-  console.log(`"${favoriteAnimeStudio.name}" question created.`);
 
   console.log(`Questions seeds complete.`);
 
