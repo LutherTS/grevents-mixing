@@ -108,13 +108,12 @@ model UserQuestion {
 model UserQuestionFriend {
   id                   String       @id @default(uuid())
   state                String       @default("NONE")
-  kind                 String       @default("NONE")
-  isPinned             Boolean      @default(false)
+  isSharedToFriend     Boolean      @default(false)
+  isPinnedByFriend     Boolean      @default(false)
   createdAt            DateTime     @default(now())
   updatedAt            DateTime     @updatedAt
-  pinnedAt             DateTime?
-  upToIrlAt            DateTime?
-  downFromIrlAt        DateTime?
+  sharedToFriendAt     DateTime?
+  pinnedByFriendAt     DateTime?
 
   userQuestionId       String
   userQuestion         UserQuestion @relation(fields: [userQuestionId], references: [id])
@@ -126,13 +125,10 @@ model UserQuestionFriend {
 model Answer {
   id                   String       @id @default(uuid())
   state                String       @default("NONE")
-  kind                 String       @default("NONE")
+  value                String
   isPinned             Boolean      @default(false)
   createdAt            DateTime     @default(now())
   updatedAt            DateTime     @updatedAt
-  pinnedAt             DateTime?
-  upToIrlAt            DateTime?
-  downFromIrlAt        DateTime?
 
   userQuestionId       String       @unique
   userQuestion         UserQuestion @relation(fields: [userQuestionId], references: [id])

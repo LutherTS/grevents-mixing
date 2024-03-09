@@ -2008,6 +2008,10 @@ async function seed() {
 
   console.log(`User questions seeds complete.`);
 
+  console.log(`Seeding user question friends...`);
+
+  // LePapier, Favorite actress shared to Alice-chan
+
   console.log(`Initial seeds complete.`);
 }
 
