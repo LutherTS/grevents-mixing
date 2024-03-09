@@ -1941,7 +1941,7 @@ async function seed() {
   });
 
   // LePapier, Favorite anime waifu
-  // custom / shared (1) / pinned
+  // custom / shared (2) / pinned
   // (1 UserQuestionFriend 'DELETED')
 
   const lePapierFavoriteAnimeWaifu = await db.userQuestion.create({
@@ -2007,6 +2007,135 @@ async function seed() {
   });
 
   console.log(`User questions seeds complete.`);
+
+  console.log(`Seeding user question friends...`);
+
+  // LePapier, Favorite actress shared to Alice-chan
+
+  const lePapierFavoriteActressToAliceChan = await db.userQuestionFriend.create(
+    {
+      data: {
+        state: "LIVE",
+        isSharedToFriend: true,
+        sharedToFriendAt: new Date(),
+        userQuestion: {
+          connect: {
+            id: lePapierFavoriteActress.id,
+          },
+        },
+        contact: {
+          connect: {
+            id: lePapierToAliceChan.id,
+          },
+        },
+      },
+    }
+  );
+
+  // Alice-chan, Favorite actor shared to LePapier
+
+  const aliceChanFavoriteActorToLePapier = await db.userQuestionFriend.create({
+    data: {
+      state: "LIVE",
+      isSharedToFriend: true,
+      sharedToFriendAt: new Date(),
+      userQuestion: {
+        connect: {
+          id: aliceChanFavoriteActor.id,
+        },
+      },
+      contact: {
+        connect: {
+          id: aliceChanToLePapier.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Favorite anime waifu shared to Alice-chan
+
+  const lePapierFavoriteAnimeWaifuToAliceChan =
+    await db.userQuestionFriend.create({
+      data: {
+        state: "LIVE",
+        isSharedToFriend: true,
+        sharedToFriendAt: new Date(),
+        userQuestion: {
+          connect: {
+            id: lePapierFavoriteAnimeWaifu.id,
+          },
+        },
+        contact: {
+          connect: {
+            id: lePapierToAliceChan.id,
+          },
+        },
+      },
+    });
+
+  // LePapier, Favorite anime waifu no longer shared to Trovounette
+
+  const lePapierFavoriteAnimeWaifuToTrovounette =
+    await db.userQuestionFriend.create({
+      data: {
+        state: "LIVE",
+        isSharedToFriend: false,
+        sharedToFriendAt: null,
+        userQuestion: {
+          connect: {
+            id: lePapierFavoriteAnimeWaifu.id,
+          },
+        },
+        contact: {
+          connect: {
+            id: lePapierToTrovounette.id,
+          },
+        },
+      },
+    });
+
+  // LePapier, Favorite anime waifu shared to MisterX
+
+  const lePapierFavoriteAnimeWaifuToMisterX =
+    await db.userQuestionFriend.create({
+      data: {
+        state: "LIVE",
+        isSharedToFriend: true,
+        sharedToFriendAt: new Date(),
+        userQuestion: {
+          connect: {
+            id: lePapierFavoriteAnimeWaifu.id,
+          },
+        },
+        contact: {
+          connect: {
+            id: lePapierToMisterX.id,
+          },
+        },
+      },
+    });
+
+  // LePapier, First name pinned by Alice-chan
+
+  const lePapierFirstNameToAliceChan = await db.userQuestionFriend.create({
+    data: {
+      state: "LIVE",
+      isPinnedByFriend: true,
+      pinnedByFriendAt: new Date(),
+      userQuestion: {
+        connect: {
+          id: lePapierFirstName.id,
+        },
+      },
+      contact: {
+        connect: {
+          id: lePapierToAliceChan.id,
+        },
+      },
+    },
+  });
+
+  console.log(`User question friends seeds complete.`);
 
   console.log(`Initial seeds complete.`);
 }
