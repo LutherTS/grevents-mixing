@@ -1190,7 +1190,7 @@ async function seed() {
       pinnedAt: new Date(),
       user: {
         connect: {
-          id: aliceChan.id,
+          id: lePapier.id,
         },
       },
       question: {
@@ -2005,6 +2005,8 @@ async function seed() {
       },
     },
   });
+
+  console.log(`User questions seeds complete.`);
 
   console.log(`Initial seeds complete.`);
 }
