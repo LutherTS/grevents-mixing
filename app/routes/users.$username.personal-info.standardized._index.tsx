@@ -3,20 +3,33 @@ import { useLoaderData } from "@remix-run/react";
 
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
+import { countUserPinnedAnswersByUserId } from "~/librairies/data/answers";
+import { findUserByUsername } from "~/librairies/data/users";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
-  const username = params.username;
-  return { username };
+  const user = await findUserByUsername(params.username!);
+  if (!user) {
+    throw new Response("Could not find requested user.", {
+      status: 404,
+    });
+  }
+
+  const pinnedAnswerCount = await countUserPinnedAnswersByUserId(user.id);
+
+  return { user, pinnedAnswerCount };
 };
 
 export default function PersonalInfoStandardizedPage() {
   const data = useLoaderData<typeof loader>();
+  console.log(data);
 
   return (
     <>
-      <H1>Welcome to {data.username}&apos;s Personal Info Standardized.</H1>
+      <H1>
+        Welcome to {data.user.appWideName}&apos;s Personal Info Standardized.
+      </H1>
 
-      <PageLink href={`/users/${data.username}/dashboard`}>
+      <PageLink href={`/users/${data.user.appWideName}/dashboard`}>
         back to dashboard (for now)
       </PageLink>
 
