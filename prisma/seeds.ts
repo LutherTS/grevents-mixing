@@ -2,6 +2,8 @@ import { PrismaClient } from "@prisma/client";
 const db = new PrismaClient();
 
 async function seed() {
+  console.log(`Beginning seeds...`);
+
   console.log(`Seeding users...`);
 
   // “me” / LePapier
@@ -17,7 +19,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${lePapier.username} created.`);
 
   // Alice / Alice-chan
 
@@ -32,7 +33,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${aliceChan.username} created.`);
 
   // Bianca / Trovounette
 
@@ -47,7 +47,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${trovounette.username} created.`);
 
   // Candice / Candi
 
@@ -62,7 +61,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${candi.username} created.`);
 
   // Danny / D-Dan
 
@@ -77,7 +75,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${dDan.username} created.`);
 
   // Elijah / El-Hadj
   // for creating contacts through find
@@ -93,11 +90,11 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${elHadj.username} created.`);
 
   // Fiona / FioTriangle
   // no contacts, no answers
-  // for creating contacts during testing for contact notifications
+  // for creating contacts during testing
+  // for contact notifications
 
   const fioTriangle = await db.user.create({
     data: {
@@ -110,7 +107,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${fioTriangle.username} created.`);
 
   // Grace / Gracie-babie
   // no contacts, no answers
@@ -127,7 +123,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${gracieBabie.username} created.`);
 
   /* Hector / Hectavus manually created on the Sign-In page.
   const hector = await db.user.create({
@@ -154,7 +149,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${lucario.username} created.`);
 
   // Malcolm / MisterX
 
@@ -169,7 +163,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${misterX.username} created.`);
 
   // Nancy / Nonyes
 
@@ -184,7 +177,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${nonyes.username} created.`);
 
   // Ophelia / Ophelia-swan
 
@@ -199,7 +191,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${opheliaSwan.username} created.`);
 
   // Pamela / Pimpampoum
 
@@ -214,7 +205,6 @@ async function seed() {
       state: "LIVE",
     },
   });
-  console.log(`${pimpampoum.username} created.`);
 
   console.log(`Users seeds complete.`);
 
@@ -238,7 +228,6 @@ async function seed() {
       kind: "IRL",
     },
   });
-  console.log(`${lePapier.username} to ${aliceChan.username} contact created.`);
 
   const aliceChanToLePapier = await db.contact.create({
     data: {
@@ -256,7 +245,6 @@ async function seed() {
       kind: "IRL",
     },
   });
-  console.log(`${aliceChan.username} to ${lePapier.username} contact created.`);
 
   await Promise.all([
     await db.contact.update({
@@ -269,6 +257,7 @@ async function seed() {
             id: aliceChanToLePapier.id,
           },
         },
+        irlAt: new Date(),
       },
     }),
     await db.contact.update({
@@ -281,12 +270,10 @@ async function seed() {
             id: lePapierToAliceChan.id,
           },
         },
+        irlAt: new Date(),
       },
     }),
   ]);
-  console.log(
-    `${lePapier.username} to ${aliceChan.username} contacts connected.`
-  );
 
   // “me” and Bianca / relation combination “friend”
 
@@ -306,9 +293,6 @@ async function seed() {
       kind: "FRIEND",
     },
   });
-  console.log(
-    `${lePapier.username} to ${trovounette.username} contact created.`
-  );
 
   const trovounetteToLePapier = await db.contact.create({
     data: {
@@ -326,9 +310,6 @@ async function seed() {
       kind: "FRIEND",
     },
   });
-  console.log(
-    `${trovounette.username} to ${lePapier.username} contact created.`
-  );
 
   await Promise.all([
     await db.contact.update({
@@ -341,6 +322,7 @@ async function seed() {
             id: trovounetteToLePapier.id,
           },
         },
+        friendAt: new Date(),
       },
     }),
     await db.contact.update({
@@ -353,12 +335,10 @@ async function seed() {
             id: lePapierToTrovounette.id,
           },
         },
+        friendAt: new Date(),
       },
     }),
   ]);
-  console.log(
-    `${lePapier.username} to ${trovounette.username} contacts connected.`
-  );
 
   // “me” and Candice / relation combination “none”
 
@@ -378,7 +358,6 @@ async function seed() {
       kind: "NONE",
     },
   });
-  console.log(`${lePapier.username} to ${candi.username} contact created.`);
 
   const candiToLePapier = await db.contact.create({
     data: {
@@ -396,7 +375,6 @@ async function seed() {
       kind: "NONE",
     },
   });
-  console.log(`${candi.username} to ${lePapier.username} contact created.`);
 
   await Promise.all([
     await db.contact.update({
@@ -424,7 +402,6 @@ async function seed() {
       },
     }),
   ]);
-  console.log(`${lePapier.username} to ${candi.username} contacts connected.`);
 
   // “me” and Danny / relation combination nonexistent
 
@@ -454,7 +431,6 @@ async function seed() {
       kind: "FRIEND",
     },
   });
-  console.log(`${lePapier.username} to ${lucario.username} contact created.`);
 
   const lucarioToLePapier = await db.contact.create({
     data: {
@@ -472,7 +448,6 @@ async function seed() {
       kind: "FRIEND",
     },
   });
-  console.log(`${lucario.username} to ${lePapier.username} contact created.`);
 
   await Promise.all([
     await db.contact.update({
@@ -485,6 +460,7 @@ async function seed() {
             id: lucarioToLePapier.id,
           },
         },
+        friendAt: new Date(),
       },
     }),
     await db.contact.update({
@@ -497,12 +473,10 @@ async function seed() {
             id: lePapierToLucario.id,
           },
         },
+        friendAt: new Date(),
       },
     }),
   ]);
-  console.log(
-    `${lePapier.username} to ${lucario.username} contacts connected.`
-  );
 
   // “me” and Malcolm / relation combination “irl”
 
@@ -522,7 +496,6 @@ async function seed() {
       kind: "IRL",
     },
   });
-  console.log(`${lePapier.username} to ${misterX.username} contact created.`);
 
   const misterXToLePapier = await db.contact.create({
     data: {
@@ -540,7 +513,6 @@ async function seed() {
       kind: "IRL",
     },
   });
-  console.log(`${misterX.username} to ${lePapier.username} contact created.`);
 
   await Promise.all([
     await db.contact.update({
@@ -553,6 +525,7 @@ async function seed() {
             id: misterXToLePapier.id,
           },
         },
+        irlAt: new Date(),
       },
     }),
     await db.contact.update({
@@ -565,12 +538,10 @@ async function seed() {
             id: lePapierToMisterX.id,
           },
         },
+        irlAt: new Date(),
       },
     }),
   ]);
-  console.log(
-    `${lePapier.username} to ${misterX.username} contacts connected.`
-  );
 
   // “me” and Nancy / relation combination “blocking”
 
@@ -591,7 +562,6 @@ async function seed() {
       blocking: true,
     },
   });
-  console.log(`${lePapier.username} to ${nonyes.username} contact created.`);
 
   const nonyesToLePapier = await db.contact.create({
     data: {
@@ -610,7 +580,6 @@ async function seed() {
       blocking: false,
     },
   });
-  console.log(`${nonyes.username} to ${lePapier.username} contact created.`);
 
   await Promise.all([
     await db.contact.update({
@@ -623,6 +592,7 @@ async function seed() {
             id: nonyesToLePapier.id,
           },
         },
+        blockedAt: new Date(),
       },
     }),
     await db.contact.update({
@@ -638,7 +608,6 @@ async function seed() {
       },
     }),
   ]);
-  console.log(`${lePapier.username} to ${nonyes.username} contacts connected.`);
 
   // “me” and Ophelia / relation combination “blocked”
 
@@ -659,9 +628,6 @@ async function seed() {
       blocking: false,
     },
   });
-  console.log(
-    `${lePapier.username} to ${opheliaSwan.username} contact created.`
-  );
 
   const opheliaSwanToLePapier = await db.contact.create({
     data: {
@@ -680,9 +646,6 @@ async function seed() {
       blocking: true,
     },
   });
-  console.log(
-    `${opheliaSwan.username} to ${lePapier.username} contact created.`
-  );
 
   await Promise.all([
     await db.contact.update({
@@ -707,12 +670,10 @@ async function seed() {
             id: lePapierToOpheliaSwan.id,
           },
         },
+        blockedAt: new Date(),
       },
     }),
   ]);
-  console.log(
-    `${lePapier.username} to ${opheliaSwan.username} contacts connected.`
-  );
 
   // “me” and Pamela / relation combination “blocking-and-blocked”
 
@@ -733,9 +694,6 @@ async function seed() {
       blocking: true,
     },
   });
-  console.log(
-    `${lePapier.username} to ${pimpampoum.username} contact created.`
-  );
 
   const pimpampoumToLePapier = await db.contact.create({
     data: {
@@ -754,9 +712,6 @@ async function seed() {
       blocking: true,
     },
   });
-  console.log(
-    `${pimpampoum.username} to ${lePapier.username} contact created.`
-  );
 
   await Promise.all([
     await db.contact.update({
@@ -769,6 +724,7 @@ async function seed() {
             id: pimpampoumToLePapier.id,
           },
         },
+        blockedAt: new Date(),
       },
     }),
     await db.contact.update({
@@ -781,16 +737,2238 @@ async function seed() {
             id: lePapierToPimpampoum.id,
           },
         },
+        blockedAt: new Date(),
       },
     }),
   ]);
-  console.log(
-    `${lePapier.username} to ${pimpampoum.username} contacts connected.`
-  );
 
   console.log(`Contacts seeds complete.`);
+
+  console.log(`Seeding questions...`);
+
+  // First name / native
+
+  const firstName = await db.question.create({
+    data: {
+      name: "First name",
+      state: "LIVE",
+      kind: "NATIVE",
+    },
+  });
+
+  // Work number / native
+  // for no preexisting native not irl criteria from user yet
+
+  const workNumber = await db.question.create({
+    data: {
+      name: "Work number",
+      state: "LIVE",
+      kind: "NATIVE",
+    },
+  });
+
+  // Email address / native
+
+  const emailAddress = await db.question.create({
+    data: {
+      name: "Email address",
+      state: "LIVE",
+      kind: "NATIVE",
+    },
+  });
+
+  // Other email address / native
+
+  const otherEmailAddress = await db.question.create({
+    data: {
+      name: "Other email address",
+      state: "LIVE",
+      kind: "NATIVE",
+    },
+  });
+
+  // Last name / native / irl
+
+  const lastName = await db.question.create({
+    data: {
+      name: "Last name",
+      state: "LIVE",
+      kind: "NATIVEIRL",
+    },
+  });
+
+  // Phone number / native / irl
+  // for no preexisting native not irl criteria from user yet
+
+  const phoneNumber = await db.question.create({
+    data: {
+      name: "Phone number",
+      state: "LIVE",
+      kind: "NATIVEIRL",
+    },
+  });
+
+  // Address / native / irl
+
+  const address = await db.question.create({
+    data: {
+      name: "Address",
+      state: "LIVE",
+      kind: "NATIVEIRL",
+    },
+  });
+
+  // Other address / native / irl
+
+  const otherAddress = await db.question.create({
+    data: {
+      name: "Other address",
+      state: "LIVE",
+      kind: "NATIVEIRL",
+    },
+  });
+
+  // Birthday / pseudo
+
+  const birthday = await db.question.create({
+    data: {
+      name: "Birthday",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+
+  // Birthdate / pseudo
+
+  const birthdate = await db.question.create({
+    data: {
+      name: "Birthdate",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+
+  // Father's birthday / pseudo
+  // for no preexisting pseudonative criteria from user yet
+  // for not irl purposes
+
+  const fathersBirthday = await db.question.create({
+    data: {
+      name: "Father's birthday",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+
+  // Mother's birthday / pseudo
+
+  const mothersBirthday = await db.question.create({
+    data: {
+      name: "Mother's birthday",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+
+  // Girlfriend's birthday / pseudo
+
+  const girlfriendsBirthday = await db.question.create({
+    data: {
+      name: "Girlfriend's birthday",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+
+  // Crush's birthday / pseudo
+
+  const crushsBirthday = await db.question.create({
+    data: {
+      name: "Crush's birthday",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+
+  // Father's birthdate / pseudo
+  // for no preexisting pseudonative criteria from user yet
+  // for irl purposes
+
+  const fathersBirthdate = await db.question.create({
+    data: {
+      name: "Father's birthdate",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+
+  // Mother's birthdate / pseudo
+
+  const mothersBirthdate = await db.question.create({
+    data: {
+      name: "Mother's birthdate",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+
+  // Girlfriend's birthdate / pseudo
+
+  const girlfriendsBirthdate = await db.question.create({
+    data: {
+      name: "Girlfriend's birthdate",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+
+  // Crush's birthdate / pseudo
+
+  const crushsBirthdate = await db.question.create({
+    data: {
+      name: "Crush's birthdate",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+
+  // Favorite actor / pseudo
+
+  const favoriteActor = await db.question.create({
+    data: {
+      name: "Favorite actor",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+
+  // Favorite actress / pseudo
+
+  const favoriteActress = await db.question.create({
+    data: {
+      name: "Favorite actress",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+
+  // Favorite anime character / pseudo
+
+  const favoriteAnimeCharacter = await db.question.create({
+    data: {
+      name: "Favorite anime character",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+
+  // Favorite anime waifu / pseudo
+
+  const favoriteAnimeWaifu = await db.question.create({
+    data: {
+      name: "Favorite anime waifu",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+
+  // Favorite anime series / pseudo
+
+  const favoriteAnimeSeries = await db.question.create({
+    data: {
+      name: "Favorite anime series",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+
+  // Favorite anime franchise / pseudo
+
+  const favoriteAnimeFranchise = await db.question.create({
+    data: {
+      name: "Favorite anime franchise",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+
+  // Favorite anime studio / pseudo
+  // for no preexisting custom criteria from user yet
+
+  const favoriteAnimeStudio = await db.question.create({
+    data: {
+      name: "Favorite anime studio",
+      state: "LIVE",
+      kind: "CUSTOM",
+    },
+  });
+
+  console.log(`Questions seeds complete.`);
+
+  console.log(`Seeding user questions...`);
+
+  // LePapier, First name
+  // native / pinned
+  // for preexisting native not irl (answer live)
+  // when creating same native not irl criteria
+
+  const lePapierFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Last name
+  // native / irl / pinned
+  // for preexisting native irl (answer live)
+  // when creating same native irl criteria
+
+  const lePapierLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // Alice-chan, First name
+  // native / pinned
+
+  const aliceChanFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: aliceChan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // Alice-chan, Last name
+  // native / irl / pinned
+
+  const aliceChanLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: aliceChan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Favorite actress
+  // custom / shared (1)
+
+  const lePapierFavoriteActress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      question: {
+        connect: {
+          id: favoriteActress.id,
+        },
+      },
+    },
+  });
+
+  // Alice-chan, Favorite actor
+  // custom / shared (1)
+
+  const aliceChanFavoriteActor = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: aliceChan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: favoriteActor.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Favorite actor
+  // custom / not shared
+
+  const lePapierFavoriteActor = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      question: {
+        connect: {
+          id: favoriteActor.id,
+        },
+      },
+    },
+  });
+
+  // Alice-chan, Favorite actress
+  // custom / not shared
+
+  const aliceChanFavoriteActress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: aliceChan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: favoriteActress.id,
+        },
+      },
+    },
+  });
+
+  // Trovounette, First name
+  // native / pinned
+
+  const trovounetteFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: trovounette.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // Trovounette, Last name
+  // native / irl
+
+  const trovounetteLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: trovounette.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // Candi, First name
+  // native / pinned
+
+  const candiFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: candi.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // Candi, Last name
+  // native / irl
+
+  const candiLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: candi.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // D-Dan, First name
+  // native / pinned
+
+  const dDanFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: dDan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // D-Dan, Last name
+  // native / irl
+
+  const dDanLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: dDan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // El-Hadj, First name
+  // native / pinned
+
+  const elHadjFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: elHadj.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // El-Hadj, Last name
+  // native / irl
+
+  const elHadjLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: elHadj.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // Lucario, First name
+  // native / pinned
+
+  const lucarioFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: lucario.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // Lucario, Last name
+  // native / irl
+
+  const lucarioLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: lucario.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // MisterX, First name
+  // native / pinned
+
+  const misterXFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: misterX.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // MisterX, Last name
+  // native / irl
+
+  const misterXLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: misterX.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // Nonyes, First name
+  // native / pinned
+
+  const nonyesFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: nonyes.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // Nonyes, Last name
+  // native / irl
+
+  const nonyesLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: nonyes.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // Ophelia-swan, First name
+  // native / pinned
+
+  const opheliaSwanFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: opheliaSwan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // Ophelia-swan, Last name
+  // native / irl
+
+  const opheliaSwanLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: opheliaSwan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // Pimpampoum, First name
+  // native / pinned
+
+  const pimpampoumFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: pimpampoum.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // Pimpampoum, Last name
+  // native / irl
+
+  const pimpampoumLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: pimpampoum.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Email address
+  // native
+
+  const lePapierEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Other email address
+  // native
+  // for preexisting native not irl (answer deleted)
+  // when creating same native not irl criteria
+
+  const lePapierOtherEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      question: {
+        connect: {
+          id: otherEmailAddress.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Address
+  // native / irl
+
+  const lePapierAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      question: {
+        connect: {
+          id: address.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Other address
+  // native / irl
+  // for preexisting native irl (answer deleted)
+  // when creating same native irl criteria
+
+  const lePapierOtherAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      question: {
+        connect: {
+          id: otherAddress.id,
+        },
+      },
+    },
+  });
+
+  // Alice-chan, Email address
+  // native
+
+  const aliceChanEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: aliceChan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // Alice-chan, Address
+  // native / irl
+
+  const aliceChanAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: aliceChan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: address.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Birthday
+  // pseudonative / pinned
+  // for preexisting pseudonative not irl (answer live)
+  // when creating same pseudonative not irl criteria
+
+  const lePapierBirthday = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      kind: "PSEUDONATIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      question: {
+        connect: {
+          id: birthday.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Mother's birthday
+  // pseudonative
+  // for preexisting pseudonative not irl (answer deleted)
+  // when creating same pseudonative not irl criteria
+
+  const lePapierMothersBirthday = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      kind: "PSEUDONATIVE",
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      question: {
+        connect: {
+          id: mothersBirthday.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Girlfriend's birthday
+  // pseudonative / irl
+  // for preexisting pseudonative irl (answer live)
+  // when creating same pseudonative not irl criteria
+
+  const lePapierGirlfriendsBirthday = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      kind: "PSEUDONATIVEIRL",
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      question: {
+        connect: {
+          id: girlfriendsBirthday.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Crush's birthday
+  // pseudonative / irl
+  // for preexisting pseudonative irl (answer deleted)
+  // when creating same pseudonative not irl criteria
+
+  const lePapierCrushsBirthday = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      kind: "PSEUDONATIVEIRL",
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      question: {
+        connect: {
+          id: crushsBirthday.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Birthdate
+  // pseudonative / irl / pinned
+  // for preexisting pseudonative irl (answer live)
+  // when creating same pseudonative irl criteria
+
+  const lePapierBirthdate = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      kind: "PSEUDONATIVEIRL",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      question: {
+        connect: {
+          id: birthdate.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Mother's birthdate
+  // pseudonative / irl
+  // for preexisting pseudonative irl (answer deleted)
+  // when creating same pseudonative irl criteria
+
+  const lePapierMothersBirthdate = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      kind: "PSEUDONATIVEIRL",
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      question: {
+        connect: {
+          id: mothersBirthdate.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Girlfriend's birthdate
+  // pseudonative
+  // for preexisting pseudonative not irl (answer live)
+  // when creating same pseudonative irl criteria
+
+  const lePapierGirlfriendsBirthdate = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      kind: "PSEUDONATIVEIRL",
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      question: {
+        connect: {
+          id: girlfriendsBirthdate.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Crush's birthdate
+  // pseudonative
+  // for preexisting pseudonative not irl (answer deleted)
+  // when creating same pseudonative irl criteria
+
+  const lePapierCrushsBirthdate = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      kind: "PSEUDONATIVEIRL",
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      question: {
+        connect: {
+          id: crushsBirthdate.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Favorite anime character
+  // custom / not shared / pinned
+
+  const lePapierFavoriteAnimeCharacter = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      question: {
+        connect: {
+          id: favoriteAnimeCharacter.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Favorite anime waifu
+  // custom / shared (2) / pinned
+  // (1 UserQuestionFriend 'DELETED')
+
+  const lePapierFavoriteAnimeWaifu = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      question: {
+        connect: {
+          id: favoriteAnimeWaifu.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Favorite anime series
+  // custom / not shared
+  // for preexisting custom (answer live)
+  // when creating same custom criteria
+
+  const lePapierFavoriteAnimeSeries = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      question: {
+        connect: {
+          id: favoriteAnimeSeries.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Favorite anime franchise
+  // custom / not shared
+  // for preexisting custom (answer deleted)
+  // when creating same custom criteria
+
+  const lePapierFavoriteAnimeFranchise = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      question: {
+        connect: {
+          id: favoriteAnimeFranchise.id,
+        },
+      },
+    },
+  });
+
+  console.log(`User questions seeds complete.`);
+
+  console.log(`Seeding user question friends...`);
+
+  // LePapier, Favorite actress shared to Alice-chan
+
+  const lePapierFavoriteActressToAliceChan = await db.userQuestionFriend.create(
+    {
+      data: {
+        state: "LIVE",
+        isSharedToFriend: true,
+        sharedToFriendAt: new Date(),
+        userQuestion: {
+          connect: {
+            id: lePapierFavoriteActress.id,
+          },
+        },
+        contact: {
+          connect: {
+            id: lePapierToAliceChan.id,
+          },
+        },
+      },
+    }
+  );
+
+  // Alice-chan, Favorite actor shared to LePapier
+
+  const aliceChanFavoriteActorToLePapier = await db.userQuestionFriend.create({
+    data: {
+      state: "LIVE",
+      isSharedToFriend: true,
+      sharedToFriendAt: new Date(),
+      userQuestion: {
+        connect: {
+          id: aliceChanFavoriteActor.id,
+        },
+      },
+      contact: {
+        connect: {
+          id: aliceChanToLePapier.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Favorite anime waifu shared to Alice-chan
+
+  const lePapierFavoriteAnimeWaifuToAliceChan =
+    await db.userQuestionFriend.create({
+      data: {
+        state: "LIVE",
+        isSharedToFriend: true,
+        sharedToFriendAt: new Date(),
+        userQuestion: {
+          connect: {
+            id: lePapierFavoriteAnimeWaifu.id,
+          },
+        },
+        contact: {
+          connect: {
+            id: lePapierToAliceChan.id,
+          },
+        },
+      },
+    });
+
+  // LePapier, Favorite anime waifu no longer shared to Trovounette
+
+  const lePapierFavoriteAnimeWaifuToTrovounette =
+    await db.userQuestionFriend.create({
+      data: {
+        state: "LIVE",
+        isSharedToFriend: false,
+        sharedToFriendAt: null,
+        userQuestion: {
+          connect: {
+            id: lePapierFavoriteAnimeWaifu.id,
+          },
+        },
+        contact: {
+          connect: {
+            id: lePapierToTrovounette.id,
+          },
+        },
+      },
+    });
+
+  // LePapier, Favorite anime waifu shared to MisterX
+
+  const lePapierFavoriteAnimeWaifuToMisterX =
+    await db.userQuestionFriend.create({
+      data: {
+        state: "LIVE",
+        isSharedToFriend: true,
+        sharedToFriendAt: new Date(),
+        userQuestion: {
+          connect: {
+            id: lePapierFavoriteAnimeWaifu.id,
+          },
+        },
+        contact: {
+          connect: {
+            id: lePapierToMisterX.id,
+          },
+        },
+      },
+    });
+
+  // LePapier, First name pinned by Alice-chan
+
+  const lePapierFirstNameToAliceChan = await db.userQuestionFriend.create({
+    data: {
+      state: "LIVE",
+      isPinnedByFriend: true,
+      pinnedByFriendAt: new Date(),
+      userQuestion: {
+        connect: {
+          id: lePapierFirstName.id,
+        },
+      },
+      contact: {
+        connect: {
+          id: lePapierToAliceChan.id,
+        },
+      },
+    },
+  });
+
+  console.log(`User question friends seeds complete.`);
+
+  console.log(`Seeding answers...`);
+
+  // LePapier, First name
+  // native / pinned
+  // for preexisting native not irl (answer live)
+  // when creating same native not irl criteria
+
+  const lePapierFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Luther",
+      userQuestion: {
+        connect: {
+          id: lePapierFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Last name
+  // native / irl / pinned
+  // for preexisting native irl (answer live)
+  // when creating same native irl criteria
+
+  const lePapierLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Tchofo Safo",
+      userQuestion: {
+        connect: {
+          id: lePapierLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  // Alice-chan, First name
+  // native / pinned
+
+  const aliceChanFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Alice",
+      userQuestion: {
+        connect: {
+          id: aliceChanFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: aliceChan.id,
+        },
+      },
+    },
+  });
+
+  // Alice-chan, Last name
+  // native / irl / pinned
+
+  const aliceChanLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Perrini",
+      userQuestion: {
+        connect: {
+          id: aliceChanLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: aliceChan.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Favorite actress
+  // custom / shared (1)
+
+  const lePapierFavoriteActressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Reese Witherspoon",
+      userQuestion: {
+        connect: {
+          id: lePapierFavoriteActress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  // Alice-chan, Favorite actor
+  // custom / shared (1)
+
+  const aliceChanFavoriteActorAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Denzel Washington",
+      userQuestion: {
+        connect: {
+          id: aliceChanFavoriteActor.id,
+        },
+      },
+      user: {
+        connect: {
+          id: aliceChan.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Favorite actor
+  // custom / not shared
+
+  const lePapierFavoriteActorAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Will Smith",
+      userQuestion: {
+        connect: {
+          id: lePapierFavoriteActor.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  // Alice-chan, Favorite actress
+  // custom / not shared
+
+  const aliceChanFavoriteActressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Megan Fox",
+      userQuestion: {
+        connect: {
+          id: aliceChanFavoriteActress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: aliceChan.id,
+        },
+      },
+    },
+  });
+
+  // Trovounette, First name
+  // native / pinned
+
+  const trovounetteFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Bianca",
+      userQuestion: {
+        connect: {
+          id: trovounetteFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: trovounette.id,
+        },
+      },
+    },
+  });
+
+  // Trovounette, Last name
+  // native / irl
+
+  const trovounetteLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Trovò",
+      userQuestion: {
+        connect: {
+          id: trovounetteLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: trovounette.id,
+        },
+      },
+    },
+  });
+
+  // Candi, First name
+  // native / pinned
+
+  const candiFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Candice",
+      userQuestion: {
+        connect: {
+          id: candiFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: trovounette.id,
+        },
+      },
+    },
+  });
+
+  // Candi, Last name
+  // native / irl
+
+  const candiLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Namubiru",
+      userQuestion: {
+        connect: {
+          id: candiLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: candi.id,
+        },
+      },
+    },
+  });
+
+  // D-Dan, First name
+  // native / pinned
+
+  const dDanFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Daniel",
+      userQuestion: {
+        connect: {
+          id: dDanFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: dDan.id,
+        },
+      },
+    },
+  });
+
+  // D-Dan, Last name
+  // native / irl
+
+  const dDanLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Craig",
+      userQuestion: {
+        connect: {
+          id: dDanLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: dDan.id,
+        },
+      },
+    },
+  });
+
+  // El-Hadj, First name
+  // native / pinned
+
+  const elHadjFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Elijah",
+      userQuestion: {
+        connect: {
+          id: elHadjFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: elHadj.id,
+        },
+      },
+    },
+  });
+
+  // El-Hadj, Last name
+  // native / irl
+
+  const elHadjLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Portgas",
+      userQuestion: {
+        connect: {
+          id: elHadjLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: elHadj.id,
+        },
+      },
+    },
+  });
+
+  // Lucario, First name
+  // native / pinned
+
+  const lucarioFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Lucas",
+      userQuestion: {
+        connect: {
+          id: lucarioFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lucario.id,
+        },
+      },
+    },
+  });
+
+  // Lucario, Last name
+  // native / irl
+
+  const lucarioLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Earthbound",
+      userQuestion: {
+        connect: {
+          id: lucarioLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lucario.id,
+        },
+      },
+    },
+  });
+
+  // MisterX, First name
+  // native / pinned
+
+  const misterXFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Malcolm",
+      userQuestion: {
+        connect: {
+          id: misterXFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: misterX.id,
+        },
+      },
+    },
+  });
+
+  // MisterX, Last name
+  // native / irl
+
+  const misterXLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Little",
+      userQuestion: {
+        connect: {
+          id: misterXLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: misterX.id,
+        },
+      },
+    },
+  });
+
+  // Nonyes, First name
+  // native / pinned
+
+  const nonyesFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Nancy",
+      userQuestion: {
+        connect: {
+          id: nonyesFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: nonyes.id,
+        },
+      },
+    },
+  });
+
+  // Nonyes, Last name
+  // native / irl
+
+  const nonyesLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Commodore",
+      userQuestion: {
+        connect: {
+          id: nonyesLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: nonyes.id,
+        },
+      },
+    },
+  });
+
+  // Ophelia-swan, First name
+  // native / pinned
+
+  const opheliaSwanFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Ophelia",
+      userQuestion: {
+        connect: {
+          id: opheliaSwanFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: opheliaSwan.id,
+        },
+      },
+    },
+  });
+
+  // Ophelia-swan, Last name
+  // native / irl
+
+  const opheliaSwanLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Rainbow",
+      userQuestion: {
+        connect: {
+          id: opheliaSwanLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: opheliaSwan.id,
+        },
+      },
+    },
+  });
+
+  // Pimpampoum, First name
+  // native / pinned
+
+  const pimpampoumFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Pamela",
+      userQuestion: {
+        connect: {
+          id: pimpampoumFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: pimpampoum.id,
+        },
+      },
+    },
+  });
+
+  // Pimpampoum, Last name
+  // native / irl
+
+  const pimpampoumLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Nargacuga",
+      userQuestion: {
+        connect: {
+          id: pimpampoumLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: pimpampoum.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Email address
+  // native
+
+  const lePapierEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "l@l.me",
+      userQuestion: {
+        connect: {
+          id: lePapierEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Other email address
+  // native
+  // for preexisting native not irl (answer deleted)
+  // when creating same native not irl criteria
+
+  const lePapierOtherEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "DELETED",
+      value: "l@l.app",
+      userQuestion: {
+        connect: {
+          id: lePapierOtherEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Address
+  // native / irl
+
+  const lePapierAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "219 rue Bellevue, Studio B, 50000 Saint-Lô",
+      userQuestion: {
+        connect: {
+          id: lePapierAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Other address
+  // native / irl
+  // for preexisting native irl (answer deleted)
+  // when creating same native irl criteria
+
+  const lePapierOtherAddressAnswer = await db.answer.create({
+    data: {
+      state: "DELETED",
+      value: "something something Shadowbriar",
+      userQuestion: {
+        connect: {
+          id: lePapierOtherAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  // Alice-chan, Email address
+  // native
+
+  const aliceChanEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "a@a.com",
+      userQuestion: {
+        connect: {
+          id: aliceChanEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: aliceChan.id,
+        },
+      },
+    },
+  });
+
+  // Alice-chan, Address
+  // native / irl
+
+  const aliceChanAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "something something Wonderland",
+      userQuestion: {
+        connect: {
+          id: aliceChanAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: aliceChan.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Birthday
+  // pseudonative / pinned
+  // for preexisting pseudonative not irl (answer live)
+  // when creating same pseudonative not irl criteria
+
+  const lePapierBirthdayAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "January 1",
+      userQuestion: {
+        connect: {
+          id: lePapierBirthday.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Mother's birthday
+  // pseudonative
+  // for preexisting pseudonative not irl (answer deleted)
+  // when creating same pseudonative not irl criteria
+
+  const lePapierMothersBirthdayAnswer = await db.answer.create({
+    data: {
+      state: "DELETED",
+      value: "April 1",
+      userQuestion: {
+        connect: {
+          id: lePapierMothersBirthday.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Girlfriend's birthday
+  // pseudonative / irl
+  // for preexisting pseudonative irl (answer live)
+  // when creating same pseudonative not irl criteria
+
+  const lePapierGirlfriendsBirthdayAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "August 1",
+      userQuestion: {
+        connect: {
+          id: lePapierGirlfriendsBirthday.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Crush's birthday
+  // pseudonative / irl
+  // for preexisting pseudonative irl (answer deleted)
+  // when creating same pseudonative not irl criteria
+
+  const lePapierCrushsBirthdayAnswer = await db.answer.create({
+    data: {
+      state: "DELETED",
+      value: "November 1",
+      userQuestion: {
+        connect: {
+          id: lePapierCrushsBirthday.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Birthdate
+  // pseudonative / irl / pinned
+  // for preexisting pseudonative irl (answer live)
+  // when creating same pseudonative irl criteria
+
+  const lePapierBirthdateAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "January 1, 1990",
+      userQuestion: {
+        connect: {
+          id: lePapierBirthdate.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Mother's birthdate
+  // pseudonative / irl
+  // for preexisting pseudonative irl (answer deleted)
+  // when creating same pseudonative irl criteria
+
+  const lePapierMothersBirthdateAnswer = await db.answer.create({
+    data: {
+      state: "DELETED",
+      value: "April 1, 1960",
+      userQuestion: {
+        connect: {
+          id: lePapierMothersBirthdate.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Girlfriend's birthdate
+  // pseudonative
+  // for preexisting pseudonative not irl (answer live)
+  // when creating same pseudonative irl criteria
+
+  const lePapierGirlfriendsBirthdateAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "August 1, 1990",
+      userQuestion: {
+        connect: {
+          id: lePapierGirlfriendsBirthdate.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Crush's birthdate
+  // pseudonative
+  // for preexisting pseudonative not irl (answer deleted)
+  // when creating same pseudonative irl criteria
+
+  const lePapierCrushsBirthdateAnswer = await db.answer.create({
+    data: {
+      state: "DELETED",
+      value: "November 1, 2000",
+      userQuestion: {
+        connect: {
+          id: lePapierCrushsBirthdate.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Favorite anime character
+  // custom / not shared / pinned
+
+  const lePapierFavoriteAnimeCharacterAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Kaidzuka Inaho",
+      userQuestion: {
+        connect: {
+          id: lePapierFavoriteAnimeCharacter.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Favorite anime waifu
+  // custom / shared (2) / pinned
+  // (1 UserQuestionFriend 'DELETED')
+
+  const lePapierFavoriteAnimeWaifuAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Mikasa Ackerman",
+      userQuestion: {
+        connect: {
+          id: lePapierFavoriteAnimeWaifu.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Favorite anime series
+  // custom / not shared
+  // for preexisting custom (answer live)
+  // when creating same custom criteria
+
+  const lePapierFavoriteAnimeSeriesAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Mobile Suit Gundam 00",
+      userQuestion: {
+        connect: {
+          id: lePapierFavoriteAnimeSeries.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  // LePapier, Favorite anime franchise
+  // custom / not shared
+  // for preexisting custom (answer deleted)
+  // when creating same custom criteria
+
+  const lePapierFavoriteAnimeFranchiseAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Mobile Suit Gundam",
+      userQuestion: {
+        connect: {
+          id: lePapierFavoriteAnimeFranchise.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  console.log(`Answers seeds complete.`);
 
   console.log(`Initial seeds complete.`);
 }
 
 seed();
+
+// rm ./prisma/dev.db
+// npx prisma db push
+// node prisma/seeds.js
+
+// npx prisma studio
