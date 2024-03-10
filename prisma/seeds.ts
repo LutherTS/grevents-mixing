@@ -1884,8 +1884,6 @@ async function seed() {
   const lePapierFavoriteAnimeSeries = await db.userQuestion.create({
     data: {
       state: "LIVE",
-      isPinned: true,
-      pinnedAt: new Date(),
       user: {
         connect: {
           id: lePapier.id,
