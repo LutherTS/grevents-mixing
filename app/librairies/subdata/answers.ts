@@ -90,6 +90,21 @@ export function selectUserNativeAnswers() {
   };
 }
 
+export function selectUserNativeAnswersQuestionsIds() {
+  // : Prisma.AnswerSelect<DefaultArgs>
+  return {
+    userQuestion: {
+      select: {
+        question: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    },
+  };
+}
+
 export function whereUserNativeAnswersByUserIdAndQuestionKind(
   id: string,
   kind: string

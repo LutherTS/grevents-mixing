@@ -5,6 +5,7 @@ import {
   selectAnswer,
   selectUserCustomAnswers,
   selectUserNativeAnswers,
+  selectUserNativeAnswersQuestionsIds,
   selectUserPinnedAnswers,
   selectUserPseudonativeAnswers,
   whereAnswerByUserQuestionIDAndUserID,
@@ -58,6 +59,27 @@ export async function findUserNativeNotIrlAnswersByUserId(id: string) {
       },
     },
     take: ANSWERS_DEFAULT_LIMIT,
+  });
+}
+
+// Here I could return just the ids as the name of the function implied.
+export async function findUserNativeNotIrlAnswersQuestionsIdsByUserId(
+  id: string
+) {
+  const select = selectUserNativeAnswersQuestionsIds();
+  const where = whereUserNativeAnswersByUserIdAndQuestionKind(id, "NATIVE");
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy: {
+      userQuestion: {
+        question: {
+          name: "asc",
+        },
+      },
+    },
+    take: ANSWERS_DEFAULT_LIMIT * 2,
   });
 }
 
