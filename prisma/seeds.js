@@ -2945,7 +2945,7 @@ async function seed() {
 
   const lePapierFavoriteAnimeFranchiseAnswer = await db.answer.create({
     data: {
-      state: "LIVE",
+      state: "DELETED",
       value: "Mobile Suit Gundam",
       userQuestion: {
         connect: {

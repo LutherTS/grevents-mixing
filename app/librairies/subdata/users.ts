@@ -1,4 +1,7 @@
-export const selectUser = () => {
+import { Prisma } from "@prisma/client";
+import { DefaultArgs } from "@prisma/client/runtime/library";
+
+export const selectUser = (): Prisma.UserSelect<DefaultArgs> => {
   return {
     id: true,
     state: true,
@@ -13,6 +16,8 @@ export const selectUser = () => {
   };
 };
 
-export const whereUserByUsername = (username: string) => {
+export const whereUserByUsername = (
+  username: string
+): Prisma.UserWhereUniqueInput => {
   return { username, state: "LIVE" || "DEACTIVATED" };
 };
