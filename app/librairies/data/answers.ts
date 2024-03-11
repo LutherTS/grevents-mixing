@@ -2,6 +2,7 @@ import { prisma } from "~/utilities/db.server";
 import {
   ANSWERS_DEFAULT_LIMIT,
   ANSWERS_PINNED_BY_USER_LIMIT,
+  selectAnswer,
   selectUserCustomAnswers,
   selectUserNativeAnswers,
   selectUserPinnedAnswers,
@@ -188,7 +189,7 @@ export async function findAnswerByUserQuestionIDAndUserID(
   userQuestionId: string,
   userId: string
 ) {
-  const select = selectUserCustomAnswers();
+  const select = selectAnswer();
   const where = whereAnswerByUserQuestionIDAndUserID(userQuestionId, userId);
 
   return await prisma.answer.findUnique({

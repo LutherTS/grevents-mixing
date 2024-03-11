@@ -1,7 +1,8 @@
 import { Prisma } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 
-export const selectUser = (): Prisma.UserSelect<DefaultArgs> => {
+export function selectUser() {
+  // : Prisma.UserSelect<DefaultArgs>
   return {
     id: true,
     state: true,
@@ -14,10 +15,9 @@ export const selectUser = (): Prisma.UserSelect<DefaultArgs> => {
     hasTemporaryPassword: true, // to be delegated to session
     // Verifying access to the page will require a completely different user call, since data like friendCode should not be disclose.
   };
-};
+}
 
-export const whereUserByUsername = (
-  username: string
-): Prisma.UserWhereUniqueInput => {
+export function whereUserByUsername(username: string) {
+  // : Prisma.UserWhereUniqueInput
   return { username, state: "LIVE" || "DEACTIVATED" };
-};
+}

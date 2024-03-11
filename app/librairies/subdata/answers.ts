@@ -4,7 +4,8 @@ import { DefaultArgs } from "@prisma/client/runtime/library";
 export const ANSWERS_PINNED_BY_USER_LIMIT = 16;
 export const ANSWERS_DEFAULT_LIMIT = 32;
 
-export const selectUserPinnedAnswers = (): Prisma.AnswerSelect<DefaultArgs> => {
+export function selectUserPinnedAnswers() {
+  // : Prisma.AnswerSelect<DefaultArgs>
   return {
     userQuestion: {
       select: {
@@ -37,11 +38,10 @@ export const selectUserPinnedAnswers = (): Prisma.AnswerSelect<DefaultArgs> => {
       },
     },
   };
-};
+}
 
-export const whereUserPinnedAnswersByUserId = (
-  id: string
-): Prisma.AnswerWhereInput => {
+export function whereUserPinnedAnswersByUserId(id: string) {
+  // : Prisma.AnswerWhereInput
   return {
     userQuestion: {
       user: {
@@ -59,9 +59,10 @@ export const whereUserPinnedAnswersByUserId = (
     },
     state: "LIVE",
   };
-};
+}
 
-export const selectUserNativeAnswers = (): Prisma.AnswerSelect<DefaultArgs> => {
+export function selectUserNativeAnswers() {
+  // : Prisma.AnswerSelect<DefaultArgs>
   return {
     userQuestion: {
       select: {
@@ -87,12 +88,13 @@ export const selectUserNativeAnswers = (): Prisma.AnswerSelect<DefaultArgs> => {
       },
     },
   };
-};
+}
 
-export const whereUserNativeAnswersByUserIdAndQuestionKind = (
+export function whereUserNativeAnswersByUserIdAndQuestionKind(
   id: string,
   kind: string
-): Prisma.AnswerWhereInput => {
+) {
+  // : Prisma.AnswerWhereInput
   return {
     userQuestion: {
       user: {
@@ -110,39 +112,40 @@ export const whereUserNativeAnswersByUserIdAndQuestionKind = (
     },
     state: "LIVE",
   };
-};
+}
 
-export const selectUserPseudonativeAnswers =
-  (): Prisma.AnswerSelect<DefaultArgs> => {
-    return {
-      userQuestion: {
-        select: {
-          question: {
-            select: {
-              name: true,
-              kind: true,
-            },
+export function selectUserPseudonativeAnswers() {
+  // : Prisma.AnswerSelect<DefaultArgs>
+  return {
+    userQuestion: {
+      select: {
+        question: {
+          select: {
+            name: true,
+            kind: true,
           },
-          isPinned: true,
-          kind: true,
-          id: true,
         },
+        isPinned: true,
+        kind: true,
+        id: true,
       },
-      value: true,
-      id: true,
-      user: {
-        select: {
-          username: true,
-          id: true,
-        },
+    },
+    value: true,
+    id: true,
+    user: {
+      select: {
+        username: true,
+        id: true,
       },
-    };
+    },
   };
+}
 
-export const whereUserPseudonativeAnswersByUserIdAndUserQuestionKind = (
+export function whereUserPseudonativeAnswersByUserIdAndUserQuestionKind(
   id: string,
   kind: string
-): Prisma.AnswerWhereInput => {
+) {
+  // : Prisma.AnswerWhereInput
   return {
     userQuestion: {
       user: {
@@ -161,7 +164,7 @@ export const whereUserPseudonativeAnswersByUserIdAndUserQuestionKind = (
     },
     state: "LIVE",
   };
-};
+}
 
 // currently the same as selectUserPinnedAnswers
 export function selectUserCustomAnswers() {
@@ -201,9 +204,8 @@ export function selectUserCustomAnswers() {
 }
 
 // currently the same as whereUserNativeAnswersByUserIdAndQuestionKind, with kind as "CUSTOM", and with userQuestion.state as "LIVE" only instead of "LIVE" || "HIDDEN"
-export const whereUserCustomAnswersByUserId = (
-  id: string
-): Prisma.AnswerWhereInput => {
+export function whereUserCustomAnswersByUserId(id: string) {
+  // : Prisma.AnswerWhereInput
   return {
     userQuestion: {
       user: {
@@ -221,14 +223,49 @@ export const whereUserCustomAnswersByUserId = (
     },
     state: "LIVE",
   };
-};
+}
 
-export const whereAnswerByUserQuestionIDAndUserID = (
+// currently the same as selectUserCustomAnswers, without userQuestion.isPinned, userQuestion.kind, userQuestion.question.kind...
+export function selectAnswer() {
+  // : Prisma.AnswerSelect<DefaultArgs>
+  return {
+    userQuestion: {
+      select: {
+        id: true,
+        question: {
+          select: {
+            name: true,
+          },
+        },
+        _count: {
+          select: {
+            userQuestionFriends: {
+              where: {
+                isSharedToFriend: true,
+              },
+            },
+          },
+        },
+      },
+    },
+    value: true,
+    id: true,
+    user: {
+      select: {
+        username: true,
+        id: true,
+      },
+    },
+  };
+}
+
+export function whereAnswerByUserQuestionIDAndUserID(
   userQuestionId: string,
   userId: string
-): Prisma.AnswerWhereUniqueInput => {
+) {
+  // : Prisma.AnswerWhereUniqueInput
   return {
     userQuestionId,
     userId,
   };
-};
+}
