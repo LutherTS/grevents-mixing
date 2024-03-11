@@ -1,58 +1,24 @@
 import { prisma } from "~/utilities/db.server";
-
-export const ANSWERS_PINNED_BY_USER_LIMIT = 16;
+import {
+  ANSWERS_DEFAULT_LIMIT,
+  ANSWERS_PINNED_BY_USER_LIMIT,
+  selectUserCustomAnswers,
+  selectUserNativeAnswers,
+  selectUserPinnedAnswers,
+  selectUserPseudonativeAnswers,
+  whereUserCustomAnswersByUserId,
+  whereUserNativeAnswersByUserIdAndQuestionKind,
+  whereUserPinnedAnswersByUserId,
+  whereUserPseudonativeAnswersByUserIdAndUserQuestionKind,
+} from "../subdata/answers";
 
 export async function findUserPinnedAnswersByUserId(id: string) {
+  const select = selectUserPinnedAnswers();
+  const where = whereUserPinnedAnswersByUserId(id);
+
   return await prisma.answer.findMany({
-    select: {
-      userQuestion: {
-        select: {
-          isPinned: true,
-          kind: true,
-          id: true,
-          question: {
-            select: {
-              name: true,
-              kind: true,
-            },
-          },
-          _count: {
-            select: {
-              userQuestionFriends: {
-                where: {
-                  isSharedToFriend: true,
-                },
-              },
-            },
-          },
-        },
-      },
-      value: true,
-      id: true,
-      user: {
-        select: {
-          username: true,
-          id: true,
-        },
-      },
-    },
-    where: {
-      userQuestion: {
-        user: {
-          id,
-        },
-        question: {
-          state: "LIVE",
-        },
-        isPinned: true,
-        state: "LIVE",
-      },
-      user: {
-        id,
-        state: "LIVE" || "DEACTIVATED",
-      },
-      state: "LIVE",
-    },
+    select,
+    where,
     orderBy: [
       {
         userQuestion: {
@@ -68,52 +34,151 @@ export async function findUserPinnedAnswersByUserId(id: string) {
 }
 
 export async function countUserPinnedAnswersByUserId(id: string) {
-  const whereObj = whereObject(id);
+  const where = whereUserPinnedAnswersByUserId(id);
+
   return await prisma.answer.count({
-    where: whereObj,
+    where,
   });
 }
-// This "where" I just copied... I could literally turn it into...
-// not an object, but a function. And if I'm clever, I could actually refactor a whole lot of the 2000+ lines of raw Postgres queries I used to have.
 
-/* Nope
-const whereObject = {
-  userQuestion: {
-    user: {
-      id,
+export async function findUserNativeNotIrlAnswersByUserId(id: string) {
+  const select = selectUserNativeAnswers();
+  const where = whereUserNativeAnswersByUserIdAndQuestionKind(id, "NATIVE");
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy: {
+      userQuestion: {
+        question: {
+          name: "asc",
+        },
+      },
     },
-    question: {
-      state: "LIVE",
-    },
-    isPinned: true,
-    state: "LIVE",
-  },
-  user: {
-    id,
-    state: "LIVE" || "DEACTIVATED",
-  },
-  state: "LIVE",
+    take: ANSWERS_DEFAULT_LIMIT,
+  });
 }
-*/
 
-/* Yup ? */
-const whereObject = (id: string) => {
-  return {
-    userQuestion: {
-      user: {
-        id,
+export async function countUserNativeNotIrlAnswersByUserId(id: string) {
+  const where = whereUserNativeAnswersByUserIdAndQuestionKind(id, "NATIVE");
+
+  return await prisma.answer.count({
+    where,
+  });
+}
+
+export async function findUserNativeIrlAnswersByUserId(id: string) {
+  const select = selectUserNativeAnswers();
+  const where = whereUserNativeAnswersByUserIdAndQuestionKind(id, "NATIVEIRL");
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy: {
+      userQuestion: {
+        question: {
+          name: "asc",
+        },
       },
-      question: {
-        state: "LIVE",
+    },
+    take: ANSWERS_DEFAULT_LIMIT,
+  });
+}
+
+export async function countUserNativeIrlAnswersByUserId(id: string) {
+  const where = whereUserNativeAnswersByUserIdAndQuestionKind(id, "NATIVEIRL");
+
+  return await prisma.answer.count({
+    where,
+  });
+}
+
+export async function findUserPseudonativeNotIrlAnswersByUserId(id: string) {
+  const select = selectUserPseudonativeAnswers();
+  const where = whereUserPseudonativeAnswersByUserIdAndUserQuestionKind(
+    id,
+    "PSEUDONATIVE"
+  );
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy: {
+      userQuestion: {
+        question: {
+          name: "asc",
+        },
       },
-      isPinned: true,
-      state: "LIVE",
     },
-    user: {
-      id,
-      state: "LIVE" || "DEACTIVATED",
+    take: ANSWERS_DEFAULT_LIMIT,
+  });
+}
+
+export async function countUserPseudonativeNotIrlAnswersByUserId(id: string) {
+  const where = whereUserPseudonativeAnswersByUserIdAndUserQuestionKind(
+    id,
+    "PSEUDONATIVE"
+  );
+
+  return await prisma.answer.count({
+    where,
+  });
+}
+
+export async function findUserPseudonativeIrlAnswersByUserId(id: string) {
+  const select = selectUserPseudonativeAnswers();
+  const where = whereUserPseudonativeAnswersByUserIdAndUserQuestionKind(
+    id,
+    "PSEUDONATIVEIRL"
+  );
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy: {
+      userQuestion: {
+        question: {
+          name: "asc",
+        },
+      },
     },
-    state: "LIVE",
-  };
-};
-/* YUP. I DIDN'T KNOW THAT COULD BE POSSIBLE. */
+    take: ANSWERS_DEFAULT_LIMIT,
+  });
+}
+
+export async function countUserPseudonativeIrlAnswersByUserId(id: string) {
+  const where = whereUserPseudonativeAnswersByUserIdAndUserQuestionKind(
+    id,
+    "PSEUDONATIVEIRL"
+  );
+
+  return await prisma.answer.count({
+    where,
+  });
+}
+
+export async function findUserCustomAnswersByUserId(id: string) {
+  const select = selectUserCustomAnswers();
+  const where = whereUserCustomAnswersByUserId(id);
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy: {
+      userQuestion: {
+        question: {
+          name: "asc",
+        },
+      },
+    },
+    take: ANSWERS_DEFAULT_LIMIT,
+  });
+}
+
+export async function countUserCustomAnswersByUserId(id: string) {
+  const where = whereUserCustomAnswersByUserId(id);
+
+  return await prisma.answer.count({
+    where,
+  });
+}

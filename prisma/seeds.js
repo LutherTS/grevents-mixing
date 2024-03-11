@@ -834,7 +834,7 @@ async function seed() {
     data: {
       name: "Birthday",
       state: "LIVE",
-      kind: "CUSTOM",
+      kind: "PSEUDO",
     },
   });
 
@@ -844,7 +844,7 @@ async function seed() {
     data: {
       name: "Birthdate",
       state: "LIVE",
-      kind: "CUSTOM",
+      kind: "PSEUDO",
     },
   });
 
@@ -856,7 +856,7 @@ async function seed() {
     data: {
       name: "Father's birthday",
       state: "LIVE",
-      kind: "CUSTOM",
+      kind: "PSEUDO",
     },
   });
 
@@ -866,7 +866,7 @@ async function seed() {
     data: {
       name: "Mother's birthday",
       state: "LIVE",
-      kind: "CUSTOM",
+      kind: "PSEUDO",
     },
   });
 
@@ -876,7 +876,7 @@ async function seed() {
     data: {
       name: "Girlfriend's birthday",
       state: "LIVE",
-      kind: "CUSTOM",
+      kind: "PSEUDO",
     },
   });
 
@@ -886,7 +886,7 @@ async function seed() {
     data: {
       name: "Crush's birthday",
       state: "LIVE",
-      kind: "CUSTOM",
+      kind: "PSEUDO",
     },
   });
 
@@ -898,7 +898,7 @@ async function seed() {
     data: {
       name: "Father's birthdate",
       state: "LIVE",
-      kind: "CUSTOM",
+      kind: "PSEUDO",
     },
   });
 
@@ -908,7 +908,7 @@ async function seed() {
     data: {
       name: "Mother's birthdate",
       state: "LIVE",
-      kind: "CUSTOM",
+      kind: "PSEUDO",
     },
   });
 
@@ -918,7 +918,7 @@ async function seed() {
     data: {
       name: "Girlfriend's birthdate",
       state: "LIVE",
-      kind: "CUSTOM",
+      kind: "PSEUDO",
     },
   });
 
@@ -928,11 +928,11 @@ async function seed() {
     data: {
       name: "Crush's birthdate",
       state: "LIVE",
-      kind: "CUSTOM",
+      kind: "PSEUDO",
     },
   });
 
-  // Favorite actor / pseudo
+  // Favorite actor / custom
 
   const favoriteActor = await db.question.create({
     data: {
@@ -942,7 +942,7 @@ async function seed() {
     },
   });
 
-  // Favorite actress / pseudo
+  // Favorite actress / custom
 
   const favoriteActress = await db.question.create({
     data: {
@@ -952,7 +952,7 @@ async function seed() {
     },
   });
 
-  // Favorite anime character / pseudo
+  // Favorite anime character / custom
 
   const favoriteAnimeCharacter = await db.question.create({
     data: {
@@ -962,7 +962,7 @@ async function seed() {
     },
   });
 
-  // Favorite anime waifu / pseudo
+  // Favorite anime waifu / custom
 
   const favoriteAnimeWaifu = await db.question.create({
     data: {
@@ -972,7 +972,7 @@ async function seed() {
     },
   });
 
-  // Favorite anime series / pseudo
+  // Favorite anime series / custom
 
   const favoriteAnimeSeries = await db.question.create({
     data: {
@@ -982,7 +982,7 @@ async function seed() {
     },
   });
 
-  // Favorite anime franchise / pseudo
+  // Favorite anime franchise / custom
 
   const favoriteAnimeFranchise = await db.question.create({
     data: {
@@ -992,7 +992,7 @@ async function seed() {
     },
   });
 
-  // Favorite anime studio / pseudo
+  // Favorite anime studio / custom
   // for no preexisting custom criteria from user yet
 
   const favoriteAnimeStudio = await db.question.create({
@@ -1797,7 +1797,7 @@ async function seed() {
   const lePapierGirlfriendsBirthdate = await db.userQuestion.create({
     data: {
       state: "LIVE",
-      kind: "PSEUDONATIVEIRL",
+      kind: "PSEUDONATIVE",
       user: {
         connect: {
           id: lePapier.id,
@@ -1819,7 +1819,7 @@ async function seed() {
   const lePapierCrushsBirthdate = await db.userQuestion.create({
     data: {
       state: "LIVE",
-      kind: "PSEUDONATIVEIRL",
+      kind: "PSEUDONATIVE",
       user: {
         connect: {
           id: lePapier.id,

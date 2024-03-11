@@ -3,7 +3,13 @@ import { useLoaderData } from "@remix-run/react";
 
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
-import { countUserPinnedAnswersByUserId } from "~/librairies/data/answers";
+import {
+  countUserNativeIrlAnswersByUserId,
+  countUserNativeNotIrlAnswersByUserId,
+  countUserPinnedAnswersByUserId,
+  findUserNativeIrlAnswersByUserId,
+  findUserNativeNotIrlAnswersByUserId,
+} from "~/librairies/data/answers";
 import { findUserByUsername } from "~/librairies/data/users";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -14,9 +20,28 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     });
   }
 
-  const pinnedAnswerCount = await countUserPinnedAnswersByUserId(user.id);
+  const [
+    userPinnedAnswerCount,
+    userNativeNotIrlAnswers,
+    userNativeNotIrlAnswersCount,
+    userNativeIrlAnswers,
+    userNativeIrlAnswersCount,
+  ] = await Promise.all([
+    countUserPinnedAnswersByUserId(user.id),
+    findUserNativeNotIrlAnswersByUserId(user.id),
+    countUserNativeNotIrlAnswersByUserId(user.id),
+    findUserNativeIrlAnswersByUserId(user.id),
+    countUserNativeIrlAnswersByUserId(user.id),
+  ]);
 
-  return { user, pinnedAnswerCount };
+  return {
+    user,
+    userPinnedAnswerCount,
+    userNativeNotIrlAnswers,
+    userNativeNotIrlAnswersCount,
+    userNativeIrlAnswers,
+    userNativeIrlAnswersCount,
+  };
 };
 
 export default function PersonalInfoStandardizedPage() {

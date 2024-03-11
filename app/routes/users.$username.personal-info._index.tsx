@@ -14,9 +14,9 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     });
   }
 
-  const pinnedAnswers = await findUserPinnedAnswersByUserId(user.id);
+  const userPinnedAnswers = await findUserPinnedAnswersByUserId(user.id);
 
-  return { user, pinnedAnswers };
+  return { user, userPinnedAnswers };
 };
 
 export default function PersonalInfoPage() {

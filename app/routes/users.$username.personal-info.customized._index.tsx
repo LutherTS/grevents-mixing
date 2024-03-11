@@ -3,6 +3,15 @@ import { useLoaderData } from "@remix-run/react";
 
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
+import {
+  countUserCustomAnswersByUserId,
+  countUserPinnedAnswersByUserId,
+  countUserPseudonativeIrlAnswersByUserId,
+  countUserPseudonativeNotIrlAnswersByUserId,
+  findUserCustomAnswersByUserId,
+  findUserPseudonativeIrlAnswersByUserId,
+  findUserPseudonativeNotIrlAnswersByUserId,
+} from "~/librairies/data/answers";
 import { findUserByUsername } from "~/librairies/data/users";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -13,11 +22,39 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     });
   }
 
-  return { user };
+  const [
+    userPinnedAnswerCount,
+    userPseudonativeNotIrlAnswers,
+    userPseudonativeNotIrlAnswersCount,
+    userPseudonativeIrlAnswers,
+    userPseudonativeIrlAnswersCount,
+    userCustomAnswers,
+    userCustomAnswersCount,
+  ] = await Promise.all([
+    countUserPinnedAnswersByUserId(user.id),
+    findUserPseudonativeNotIrlAnswersByUserId(user.id),
+    countUserPseudonativeNotIrlAnswersByUserId(user.id),
+    findUserPseudonativeIrlAnswersByUserId(user.id),
+    countUserPseudonativeIrlAnswersByUserId(user.id),
+    findUserCustomAnswersByUserId(user.id),
+    countUserCustomAnswersByUserId(user.id),
+  ]);
+
+  return {
+    user,
+    userPinnedAnswerCount,
+    userPseudonativeNotIrlAnswers,
+    userPseudonativeNotIrlAnswersCount,
+    userPseudonativeIrlAnswers,
+    userPseudonativeIrlAnswersCount,
+    userCustomAnswers,
+    userCustomAnswersCount,
+  };
 };
 
 export default function PersonalInfoCustomizedPage() {
   const data = useLoaderData<typeof loader>();
+  console.log(data);
 
   return (
     <>
