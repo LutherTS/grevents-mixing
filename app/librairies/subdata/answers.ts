@@ -164,7 +164,8 @@ export const whereUserPseudonativeAnswersByUserIdAndUserQuestionKind = (
 };
 
 // currently the same as selectUserPinnedAnswers
-export const selectUserCustomAnswers = (): Prisma.AnswerSelect<DefaultArgs> => {
+export function selectUserCustomAnswers() {
+  // : Prisma.AnswerSelect<DefaultArgs>
   return {
     userQuestion: {
       select: {
@@ -197,7 +198,7 @@ export const selectUserCustomAnswers = (): Prisma.AnswerSelect<DefaultArgs> => {
       },
     },
   };
-};
+}
 
 // currently the same as whereUserNativeAnswersByUserIdAndQuestionKind, with kind as "CUSTOM", and with userQuestion.state as "LIVE" only instead of "LIVE" || "HIDDEN"
 export const whereUserCustomAnswersByUserId = (
@@ -219,5 +220,15 @@ export const whereUserCustomAnswersByUserId = (
       state: "LIVE" || "DEACTIVATED",
     },
     state: "LIVE",
+  };
+};
+
+export const whereAnswerByUserQuestionIDAndUserID = (
+  userQuestionId: string,
+  userId: string
+): Prisma.AnswerWhereUniqueInput => {
+  return {
+    userQuestionId,
+    userId,
   };
 };

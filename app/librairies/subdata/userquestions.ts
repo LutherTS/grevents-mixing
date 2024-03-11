@@ -1,10 +1,12 @@
 import { Prisma } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 
-export const selectUserQuestion =
-  (): Prisma.UserQuestionSelect<DefaultArgs> => {
-    return {};
+export function selectUserQuestion() {
+  // : Prisma.UserQuestionSelect<DefaultArgs>
+  return {
+    id: true,
   };
+}
 
 export const whereUserQuestionByIDAndUserID = (
   id: string,
@@ -15,6 +17,11 @@ export const whereUserQuestionByIDAndUserID = (
     userId,
     question: {
       kind: "CUSTOM",
+      state: "LIVE",
+    },
+    state: "LIVE",
+    user: {
+      state: "LIVE" || "DEACTIVATED",
     },
   };
 };

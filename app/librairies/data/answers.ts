@@ -6,6 +6,7 @@ import {
   selectUserNativeAnswers,
   selectUserPinnedAnswers,
   selectUserPseudonativeAnswers,
+  whereAnswerByUserQuestionIDAndUserID,
   whereUserCustomAnswersByUserId,
   whereUserNativeAnswersByUserIdAndQuestionKind,
   whereUserPinnedAnswersByUserId,
@@ -179,6 +180,19 @@ export async function countUserCustomAnswersByUserId(id: string) {
   const where = whereUserCustomAnswersByUserId(id);
 
   return await prisma.answer.count({
+    where,
+  });
+}
+
+export async function findAnswerByUserQuestionIDAndUserID(
+  userQuestionId: string,
+  userId: string
+) {
+  const select = selectUserCustomAnswers();
+  const where = whereAnswerByUserQuestionIDAndUserID(userQuestionId, userId);
+
+  return await prisma.answer.findUnique({
+    select,
     where,
   });
 }
