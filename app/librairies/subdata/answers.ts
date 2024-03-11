@@ -267,5 +267,15 @@ export function whereAnswerByUserQuestionIDAndUserID(
   return {
     userQuestionId,
     userId,
+    state: "LIVE",
+    userQuestion: {
+      state: "LIVE",
+      question: {
+        state: "LIVE",
+      },
+    },
+    user: {
+      state: "LIVE" || "DEACTIVATED",
+    },
   };
 }
