@@ -1,6 +1,19 @@
 import { Prisma } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 
+export const DEFAULT_CONTACTS_ORDER_BY = [
+  {
+    userLast: {
+      appWideName: "asc",
+    },
+  },
+  {
+    userLast: {
+      username: "asc",
+    },
+  },
+] as Prisma.ContactOrderByWithRelationInput[];
+
 export const CONTACT_ARBITRARY_LIMIT = 256;
 
 export function selectContacts() {
@@ -147,5 +160,62 @@ export function whereUserFriendsNotToUserQuestionByUserQuestionIdAndUserId(
   userQuestionId: string,
   userFirstId: string
 ): Prisma.ContactWhereInput {
-  return {};
+  return {
+    userFirstId,
+    state: "LIVE",
+    userFirst: {
+      state: "LIVE" || "DEACTIVATED",
+    },
+    mirror: {
+      state: "LIVE",
+    },
+    OR: [
+      {
+        kind: "FRIEND",
+        blocking: false,
+        mirror: {
+          kind: "FRIEND",
+          blocking: false,
+        },
+      },
+      {
+        kind: "IRL",
+        blocking: false,
+        mirror: {
+          kind: "IRL",
+          blocking: false,
+        },
+      },
+    ],
+    userQuestionFriends: {
+      none: {
+        userQuestionId,
+        isSharedToFriend: true,
+        state: "LIVE",
+        contact: {
+          OR: [
+            {
+              kind: "FRIEND",
+              blocking: false,
+              mirror: {
+                kind: "FRIEND",
+                blocking: false,
+              },
+            },
+            {
+              kind: "IRL",
+              blocking: false,
+              mirror: {
+                kind: "IRL",
+                blocking: false,
+              },
+            },
+          ],
+        },
+      },
+    },
+  };
 }
+
+// Once the query is built and tested, that OR and its insides ("friend", "irl") need to be either functions or variables.
+// Because if in the future in need to change my query definition of what it means to be friends, it will be streamlined to do it only on these (top-of-the-file, exported) variables.

@@ -54,7 +54,7 @@ export default function PersonalInfoStandardizedPage() {
         Welcome to {data.user.appWideName}&apos;s Personal Info Standardized.
       </H1>
 
-      <PageLink href={`/users/${data.user.appWideName}/dashboard`}>
+      <PageLink href={`/users/${data.user.username}/dashboard`}>
         back to dashboard (for now)
       </PageLink>
 

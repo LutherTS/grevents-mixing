@@ -1,13 +1,19 @@
 import { prisma } from "~/utilities/db.server";
 import {
   CONTACT_ARBITRARY_LIMIT,
+  DEFAULT_CONTACTS_ORDER_BY,
   selectContacts,
   whereSentFromContactsByUserIdAndProcessRelationship,
   whereSentToContactsByUserIdAndProcessRelationship,
   whereUserFriendsByUserIdAndKind,
+  whereUserFriendsNotToUserQuestionByUserQuestionIdAndUserId,
   whereUserWhoHaveMeBlockedByUserId,
   whereUserWhoIAmBlockingByUserId,
 } from "../subdata/contacts";
+
+const orderBy = DEFAULT_CONTACTS_ORDER_BY;
+
+const take = CONTACT_ARBITRARY_LIMIT;
 
 export async function findSentFriendToContactsByUserId(userId: string) {
   const select = selectContacts();
@@ -22,7 +28,7 @@ export async function findSentFriendToContactsByUserId(userId: string) {
     orderBy: {
       sentFriendAt: "desc",
     },
-    take: CONTACT_ARBITRARY_LIMIT,
+    take,
   });
 }
 
@@ -50,7 +56,7 @@ export async function findSentIrlToContactsByUserId(userId: string) {
     orderBy: {
       sentIrlAt: "desc",
     },
-    take: CONTACT_ARBITRARY_LIMIT,
+    take,
   });
 }
 
@@ -80,7 +86,7 @@ export async function findSentFriendFromContactsByUserId(userId: string) {
         sentFriendAt: "desc",
       },
     },
-    take: CONTACT_ARBITRARY_LIMIT,
+    take,
   });
 }
 
@@ -110,7 +116,7 @@ export async function findSentIrlFromContactsByUserId(userId: string) {
         sentIrlAt: "desc",
       },
     },
-    take: CONTACT_ARBITRARY_LIMIT,
+    take,
   });
 }
 
@@ -128,16 +134,13 @@ export async function countSentIrlFromContactsByUserId(userId: string) {
 export async function findUserNotIrlFriendsByUserId(userId: string) {
   const select = selectContacts();
   const where = whereUserFriendsByUserIdAndKind(userId, "FRIEND");
+  // const orderBy = defaultContactsOrderBy();
 
   return await prisma.contact.findMany({
     select,
     where,
-    orderBy: {
-      userLast: {
-        username: "asc",
-      },
-    },
-    take: CONTACT_ARBITRARY_LIMIT,
+    orderBy,
+    take,
   });
 }
 
@@ -148,12 +151,8 @@ export async function findUserIrlFriendsByUserId(userId: string) {
   return await prisma.contact.findMany({
     select,
     where,
-    orderBy: {
-      userLast: {
-        username: "asc",
-      },
-    },
-    take: CONTACT_ARBITRARY_LIMIT,
+    orderBy,
+    take,
   });
 }
 
@@ -165,12 +164,8 @@ export async function findUserWhoIAmBlockingByUserId(userId: string) {
   return await prisma.contact.findMany({
     select,
     where,
-    orderBy: {
-      userLast: {
-        username: "asc",
-      },
-    },
-    take: CONTACT_ARBITRARY_LIMIT,
+    orderBy,
+    take,
   });
 }
 
@@ -182,12 +177,8 @@ export async function findUserWhoHaveMeBlockedByUserId(userId: string) {
   return await prisma.contact.findMany({
     select,
     where,
-    orderBy: {
-      userLast: {
-        username: "asc",
-      },
-    },
-    take: CONTACT_ARBITRARY_LIMIT,
+    orderBy,
+    take,
   });
 }
 
@@ -196,4 +187,15 @@ export async function findUserFriendsNotToUserQuestionByUserQuestionIdAndUserId(
   userFirstId: string
 ) {
   const select = selectContacts();
+  const where = whereUserFriendsNotToUserQuestionByUserQuestionIdAndUserId(
+    userQuestionId,
+    userFirstId
+  );
+
+  return await prisma.contact.findMany({
+    select,
+    where,
+    orderBy,
+    take,
+  });
 }
