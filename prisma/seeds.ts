@@ -206,21 +206,6 @@ async function seed() {
     },
   });
 
-  /* Requests and notifications
-  I need two relation combinaison "none" relation,
-  one where I processRelationship SENTFRIEND,
-  one where they processRelationship SENTFRIEND.
-  I need two relation combinaison "friend",
-  one where I processRelationship SENTIRL,
-  one where they processRelationship SENTIRL.
-  This will need four new users,
-  and eight new contacts.
-  Additionally work should be done on giving every one,
-  in addition to First name and Last name answers,
-  an Email address answer they cannot modify,
-  since it's the email they use to sign up.
-  */
-
   // Quentin / WhoDidThatToYou
 
   const whoDidThatToYou = await db.user.create({
@@ -812,21 +797,6 @@ async function seed() {
       },
     }),
   ]);
-
-  /* Requests and notifications
-  I need two relation combinaison "none" relation,
-  one where I processRelationship SENTFRIEND,
-  one where they processRelationship SENTFRIEND.
-  I need two relation combinaison "friend",
-  one where I processRelationship SENTIRL,
-  one where they processRelationship SENTIRL.
-  This will need four new users, // DONE
-  and eight new contacts.
-  Additionally work should be done on giving every one,
-  in addition to First name and Last name answers,
-  an Email address answer they cannot modify,
-  since it's the email they use to sign up.
-  */
 
   // “me” and Quentin / relation combination “none”
   // “me” processRelationship "SENTFRIEND" to Quentin
@@ -1885,21 +1855,6 @@ async function seed() {
     },
   });
 
-  /* Requests and notifications
-  I need two relation combinaison "none" relation,
-  one where I processRelationship SENTFRIEND,
-  one where they processRelationship SENTFRIEND.
-  I need two relation combinaison "friend",
-  one where I processRelationship SENTIRL,
-  one where they processRelationship SENTIRL.
-  This will need four new users, // DONE
-  and eight new contacts. // DONE
-  Additionally work should be done on giving every one,
-  in addition to First name and Last name answers, // DONE
-  an Email address answer they cannot modify,
-  since it's the email they use to sign up.
-  */
-
   // whoDidThatToYou, First name
   // native / pinned
 
@@ -2442,21 +2397,6 @@ async function seed() {
       },
     },
   });
-
-  /* Requests and notifications
-  I need two relation combinaison "none" relation,
-  one where I processRelationship SENTFRIEND,
-  one where they processRelationship SENTFRIEND.
-  I need two relation combinaison "friend",
-  one where I processRelationship SENTIRL,
-  one where they processRelationship SENTIRL.
-  This will need four new users, // DONE
-  and eight new contacts. // DONE
-  Additionally work should be done on giving every one,
-  in addition to First name and Last name answers, // DONE
-  an Email address answer they cannot modify,
-  since it's the email they use to sign up.
-  */
 
   // Trovounette, Email address
   // native
@@ -3400,21 +3340,6 @@ async function seed() {
     },
   });
 
-  /* Requests and notifications
-  I need two relation combinaison "none" relation,
-  one where I processRelationship SENTFRIEND,
-  one where they processRelationship SENTFRIEND.
-  I need two relation combinaison "friend",
-  one where I processRelationship SENTIRL,
-  one where they processRelationship SENTIRL.
-  This will need four new users, // DONE
-  and eight new contacts. // DONE
-  Additionally work should be done on giving every one,
-  in addition to First name and Last name answers, // DONE
-  an Email address answer they cannot modify, // DONE
-  since it's the email they use to sign up.
-  */
-
   // WhoDidThatToYou, First name
   // native / pinned
 
@@ -3959,21 +3884,6 @@ async function seed() {
       },
     },
   });
-
-  /* Requests and notifications
-  I need two relation combinaison "none" relation,
-  one where I processRelationship SENTFRIEND,
-  one where they processRelationship SENTFRIEND.
-  I need two relation combinaison "friend",
-  one where I processRelationship SENTIRL,
-  one where they processRelationship SENTIRL.
-  This will need four new users, // DONE
-  and eight new contacts. // DONE
-  Additionally work should be done on giving every one,
-  in addition to First name and Last name answers, // DONE
-  an Email address answer they cannot modify, // DONE
-  since it's the email they use to sign up.
-  */
 
   // Trovounette, Email address
   // native
