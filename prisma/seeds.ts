@@ -206,6 +206,77 @@ async function seed() {
     },
   });
 
+  /* Requests and notifications
+  I need two relation combinaison "none" relation,
+  one where I processRelationship SENTFRIEND,
+  one where they processRelationship SENTFRIEND.
+  I need two relation combinaison "friend",
+  one where I processRelationship SENTIRL,
+  one where they processRelationship SENTIRL.
+  This will need four new users,
+  and eight new contacts.
+  Additionally work should be done on giving every one,
+  in addition to First name and Last name answers,
+  an Email address answer they cannot modify,
+  since it's the email they use to sign up.
+  */
+
+  // Quentin / WhoDidThatToYou
+
+  const whoDidThatToYou = await db.user.create({
+    data: {
+      username: "WhoDidThatToYou",
+      email: "q@q.com",
+      hashedPassword:
+        "$2a$12$GUVQktRR33Pxm9lxVAhmbu9SC.dInMR2h3Q7oNL3zYOngDaB7tOEe", // WhoDidThatToYou
+      appWideName: "Quentin",
+      friendCode: "sAdvy8f9uLYT",
+      state: "LIVE",
+    },
+  });
+
+  // Roland / RG
+
+  const rG = await db.user.create({
+    data: {
+      username: "RG",
+      email: "r@r.com",
+      hashedPassword:
+        "$2a$12$upWLe7nfwK8mxnCJccSpEuhuq7Zgcl6zP0iOopC3vgyLDW1LH9dkO", // RG
+      appWideName: "Roland",
+      friendCode: "qX3DGt9b2YsU",
+      state: "LIVE",
+    },
+  });
+
+  // Soren / TruePrince
+
+  const truePrince = await db.user.create({
+    data: {
+      username: "TruePrince",
+      email: "s@s.com",
+      hashedPassword:
+        "$2a$12$G2A1bB4nKn66WVC9lkQWP.9qh2//xod6vQbTZNisyPB39YyuSTQiO", // TruePrince
+      appWideName: "Soren",
+      friendCode: "cky4CUA7R9Yw",
+      state: "LIVE",
+    },
+  });
+
+  // Titus / TheTitan
+
+  const theTitan = await db.user.create({
+    data: {
+      username: "TheTitan",
+      email: "t@t.com",
+      hashedPassword:
+        "$2a$12$OcHGmHR.zYmGo08sC80ZZuyP9KntjOHVG6RnrFKXnw2HyGSYU3X5m", // TheTitan
+      appWideName: "Titus",
+      friendCode: "W9bFAaptDxvE",
+      state: "LIVE",
+    },
+  });
+
   console.log(`Users seeds complete.`);
 
   console.log(`Seeding contacts...`);
@@ -411,7 +482,7 @@ async function seed() {
 
   // “me” and Grace / relation combination nonexistent
 
-  // “me” and Hector / relation combination nonexistent
+  // “me” and Hector / Hector currently nonexistent
 
   // “me” and Lucas / relation combination “friend”
 
@@ -738,6 +809,285 @@ async function seed() {
           },
         },
         blockedAt: new Date(),
+      },
+    }),
+  ]);
+
+  /* Requests and notifications
+  I need two relation combinaison "none" relation,
+  one where I processRelationship SENTFRIEND,
+  one where they processRelationship SENTFRIEND.
+  I need two relation combinaison "friend",
+  one where I processRelationship SENTIRL,
+  one where they processRelationship SENTIRL.
+  This will need four new users, // DONE
+  and eight new contacts.
+  Additionally work should be done on giving every one,
+  in addition to First name and Last name answers,
+  an Email address answer they cannot modify,
+  since it's the email they use to sign up.
+  */
+
+  // “me” and Quentin / relation combination “none”
+  // “me” processRelationship "SENTFRIEND" to Quentin
+
+  const lePapierToWhoDidThatToYou = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: whoDidThatToYou.id,
+        },
+      },
+      state: "LIVE",
+      kind: "NONE",
+      processRelationship: "SENTFRIEND",
+    },
+  });
+
+  const whoDidThatToYouToLePapier = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: whoDidThatToYou.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      state: "LIVE",
+      kind: "NONE",
+    },
+  });
+
+  await Promise.all([
+    await db.contact.update({
+      where: {
+        id: lePapierToWhoDidThatToYou.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: whoDidThatToYouToLePapier.id,
+          },
+        },
+        sentFriendAt: new Date(),
+      },
+    }),
+    await db.contact.update({
+      where: {
+        id: whoDidThatToYouToLePapier.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: lePapierToWhoDidThatToYou.id,
+          },
+        },
+      },
+    }),
+  ]);
+
+  // “me” and Roland / relation combination “none”
+  // Roland processRelationship "SENTFRIEND" to “me”
+
+  const lePapierToRG = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: rG.id,
+        },
+      },
+      state: "LIVE",
+      kind: "NONE",
+    },
+  });
+
+  const rGToLePapier = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: rG.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      state: "LIVE",
+      kind: "NONE",
+      processRelationship: "SENTFRIEND",
+    },
+  });
+
+  await Promise.all([
+    await db.contact.update({
+      where: {
+        id: lePapierToRG.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: rGToLePapier.id,
+          },
+        },
+      },
+    }),
+    await db.contact.update({
+      where: {
+        id: rGToLePapier.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: lePapierToRG.id,
+          },
+        },
+        sentFriendAt: new Date(),
+      },
+    }),
+  ]);
+
+  // “me” and Soren / relation combination “friend”
+  // “me” processRelationship "SENTIRL" to Soren
+
+  const lePapierToTruePrince = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: truePrince.id,
+        },
+      },
+      state: "LIVE",
+      kind: "FRIEND",
+      processRelationship: "SENTIRL",
+    },
+  });
+
+  const truePrinceToLePapier = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: truePrince.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      state: "LIVE",
+      kind: "FRIEND",
+    },
+  });
+
+  await Promise.all([
+    await db.contact.update({
+      where: {
+        id: lePapierToTruePrince.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: truePrinceToLePapier.id,
+          },
+        },
+        sentIrlAt: new Date(),
+      },
+    }),
+    await db.contact.update({
+      where: {
+        id: truePrinceToLePapier.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: lePapierToTruePrince.id,
+          },
+        },
+      },
+    }),
+  ]);
+
+  // “me” and Titus / relation combination “friend”
+  // Titus processRelationship "SENTIRL" to “me”
+
+  const lePapierToTheTitan = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: theTitan.id,
+        },
+      },
+      state: "LIVE",
+      kind: "FRIEND",
+    },
+  });
+
+  const theTitanToLePapier = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: theTitan.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      state: "LIVE",
+      kind: "FRIEND",
+      processRelationship: "SENTIRL",
+    },
+  });
+
+  await Promise.all([
+    await db.contact.update({
+      where: {
+        id: lePapierToTheTitan.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: theTitanToLePapier.id,
+          },
+        },
+      },
+    }),
+    await db.contact.update({
+      where: {
+        id: theTitanToLePapier.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: lePapierToTheTitan.id,
+          },
+        },
+        sentIrlAt: new Date(),
       },
     }),
   ]);
@@ -1535,6 +1885,181 @@ async function seed() {
     },
   });
 
+  /* Requests and notifications
+  I need two relation combinaison "none" relation,
+  one where I processRelationship SENTFRIEND,
+  one where they processRelationship SENTFRIEND.
+  I need two relation combinaison "friend",
+  one where I processRelationship SENTIRL,
+  one where they processRelationship SENTIRL.
+  This will need four new users, // DONE
+  and eight new contacts. // DONE
+  Additionally work should be done on giving every one,
+  in addition to First name and Last name answers, // DONE
+  an Email address answer they cannot modify,
+  since it's the email they use to sign up.
+  */
+
+  // whoDidThatToYou, First name
+  // native / pinned
+
+  const whoDidThatToYouFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: whoDidThatToYou.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // whoDidThatToYou, Last name
+  // native / irl
+
+  const whoDidThatToYouLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: whoDidThatToYou.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // rG, First name
+  // native / pinned
+
+  const rGFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: rG.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // rG, Last name
+  // native / irl
+
+  const rGLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: rG.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // truePrince, First name
+  // native / pinned
+
+  const truePrinceFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: truePrince.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // truePrince, Last name
+  // native / irl
+
+  const truePrinceLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: truePrince.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // theTitan, First name
+  // native / pinned
+
+  const theTitanFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: theTitan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // theTitan, Last name
+  // native / irl
+
+  const theTitanLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: theTitan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
   // LePapier, Email address
   // native
 
@@ -1616,11 +2141,11 @@ async function seed() {
   });
 
   // Alice-chan, Email address
-  // native
+  // native / HIDDEN
 
   const aliceChanEmailAddress = await db.userQuestion.create({
     data: {
-      state: "LIVE",
+      state: "HIDDEN",
       user: {
         connect: {
           id: aliceChan.id,
