@@ -1,12 +1,14 @@
 import { prisma } from "~/utilities/db.server";
 import {
-  selectSentContacts,
+  CONTACT_ARBITRARY_LIMIT,
+  selectContacts,
   whereSentFromContactsByUserIdAndProcessRelationship,
   whereSentToContactsByUserIdAndProcessRelationship,
+  whereUserFriendsByUserIdAndKind,
 } from "../subdata/contacts";
 
 export async function findSentFriendToContactsByUserId(userId: string) {
-  const select = selectSentContacts();
+  const select = selectContacts();
   const where = whereSentToContactsByUserIdAndProcessRelationship(
     userId,
     "SENTFRIEND"
@@ -15,6 +17,10 @@ export async function findSentFriendToContactsByUserId(userId: string) {
   return await prisma.contact.findMany({
     select,
     where,
+    orderBy: {
+      sentFriendAt: "desc",
+    },
+    take: CONTACT_ARBITRARY_LIMIT,
   });
 }
 
@@ -30,7 +36,7 @@ export async function countSentFriendToContactsByUserId(userId: string) {
 }
 
 export async function findSentIrlToContactsByUserId(userId: string) {
-  const select = selectSentContacts();
+  const select = selectContacts();
   const where = whereSentToContactsByUserIdAndProcessRelationship(
     userId,
     "SENTIRL"
@@ -39,6 +45,10 @@ export async function findSentIrlToContactsByUserId(userId: string) {
   return await prisma.contact.findMany({
     select,
     where,
+    orderBy: {
+      sentIrlAt: "desc",
+    },
+    take: CONTACT_ARBITRARY_LIMIT,
   });
 }
 
@@ -54,7 +64,7 @@ export async function countSentIrlToContactsByUserId(userId: string) {
 }
 
 export async function findSentFriendFromContactsByUserId(userId: string) {
-  const select = selectSentContacts();
+  const select = selectContacts();
   const where = whereSentFromContactsByUserIdAndProcessRelationship(
     userId,
     "SENTFRIEND"
@@ -63,6 +73,12 @@ export async function findSentFriendFromContactsByUserId(userId: string) {
   return await prisma.contact.findMany({
     select,
     where,
+    orderBy: {
+      mirror: {
+        sentFriendAt: "desc",
+      },
+    },
+    take: CONTACT_ARBITRARY_LIMIT,
   });
 }
 
@@ -78,7 +94,7 @@ export async function countSentFriendFromContactsByUserId(userId: string) {
 }
 
 export async function findSentIrlFromContactsByUserId(userId: string) {
-  const select = selectSentContacts();
+  const select = selectContacts();
   const where = whereSentFromContactsByUserIdAndProcessRelationship(
     userId,
     "SENTIRL"
@@ -87,6 +103,12 @@ export async function findSentIrlFromContactsByUserId(userId: string) {
   return await prisma.contact.findMany({
     select,
     where,
+    orderBy: {
+      mirror: {
+        sentIrlAt: "desc",
+      },
+    },
+    take: CONTACT_ARBITRARY_LIMIT,
   });
 }
 
@@ -98,5 +120,37 @@ export async function countSentIrlFromContactsByUserId(userId: string) {
 
   return await prisma.contact.count({
     where,
+  });
+}
+
+export async function findUserNotIrlFriendsByUserId(userId: string) {
+  const select = selectContacts();
+  const where = whereUserFriendsByUserIdAndKind(userId, "FRIEND");
+
+  return await prisma.contact.findMany({
+    select,
+    where,
+    orderBy: {
+      userLast: {
+        username: "asc",
+      },
+    },
+    take: CONTACT_ARBITRARY_LIMIT,
+  });
+}
+
+export async function findUserIrlFriendsByUserId(userId: string) {
+  const select = selectContacts();
+  const where = whereUserFriendsByUserIdAndKind(userId, "IRL");
+
+  return await prisma.contact.findMany({
+    select,
+    where,
+    orderBy: {
+      userLast: {
+        username: "asc",
+      },
+    },
+    take: CONTACT_ARBITRARY_LIMIT,
   });
 }

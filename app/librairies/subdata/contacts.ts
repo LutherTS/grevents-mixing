@@ -1,7 +1,10 @@
 import { Prisma } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 
-export function selectSentContacts(): Prisma.ContactSelect<DefaultArgs> {
+export const CONTACT_ARBITRARY_LIMIT = 256;
+
+export function selectContacts() {
+  // : Prisma.ContactSelect<DefaultArgs>
   return {
     kind: true,
     blocking: true,
@@ -12,6 +15,7 @@ export function selectSentContacts(): Prisma.ContactSelect<DefaultArgs> {
         id: true,
         username: true,
         appWideName: true,
+        state: true,
       },
     },
     mirror: {
@@ -25,6 +29,7 @@ export function selectSentContacts(): Prisma.ContactSelect<DefaultArgs> {
             id: true,
             username: true,
             appWideName: true,
+            state: true,
           },
         },
       },
@@ -48,7 +53,7 @@ export function whereSentToContactsByUserIdAndProcessRelationship(
       state: "LIVE" || "DEACTIVATED",
     },
     userLast: {
-      state: "LIVE",
+      state: "LIVE" || "DEACTIVATED",
     },
   };
 }
@@ -66,7 +71,29 @@ export function whereSentFromContactsByUserIdAndProcessRelationship(
       state: "LIVE",
     },
     userFirst: {
+      state: "LIVE" || "DEACTIVATED",
+    },
+    userLast: {
+      state: "LIVE" || "DEACTIVATED",
+    },
+  };
+}
+
+export function whereUserFriendsByUserIdAndKind(
+  userFirstId: string,
+  kind: string
+) {
+  // : Prisma.ContactWhereInput
+  return {
+    userFirstId,
+    kind,
+    state: "LIVE",
+    mirror: {
+      kind,
       state: "LIVE",
+    },
+    userFirst: {
+      state: "LIVE" || "DEACTIVATED",
     },
     userLast: {
       state: "LIVE" || "DEACTIVATED",
