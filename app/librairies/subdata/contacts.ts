@@ -4,7 +4,8 @@ import { DefaultArgs } from "@prisma/client/runtime/library";
 export function whereSentToContactsByUserIdAndProcessRelationship(
   userFirstId: string,
   processRelationship: string
-): Prisma.ContactWhereInput {
+) {
+  // : Prisma.ContactWhereInput
   return {
     userFirstId,
     processRelationship,
@@ -24,7 +25,8 @@ export function whereSentToContactsByUserIdAndProcessRelationship(
 export function whereSentFromContactsByUserIdAndProcessRelationship(
   userLastId: string,
   processRelationship: string
-): Prisma.ContactWhereInput {
+) {
+  // : Prisma.ContactWhereInput
   return {
     userLastId,
     processRelationship,
