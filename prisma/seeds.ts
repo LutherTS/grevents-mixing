@@ -2443,6 +2443,306 @@ async function seed() {
     },
   });
 
+  /* Requests and notifications
+  I need two relation combinaison "none" relation,
+  one where I processRelationship SENTFRIEND,
+  one where they processRelationship SENTFRIEND.
+  I need two relation combinaison "friend",
+  one where I processRelationship SENTIRL,
+  one where they processRelationship SENTIRL.
+  This will need four new users, // DONE
+  and eight new contacts. // DONE
+  Additionally work should be done on giving every one,
+  in addition to First name and Last name answers, // DONE
+  an Email address answer they cannot modify,
+  since it's the email they use to sign up.
+  */
+
+  // Trovounette, Email address
+  // native
+
+  const trovounetteEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: trovounette.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // Candi, Email address
+  // native
+
+  const candiEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: candi.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // D-Dan, Email address
+  // native
+
+  const dDanEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: dDan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // El-Hadj, Email address
+  // native
+
+  const elHadjEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: elHadj.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // FioTriangle, Email address
+  // native
+
+  const fioTriangleEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: fioTriangle.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // Gracie-babie, Email address
+  // native
+
+  const gracieBabieEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: gracieBabie.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // Lucario, Email address
+  // native
+
+  const lucarioEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: lucario.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // MisterX, Email address
+  // native
+
+  const misterXEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: misterX.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // Nonyes, Email address
+  // native
+
+  const nonyesEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: nonyes.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // Ophelia-swan, Email address
+  // native
+
+  const opheliaSwanEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: opheliaSwan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // Pimpampoum, Email address
+  // native
+
+  const pimpampoumEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: pimpampoum.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // WhoDidThatToYou, Email address
+  // native
+
+  const whoDidThatToYouEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: whoDidThatToYou.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // RG, Email address
+  // native
+
+  const rGEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: rG.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // TruePrince, Email address
+  // native
+
+  const truePrinceEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: truePrince.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // TheTitan, Email address
+  // native
+
+  const theTitanEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: theTitan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
   console.log(`User questions seeds complete.`);
 
   console.log(`Seeding user question friends...`);
@@ -3100,13 +3400,188 @@ async function seed() {
     },
   });
 
+  /* Requests and notifications
+  I need two relation combinaison "none" relation,
+  one where I processRelationship SENTFRIEND,
+  one where they processRelationship SENTFRIEND.
+  I need two relation combinaison "friend",
+  one where I processRelationship SENTIRL,
+  one where they processRelationship SENTIRL.
+  This will need four new users, // DONE
+  and eight new contacts. // DONE
+  Additionally work should be done on giving every one,
+  in addition to First name and Last name answers, // DONE
+  an Email address answer they cannot modify, // DONE
+  since it's the email they use to sign up.
+  */
+
+  // WhoDidThatToYou, First name
+  // native / pinned
+
+  const whoDidThatToYouFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Quentin",
+      userQuestion: {
+        connect: {
+          id: whoDidThatToYouFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: whoDidThatToYou.id,
+        },
+      },
+    },
+  });
+
+  // WhoDidThatToYou, Last name
+  // native / irl
+
+  const whoDidThatToYouLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Tartarino",
+      userQuestion: {
+        connect: {
+          id: whoDidThatToYouLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: whoDidThatToYou.id,
+        },
+      },
+    },
+  });
+
+  // RG, First name
+  // native / pinned
+
+  const rGFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Roland",
+      userQuestion: {
+        connect: {
+          id: rGFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: rG.id,
+        },
+      },
+    },
+  });
+
+  // RG, Last name
+  // native / irl
+
+  const rGLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Gerric",
+      userQuestion: {
+        connect: {
+          id: rGLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: rG.id,
+        },
+      },
+    },
+  });
+
+  // TruePrince, First name
+  // native / pinned
+
+  const truePrinceFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Soren",
+      userQuestion: {
+        connect: {
+          id: truePrinceFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: truePrince.id,
+        },
+      },
+    },
+  });
+
+  // TruePrince, Last name
+  // native / irl
+
+  const truePrinceLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Daein",
+      userQuestion: {
+        connect: {
+          id: truePrinceLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: truePrince.id,
+        },
+      },
+    },
+  });
+
+  // TheTitan, First name
+  // native / pinned
+
+  const theTitanFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Titus",
+      userQuestion: {
+        connect: {
+          id: theTitanFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: theTitan.id,
+        },
+      },
+    },
+  });
+
+  // TheTitan, Last name
+  // native / irl
+
+  const theTitanLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Invictus",
+      userQuestion: {
+        connect: {
+          id: theTitanLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: theTitan.id,
+        },
+      },
+    },
+  });
+
   // LePapier, Email address
   // native
 
   const lePapierEmailAddressAnswer = await db.answer.create({
     data: {
       state: "LIVE",
-      value: "l@l.me",
+      value: lePapier.email,
       userQuestion: {
         connect: {
           id: lePapierEmailAddress.id,
@@ -3185,12 +3660,12 @@ async function seed() {
   });
 
   // Alice-chan, Email address
-  // native
+  // native / HIDDEN
 
   const aliceChanEmailAddressAnswer = await db.answer.create({
     data: {
       state: "LIVE",
-      value: "a@a.com",
+      value: aliceChan.email,
       userQuestion: {
         connect: {
           id: aliceChanEmailAddress.id,
@@ -3480,6 +3955,321 @@ async function seed() {
       user: {
         connect: {
           id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  /* Requests and notifications
+  I need two relation combinaison "none" relation,
+  one where I processRelationship SENTFRIEND,
+  one where they processRelationship SENTFRIEND.
+  I need two relation combinaison "friend",
+  one where I processRelationship SENTIRL,
+  one where they processRelationship SENTIRL.
+  This will need four new users, // DONE
+  and eight new contacts. // DONE
+  Additionally work should be done on giving every one,
+  in addition to First name and Last name answers, // DONE
+  an Email address answer they cannot modify, // DONE
+  since it's the email they use to sign up.
+  */
+
+  // Trovounette, Email address
+  // native
+
+  const trovounetteEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: trovounette.email,
+      userQuestion: {
+        connect: {
+          id: trovounetteEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: trovounette.id,
+        },
+      },
+    },
+  });
+
+  // Candi, Email address
+  // native
+
+  const candiEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: candi.email,
+      userQuestion: {
+        connect: {
+          id: candiEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: candi.id,
+        },
+      },
+    },
+  });
+
+  // D-Dan, Email address
+  // native
+
+  const dDanEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: dDan.email,
+      userQuestion: {
+        connect: {
+          id: dDanEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: dDan.id,
+        },
+      },
+    },
+  });
+
+  // El-Hadj, Email address
+  // native
+
+  const elHadjEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: elHadj.email,
+      userQuestion: {
+        connect: {
+          id: elHadjEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: elHadj.id,
+        },
+      },
+    },
+  });
+
+  // FioTriangle, Email address
+  // native
+
+  const fioTriangleEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: fioTriangle.email,
+      userQuestion: {
+        connect: {
+          id: fioTriangleEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: fioTriangle.id,
+        },
+      },
+    },
+  });
+
+  // Gracie-babie, Email address
+  // native
+
+  const gracieBabieEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: gracieBabie.email,
+      userQuestion: {
+        connect: {
+          id: gracieBabieEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: gracieBabie.id,
+        },
+      },
+    },
+  });
+
+  // Lucario, Email address
+  // native
+
+  const lucarioEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: lucario.email,
+      userQuestion: {
+        connect: {
+          id: lucarioEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lucario.id,
+        },
+      },
+    },
+  });
+
+  // MisterX, Email address
+  // native
+
+  const misterXEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: misterX.email,
+      userQuestion: {
+        connect: {
+          id: misterXEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: misterX.id,
+        },
+      },
+    },
+  });
+
+  // Nonyes, Email address
+  // native
+
+  const nonyesEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: nonyes.email,
+      userQuestion: {
+        connect: {
+          id: nonyesEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: nonyes.id,
+        },
+      },
+    },
+  });
+
+  // Ophelia-swan, Email address
+  // native
+
+  const opheliaSwanEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: opheliaSwan.email,
+      userQuestion: {
+        connect: {
+          id: opheliaSwanEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: opheliaSwan.id,
+        },
+      },
+    },
+  });
+
+  // Pimpampoum, Email address
+  // native
+
+  const pimpampoumEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: pimpampoum.email,
+      userQuestion: {
+        connect: {
+          id: pimpampoumEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: pimpampoum.id,
+        },
+      },
+    },
+  });
+
+  // WhoDidThatToYou, Email address
+  // native
+
+  const whoDidThatToYouEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: whoDidThatToYou.email,
+      userQuestion: {
+        connect: {
+          id: whoDidThatToYouEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: whoDidThatToYou.id,
+        },
+      },
+    },
+  });
+
+  // RG, Email address
+  // native
+
+  const rGEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: rG.email,
+      userQuestion: {
+        connect: {
+          id: rGEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: rG.id,
+        },
+      },
+    },
+  });
+
+  // TruePrince, Email address
+  // native
+
+  const truePrinceEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: truePrince.email,
+      userQuestion: {
+        connect: {
+          id: truePrinceEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: truePrince.id,
+        },
+      },
+    },
+  });
+
+  // TheTitan, Email address
+  // native
+
+  const theTitanEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: theTitan.email,
+      userQuestion: {
+        connect: {
+          id: theTitanEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: theTitan.id,
         },
       },
     },
