@@ -3,6 +3,12 @@ import { useLoaderData } from "@remix-run/react";
 
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
+import {
+  countSentFriendToContactsByUserId,
+  countSentIrlToContactsByUserId,
+  countSentFriendFromContactsByUserId,
+  countSentIrlFromContactsByUserId,
+} from "~/librairies/data/contacts";
 import { findUserByUsername } from "~/librairies/data/users";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -12,12 +18,36 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
       status: 404,
     });
   }
-  return { user };
+
+  const [
+    sentFriendToContactsCount,
+    sentIrlToContactsCount,
+    sentFriendFromContactsCount,
+    sentIrlFromContactsCount,
+  ] = await Promise.all([
+    countSentFriendToContactsByUserId(user.id),
+    countSentIrlToContactsByUserId(user.id),
+    countSentFriendFromContactsByUserId(user.id),
+    countSentIrlFromContactsByUserId(user.id),
+  ]);
+
+  const sentToContactsCount =
+    sentFriendToContactsCount + sentIrlToContactsCount;
+
+  const sentFromContactsCount =
+    sentFriendFromContactsCount + sentIrlFromContactsCount;
+
+  return {
+    user,
+    sentToContactsCount,
+    sentFromContactsCount,
+  };
 };
 
 export default function DashboardPage() {
   const data = useLoaderData<typeof loader>();
   console.log(data);
+  // If I don't want to use "data." everywhere I can always destructure from useLoaderData.
 
   return (
     <>
@@ -27,8 +57,26 @@ export default function DashboardPage() {
       <p className="mt-2">{data.user.appWideName}</p>
       <PageLink href={`../personal-info`}>More personal info</PageLink>
       <PageLink href={`../friends`}>My friends</PageLink>
-      <PageLink href={`../requests`}>My requests</PageLink>
-      <PageLink href={`../notifications`}>My notifications</PageLink>
+      <PageLink
+        href={`../requests`}
+        specifiedClasses={
+          data.sentToContactsCount > 0
+            ? "mt-2 inline-block text-teal-500 underline hover:text-teal-400 dark:hover:text-teal-600"
+            : undefined
+        }
+      >
+        My requests
+      </PageLink>
+      <PageLink
+        href={`../notifications`}
+        specifiedClasses={
+          data.sentFromContactsCount > 0
+            ? "mt-2 inline-block text-cyan-500 underline hover:text-cyan-400 dark:hover:text-cyan-600"
+            : undefined
+        }
+      >
+        My notifications
+      </PageLink>
       <PageLink href={`/`}>Return home</PageLink>
     </>
   );
