@@ -190,3 +190,7 @@ export async function findUserWhoHaveMeBlockedByUserId(userId: string) {
     take: CONTACT_ARBITRARY_LIMIT,
   });
 }
+
+export async function findUserFriendsNotToUserQuestionByUserQuestionId(
+  userQuestionId: string
+) {}

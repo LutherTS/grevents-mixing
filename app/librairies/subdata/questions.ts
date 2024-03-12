@@ -27,3 +27,20 @@ export function whereUnansweredNativeQuestionsByIdsAndKind(
     state: "LIVE",
   };
 }
+
+export function whereUnansweredNativeQuestionsByIdsAndKind2(
+  userId: string,
+  kind: string
+): Prisma.QuestionWhereInput {
+  return {
+    kind,
+    state: "LIVE",
+    NOT: {
+      userQuestions: {
+        none: {
+          userId,
+        },
+      },
+    },
+  };
+}
