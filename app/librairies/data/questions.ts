@@ -1,22 +1,21 @@
 import { prisma } from "~/utilities/db.server";
-import {
-  findUserNativeIrlAnswersQuestionsIdsByUserId,
-  findUserNativeNotIrlAnswersQuestionsIdsByUserId,
-} from "./answers";
+import // findUserNativeIrlAnswersQuestionsIdsByUserId,
+// findUserNativeNotIrlAnswersQuestionsIdsByUserId,
+"./answers";
 import {
   NATIVE_QUESTION_LIMIT,
   selectUnansweredNativeQuestions,
-  whereUnansweredNativeQuestionsByIdsAndKind,
+  whereUnansweredNativeQuestionsByUserIdAndKind,
 } from "../subdata/questions";
 
 export async function findUnansweredNativeNotIrlQuestionsByUserId(
   userId: string
 ) {
-  const userNativeNotIrlAnswersQuestionsIds =
-    await findUserNativeNotIrlAnswersQuestionsIdsByUserId(userId);
+  // const userNativeNotIrlAnswersQuestionsIds =
+  //   await findUserNativeNotIrlAnswersQuestionsIdsByUserId(userId);
 
   const select = selectUnansweredNativeQuestions();
-  const where = whereUnansweredNativeQuestionsByIdsAndKind(
+  const where = whereUnansweredNativeQuestionsByUserIdAndKind(
     // userNativeNotIrlAnswersQuestionsIds,
     userId,
     "NATIVE"
@@ -33,11 +32,11 @@ export async function findUnansweredNativeNotIrlQuestionsByUserId(
 }
 
 export async function findUnansweredNativeIrlQuestionsByUserId(userId: string) {
-  const userNativeIrlAnswersQuestionsIds =
-    await findUserNativeIrlAnswersQuestionsIdsByUserId(userId);
+  // const userNativeIrlAnswersQuestionsIds =
+  //   await findUserNativeIrlAnswersQuestionsIdsByUserId(userId);
 
   const select = selectUnansweredNativeQuestions();
-  const where = whereUnansweredNativeQuestionsByIdsAndKind(
+  const where = whereUnansweredNativeQuestionsByUserIdAndKind(
     // userNativeIrlAnswersQuestionsIds,
     userId,
     "NATIVEIRL"

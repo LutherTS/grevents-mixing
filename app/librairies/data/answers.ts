@@ -5,7 +5,7 @@ import {
   selectAnswer,
   selectUserCustomAnswers,
   selectUserNativeAnswers,
-  selectUserNativeAnswersQuestionsIds,
+  // selectUserNativeAnswersQuestionsIds,
   selectUserPinnedAnswers,
   selectUserPseudonativeAnswers,
   whereAnswerByUserQuestionIDAndUserID,
@@ -62,32 +62,32 @@ export async function findUserNativeNotIrlAnswersByUserId(id: string) {
   });
 }
 
-export async function findUserNativeNotIrlAnswersQuestionsIdsByUserId(
-  id: string
-) {
-  const select = selectUserNativeAnswersQuestionsIds();
-  const where = whereUserNativeAnswersByUserIdAndQuestionKind(id, "NATIVE");
+// export async function findUserNativeNotIrlAnswersQuestionsIdsByUserId(
+//   id: string
+// ) {
+//   const select = selectUserNativeAnswersQuestionsIds();
+//   const where = whereUserNativeAnswersByUserIdAndQuestionKind(id, "NATIVE");
 
-  const userNativeNotIrlAnswersQuestionsIds = await prisma.answer.findMany({
-    select,
-    where,
-    orderBy: {
-      userQuestion: {
-        question: {
-          name: "asc",
-        },
-      },
-    },
-    take: ANSWERS_DEFAULT_LIMIT,
-  });
+//   const userNativeNotIrlAnswersQuestionsIds = await prisma.answer.findMany({
+//     select,
+//     where,
+//     orderBy: {
+//       userQuestion: {
+//         question: {
+//           name: "asc",
+//         },
+//       },
+//     },
+//     take: ANSWERS_DEFAULT_LIMIT,
+//   });
 
-  const dataAsArrayOfStrings: string[] = [];
-  userNativeNotIrlAnswersQuestionsIds.forEach((element) =>
-    dataAsArrayOfStrings.push(element.userQuestion.question.id)
-  );
+//   const dataAsArrayOfStrings: string[] = [];
+//   userNativeNotIrlAnswersQuestionsIds.forEach((element) =>
+//     dataAsArrayOfStrings.push(element.userQuestion.question.id)
+//   );
 
-  return dataAsArrayOfStrings;
-}
+//   return dataAsArrayOfStrings;
+// }
 
 export async function countUserNativeNotIrlAnswersByUserId(id: string) {
   const where = whereUserNativeAnswersByUserIdAndQuestionKind(id, "NATIVE");
@@ -115,30 +115,30 @@ export async function findUserNativeIrlAnswersByUserId(id: string) {
   });
 }
 
-export async function findUserNativeIrlAnswersQuestionsIdsByUserId(id: string) {
-  const select = selectUserNativeAnswersQuestionsIds();
-  const where = whereUserNativeAnswersByUserIdAndQuestionKind(id, "NATIVEIRL");
+// export async function findUserNativeIrlAnswersQuestionsIdsByUserId(id: string) {
+//   const select = selectUserNativeAnswersQuestionsIds();
+//   const where = whereUserNativeAnswersByUserIdAndQuestionKind(id, "NATIVEIRL");
 
-  const userNativeIrlAnswersQuestionsIds = await prisma.answer.findMany({
-    select,
-    where,
-    orderBy: {
-      userQuestion: {
-        question: {
-          name: "asc",
-        },
-      },
-    },
-    take: ANSWERS_DEFAULT_LIMIT,
-  });
+//   const userNativeIrlAnswersQuestionsIds = await prisma.answer.findMany({
+//     select,
+//     where,
+//     orderBy: {
+//       userQuestion: {
+//         question: {
+//           name: "asc",
+//         },
+//       },
+//     },
+//     take: ANSWERS_DEFAULT_LIMIT,
+//   });
 
-  const dataAsArrayOfStrings: string[] = [];
-  userNativeIrlAnswersQuestionsIds.forEach((element) =>
-    dataAsArrayOfStrings.push(element.userQuestion.question.id)
-  );
+//   const dataAsArrayOfStrings: string[] = [];
+//   userNativeIrlAnswersQuestionsIds.forEach((element) =>
+//     dataAsArrayOfStrings.push(element.userQuestion.question.id)
+//   );
 
-  return dataAsArrayOfStrings;
-}
+//   return dataAsArrayOfStrings;
+// }
 
 export async function countUserNativeIrlAnswersByUserId(id: string) {
   const where = whereUserNativeAnswersByUserIdAndQuestionKind(id, "NATIVEIRL");

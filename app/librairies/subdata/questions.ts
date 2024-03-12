@@ -28,7 +28,7 @@ export function whereUnansweredNativeQuestionsByIdsAndKind2(
   };
 }
 
-export function whereUnansweredNativeQuestionsByIdsAndKind(
+export function whereUnansweredNativeQuestionsByUserIdAndKind(
   userId: string,
   kind: string
 ): Prisma.QuestionWhereInput {
