@@ -37,6 +37,10 @@ export default function BlocksPage() {
         back to dashboard (for now)
       </PageLink>
 
+      <p className="mt-2">
+        If you&apos;ve blocked each other, the other user may appear in both
+        Users who I am blocking and Users who have me blocked.
+      </p>
       <PageLink href={`../friends`}>See friends</PageLink>
     </>
   );
