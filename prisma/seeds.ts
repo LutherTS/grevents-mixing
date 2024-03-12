@@ -31,6 +31,7 @@ async function seed() {
       appWideName: "Alice",
       friendCode: "k7mdsfwq2e9g",
       state: "LIVE",
+      // state: "DEACTIVATED",
     },
   });
 
@@ -45,6 +46,7 @@ async function seed() {
       appWideName: "Bianca",
       friendCode: "w6s38rye29fn",
       state: "LIVE",
+      // state: "DEACTIVATED",
     },
   });
 
@@ -59,6 +61,7 @@ async function seed() {
       appWideName: "Candice",
       friendCode: "amdgw643uty9",
       state: "LIVE",
+      // state: "DEACTIVATED",
     },
   });
 
@@ -73,6 +76,7 @@ async function seed() {
       appWideName: "Danny",
       friendCode: "bq9vhrtamj2w",
       state: "LIVE",
+      // state: "DEACTIVATED",
     },
   });
 
@@ -88,6 +92,7 @@ async function seed() {
       appWideName: "Elijah",
       friendCode: "s73urd6kvbxj",
       state: "LIVE",
+      // state: "DEACTIVATED",
     },
   });
 
@@ -105,6 +110,7 @@ async function seed() {
       appWideName: "Fiona",
       friendCode: "ngx7h3tkbu8s",
       state: "LIVE",
+      // state: "DEACTIVATED",
     },
   });
 
@@ -121,6 +127,7 @@ async function seed() {
       appWideName: "Grace",
       friendCode: "v27WpaHzYRyE",
       state: "LIVE",
+      // state: "DEACTIVATED",
     },
   });
 
@@ -147,6 +154,7 @@ async function seed() {
       appWideName: "Lucas",
       friendCode: "uxfv9b76kw35",
       state: "LIVE",
+      // state: "DEACTIVATED",
     },
   });
 
@@ -161,6 +169,7 @@ async function seed() {
       appWideName: "Malcolm",
       friendCode: "sr5aetd843fp",
       state: "LIVE",
+      // state: "DEACTIVATED",
     },
   });
 
@@ -175,6 +184,7 @@ async function seed() {
       appWideName: "Nancy",
       friendCode: "ay8bs36e9h5t",
       state: "LIVE",
+      // state: "DEACTIVATED",
     },
   });
 
@@ -189,6 +199,7 @@ async function seed() {
       appWideName: "Ophelia",
       friendCode: "zsg6x5feutn8",
       state: "LIVE",
+      // state: "DEACTIVATED",
     },
   });
 
@@ -203,6 +214,7 @@ async function seed() {
       appWideName: "Pamela",
       friendCode: "unpzyb4qkm3w",
       state: "LIVE",
+      // state: "DEACTIVATED",
     },
   });
 
@@ -217,6 +229,7 @@ async function seed() {
       appWideName: "Quentin",
       friendCode: "sAdvy8f9uLYT",
       state: "LIVE",
+      // state: "DEACTIVATED",
     },
   });
 
@@ -231,6 +244,7 @@ async function seed() {
       appWideName: "Roland",
       friendCode: "qX3DGt9b2YsU",
       state: "LIVE",
+      // state: "DEACTIVATED",
     },
   });
 
@@ -245,6 +259,7 @@ async function seed() {
       appWideName: "Soren",
       friendCode: "cky4CUA7R9Yw",
       state: "LIVE",
+      // state: "DEACTIVATED",
     },
   });
 
@@ -259,6 +274,7 @@ async function seed() {
       appWideName: "Titus",
       friendCode: "W9bFAaptDxvE",
       state: "LIVE",
+      // state: "DEACTIVATED",
     },
   });
 

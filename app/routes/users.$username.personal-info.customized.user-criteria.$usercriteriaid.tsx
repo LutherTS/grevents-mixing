@@ -4,6 +4,8 @@ import { useLoaderData } from "@remix-run/react";
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
 import { findAnswerByUserQuestionIDAndUserID } from "~/librairies/data/answers";
+import { findUserFriendsNotToUserQuestionByUserQuestionIdAndUserId } from "~/librairies/data/contacts";
+import { findUserQuestionFriendsByUserQuestionId } from "~/librairies/data/userquestionfriends";
 import { findUserByUsername } from "~/librairies/data/users";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -24,9 +26,23 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     });
   }
 
+  const [userQuestionFriends, userFriendsNotToUserQuestion] = await Promise.all(
+    [
+      findUserQuestionFriendsByUserQuestionId(
+        userQuestionAnswer.userQuestion.id
+      ),
+      findUserFriendsNotToUserQuestionByUserQuestionIdAndUserId(
+        userQuestionAnswer.userQuestion.id,
+        user.id
+      ),
+    ]
+  );
+
   return {
     user,
     userQuestionAnswer,
+    userQuestionFriends,
+    userFriendsNotToUserQuestion,
   };
 };
 

@@ -1,25 +1,15 @@
 import { prisma } from "~/utilities/db.server";
 import {
-  findUserNativeIrlAnswersQuestionsIdsByUserId,
-  findUserNativeNotIrlAnswersQuestionsIdsByUserId,
-} from "./answers";
-import {
   NATIVE_QUESTION_LIMIT,
   selectUnansweredNativeQuestions,
-  whereUnansweredNativeQuestionsByIdsAndKind,
+  whereUnansweredNativeQuestionsByUserIdAndKind,
 } from "../subdata/questions";
 
 export async function findUnansweredNativeNotIrlQuestionsByUserId(
   userId: string
 ) {
-  const userNativeNotIrlAnswersQuestionsIds =
-    await findUserNativeNotIrlAnswersQuestionsIdsByUserId(userId);
-
   const select = selectUnansweredNativeQuestions();
-  const where = whereUnansweredNativeQuestionsByIdsAndKind(
-    userNativeNotIrlAnswersQuestionsIds,
-    "NATIVE"
-  );
+  const where = whereUnansweredNativeQuestionsByUserIdAndKind(userId, "NATIVE");
 
   return await prisma.question.findMany({
     select,
@@ -32,12 +22,9 @@ export async function findUnansweredNativeNotIrlQuestionsByUserId(
 }
 
 export async function findUnansweredNativeIrlQuestionsByUserId(userId: string) {
-  const userNativeIrlAnswersQuestionsIds =
-    await findUserNativeIrlAnswersQuestionsIdsByUserId(userId);
-
   const select = selectUnansweredNativeQuestions();
-  const where = whereUnansweredNativeQuestionsByIdsAndKind(
-    userNativeIrlAnswersQuestionsIds,
+  const where = whereUnansweredNativeQuestionsByUserIdAndKind(
+    userId,
     "NATIVEIRL"
   );
 
