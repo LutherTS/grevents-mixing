@@ -17,7 +17,8 @@ export async function findUnansweredNativeNotIrlQuestionsByUserId(
 
   const select = selectUnansweredNativeQuestions();
   const where = whereUnansweredNativeQuestionsByIdsAndKind(
-    userNativeNotIrlAnswersQuestionsIds,
+    // userNativeNotIrlAnswersQuestionsIds,
+    userId,
     "NATIVE"
   );
 
@@ -37,7 +38,8 @@ export async function findUnansweredNativeIrlQuestionsByUserId(userId: string) {
 
   const select = selectUnansweredNativeQuestions();
   const where = whereUnansweredNativeQuestionsByIdsAndKind(
-    userNativeIrlAnswersQuestionsIds,
+    // userNativeIrlAnswersQuestionsIds,
+    userId,
     "NATIVEIRL"
   );
 
