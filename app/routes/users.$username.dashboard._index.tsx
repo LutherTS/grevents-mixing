@@ -47,7 +47,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 export default function DashboardPage() {
   const data = useLoaderData<typeof loader>();
   console.log(data);
-  // If I don't want to use "data." everywhere I can always destructure from useLoaderData.
+  // If I don't want to use "data." everywhere, I can always destructure from useLoaderData.
 
   return (
     <>

@@ -1,6 +1,37 @@
 import { Prisma } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 
+export function selectSentContacts(): Prisma.ContactSelect<DefaultArgs> {
+  return {
+    kind: true,
+    blocking: true,
+    id: true,
+    processRelationship: true,
+    userFirst: {
+      select: {
+        id: true,
+        username: true,
+        appWideName: true,
+      },
+    },
+    mirror: {
+      select: {
+        kind: true,
+        blocking: true,
+        id: true,
+        processRelationship: true,
+        userFirst: {
+          select: {
+            id: true,
+            username: true,
+            appWideName: true,
+          },
+        },
+      },
+    },
+  };
+}
+
 export function whereSentToContactsByUserIdAndProcessRelationship(
   userFirstId: string,
   processRelationship: string

@@ -134,3 +134,141 @@ model Answer {
   userId               String
   user                 User         @relation(fields: [userId], references: [id])
 }
+
+// unused
+// For features, notably enums, not supported by SQLite.
+
+// enum UserState {
+//   NONE
+//   LIVE
+//   DELETED
+//   DEACTIVATED
+// }
+
+// enum UserStatusTitle {
+//   NONE
+//   WELCOMETOGREVENTS
+//   WELCOMEBACKTOGREVENTS
+// }
+
+// enum UserStatusDashboard {
+//   NONE
+//   EMAILUPDATED
+//   PASSWORDUPDATED
+//   APPWIDENAMEUPDATED
+//   FRIENDCODEUPDATED
+//   TEMPORARYPASSWORDCHANGED
+//   NOWDEACTIVATED
+//   NOWREACTIVATED
+//   REDIRECTEDTODASHBOARD
+// }
+
+// enum UserStatusPersonalInfo {
+//   NONE
+//   CRITERIAHIDDEN
+//   CRITERIAREVEALED
+//   CRITERIAPINNED
+//   CRITERIAUNPINNED
+//   STANDARDIZEDANSWERUPDATED
+//   STANDARDIZEDANSWERDELETED
+//   CUSTOMIZEDANSWERUPDATED
+//   CUSTOMIZEDANSWERDELETED
+//   NATIVECRITERIANOTIRLADDED
+//   NATIVECRITERIAIRLADDED
+//   PSEUDONATIVECRITERIANOTIRLADDED
+//   PSEUDONATIVECRITERIAIRLADDED
+//   PSEUDONATIVECRITERIAUPPEDTOIRL
+//   PSEUDONATIVECRITERIADOWNEDFROMIRL
+//   CUSTOMCRITERIAADDED
+//   CUSTOMCRITERIADELETED
+//   USERQUESTIONFRIENDADDED
+//   USERQUESTIONFRIENDDELETED
+//   REDIRECTEDTOPERSONALINFO
+// }
+
+// enum ContactState {
+//   NONE
+//   LIVE
+//   DELETED
+// }
+
+// enum ContactKind {
+//   NONE
+//   FRIEND
+//   IRL
+// }
+
+// enum ContactProcessRelationship {
+//   NONE
+//   SENTFRIEND
+//   SENTIRL
+//   ANNULFRIEND
+//   ANNULIRL
+// }
+
+// enum ContactStatusRelationship {
+//   NONE
+//   SENTFRIEND
+//   SENTIRL
+//   RECEIVEFRIEND
+//   RECEIVEIRL
+//   ANNULFRIEND
+//   ANNULIRL
+//   REFUSEDFRIEND
+//   REFUSEDIRL
+//   NOWFRIENDS
+//   NOWIRLS
+//   NOLONGERFRIENDS
+//   NOLONGERIRL
+//   NOWBLOCKING
+//   NOWUNBLOCKING
+//   NOWBLOCKED
+//   NOWUNBLOCKED
+// }
+
+// enum ContactStatusOtherProfile {
+//   NONE
+//   FIRSTACCESSEDTHROUGHFIND
+//   REACCESSTHROUGHFIND
+//   USERQUESTIONFRIENDPINNED
+//   USERQUESTIONFRIENDUNPINNED
+// }
+
+// enum QuestionState {
+//   NONE
+//   LIVE
+//   DELETED
+// }
+
+// enum QuestionKind {
+//   NONE
+//   NATIVE
+//   NATIVEIRL
+//   PSEUDO
+//   CUSTOM
+// }
+
+// enum UserQuestionState {
+//   NONE
+//   LIVE
+//   DELETED
+//   HIDDEN
+// }
+
+// enum UserQuestionKind {
+//   NONE
+//   PSEUDONATIVE
+//   PSEUDONATIVEIRL
+// }
+
+// enum UserQuestionFriendState {
+//   NONE
+//   LIVE
+//   DELETED
+// }
+
+// enum AnswerState {
+//   NONE
+//   LIVE
+//   DELETED
+// }
