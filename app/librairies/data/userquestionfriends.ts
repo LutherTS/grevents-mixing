@@ -9,8 +9,7 @@ export async function findUserQuestionFriendsByUserQuestionId(
   userQuestionId: string
 ) {
   const select = selectUserQuestionFriends();
-  const where = undefined;
-  // whereUserQuestionFriendsByUserQuestionId(userQuestionId)
+  const where = whereUserQuestionFriendsByUserQuestionId(userQuestionId);
 
   return await prisma.userQuestionFriend.findMany({
     select,

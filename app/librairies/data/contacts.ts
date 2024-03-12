@@ -191,6 +191,9 @@ export async function findUserWhoHaveMeBlockedByUserId(userId: string) {
   });
 }
 
-export async function findUserFriendsNotToUserQuestionByUserQuestionId(
-  userQuestionId: string
-) {}
+export async function findUserFriendsNotToUserQuestionByUserQuestionIdAndUserId(
+  userQuestionId: string,
+  userFirstId: string
+) {
+  const select = selectContacts();
+}

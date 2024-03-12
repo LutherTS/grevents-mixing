@@ -12,26 +12,11 @@ export function selectUnansweredNativeQuestions() {
   };
 }
 
-/* There's going to be a need for another query from which I get the ids of the questions I've answered, maybe them into an array, and put them at notIn.
- */
-export function whereUnansweredNativeQuestionsByIdsAndKind2(
-  answeredNativeQuestionsIds: string[],
-  kind: string
-) {
-  // : Prisma.QuestionWhereInput
-  return {
-    kind,
-    id: {
-      notIn: answeredNativeQuestionsIds,
-    },
-    state: "LIVE",
-  };
-}
-
 export function whereUnansweredNativeQuestionsByUserIdAndKind(
   userId: string,
   kind: string
-): Prisma.QuestionWhereInput {
+) {
+  // : Prisma.QuestionWhereInput
   return {
     kind,
     state: "LIVE",

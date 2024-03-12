@@ -1,7 +1,8 @@
 import { Prisma } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 
-export function selectUserQuestionFriends(): Prisma.UserQuestionFriendSelect<DefaultArgs> {
+export function selectUserQuestionFriends() {
+  // : Prisma.UserQuestionFriendSelect<DefaultArgs>
   return {
     id: true,
     contact: {
@@ -20,7 +21,8 @@ export function selectUserQuestionFriends(): Prisma.UserQuestionFriendSelect<Def
 
 export function whereUserQuestionFriendsByUserQuestionId(
   userQuestionId: string
-): Prisma.UserQuestionFriendWhereInput {
+) {
+  // : Prisma.UserQuestionFriendWhereInput
   return {
     userQuestionId,
     isSharedToFriend: true,

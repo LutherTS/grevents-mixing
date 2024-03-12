@@ -142,3 +142,10 @@ export function whereUserWhoHaveMeBlockedByUserId(userFirstId: string) {
     },
   };
 }
+
+export function whereUserFriendsNotToUserQuestionByUserQuestionIdAndUserId(
+  userQuestionId: string,
+  userFirstId: string
+): Prisma.ContactWhereInput {
+  return {};
+}
