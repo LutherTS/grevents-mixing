@@ -5,6 +5,8 @@ import {
   whereSentFromContactsByUserIdAndProcessRelationship,
   whereSentToContactsByUserIdAndProcessRelationship,
   whereUserFriendsByUserIdAndKind,
+  whereUserWhoHaveMeBlockedByUserId,
+  whereUserWhoIAmBlockingByUserId,
 } from "../subdata/contacts";
 
 export async function findSentFriendToContactsByUserId(userId: string) {
@@ -142,6 +144,40 @@ export async function findUserNotIrlFriendsByUserId(userId: string) {
 export async function findUserIrlFriendsByUserId(userId: string) {
   const select = selectContacts();
   const where = whereUserFriendsByUserIdAndKind(userId, "IRL");
+
+  return await prisma.contact.findMany({
+    select,
+    where,
+    orderBy: {
+      userLast: {
+        username: "asc",
+      },
+    },
+    take: CONTACT_ARBITRARY_LIMIT,
+  });
+}
+
+// plural implicit
+export async function findUserWhoIAmBlockingByUserId(userId: string) {
+  const select = selectContacts();
+  const where = whereUserWhoIAmBlockingByUserId(userId);
+
+  return await prisma.contact.findMany({
+    select,
+    where,
+    orderBy: {
+      userLast: {
+        username: "asc",
+      },
+    },
+    take: CONTACT_ARBITRARY_LIMIT,
+  });
+}
+
+// plural explicit
+export async function findUserWhoHaveMeBlockedByUserId(userId: string) {
+  const select = selectContacts();
+  const where = whereUserWhoHaveMeBlockedByUserId(userId);
 
   return await prisma.contact.findMany({
     select,

@@ -100,3 +100,45 @@ export function whereUserFriendsByUserIdAndKind(
     },
   };
 }
+
+// plural implicit
+export function whereUserWhoIAmBlockingByUserId(userFirstId: string) {
+  // : Prisma.ContactWhereInput
+  return {
+    userFirstId,
+    blocking: true,
+    kind: "NONE",
+    state: "LIVE",
+    mirror: {
+      kind: "NONE",
+      state: "LIVE",
+    },
+    userFirst: {
+      state: "LIVE" || "DEACTIVATED",
+    },
+    userLast: {
+      state: "LIVE" || "DEACTIVATED",
+    },
+  };
+}
+
+// plural explicit
+export function whereUserWhoHaveMeBlockedByUserId(userFirstId: string) {
+  // : Prisma.ContactWhereInput
+  return {
+    userFirstId,
+    kind: "NONE",
+    state: "LIVE",
+    mirror: {
+      blocking: true,
+      kind: "NONE",
+      state: "LIVE",
+    },
+    userFirst: {
+      state: "LIVE" || "DEACTIVATED",
+    },
+    userLast: {
+      state: "LIVE" || "DEACTIVATED",
+    },
+  };
+}
