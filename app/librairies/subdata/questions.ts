@@ -3,7 +3,8 @@ import { DefaultArgs } from "@prisma/client/runtime/library";
 
 export const NATIVE_QUESTION_LIMIT = 16;
 
-export function selectUnansweredNativeQuestions(): Prisma.QuestionSelect<DefaultArgs> {
+export function selectUnansweredNativeQuestions() {
+  // : Prisma.QuestionSelect<DefaultArgs>
   return {
     name: true,
     kind: true,
@@ -16,7 +17,8 @@ export function selectUnansweredNativeQuestions(): Prisma.QuestionSelect<Default
 export function whereUnansweredNativeQuestionsByIdsAndKind(
   answeredNativeQuestionsIds: string[],
   kind: string
-): Prisma.QuestionWhereInput {
+) {
+  // : Prisma.QuestionWhereInput
   return {
     kind,
     id: {

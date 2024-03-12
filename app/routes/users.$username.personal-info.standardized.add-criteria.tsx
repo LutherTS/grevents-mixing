@@ -3,7 +3,10 @@ import { useLoaderData } from "@remix-run/react";
 
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
-import { findUnansweredNativeNotIrlQuestionsByUserId } from "~/librairies/data/questions";
+import {
+  findUnansweredNativeIrlQuestionsByUserId,
+  findUnansweredNativeNotIrlQuestionsByUserId,
+} from "~/librairies/data/questions";
 import { findUserByUsername } from "~/librairies/data/users";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -14,13 +17,16 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     });
   }
 
-  const [unansweredNativeNotIrlQuestions] = await Promise.all([
-    findUnansweredNativeNotIrlQuestionsByUserId(user.id),
-  ]);
+  const [unansweredNativeNotIrlQuestions, unansweredNativeIrlQuestions] =
+    await Promise.all([
+      findUnansweredNativeNotIrlQuestionsByUserId(user.id),
+      findUnansweredNativeIrlQuestionsByUserId(user.id),
+    ]);
 
   return {
     user,
     unansweredNativeNotIrlQuestions,
+    unansweredNativeIrlQuestions,
   };
 };
 

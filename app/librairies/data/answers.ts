@@ -62,14 +62,13 @@ export async function findUserNativeNotIrlAnswersByUserId(id: string) {
   });
 }
 
-// Here I could return just the ids as the name of the function implied.
 export async function findUserNativeNotIrlAnswersQuestionsIdsByUserId(
   id: string
 ) {
   const select = selectUserNativeAnswersQuestionsIds();
   const where = whereUserNativeAnswersByUserIdAndQuestionKind(id, "NATIVE");
 
-  return await prisma.answer.findMany({
+  const userNativeNotIrlAnswersQuestionsIds = await prisma.answer.findMany({
     select,
     where,
     orderBy: {
@@ -79,8 +78,15 @@ export async function findUserNativeNotIrlAnswersQuestionsIdsByUserId(
         },
       },
     },
-    take: ANSWERS_DEFAULT_LIMIT * 2,
+    take: ANSWERS_DEFAULT_LIMIT,
   });
+
+  const dataAsArrayOfStrings: string[] = [];
+  userNativeNotIrlAnswersQuestionsIds.forEach((element) =>
+    dataAsArrayOfStrings.push(element.userQuestion.question.id)
+  );
+
+  return dataAsArrayOfStrings;
 }
 
 export async function countUserNativeNotIrlAnswersByUserId(id: string) {
@@ -107,6 +113,31 @@ export async function findUserNativeIrlAnswersByUserId(id: string) {
     },
     take: ANSWERS_DEFAULT_LIMIT,
   });
+}
+
+export async function findUserNativeIrlAnswersQuestionsIdsByUserId(id: string) {
+  const select = selectUserNativeAnswersQuestionsIds();
+  const where = whereUserNativeAnswersByUserIdAndQuestionKind(id, "NATIVEIRL");
+
+  const userNativeIrlAnswersQuestionsIds = await prisma.answer.findMany({
+    select,
+    where,
+    orderBy: {
+      userQuestion: {
+        question: {
+          name: "asc",
+        },
+      },
+    },
+    take: ANSWERS_DEFAULT_LIMIT,
+  });
+
+  const dataAsArrayOfStrings: string[] = [];
+  userNativeIrlAnswersQuestionsIds.forEach((element) =>
+    dataAsArrayOfStrings.push(element.userQuestion.question.id)
+  );
+
+  return dataAsArrayOfStrings;
 }
 
 export async function countUserNativeIrlAnswersByUserId(id: string) {
