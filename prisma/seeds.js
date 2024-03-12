@@ -206,6 +206,62 @@ async function seed() {
     },
   });
 
+  // Quentin / WhoDidThatToYou
+
+  const whoDidThatToYou = await db.user.create({
+    data: {
+      username: "WhoDidThatToYou",
+      email: "q@q.com",
+      hashedPassword:
+        "$2a$12$GUVQktRR33Pxm9lxVAhmbu9SC.dInMR2h3Q7oNL3zYOngDaB7tOEe", // WhoDidThatToYou
+      appWideName: "Quentin",
+      friendCode: "sAdvy8f9uLYT",
+      state: "LIVE",
+    },
+  });
+
+  // Roland / RG
+
+  const rG = await db.user.create({
+    data: {
+      username: "RG",
+      email: "r@r.com",
+      hashedPassword:
+        "$2a$12$upWLe7nfwK8mxnCJccSpEuhuq7Zgcl6zP0iOopC3vgyLDW1LH9dkO", // RG
+      appWideName: "Roland",
+      friendCode: "qX3DGt9b2YsU",
+      state: "LIVE",
+    },
+  });
+
+  // Soren / TruePrince
+
+  const truePrince = await db.user.create({
+    data: {
+      username: "TruePrince",
+      email: "s@s.com",
+      hashedPassword:
+        "$2a$12$G2A1bB4nKn66WVC9lkQWP.9qh2//xod6vQbTZNisyPB39YyuSTQiO", // TruePrince
+      appWideName: "Soren",
+      friendCode: "cky4CUA7R9Yw",
+      state: "LIVE",
+    },
+  });
+
+  // Titus / TheTitan
+
+  const theTitan = await db.user.create({
+    data: {
+      username: "TheTitan",
+      email: "t@t.com",
+      hashedPassword:
+        "$2a$12$OcHGmHR.zYmGo08sC80ZZuyP9KntjOHVG6RnrFKXnw2HyGSYU3X5m", // TheTitan
+      appWideName: "Titus",
+      friendCode: "W9bFAaptDxvE",
+      state: "LIVE",
+    },
+  });
+
   console.log(`Users seeds complete.`);
 
   console.log(`Seeding contacts...`);
@@ -411,7 +467,7 @@ async function seed() {
 
   // “me” and Grace / relation combination nonexistent
 
-  // “me” and Hector / relation combination nonexistent
+  // “me” and Hector / Hector currently nonexistent
 
   // “me” and Lucas / relation combination “friend”
 
@@ -742,6 +798,270 @@ async function seed() {
     }),
   ]);
 
+  // “me” and Quentin / relation combination “none”
+  // “me” processRelationship "SENTFRIEND" to Quentin
+
+  const lePapierToWhoDidThatToYou = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: whoDidThatToYou.id,
+        },
+      },
+      state: "LIVE",
+      kind: "NONE",
+      processRelationship: "SENTFRIEND",
+    },
+  });
+
+  const whoDidThatToYouToLePapier = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: whoDidThatToYou.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      state: "LIVE",
+      kind: "NONE",
+    },
+  });
+
+  await Promise.all([
+    await db.contact.update({
+      where: {
+        id: lePapierToWhoDidThatToYou.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: whoDidThatToYouToLePapier.id,
+          },
+        },
+        sentFriendAt: new Date(),
+      },
+    }),
+    await db.contact.update({
+      where: {
+        id: whoDidThatToYouToLePapier.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: lePapierToWhoDidThatToYou.id,
+          },
+        },
+      },
+    }),
+  ]);
+
+  // “me” and Roland / relation combination “none”
+  // Roland processRelationship "SENTFRIEND" to “me”
+
+  const lePapierToRG = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: rG.id,
+        },
+      },
+      state: "LIVE",
+      kind: "NONE",
+    },
+  });
+
+  const rGToLePapier = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: rG.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      state: "LIVE",
+      kind: "NONE",
+      processRelationship: "SENTFRIEND",
+    },
+  });
+
+  await Promise.all([
+    await db.contact.update({
+      where: {
+        id: lePapierToRG.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: rGToLePapier.id,
+          },
+        },
+      },
+    }),
+    await db.contact.update({
+      where: {
+        id: rGToLePapier.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: lePapierToRG.id,
+          },
+        },
+        sentFriendAt: new Date(),
+      },
+    }),
+  ]);
+
+  // “me” and Soren / relation combination “friend”
+  // “me” processRelationship "SENTIRL" to Soren
+
+  const lePapierToTruePrince = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: truePrince.id,
+        },
+      },
+      state: "LIVE",
+      kind: "FRIEND",
+      processRelationship: "SENTIRL",
+    },
+  });
+
+  const truePrinceToLePapier = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: truePrince.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      state: "LIVE",
+      kind: "FRIEND",
+    },
+  });
+
+  await Promise.all([
+    await db.contact.update({
+      where: {
+        id: lePapierToTruePrince.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: truePrinceToLePapier.id,
+          },
+        },
+        sentIrlAt: new Date(),
+      },
+    }),
+    await db.contact.update({
+      where: {
+        id: truePrinceToLePapier.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: lePapierToTruePrince.id,
+          },
+        },
+      },
+    }),
+  ]);
+
+  // “me” and Titus / relation combination “friend”
+  // Titus processRelationship "SENTIRL" to “me”
+
+  const lePapierToTheTitan = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: theTitan.id,
+        },
+      },
+      state: "LIVE",
+      kind: "FRIEND",
+    },
+  });
+
+  const theTitanToLePapier = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: theTitan.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      state: "LIVE",
+      kind: "FRIEND",
+      processRelationship: "SENTIRL",
+    },
+  });
+
+  await Promise.all([
+    await db.contact.update({
+      where: {
+        id: lePapierToTheTitan.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: theTitanToLePapier.id,
+          },
+        },
+      },
+    }),
+    await db.contact.update({
+      where: {
+        id: theTitanToLePapier.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: lePapierToTheTitan.id,
+          },
+        },
+        sentIrlAt: new Date(),
+      },
+    }),
+  ]);
+
   console.log(`Contacts seeds complete.`);
 
   console.log(`Seeding questions...`);
@@ -834,7 +1154,7 @@ async function seed() {
     data: {
       name: "Birthday",
       state: "LIVE",
-      kind: "CUSTOM",
+      kind: "PSEUDO",
     },
   });
 
@@ -844,7 +1164,7 @@ async function seed() {
     data: {
       name: "Birthdate",
       state: "LIVE",
-      kind: "CUSTOM",
+      kind: "PSEUDO",
     },
   });
 
@@ -856,7 +1176,7 @@ async function seed() {
     data: {
       name: "Father's birthday",
       state: "LIVE",
-      kind: "CUSTOM",
+      kind: "PSEUDO",
     },
   });
 
@@ -866,7 +1186,7 @@ async function seed() {
     data: {
       name: "Mother's birthday",
       state: "LIVE",
-      kind: "CUSTOM",
+      kind: "PSEUDO",
     },
   });
 
@@ -876,7 +1196,7 @@ async function seed() {
     data: {
       name: "Girlfriend's birthday",
       state: "LIVE",
-      kind: "CUSTOM",
+      kind: "PSEUDO",
     },
   });
 
@@ -886,7 +1206,7 @@ async function seed() {
     data: {
       name: "Crush's birthday",
       state: "LIVE",
-      kind: "CUSTOM",
+      kind: "PSEUDO",
     },
   });
 
@@ -898,7 +1218,7 @@ async function seed() {
     data: {
       name: "Father's birthdate",
       state: "LIVE",
-      kind: "CUSTOM",
+      kind: "PSEUDO",
     },
   });
 
@@ -908,7 +1228,7 @@ async function seed() {
     data: {
       name: "Mother's birthdate",
       state: "LIVE",
-      kind: "CUSTOM",
+      kind: "PSEUDO",
     },
   });
 
@@ -918,7 +1238,7 @@ async function seed() {
     data: {
       name: "Girlfriend's birthdate",
       state: "LIVE",
-      kind: "CUSTOM",
+      kind: "PSEUDO",
     },
   });
 
@@ -928,11 +1248,11 @@ async function seed() {
     data: {
       name: "Crush's birthdate",
       state: "LIVE",
-      kind: "CUSTOM",
+      kind: "PSEUDO",
     },
   });
 
-  // Favorite actor / pseudo
+  // Favorite actor / custom
 
   const favoriteActor = await db.question.create({
     data: {
@@ -942,7 +1262,7 @@ async function seed() {
     },
   });
 
-  // Favorite actress / pseudo
+  // Favorite actress / custom
 
   const favoriteActress = await db.question.create({
     data: {
@@ -952,7 +1272,7 @@ async function seed() {
     },
   });
 
-  // Favorite anime character / pseudo
+  // Favorite anime character / custom
 
   const favoriteAnimeCharacter = await db.question.create({
     data: {
@@ -962,7 +1282,7 @@ async function seed() {
     },
   });
 
-  // Favorite anime waifu / pseudo
+  // Favorite anime waifu / custom
 
   const favoriteAnimeWaifu = await db.question.create({
     data: {
@@ -972,7 +1292,7 @@ async function seed() {
     },
   });
 
-  // Favorite anime series / pseudo
+  // Favorite anime series / custom
 
   const favoriteAnimeSeries = await db.question.create({
     data: {
@@ -982,7 +1302,7 @@ async function seed() {
     },
   });
 
-  // Favorite anime franchise / pseudo
+  // Favorite anime franchise / custom
 
   const favoriteAnimeFranchise = await db.question.create({
     data: {
@@ -992,7 +1312,7 @@ async function seed() {
     },
   });
 
-  // Favorite anime studio / pseudo
+  // Favorite anime studio / custom
   // for no preexisting custom criteria from user yet
 
   const favoriteAnimeStudio = await db.question.create({
@@ -1535,6 +1855,166 @@ async function seed() {
     },
   });
 
+  // whoDidThatToYou, First name
+  // native / pinned
+
+  const whoDidThatToYouFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: whoDidThatToYou.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // whoDidThatToYou, Last name
+  // native / irl
+
+  const whoDidThatToYouLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: whoDidThatToYou.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // rG, First name
+  // native / pinned
+
+  const rGFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: rG.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // rG, Last name
+  // native / irl
+
+  const rGLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: rG.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // truePrince, First name
+  // native / pinned
+
+  const truePrinceFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: truePrince.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // truePrince, Last name
+  // native / irl
+
+  const truePrinceLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: truePrince.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // theTitan, First name
+  // native / pinned
+
+  const theTitanFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: theTitan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // theTitan, Last name
+  // native / irl
+
+  const theTitanLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: theTitan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
   // LePapier, Email address
   // native
 
@@ -1616,11 +2096,11 @@ async function seed() {
   });
 
   // Alice-chan, Email address
-  // native
+  // native / HIDDEN
 
   const aliceChanEmailAddress = await db.userQuestion.create({
     data: {
-      state: "LIVE",
+      state: "HIDDEN",
       user: {
         connect: {
           id: aliceChan.id,
@@ -1797,7 +2277,7 @@ async function seed() {
   const lePapierGirlfriendsBirthdate = await db.userQuestion.create({
     data: {
       state: "LIVE",
-      kind: "PSEUDONATIVEIRL",
+      kind: "PSEUDONATIVE",
       user: {
         connect: {
           id: lePapier.id,
@@ -1819,7 +2299,7 @@ async function seed() {
   const lePapierCrushsBirthdate = await db.userQuestion.create({
     data: {
       state: "LIVE",
-      kind: "PSEUDONATIVEIRL",
+      kind: "PSEUDONATIVE",
       user: {
         connect: {
           id: lePapier.id,
@@ -1913,6 +2393,291 @@ async function seed() {
       question: {
         connect: {
           id: favoriteAnimeFranchise.id,
+        },
+      },
+    },
+  });
+
+  // Trovounette, Email address
+  // native
+
+  const trovounetteEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: trovounette.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // Candi, Email address
+  // native
+
+  const candiEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: candi.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // D-Dan, Email address
+  // native
+
+  const dDanEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: dDan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // El-Hadj, Email address
+  // native
+
+  const elHadjEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: elHadj.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // FioTriangle, Email address
+  // native
+
+  const fioTriangleEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: fioTriangle.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // Gracie-babie, Email address
+  // native
+
+  const gracieBabieEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: gracieBabie.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // Lucario, Email address
+  // native
+
+  const lucarioEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: lucario.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // MisterX, Email address
+  // native
+
+  const misterXEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: misterX.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // Nonyes, Email address
+  // native
+
+  const nonyesEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: nonyes.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // Ophelia-swan, Email address
+  // native
+
+  const opheliaSwanEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: opheliaSwan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // Pimpampoum, Email address
+  // native
+
+  const pimpampoumEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: pimpampoum.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // WhoDidThatToYou, Email address
+  // native
+
+  const whoDidThatToYouEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: whoDidThatToYou.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // RG, Email address
+  // native
+
+  const rGEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: rG.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // TruePrince, Email address
+  // native
+
+  const truePrinceEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: truePrince.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // TheTitan, Email address
+  // native
+
+  const theTitanEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: theTitan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
         },
       },
     },
@@ -2575,13 +3340,173 @@ async function seed() {
     },
   });
 
+  // WhoDidThatToYou, First name
+  // native / pinned
+
+  const whoDidThatToYouFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Quentin",
+      userQuestion: {
+        connect: {
+          id: whoDidThatToYouFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: whoDidThatToYou.id,
+        },
+      },
+    },
+  });
+
+  // WhoDidThatToYou, Last name
+  // native / irl
+
+  const whoDidThatToYouLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Tartarino",
+      userQuestion: {
+        connect: {
+          id: whoDidThatToYouLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: whoDidThatToYou.id,
+        },
+      },
+    },
+  });
+
+  // RG, First name
+  // native / pinned
+
+  const rGFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Roland",
+      userQuestion: {
+        connect: {
+          id: rGFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: rG.id,
+        },
+      },
+    },
+  });
+
+  // RG, Last name
+  // native / irl
+
+  const rGLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Gerric",
+      userQuestion: {
+        connect: {
+          id: rGLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: rG.id,
+        },
+      },
+    },
+  });
+
+  // TruePrince, First name
+  // native / pinned
+
+  const truePrinceFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Soren",
+      userQuestion: {
+        connect: {
+          id: truePrinceFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: truePrince.id,
+        },
+      },
+    },
+  });
+
+  // TruePrince, Last name
+  // native / irl
+
+  const truePrinceLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Daein",
+      userQuestion: {
+        connect: {
+          id: truePrinceLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: truePrince.id,
+        },
+      },
+    },
+  });
+
+  // TheTitan, First name
+  // native / pinned
+
+  const theTitanFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Titus",
+      userQuestion: {
+        connect: {
+          id: theTitanFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: theTitan.id,
+        },
+      },
+    },
+  });
+
+  // TheTitan, Last name
+  // native / irl
+
+  const theTitanLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Invictus",
+      userQuestion: {
+        connect: {
+          id: theTitanLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: theTitan.id,
+        },
+      },
+    },
+  });
+
   // LePapier, Email address
   // native
 
   const lePapierEmailAddressAnswer = await db.answer.create({
     data: {
       state: "LIVE",
-      value: "l@l.me",
+      value: lePapier.email,
       userQuestion: {
         connect: {
           id: lePapierEmailAddress.id,
@@ -2660,12 +3585,12 @@ async function seed() {
   });
 
   // Alice-chan, Email address
-  // native
+  // native / HIDDEN
 
   const aliceChanEmailAddressAnswer = await db.answer.create({
     data: {
       state: "LIVE",
-      value: "a@a.com",
+      value: aliceChan.email,
       userQuestion: {
         connect: {
           id: aliceChanEmailAddress.id,
@@ -2945,7 +3870,7 @@ async function seed() {
 
   const lePapierFavoriteAnimeFranchiseAnswer = await db.answer.create({
     data: {
-      state: "LIVE",
+      state: "DELETED",
       value: "Mobile Suit Gundam",
       userQuestion: {
         connect: {
@@ -2955,6 +3880,306 @@ async function seed() {
       user: {
         connect: {
           id: lePapier.id,
+        },
+      },
+    },
+  });
+
+  // Trovounette, Email address
+  // native
+
+  const trovounetteEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: trovounette.email,
+      userQuestion: {
+        connect: {
+          id: trovounetteEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: trovounette.id,
+        },
+      },
+    },
+  });
+
+  // Candi, Email address
+  // native
+
+  const candiEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: candi.email,
+      userQuestion: {
+        connect: {
+          id: candiEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: candi.id,
+        },
+      },
+    },
+  });
+
+  // D-Dan, Email address
+  // native
+
+  const dDanEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: dDan.email,
+      userQuestion: {
+        connect: {
+          id: dDanEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: dDan.id,
+        },
+      },
+    },
+  });
+
+  // El-Hadj, Email address
+  // native
+
+  const elHadjEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: elHadj.email,
+      userQuestion: {
+        connect: {
+          id: elHadjEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: elHadj.id,
+        },
+      },
+    },
+  });
+
+  // FioTriangle, Email address
+  // native
+
+  const fioTriangleEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: fioTriangle.email,
+      userQuestion: {
+        connect: {
+          id: fioTriangleEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: fioTriangle.id,
+        },
+      },
+    },
+  });
+
+  // Gracie-babie, Email address
+  // native
+
+  const gracieBabieEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: gracieBabie.email,
+      userQuestion: {
+        connect: {
+          id: gracieBabieEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: gracieBabie.id,
+        },
+      },
+    },
+  });
+
+  // Lucario, Email address
+  // native
+
+  const lucarioEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: lucario.email,
+      userQuestion: {
+        connect: {
+          id: lucarioEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: lucario.id,
+        },
+      },
+    },
+  });
+
+  // MisterX, Email address
+  // native
+
+  const misterXEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: misterX.email,
+      userQuestion: {
+        connect: {
+          id: misterXEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: misterX.id,
+        },
+      },
+    },
+  });
+
+  // Nonyes, Email address
+  // native
+
+  const nonyesEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: nonyes.email,
+      userQuestion: {
+        connect: {
+          id: nonyesEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: nonyes.id,
+        },
+      },
+    },
+  });
+
+  // Ophelia-swan, Email address
+  // native
+
+  const opheliaSwanEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: opheliaSwan.email,
+      userQuestion: {
+        connect: {
+          id: opheliaSwanEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: opheliaSwan.id,
+        },
+      },
+    },
+  });
+
+  // Pimpampoum, Email address
+  // native
+
+  const pimpampoumEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: pimpampoum.email,
+      userQuestion: {
+        connect: {
+          id: pimpampoumEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: pimpampoum.id,
+        },
+      },
+    },
+  });
+
+  // WhoDidThatToYou, Email address
+  // native
+
+  const whoDidThatToYouEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: whoDidThatToYou.email,
+      userQuestion: {
+        connect: {
+          id: whoDidThatToYouEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: whoDidThatToYou.id,
+        },
+      },
+    },
+  });
+
+  // RG, Email address
+  // native
+
+  const rGEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: rG.email,
+      userQuestion: {
+        connect: {
+          id: rGEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: rG.id,
+        },
+      },
+    },
+  });
+
+  // TruePrince, Email address
+  // native
+
+  const truePrinceEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: truePrince.email,
+      userQuestion: {
+        connect: {
+          id: truePrinceEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: truePrince.id,
+        },
+      },
+    },
+  });
+
+  // TheTitan, Email address
+  // native
+
+  const theTitanEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: theTitan.email,
+      userQuestion: {
+        connect: {
+          id: theTitanEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: theTitan.id,
         },
       },
     },

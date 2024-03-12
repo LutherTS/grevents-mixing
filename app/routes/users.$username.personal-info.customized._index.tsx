@@ -3,20 +3,66 @@ import { useLoaderData } from "@remix-run/react";
 
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
+import {
+  countUserCustomAnswersByUserId,
+  countUserPinnedAnswersByUserId,
+  countUserPseudonativeIrlAnswersByUserId,
+  countUserPseudonativeNotIrlAnswersByUserId,
+  findUserCustomAnswersByUserId,
+  findUserPseudonativeIrlAnswersByUserId,
+  findUserPseudonativeNotIrlAnswersByUserId,
+} from "~/librairies/data/answers";
+import { findUserByUsername } from "~/librairies/data/users";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
-  const username = params.username;
-  return { username };
+  const user = await findUserByUsername(params.username!);
+  if (!user) {
+    throw new Response("Could not find requested user.", {
+      status: 404,
+    });
+  }
+
+  const [
+    userPinnedAnswerCount,
+    userPseudonativeNotIrlAnswers,
+    userPseudonativeNotIrlAnswersCount,
+    userPseudonativeIrlAnswers,
+    userPseudonativeIrlAnswersCount,
+    userCustomAnswers,
+    userCustomAnswersCount,
+  ] = await Promise.all([
+    countUserPinnedAnswersByUserId(user.id),
+    findUserPseudonativeNotIrlAnswersByUserId(user.id),
+    countUserPseudonativeNotIrlAnswersByUserId(user.id),
+    findUserPseudonativeIrlAnswersByUserId(user.id),
+    countUserPseudonativeIrlAnswersByUserId(user.id),
+    findUserCustomAnswersByUserId(user.id),
+    countUserCustomAnswersByUserId(user.id),
+  ]);
+
+  return {
+    user,
+    userPinnedAnswerCount,
+    userPseudonativeNotIrlAnswers,
+    userPseudonativeNotIrlAnswersCount,
+    userPseudonativeIrlAnswers,
+    userPseudonativeIrlAnswersCount,
+    userCustomAnswers,
+    userCustomAnswersCount,
+  };
 };
 
 export default function PersonalInfoCustomizedPage() {
   const data = useLoaderData<typeof loader>();
+  console.log(data);
 
   return (
     <>
-      <H1>Welcome to {data.username}&apos;s Personal Info Customized.</H1>
+      <H1>
+        Welcome to {data.user.appWideName}&apos;s Personal Info Customized.
+      </H1>
 
-      <PageLink href={`/users/${data.username}/dashboard`}>
+      <PageLink href={`/users/${data.user.appWideName}/dashboard`}>
         back to dashboard (for now)
       </PageLink>
 
