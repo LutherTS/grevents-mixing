@@ -27,6 +27,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
 export default function FriendsPage() {
   const data = useLoaderData<typeof loader>();
+  console.log(data);
 
   return (
     <>
