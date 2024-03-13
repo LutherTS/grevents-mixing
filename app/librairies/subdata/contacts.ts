@@ -205,3 +205,23 @@ export function whereUserFriendsNotToUserQuestionByUserQuestionIdAndUserId(
     },
   };
 }
+
+export function whereContactByUserFirstIdAndUserLastUsername(
+  userFirstId: string,
+  username: string
+): Prisma.ContactWhereInput {
+  return {
+    userFirstId,
+    state: "LIVE",
+    mirror: {
+      state: "LIVE",
+    },
+    userFirst: {
+      state: "LIVE" || "DEACTIVATED",
+    },
+    userLast: {
+      username,
+      state: "LIVE" || "DEACTIVATED",
+    },
+  };
+}

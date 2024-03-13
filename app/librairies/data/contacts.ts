@@ -9,6 +9,7 @@ import {
   whereUserFriendsNotToUserQuestionByUserQuestionIdAndUserId,
   whereUserWhoHaveMeBlockedByUserId,
   whereUserWhoIAmBlockingByUserId,
+  whereContactByUserFirstIdAndUserLastUsername,
 } from "../subdata/contacts";
 
 const orderBy = DEFAULT_CONTACTS_ORDER_BY;
@@ -197,5 +198,21 @@ export async function findUserFriendsNotToUserQuestionByUserQuestionIdAndUserId(
     where,
     orderBy,
     take,
+  });
+}
+
+export async function findContactByUserFirstIdAndUserLastUsername(
+  userFirstId: string,
+  username: string
+) {
+  const select = selectContacts(); // I'll need to customize that
+  const where = whereContactByUserFirstIdAndUserLastUsername(
+    userFirstId,
+    username
+  );
+
+  return await prisma.contact.findFirst({
+    select,
+    where,
   });
 }
