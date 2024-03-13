@@ -1,8 +1,17 @@
 import { Prisma } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 
-export const ANSWERS_PINNED_BY_USER_LIMIT = 16;
-export const ANSWERS_DEFAULT_LIMIT = 32;
+// same as questions at this time but nested
+export const DEFAULT_ANSWERS_ORDER_BY = {
+  userQuestion: {
+    question: {
+      name: "asc",
+    },
+  },
+} as Prisma.AnswerOrderByWithRelationInput;
+
+export const DEFAULT_ANSWERS_LIMIT = 32;
+export const PINNED_BY_USER_ANSWERS_LIMIT = 16;
 
 export function selectUserPinnedAnswers() {
   // : Prisma.AnswerSelect<DefaultArgs>

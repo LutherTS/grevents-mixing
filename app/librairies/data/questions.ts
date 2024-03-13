@@ -1,9 +1,14 @@
 import { prisma } from "~/utilities/db.server";
 import {
-  NATIVE_QUESTION_LIMIT,
+  DEFAULT_QUESTIONS_ORDER_BY,
+  ARBITRARY_QUESTIONS_LIMIT,
   selectUnansweredNativeQuestions,
   whereUnansweredNativeQuestionsByUserIdAndKind,
 } from "../subdata/questions";
+
+const orderBy = DEFAULT_QUESTIONS_ORDER_BY;
+
+const take = ARBITRARY_QUESTIONS_LIMIT;
 
 export async function findUnansweredNativeNotIrlQuestionsByUserId(
   userId: string
@@ -14,10 +19,8 @@ export async function findUnansweredNativeNotIrlQuestionsByUserId(
   return await prisma.question.findMany({
     select,
     where,
-    orderBy: {
-      name: "asc",
-    },
-    take: NATIVE_QUESTION_LIMIT,
+    orderBy,
+    take,
   });
 }
 
@@ -31,9 +34,7 @@ export async function findUnansweredNativeIrlQuestionsByUserId(userId: string) {
   return await prisma.question.findMany({
     select,
     where,
-    orderBy: {
-      name: "asc",
-    },
-    take: NATIVE_QUESTION_LIMIT,
+    orderBy,
+    take,
   });
 }

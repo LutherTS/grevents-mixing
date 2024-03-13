@@ -1,7 +1,7 @@
 import { prisma } from "~/utilities/db.server";
 import {
-  CONTACT_ARBITRARY_LIMIT,
   DEFAULT_CONTACTS_ORDER_BY,
+  ARBITRARY_CONTACTS_LIMIT,
   selectContacts,
   whereSentFromContactsByUserIdAndProcessRelationship,
   whereSentToContactsByUserIdAndProcessRelationship,
@@ -13,7 +13,7 @@ import {
 
 const orderBy = DEFAULT_CONTACTS_ORDER_BY;
 
-const take = CONTACT_ARBITRARY_LIMIT;
+const take = ARBITRARY_CONTACTS_LIMIT;
 
 export async function findSentFriendToContactsByUserId(userId: string) {
   const select = selectContacts();

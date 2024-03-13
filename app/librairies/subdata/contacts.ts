@@ -14,7 +14,29 @@ export const DEFAULT_CONTACTS_ORDER_BY = [
   },
 ] as Prisma.ContactOrderByWithRelationInput[];
 
-export const CONTACT_ARBITRARY_LIMIT = 256;
+export const ARBITRARY_CONTACTS_LIMIT = 256;
+
+export const isFriend: Prisma.ContactWhereInput = {
+  kind: "FRIEND",
+  blocking: false,
+  state: "LIVE",
+  mirror: {
+    kind: "FRIEND",
+    blocking: false,
+    state: "LIVE",
+  },
+};
+
+export const isIrl: Prisma.ContactWhereInput = {
+  kind: "IRL",
+  blocking: false,
+  state: "LIVE",
+  mirror: {
+    kind: "IRL",
+    blocking: false,
+    state: "LIVE",
+  },
+};
 
 export function selectContacts() {
   // : Prisma.ContactSelect<DefaultArgs>
@@ -159,7 +181,8 @@ export function whereUserWhoHaveMeBlockedByUserId(userFirstId: string) {
 export function whereUserFriendsNotToUserQuestionByUserQuestionIdAndUserId(
   userQuestionId: string,
   userFirstId: string
-): Prisma.ContactWhereInput {
+) {
+  // : Prisma.ContactWhereInput
   return {
     userFirstId,
     state: "LIVE",
@@ -169,53 +192,16 @@ export function whereUserFriendsNotToUserQuestionByUserQuestionIdAndUserId(
     mirror: {
       state: "LIVE",
     },
-    OR: [
-      {
-        kind: "FRIEND",
-        blocking: false,
-        mirror: {
-          kind: "FRIEND",
-          blocking: false,
-        },
-      },
-      {
-        kind: "IRL",
-        blocking: false,
-        mirror: {
-          kind: "IRL",
-          blocking: false,
-        },
-      },
-    ],
+    OR: [isFriend, isIrl],
     userQuestionFriends: {
       none: {
         userQuestionId,
         isSharedToFriend: true,
         state: "LIVE",
         contact: {
-          OR: [
-            {
-              kind: "FRIEND",
-              blocking: false,
-              mirror: {
-                kind: "FRIEND",
-                blocking: false,
-              },
-            },
-            {
-              kind: "IRL",
-              blocking: false,
-              mirror: {
-                kind: "IRL",
-                blocking: false,
-              },
-            },
-          ],
+          OR: [isFriend, isIrl],
         },
       },
     },
   };
 }
-
-// Once the query is built and tested, that OR and its insides ("friend", "irl") need to be either functions or variables.
-// Because if in the future in need to change my query definition of what it means to be friends, it will be streamlined to do it only on these (top-of-the-file, exported) variables.

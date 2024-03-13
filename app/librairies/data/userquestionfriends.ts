@@ -1,9 +1,14 @@
 import { prisma } from "~/utilities/db.server";
 import {
+  DEFAULT_USERQUESTIONFRIENDS_ORDER_BY,
   selectUserQuestionFriends,
   whereUserQuestionFriendsByUserQuestionId,
 } from "../subdata/userquestionfriends";
-import { CONTACT_ARBITRARY_LIMIT } from "../subdata/contacts";
+import { ARBITRARY_CONTACTS_LIMIT } from "../subdata/contacts";
+
+const orderBy = DEFAULT_USERQUESTIONFRIENDS_ORDER_BY;
+
+const take = ARBITRARY_CONTACTS_LIMIT;
 
 export async function findUserQuestionFriendsByUserQuestionId(
   userQuestionId: string
@@ -14,22 +19,7 @@ export async function findUserQuestionFriendsByUserQuestionId(
   return await prisma.userQuestionFriend.findMany({
     select,
     where,
-    orderBy: [
-      {
-        contact: {
-          userLast: {
-            appWideName: "asc",
-          },
-        },
-      },
-      {
-        contact: {
-          userLast: {
-            username: "asc",
-          },
-        },
-      },
-    ],
-    take: CONTACT_ARBITRARY_LIMIT,
+    orderBy,
+    take,
   });
 }

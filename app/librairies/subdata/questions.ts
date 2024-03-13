@@ -1,7 +1,11 @@
 import { Prisma } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 
-export const NATIVE_QUESTION_LIMIT = 16;
+export const DEFAULT_QUESTIONS_ORDER_BY = {
+  name: "asc",
+} as Prisma.QuestionOrderByWithRelationInput;
+
+export const ARBITRARY_QUESTIONS_LIMIT = 16;
 
 export function selectUnansweredNativeQuestions() {
   // : Prisma.QuestionSelect<DefaultArgs>
