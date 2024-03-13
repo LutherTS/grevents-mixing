@@ -13,6 +13,21 @@ export const DEFAULT_ANSWERS_ORDER_BY = {
 export const DEFAULT_ANSWERS_LIMIT = 32;
 export const PINNED_BY_USER_ANSWERS_LIMIT = 16;
 
+// eventually to be shifted in ./userquestions.ts
+export const isNative: Prisma.UserQuestionWhereInput = {
+  question: {
+    kind: "NATIVE",
+  },
+};
+
+// eventually to be shifted in ./userquestions.ts
+export const isPseudoNative: Prisma.UserQuestionWhereInput = {
+  kind: "PSEUDONATIVE",
+  question: {
+    kind: "PSEUDO",
+  },
+};
+
 export function selectUserPinnedAnswers() {
   // : Prisma.AnswerSelect<DefaultArgs>
   return {
@@ -286,5 +301,107 @@ export function whereAnswerByUserQuestionIDAndUserID(
     user: {
       state: "LIVE" || "DEACTIVATED",
     },
+  };
+}
+
+export function selectAnswers() {
+  // : Prisma.AnswerSelect<DefaultArgs>
+  return {
+    userQuestion: {
+      select: {
+        id: true,
+        kind: true,
+        question: {
+          select: {
+            name: true,
+            kind: true,
+          },
+        },
+      },
+    },
+    value: true,
+    id: true,
+    user: {
+      select: {
+        username: true,
+        id: true,
+      },
+    },
+  };
+}
+
+// currently the same as whereUserPinnedAnswersByUserId with OR [isNative, isPseudoNative]
+export function whereUserPinnedNotIrlAnswersByUserId(id: string) {
+  // : Prisma.AnswerWhereInput
+  return {
+    userQuestion: {
+      user: {
+        id,
+      },
+      question: {
+        state: "LIVE",
+      },
+      isPinned: true,
+      state: "LIVE",
+      OR: [isNative, isPseudoNative],
+    },
+    user: {
+      id,
+      state: "LIVE" || "DEACTIVATED",
+    },
+    state: "LIVE",
+  };
+}
+
+// currently the same as whereUserNativeAnswersByUserIdAndQuestionKind with userQuestion.isPinned as false and without "HIDDEN" on userQuestion.state
+export function whereUserUnpinnedNativeAnswersByUserIdAndQuestionKind(
+  id: string,
+  kind: string
+) {
+  // : Prisma.AnswerWhereInput
+  return {
+    userQuestion: {
+      user: {
+        id,
+      },
+      isPinned: false,
+      question: {
+        kind,
+        state: "LIVE",
+      },
+      state: "LIVE",
+    },
+    user: {
+      id,
+      state: "LIVE" || "DEACTIVATED",
+    },
+    state: "LIVE",
+  };
+}
+
+// currently the same as whereUserPseudonativeAnswersByUserIdAndUserQuestionKind with userQuestion.isPinned as false
+export function whereUserUnpinnedPseudonativeAnswersByUserIdAndUserQuestionKind(
+  id: string,
+  kind: string
+) {
+  // : Prisma.AnswerWhereInput
+  return {
+    userQuestion: {
+      user: {
+        id,
+      },
+      isPinned: false,
+      question: {
+        kind: "PSEUDO",
+        state: "LIVE",
+      },
+      kind,
+      state: "LIVE",
+    },
+    user: {
+      id,
+      state: "LIVE" || "DEACTIVATED",
+    },
+    state: "LIVE",
   };
 }
