@@ -10,6 +10,17 @@ export const DEFAULT_ANSWERS_ORDER_BY = {
   },
 } as Prisma.AnswerOrderByWithRelationInput;
 
+export const PINNED_BY_USER_ANSWERS_ORDER_BY = [
+  {
+    userQuestion: {
+      pinnedAt: "desc",
+    },
+  },
+  {
+    updatedAt: "desc",
+  },
+] as Prisma.AnswerOrderByWithRelationInput[];
+
 export const DEFAULT_ANSWERS_LIMIT = 32;
 export const PINNED_BY_USER_ANSWERS_LIMIT = 16;
 
@@ -23,6 +34,21 @@ export const isNative: Prisma.UserQuestionWhereInput = {
 // eventually to be shifted in ./userquestions.ts
 export const isPseudoNative: Prisma.UserQuestionWhereInput = {
   kind: "PSEUDONATIVE",
+  question: {
+    kind: "PSEUDO",
+  },
+};
+
+// eventually to be shifted in ./userquestions.ts
+export const isNativeIrl: Prisma.UserQuestionWhereInput = {
+  question: {
+    kind: "NATIVEIRL",
+  },
+};
+
+// eventually to be shifted in ./userquestions.ts
+export const isPseudoNativeIrl: Prisma.UserQuestionWhereInput = {
+  kind: "PSEUDONATIVEIRL",
   question: {
     kind: "PSEUDO",
   },
@@ -344,6 +370,29 @@ export function whereUserPinnedNotIrlAnswersByUserId(id: string) {
       isPinned: true,
       state: "LIVE",
       OR: [isNative, isPseudoNative],
+    },
+    user: {
+      id,
+      state: "LIVE" || "DEACTIVATED",
+    },
+    state: "LIVE",
+  };
+}
+
+// currently the same as whereUserPinnedAnswersByUserId with OR [isNative, isPseudoNative, isNativeIrl, isPseudonativeIrl]
+export function whereUserPinnedNotAndIrlAnswersByUserId(id: string) {
+  // : Prisma.AnswerWhereInput
+  return {
+    userQuestion: {
+      user: {
+        id,
+      },
+      question: {
+        state: "LIVE",
+      },
+      isPinned: true,
+      state: "LIVE",
+      OR: [isNative, isPseudoNative, isNativeIrl, isPseudoNativeIrl],
     },
     user: {
       id,

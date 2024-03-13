@@ -17,6 +17,8 @@ import {
   whereUserPinnedNotIrlAnswersByUserId,
   whereUserUnpinnedNativeAnswersByUserIdAndQuestionKind,
   whereUserUnpinnedPseudonativeAnswersByUserIdAndUserQuestionKind,
+  PINNED_BY_USER_ANSWERS_ORDER_BY,
+  whereUserPinnedNotAndIrlAnswersByUserId,
 } from "../subdata/answers";
 
 const orderBy = DEFAULT_ANSWERS_ORDER_BY;
@@ -30,16 +32,7 @@ export async function findUserPinnedAnswersByUserId(id: string) {
   return await prisma.answer.findMany({
     select,
     where,
-    orderBy: [
-      {
-        userQuestion: {
-          pinnedAt: "desc",
-        },
-      },
-      {
-        updatedAt: "desc",
-      },
-    ],
+    orderBy: PINNED_BY_USER_ANSWERS_ORDER_BY,
     take: PINNED_BY_USER_ANSWERS_LIMIT,
   });
 }
@@ -184,7 +177,19 @@ export async function findUserPinnedNotIrlAnswersByUserId(id: string) {
   return await prisma.answer.findMany({
     select,
     where,
-    orderBy,
+    orderBy: PINNED_BY_USER_ANSWERS_ORDER_BY,
+    take: PINNED_BY_USER_ANSWERS_LIMIT,
+  });
+}
+
+export async function findUserPinnedNotAndIrlAnswersByUserId(id: string) {
+  const select = selectAnswers();
+  const where = whereUserPinnedNotAndIrlAnswersByUserId(id);
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy: PINNED_BY_USER_ANSWERS_ORDER_BY,
     take: PINNED_BY_USER_ANSWERS_LIMIT,
   });
 }
@@ -211,6 +216,38 @@ export async function findUserUnpinnedPseudonativeNotIrlAnswersByUserId(
   const where = whereUserUnpinnedPseudonativeAnswersByUserIdAndUserQuestionKind(
     id,
     "PSEUDONATIVE"
+  );
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy,
+    take,
+  });
+}
+
+export async function findUserUnpinnedNativeIrlAnswersByUserId(id: string) {
+  const select = selectAnswers();
+  const where = whereUserUnpinnedNativeAnswersByUserIdAndQuestionKind(
+    id,
+    "NATIVEIRL"
+  );
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy,
+    take,
+  });
+}
+
+export async function findUserUnpinnedPseudonativeIrlAnswersByUserId(
+  id: string
+) {
+  const select = selectAnswers();
+  const where = whereUserUnpinnedPseudonativeAnswersByUserIdAndUserQuestionKind(
+    id,
+    "PSEUDONATIVEIRL"
   );
 
   return await prisma.answer.findMany({
