@@ -1,6 +1,25 @@
 import { Prisma } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
+
 import { isFriend, isIrl } from "./contacts";
+
+// same as contacts at this time but nested
+export const DEFAULT_USERQUESTIONFRIENDS_ORDER_BY = [
+  {
+    contact: {
+      userLast: {
+        appWideName: "asc",
+      },
+    },
+  },
+  {
+    contact: {
+      userLast: {
+        username: "asc",
+      },
+    },
+  },
+] as Prisma.UserQuestionFriendOrderByWithRelationInput[];
 
 export function selectUserQuestionFriends() {
   // : Prisma.UserQuestionFriendSelect<DefaultArgs>

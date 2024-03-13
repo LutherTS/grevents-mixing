@@ -1,7 +1,8 @@
 import { prisma } from "~/utilities/db.server";
 import {
-  ANSWERS_DEFAULT_LIMIT,
-  ANSWERS_PINNED_BY_USER_LIMIT,
+  DEFAULT_ANSWERS_ORDER_BY,
+  DEFAULT_ANSWERS_LIMIT,
+  PINNED_BY_USER_ANSWERS_LIMIT,
   selectAnswer,
   selectUserCustomAnswers,
   selectUserNativeAnswers,
@@ -13,6 +14,10 @@ import {
   whereUserPinnedAnswersByUserId,
   whereUserPseudonativeAnswersByUserIdAndUserQuestionKind,
 } from "../subdata/answers";
+
+const orderBy = DEFAULT_ANSWERS_ORDER_BY;
+
+const take = DEFAULT_ANSWERS_LIMIT;
 
 export async function findUserPinnedAnswersByUserId(id: string) {
   const select = selectUserPinnedAnswers();
@@ -31,7 +36,7 @@ export async function findUserPinnedAnswersByUserId(id: string) {
         updatedAt: "desc",
       },
     ],
-    take: ANSWERS_PINNED_BY_USER_LIMIT,
+    take: PINNED_BY_USER_ANSWERS_LIMIT,
   });
 }
 
@@ -50,14 +55,8 @@ export async function findUserNativeNotIrlAnswersByUserId(id: string) {
   return await prisma.answer.findMany({
     select,
     where,
-    orderBy: {
-      userQuestion: {
-        question: {
-          name: "asc",
-        },
-      },
-    },
-    take: ANSWERS_DEFAULT_LIMIT,
+    orderBy,
+    take,
   });
 }
 
@@ -76,14 +75,8 @@ export async function findUserNativeIrlAnswersByUserId(id: string) {
   return await prisma.answer.findMany({
     select,
     where,
-    orderBy: {
-      userQuestion: {
-        question: {
-          name: "asc",
-        },
-      },
-    },
-    take: ANSWERS_DEFAULT_LIMIT,
+    orderBy,
+    take,
   });
 }
 
@@ -105,14 +98,8 @@ export async function findUserPseudonativeNotIrlAnswersByUserId(id: string) {
   return await prisma.answer.findMany({
     select,
     where,
-    orderBy: {
-      userQuestion: {
-        question: {
-          name: "asc",
-        },
-      },
-    },
-    take: ANSWERS_DEFAULT_LIMIT,
+    orderBy,
+    take,
   });
 }
 
@@ -137,14 +124,8 @@ export async function findUserPseudonativeIrlAnswersByUserId(id: string) {
   return await prisma.answer.findMany({
     select,
     where,
-    orderBy: {
-      userQuestion: {
-        question: {
-          name: "asc",
-        },
-      },
-    },
-    take: ANSWERS_DEFAULT_LIMIT,
+    orderBy,
+    take,
   });
 }
 
@@ -166,14 +147,8 @@ export async function findUserCustomAnswersByUserId(id: string) {
   return await prisma.answer.findMany({
     select,
     where,
-    orderBy: {
-      userQuestion: {
-        question: {
-          name: "asc",
-        },
-      },
-    },
-    take: ANSWERS_DEFAULT_LIMIT,
+    orderBy,
+    take,
   });
 }
 

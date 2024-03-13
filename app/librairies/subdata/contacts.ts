@@ -14,7 +14,7 @@ export const DEFAULT_CONTACTS_ORDER_BY = [
   },
 ] as Prisma.ContactOrderByWithRelationInput[];
 
-export const CONTACT_ARBITRARY_LIMIT = 256;
+export const ARBITRARY_CONTACTS_LIMIT = 256;
 
 export const isFriend: Prisma.ContactWhereInput = {
   kind: "FRIEND",
@@ -205,6 +205,3 @@ export function whereUserFriendsNotToUserQuestionByUserQuestionIdAndUserId(
     },
   };
 }
-
-// Once the query is built and tested, that OR and its insides ("friend", "irl") need to be either functions or variables.
-// Because if in the future in need to change my query definition of what it means to be friends, it will be streamlined to do it only on these (top-of-the-file, exported) variables.
