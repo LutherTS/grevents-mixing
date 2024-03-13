@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
+import { isFriend, isIrl } from "./contacts";
 
 export function selectUserQuestionFriends() {
   // : Prisma.UserQuestionFriendSelect<DefaultArgs>
@@ -38,24 +39,10 @@ export function whereUserQuestionFriendsByUserQuestionId(
     },
     OR: [
       {
-        contact: {
-          kind: "FRIEND",
-          blocking: false,
-          mirror: {
-            kind: "FRIEND",
-            blocking: false,
-          },
-        },
+        contact: isFriend,
       },
       {
-        contact: {
-          kind: "IRL",
-          blocking: false,
-          mirror: {
-            kind: "IRL",
-            blocking: false,
-          },
-        },
+        contact: isIrl,
       },
     ],
   };
