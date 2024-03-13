@@ -1,4 +1,4 @@
-import { prisma } from "~/utilities/db.server";
+import { prisma } from "~/utilities/server/db.server";
 import {
   DEFAULT_CONTACTS_ORDER_BY,
   ARBITRARY_CONTACTS_LIMIT,
@@ -216,3 +216,29 @@ export async function findContactByUserFirstIdAndUserLastUsername(
     where,
   });
 }
+
+export async function findUserPinnedNotIrlAnswersByUserIdQueried(
+  userId: string,
+  contactId: string
+) {}
+
+export async function findUserUnpinnedNativeNotIrlAnswersByUserIdQueried(
+  userId: string
+) {}
+
+export async function findUserUnpinnedPseudonativeNotIrlAnswersByUserIdQueried(
+  userId: string
+) {}
+
+export async function findUserUnpinnedNativeIrlAnswersByUserIdQueried(
+  userId: string
+) {}
+
+export async function findUserUnpinnedPseudonativeIrlAnswersByUserIdQueried(
+  userId: string
+) {}
+
+export async function findUserUnpinnedSharedToContactCustomAnswersQueried(
+  userId: string,
+  contactId: string
+) {}

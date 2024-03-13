@@ -1,12 +1,14 @@
 import { Prisma } from "@prisma/client";
+import {
+  selectContacts2,
+  selectContacts2type,
+} from "~/librairies/subdata/contacts";
 
-export function defineGatheredRelCombo(
-  relCombo: string,
+export function defineContactRelCombo(
   contact: Prisma.ContactGetPayload<{
-    include: {
-      mirror: true;
-    };
-  }>
+    select: selectContacts2type;
+  }>,
+  relCombo?: string
 ) {
   if (
     relCombo === "" &&
@@ -69,7 +71,11 @@ export function defineGatheredRelCombo(
   ) {
     return "blocking-blocked";
   } else {
-    return relCombo;
+    if (relCombo) {
+      return relCombo;
+    } else {
+      return "";
+    }
   }
 }
 

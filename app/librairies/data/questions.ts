@@ -1,4 +1,4 @@
-import { prisma } from "~/utilities/db.server";
+import { prisma } from "~/utilities/server/db.server";
 import {
   DEFAULT_QUESTIONS_ORDER_BY,
   ARBITRARY_QUESTIONS_LIMIT,

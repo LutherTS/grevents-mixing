@@ -38,6 +38,7 @@ export const isIrl: Prisma.ContactWhereInput = {
   },
 };
 
+// object maybe?
 export function selectContacts() {
   // : Prisma.ContactSelect<DefaultArgs>
   return {
@@ -71,6 +72,39 @@ export function selectContacts() {
     },
   };
 }
+
+export const selectContacts2 = {
+  kind: true,
+  blocking: true,
+  id: true,
+  processRelationship: true,
+  userFirst: {
+    select: {
+      id: true,
+      username: true,
+      appWideName: true,
+      state: true,
+    },
+  },
+  mirror: {
+    select: {
+      kind: true,
+      blocking: true,
+      id: true,
+      processRelationship: true,
+      userFirst: {
+        select: {
+          id: true,
+          username: true,
+          appWideName: true,
+          state: true,
+        },
+      },
+    },
+  },
+} satisfies Prisma.ContactSelect;
+
+export type selectContacts2type = typeof selectContacts2;
 
 export function whereSentToContactsByUserIdAndProcessRelationship(
   userFirstId: string,

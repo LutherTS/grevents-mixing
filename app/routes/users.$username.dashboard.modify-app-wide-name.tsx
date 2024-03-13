@@ -1,21 +1,19 @@
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { prisma } from "~/utilities/db.server";
+import { prisma } from "~/utilities/server/db.server";
 
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
+import { findUserByUsername } from "~/librairies/data/users";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
-  const username = params.username;
-  const user = await prisma.user.findUnique({
-    where: { username: username },
-    // select ...
-  });
+  const user = await findUserByUsername(params.username!);
   if (!user) {
     throw new Response("Could not find requested user.", {
       status: 404,
     });
   }
+
   return { user };
 };
 

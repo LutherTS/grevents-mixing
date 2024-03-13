@@ -3,8 +3,17 @@ import { useLoaderData, useSearchParams } from "@remix-run/react";
 
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
-import { findContactByUserFirstIdAndUserLastUsername } from "~/librairies/data/contacts";
+import {
+  findContactByUserFirstIdAndUserLastUsername,
+  findUserPinnedNotIrlAnswersByUserIdQueried,
+  findUserUnpinnedNativeIrlAnswersByUserIdQueried,
+  findUserUnpinnedNativeNotIrlAnswersByUserIdQueried,
+  findUserUnpinnedPseudonativeIrlAnswersByUserIdQueried,
+  findUserUnpinnedPseudonativeNotIrlAnswersByUserIdQueried,
+  findUserUnpinnedSharedToContactCustomAnswersQueried,
+} from "~/librairies/data/contacts";
 import { findUserByUsername } from "~/librairies/data/users";
+import { defineContactRelCombo } from "~/utilities/contacts";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const user = await findUserByUsername(params.username!);
@@ -15,13 +24,52 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   }
 
   const url = new URL(request.url);
-  const userlast = url.searchParams.get("userlast") || "";
-  const relcombo = url.searchParams.get("relcombo") || "";
+  const userLast = url.searchParams.get("userlast") || "";
+  let relCombo = url.searchParams.get("relcombo") || "";
 
   const userToQueriedContact =
-    await findContactByUserFirstIdAndUserLastUsername(user.id, userlast);
+    await findContactByUserFirstIdAndUserLastUsername(user.id, userLast);
 
-  return { user, userToQueriedContact };
+  if (userToQueriedContact) {
+    relCombo = defineContactRelCombo(userToQueriedContact, relCombo);
+  }
+
+  let [a, b, c, d] = Array(4);
+  let [u, v, w, x, y, z] = Array(6);
+
+  if (userToQueriedContact && relCombo === "friend") {
+    [a, b, c, d] = await Promise.all([
+      findUserPinnedNotIrlAnswersByUserIdQueried(
+        user.id,
+        userToQueriedContact.id
+      ), // 2
+      findUserUnpinnedNativeNotIrlAnswersByUserIdQueried(user.id),
+      findUserUnpinnedPseudonativeNotIrlAnswersByUserIdQueried(user.id),
+      findUserUnpinnedSharedToContactCustomAnswersQueried(
+        user.id,
+        userToQueriedContact.id
+      ), // 2
+    ]);
+    return { user, userToQueriedContact, a, b, c, d };
+  } else if (userToQueriedContact && relCombo === "irl") {
+    [u, v, w, x, y, z] = await Promise.all([
+      findUserPinnedNotIrlAnswersByUserIdQueried(
+        user.id,
+        userToQueriedContact.id
+      ), // 2
+      findUserUnpinnedNativeNotIrlAnswersByUserIdQueried(user.id),
+      findUserUnpinnedPseudonativeNotIrlAnswersByUserIdQueried(user.id),
+      findUserUnpinnedNativeIrlAnswersByUserIdQueried(user.id),
+      findUserUnpinnedPseudonativeIrlAnswersByUserIdQueried(user.id),
+      findUserUnpinnedSharedToContactCustomAnswersQueried(
+        user.id,
+        userToQueriedContact.id
+      ), // 2
+    ]);
+    return { user, userToQueriedContact, u, v, w, x, y, z };
+  } else {
+    return { user, userToQueriedContact };
+  }
 };
 
 export default function QueriedPage() {
