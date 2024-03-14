@@ -1,5 +1,6 @@
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData, useSearchParams } from "@remix-run/react";
+import invariant from "tiny-invariant";
 
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
@@ -16,7 +17,9 @@ import { findUserByUsername } from "~/librairies/data/users";
 import { defineContactRelCombo } from "~/utilities/contacts";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
-  const user = await findUserByUsername(params.username!);
+  invariant(params.username, "Expected params.username");
+
+  const user = await findUserByUsername(params.username);
   if (!user) {
     throw new Response("Could not find requested user.", {
       status: 404,

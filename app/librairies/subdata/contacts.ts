@@ -104,8 +104,6 @@ export const selectContacts2 = {
   },
 } satisfies Prisma.ContactSelect;
 
-export type selectContacts2type = typeof selectContacts2;
-
 export function whereSentToContactsByUserIdAndProcessRelationship(
   userFirstId: string,
   processRelationship: string

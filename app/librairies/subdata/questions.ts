@@ -3,7 +3,7 @@ import { DefaultArgs } from "@prisma/client/runtime/library";
 
 export const DEFAULT_QUESTIONS_ORDER_BY = {
   name: "asc",
-} as Prisma.QuestionOrderByWithRelationInput;
+} satisfies Prisma.QuestionOrderByWithRelationInput;
 
 export const ARBITRARY_QUESTIONS_LIMIT = 16;
 

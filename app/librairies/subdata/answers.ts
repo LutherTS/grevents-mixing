@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
-import { DefaultArgs } from "@prisma/client/runtime/library";
+
+// select n'a pas besoin d'être une fonction, et si je nomme bien mes where, ils n'ont pas besoin d'être des fonctions non... si quand même. Ce qui sont mappés demeurent des arguments.
 
 // same as questions at this time but nested
 export const DEFAULT_ANSWERS_ORDER_BY = {
@@ -8,7 +9,7 @@ export const DEFAULT_ANSWERS_ORDER_BY = {
       name: "asc",
     },
   },
-} as Prisma.AnswerOrderByWithRelationInput;
+} satisfies Prisma.AnswerOrderByWithRelationInput;
 
 export const PINNED_BY_USER_ANSWERS_ORDER_BY = [
   {
@@ -19,76 +20,73 @@ export const PINNED_BY_USER_ANSWERS_ORDER_BY = [
   {
     updatedAt: "desc",
   },
-] as Prisma.AnswerOrderByWithRelationInput[];
+] satisfies Prisma.AnswerOrderByWithRelationInput[];
 
 export const DEFAULT_ANSWERS_LIMIT = 32;
 export const PINNED_BY_USER_ANSWERS_LIMIT = 16;
 
-// eventually to be shifted in ./userquestions.ts
-export const isNative: Prisma.UserQuestionWhereInput = {
+// would eventually be shifted to ./userquestions.ts
+export const isNative = {
   question: {
     kind: "NATIVE",
   },
-};
+} satisfies Prisma.UserQuestionWhereInput;
 
-// eventually to be shifted in ./userquestions.ts
-export const isPseudoNative: Prisma.UserQuestionWhereInput = {
+// would eventually be shifted to ./userquestions.ts
+export const isPseudoNative = {
   kind: "PSEUDONATIVE",
   question: {
     kind: "PSEUDO",
   },
-};
+} satisfies Prisma.UserQuestionWhereInput;
 
-// eventually to be shifted in ./userquestions.ts
-export const isNativeIrl: Prisma.UserQuestionWhereInput = {
+// would eventually be shifted to ./userquestions.ts
+export const isNativeIrl = {
   question: {
     kind: "NATIVEIRL",
   },
-};
+} satisfies Prisma.UserQuestionWhereInput;
 
-// eventually to be shifted in ./userquestions.ts
-export const isPseudoNativeIrl: Prisma.UserQuestionWhereInput = {
+// would eventually be shifted to ./userquestions.ts
+export const isPseudoNativeIrl = {
   kind: "PSEUDONATIVEIRL",
   question: {
     kind: "PSEUDO",
   },
-};
+} satisfies Prisma.UserQuestionWhereInput;
 
-export function selectUserPinnedAnswers() {
-  // : Prisma.AnswerSelect<DefaultArgs>
-  return {
-    userQuestion: {
-      select: {
-        isPinned: true,
-        kind: true,
-        id: true,
-        question: {
-          select: {
-            name: true,
-            kind: true,
-          },
+export const selectUserPinnedAnswers = {
+  userQuestion: {
+    select: {
+      isPinned: true,
+      kind: true,
+      id: true,
+      question: {
+        select: {
+          name: true,
+          kind: true,
         },
-        _count: {
-          select: {
-            userQuestionFriends: {
-              where: {
-                isSharedToFriend: true,
-              },
+      },
+      _count: {
+        select: {
+          userQuestionFriends: {
+            where: {
+              isSharedToFriend: true,
             },
           },
         },
       },
     },
-    value: true,
-    id: true,
-    user: {
-      select: {
-        username: true,
-        id: true,
-      },
+  },
+  value: true,
+  id: true,
+  user: {
+    select: {
+      username: true,
+      id: true,
     },
-  };
-}
+  },
+} satisfies Prisma.AnswerSelect;
 
 export function whereUserPinnedAnswersByUserId(id: string) {
   // : Prisma.AnswerWhereInput
@@ -111,34 +109,31 @@ export function whereUserPinnedAnswersByUserId(id: string) {
   };
 }
 
-export function selectUserNativeAnswers() {
-  // : Prisma.AnswerSelect<DefaultArgs>
-  return {
-    userQuestion: {
-      select: {
-        isPinned: true,
-        kind: true,
-        id: true,
-        state: true,
-        question: {
-          select: {
-            name: true,
-            kind: true,
-            id: true,
-          },
+export const selectUserNativeAnswers = {
+  userQuestion: {
+    select: {
+      isPinned: true,
+      kind: true,
+      id: true,
+      state: true,
+      question: {
+        select: {
+          name: true,
+          kind: true,
+          id: true,
         },
       },
     },
-    value: true,
-    id: true,
-    user: {
-      select: {
-        username: true,
-        id: true,
-      },
+  },
+  value: true,
+  id: true,
+  user: {
+    select: {
+      username: true,
+      id: true,
     },
-  };
-}
+  },
+} satisfies Prisma.AnswerSelect;
 
 export function whereUserNativeAnswersByUserIdAndQuestionKind(
   id: string,
@@ -164,32 +159,29 @@ export function whereUserNativeAnswersByUserIdAndQuestionKind(
   };
 }
 
-export function selectUserPseudonativeAnswers() {
-  // : Prisma.AnswerSelect<DefaultArgs>
-  return {
-    userQuestion: {
-      select: {
-        question: {
-          select: {
-            name: true,
-            kind: true,
-          },
+export const selectUserPseudonativeAnswers = {
+  userQuestion: {
+    select: {
+      question: {
+        select: {
+          name: true,
+          kind: true,
         },
-        isPinned: true,
-        kind: true,
-        id: true,
       },
+      isPinned: true,
+      kind: true,
+      id: true,
     },
-    value: true,
-    id: true,
-    user: {
-      select: {
-        username: true,
-        id: true,
-      },
+  },
+  value: true,
+  id: true,
+  user: {
+    select: {
+      username: true,
+      id: true,
     },
-  };
-}
+  },
+} satisfies Prisma.AnswerSelect;
 
 export function whereUserPseudonativeAnswersByUserIdAndUserQuestionKind(
   id: string,
@@ -217,41 +209,37 @@ export function whereUserPseudonativeAnswersByUserIdAndUserQuestionKind(
 }
 
 // currently the same as selectUserPinnedAnswers
-export function selectUserCustomAnswers() {
-  // : Prisma.AnswerSelect<DefaultArgs>
-  return {
-    userQuestion: {
-      select: {
-        isPinned: true,
-        kind: true,
-        id: true,
-        question: {
-          select: {
-            name: true,
-            kind: true,
-          },
+export const selectUserCustomAnswers = {
+  userQuestion: {
+    select: {
+      isPinned: true,
+      id: true,
+      question: {
+        select: {
+          name: true,
+          kind: true,
         },
-        _count: {
-          select: {
-            userQuestionFriends: {
-              where: {
-                isSharedToFriend: true,
-              },
+      },
+      _count: {
+        select: {
+          userQuestionFriends: {
+            where: {
+              isSharedToFriend: true,
             },
           },
         },
       },
     },
-    value: true,
-    id: true,
-    user: {
-      select: {
-        username: true,
-        id: true,
-      },
+  },
+  value: true,
+  id: true,
+  user: {
+    select: {
+      username: true,
+      id: true,
     },
-  };
-}
+  },
+} satisfies Prisma.AnswerSelect;
 
 // currently the same as whereUserNativeAnswersByUserIdAndQuestionKind, with kind as "CUSTOM", and with userQuestion.state as "LIVE" only instead of "LIVE" || "HIDDEN"
 export function whereUserCustomAnswersByUserId(id: string) {
@@ -275,39 +263,37 @@ export function whereUserCustomAnswersByUserId(id: string) {
   };
 }
 
-// currently the same as selectUserCustomAnswers, without userQuestion.isPinned, userQuestion.kind, userQuestion.question.kind...
-export function selectAnswer() {
-  // : Prisma.AnswerSelect<DefaultArgs>
-  return {
-    userQuestion: {
-      select: {
-        id: true,
-        question: {
-          select: {
-            name: true,
-          },
+// currently the same as selectUserCustomAnswers, without userQuestion.isPinned
+export const selectUserCustomAnswer = {
+  userQuestion: {
+    select: {
+      id: true,
+      question: {
+        select: {
+          name: true,
+          kind: true,
         },
-        _count: {
-          select: {
-            userQuestionFriends: {
-              where: {
-                isSharedToFriend: true,
-              },
+      },
+      _count: {
+        select: {
+          userQuestionFriends: {
+            where: {
+              isSharedToFriend: true,
             },
           },
         },
       },
     },
-    value: true,
-    id: true,
-    user: {
-      select: {
-        username: true,
-        id: true,
-      },
+  },
+  value: true,
+  id: true,
+  user: {
+    select: {
+      username: true,
+      id: true,
     },
-  };
-}
+  },
+} satisfies Prisma.AnswerSelect;
 
 export function whereAnswerByUserQuestionIDAndUserID(
   userQuestionId: string,
@@ -330,31 +316,28 @@ export function whereAnswerByUserQuestionIDAndUserID(
   };
 }
 
-export function selectAnswers() {
-  // : Prisma.AnswerSelect<DefaultArgs>
-  return {
-    userQuestion: {
-      select: {
-        id: true,
-        kind: true,
-        question: {
-          select: {
-            name: true,
-            kind: true,
-          },
+export const selectAnswers = {
+  userQuestion: {
+    select: {
+      id: true,
+      kind: true,
+      question: {
+        select: {
+          name: true,
+          kind: true,
         },
       },
     },
-    value: true,
-    id: true,
-    user: {
-      select: {
-        username: true,
-        id: true,
-      },
+  },
+  value: true,
+  id: true,
+  user: {
+    select: {
+      username: true,
+      id: true,
     },
-  };
-}
+  },
+} satisfies Prisma.AnswerSelect;
 
 // currently the same as whereUserPinnedAnswersByUserId with OR [isNative, isPseudoNative]
 export function whereUserPinnedNotIrlAnswersByUserId(id: string) {
