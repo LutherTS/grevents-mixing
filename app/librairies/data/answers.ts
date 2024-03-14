@@ -1,9 +1,9 @@
-import { prisma } from "~/utilities/db.server";
+import { prisma } from "~/utilities/server/db.server";
 import {
   DEFAULT_ANSWERS_ORDER_BY,
   DEFAULT_ANSWERS_LIMIT,
   PINNED_BY_USER_ANSWERS_LIMIT,
-  selectAnswer,
+  selectUserCustomAnswer,
   selectUserCustomAnswers,
   selectUserNativeAnswers,
   selectUserPinnedAnswers,
@@ -13,6 +13,15 @@ import {
   whereUserNativeAnswersByUserIdAndQuestionKind,
   whereUserPinnedAnswersByUserId,
   whereUserPseudonativeAnswersByUserIdAndUserQuestionKind,
+  selectAnswers,
+  whereUserPinnedNotIrlAnswersByUserId,
+  whereUserUnpinnedNativeAnswersByUserIdAndQuestionKind,
+  whereUserUnpinnedPseudonativeAnswersByUserIdAndUserQuestionKind,
+  PINNED_BY_USER_ANSWERS_ORDER_BY,
+  whereUserPinnedNotAndIrlAnswersByUserId,
+  whereUserPinnedNotIrlAnswersByUserIdQueried,
+  whereUserPinnedNotAndIrlAnswersByUserIdQueried,
+  whereUserUnpinnedSharedToContactCustomAnswersQueried,
 } from "../subdata/answers";
 
 const orderBy = DEFAULT_ANSWERS_ORDER_BY;
@@ -20,22 +29,13 @@ const orderBy = DEFAULT_ANSWERS_ORDER_BY;
 const take = DEFAULT_ANSWERS_LIMIT;
 
 export async function findUserPinnedAnswersByUserId(id: string) {
-  const select = selectUserPinnedAnswers();
+  const select = selectUserPinnedAnswers;
   const where = whereUserPinnedAnswersByUserId(id);
 
   return await prisma.answer.findMany({
     select,
     where,
-    orderBy: [
-      {
-        userQuestion: {
-          pinnedAt: "desc",
-        },
-      },
-      {
-        updatedAt: "desc",
-      },
-    ],
+    orderBy: PINNED_BY_USER_ANSWERS_ORDER_BY,
     take: PINNED_BY_USER_ANSWERS_LIMIT,
   });
 }
@@ -49,7 +49,7 @@ export async function countUserPinnedAnswersByUserId(id: string) {
 }
 
 export async function findUserNativeNotIrlAnswersByUserId(id: string) {
-  const select = selectUserNativeAnswers();
+  const select = selectUserNativeAnswers;
   const where = whereUserNativeAnswersByUserIdAndQuestionKind(id, "NATIVE");
 
   return await prisma.answer.findMany({
@@ -69,7 +69,7 @@ export async function countUserNativeNotIrlAnswersByUserId(id: string) {
 }
 
 export async function findUserNativeIrlAnswersByUserId(id: string) {
-  const select = selectUserNativeAnswers();
+  const select = selectUserNativeAnswers;
   const where = whereUserNativeAnswersByUserIdAndQuestionKind(id, "NATIVEIRL");
 
   return await prisma.answer.findMany({
@@ -89,7 +89,7 @@ export async function countUserNativeIrlAnswersByUserId(id: string) {
 }
 
 export async function findUserPseudonativeNotIrlAnswersByUserId(id: string) {
-  const select = selectUserPseudonativeAnswers();
+  const select = selectUserPseudonativeAnswers;
   const where = whereUserPseudonativeAnswersByUserIdAndUserQuestionKind(
     id,
     "PSEUDONATIVE"
@@ -115,7 +115,7 @@ export async function countUserPseudonativeNotIrlAnswersByUserId(id: string) {
 }
 
 export async function findUserPseudonativeIrlAnswersByUserId(id: string) {
-  const select = selectUserPseudonativeAnswers();
+  const select = selectUserPseudonativeAnswers;
   const where = whereUserPseudonativeAnswersByUserIdAndUserQuestionKind(
     id,
     "PSEUDONATIVEIRL"
@@ -141,7 +141,7 @@ export async function countUserPseudonativeIrlAnswersByUserId(id: string) {
 }
 
 export async function findUserCustomAnswersByUserId(id: string) {
-  const select = selectUserCustomAnswers();
+  const select = selectUserCustomAnswers;
   const where = whereUserCustomAnswersByUserId(id);
 
   return await prisma.answer.findMany({
@@ -164,11 +164,154 @@ export async function findAnswerByUserQuestionIDAndUserID(
   userQuestionId: string,
   userId: string
 ) {
-  const select = selectAnswer();
+  const select = selectUserCustomAnswer;
   const where = whereAnswerByUserQuestionIDAndUserID(userQuestionId, userId);
 
   return await prisma.answer.findUnique({
     select,
     where,
+  });
+}
+
+export async function findUserPinnedNotIrlAnswersByUserId(id: string) {
+  const select = selectAnswers;
+  const where = whereUserPinnedNotIrlAnswersByUserId(id);
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy: PINNED_BY_USER_ANSWERS_ORDER_BY,
+    take: PINNED_BY_USER_ANSWERS_LIMIT,
+  });
+}
+
+export async function findUserPinnedNotAndIrlAnswersByUserId(id: string) {
+  const select = selectAnswers;
+  const where = whereUserPinnedNotAndIrlAnswersByUserId(id);
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy: PINNED_BY_USER_ANSWERS_ORDER_BY,
+    take: PINNED_BY_USER_ANSWERS_LIMIT,
+  });
+}
+
+// findUserNativeNotIrlAnswersByUserIdPreviewed/Queried
+export async function findUserUnpinnedNativeNotIrlAnswersByUserId(id: string) {
+  const select = selectAnswers;
+  const where = whereUserUnpinnedNativeAnswersByUserIdAndQuestionKind(
+    id,
+    "NATIVE"
+  );
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy,
+    take,
+  });
+}
+
+// findUserPseudonativeNotIrlAnswersByUserIdPreviewed/Queried
+export async function findUserUnpinnedPseudonativeNotIrlAnswersByUserId(
+  id: string
+) {
+  const select = selectAnswers;
+  const where = whereUserUnpinnedPseudonativeAnswersByUserIdAndUserQuestionKind(
+    id,
+    "PSEUDONATIVE"
+  );
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy,
+    take,
+  });
+}
+
+// findUserNativeIrlAnswersByUserIdPreviewed/Queried
+export async function findUserUnpinnedNativeIrlAnswersByUserId(id: string) {
+  const select = selectAnswers;
+  const where = whereUserUnpinnedNativeAnswersByUserIdAndQuestionKind(
+    id,
+    "NATIVEIRL"
+  );
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy,
+    take,
+  });
+}
+
+// findUserPseudonativeIrlAnswersByUserIdPreviewed/Queried
+export async function findUserUnpinnedPseudonativeIrlAnswersByUserId(
+  id: string
+) {
+  const select = selectAnswers;
+  const where = whereUserUnpinnedPseudonativeAnswersByUserIdAndUserQuestionKind(
+    id,
+    "PSEUDONATIVEIRL"
+  );
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy,
+    take,
+  });
+}
+
+export async function findUserPinnedNotIrlAnswersByUserIdQueried(
+  userId: string,
+  contactId: string
+) {
+  const select = selectAnswers;
+  const where = whereUserPinnedNotIrlAnswersByUserIdQueried(userId, contactId);
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy,
+    take,
+  });
+}
+
+export async function findUserPinnedNotAndIrlAnswersByUserIdQueried(
+  userId: string,
+  contactId: string
+) {
+  const select = selectAnswers;
+  const where = whereUserPinnedNotAndIrlAnswersByUserIdQueried(
+    userId,
+    contactId
+  );
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy,
+    take,
+  });
+}
+
+export async function findUserUnpinnedSharedToContactCustomAnswersQueried(
+  userId: string,
+  contactId: string
+) {
+  const select = selectAnswers;
+  const where = whereUserUnpinnedSharedToContactCustomAnswersQueried(
+    userId,
+    contactId
+  );
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy,
+    take,
   });
 }

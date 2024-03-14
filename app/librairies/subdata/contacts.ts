@@ -1,22 +1,21 @@
 import { Prisma } from "@prisma/client";
-import { DefaultArgs } from "@prisma/client/runtime/library";
+import {
+  DEFAULT_USERS_ORDER_BY_1ST,
+  DEFAULT_USERS_ORDER_BY_2ND,
+} from "./users";
 
 export const DEFAULT_CONTACTS_ORDER_BY = [
   {
-    userLast: {
-      appWideName: "asc",
-    },
+    userLast: DEFAULT_USERS_ORDER_BY_1ST,
   },
   {
-    userLast: {
-      username: "asc",
-    },
+    userLast: DEFAULT_USERS_ORDER_BY_2ND,
   },
-] as Prisma.ContactOrderByWithRelationInput[];
+] satisfies Prisma.ContactOrderByWithRelationInput[];
 
 export const ARBITRARY_CONTACTS_LIMIT = 256;
 
-export const isFriend: Prisma.ContactWhereInput = {
+export const isFriend = {
   kind: "FRIEND",
   blocking: false,
   state: "LIVE",
@@ -25,9 +24,9 @@ export const isFriend: Prisma.ContactWhereInput = {
     blocking: false,
     state: "LIVE",
   },
-};
+} satisfies Prisma.ContactWhereInput;
 
-export const isIrl: Prisma.ContactWhereInput = {
+export const isIrl = {
   kind: "IRL",
   blocking: false,
   state: "LIVE",
@@ -36,47 +35,43 @@ export const isIrl: Prisma.ContactWhereInput = {
     blocking: false,
     state: "LIVE",
   },
-};
+} satisfies Prisma.ContactWhereInput;
 
-export function selectContacts() {
-  // : Prisma.ContactSelect<DefaultArgs>
-  return {
-    kind: true,
-    blocking: true,
-    id: true,
-    processRelationship: true,
-    userFirst: {
-      select: {
-        id: true,
-        username: true,
-        appWideName: true,
-        state: true,
-      },
+export const selectContacts = {
+  kind: true,
+  blocking: true,
+  id: true,
+  processRelationship: true,
+  userFirst: {
+    select: {
+      id: true,
+      username: true,
+      appWideName: true,
+      state: true,
     },
-    mirror: {
-      select: {
-        kind: true,
-        blocking: true,
-        id: true,
-        processRelationship: true,
-        userFirst: {
-          select: {
-            id: true,
-            username: true,
-            appWideName: true,
-            state: true,
-          },
+  },
+  mirror: {
+    select: {
+      kind: true,
+      blocking: true,
+      id: true,
+      processRelationship: true,
+      userFirst: {
+        select: {
+          id: true,
+          username: true,
+          appWideName: true,
+          state: true,
         },
       },
     },
-  };
-}
+  },
+} satisfies Prisma.ContactSelect;
 
 export function whereSentToContactsByUserIdAndProcessRelationship(
   userFirstId: string,
   processRelationship: string
-) {
-  // : Prisma.ContactWhereInput
+): Prisma.ContactWhereInput {
   return {
     userFirstId,
     processRelationship,
@@ -96,8 +91,7 @@ export function whereSentToContactsByUserIdAndProcessRelationship(
 export function whereSentFromContactsByUserIdAndProcessRelationship(
   userLastId: string,
   processRelationship: string
-) {
-  // : Prisma.ContactWhereInput
+): Prisma.ContactWhereInput {
   return {
     userLastId,
     processRelationship,
@@ -117,8 +111,7 @@ export function whereSentFromContactsByUserIdAndProcessRelationship(
 export function whereUserFriendsByUserIdAndKind(
   userFirstId: string,
   kind: string
-) {
-  // : Prisma.ContactWhereInput
+): Prisma.ContactWhereInput {
   return {
     userFirstId,
     kind,
@@ -137,8 +130,9 @@ export function whereUserFriendsByUserIdAndKind(
 }
 
 // plural implicit
-export function whereUserWhoIAmBlockingByUserId(userFirstId: string) {
-  // : Prisma.ContactWhereInput
+export function whereUserWhoIAmBlockingByUserId(
+  userFirstId: string
+): Prisma.ContactWhereInput {
   return {
     userFirstId,
     blocking: true,
@@ -158,8 +152,9 @@ export function whereUserWhoIAmBlockingByUserId(userFirstId: string) {
 }
 
 // plural explicit
-export function whereUserWhoHaveMeBlockedByUserId(userFirstId: string) {
-  // : Prisma.ContactWhereInput
+export function whereUserWhoHaveMeBlockedByUserId(
+  userFirstId: string
+): Prisma.ContactWhereInput {
   return {
     userFirstId,
     kind: "NONE",
@@ -181,8 +176,7 @@ export function whereUserWhoHaveMeBlockedByUserId(userFirstId: string) {
 export function whereUserFriendsNotToUserQuestionByUserQuestionIdAndUserId(
   userQuestionId: string,
   userFirstId: string
-) {
-  // : Prisma.ContactWhereInput
+): Prisma.ContactWhereInput {
   return {
     userFirstId,
     state: "LIVE",
@@ -202,6 +196,26 @@ export function whereUserFriendsNotToUserQuestionByUserQuestionIdAndUserId(
           OR: [isFriend, isIrl],
         },
       },
+    },
+  };
+}
+
+export function whereContactByUserFirstIdAndUserLastUsername(
+  userFirstId: string,
+  username: string
+): Prisma.ContactWhereInput {
+  return {
+    userFirstId,
+    state: "LIVE",
+    mirror: {
+      state: "LIVE",
+    },
+    userFirst: {
+      state: "LIVE" || "DEACTIVATED",
+    },
+    userLast: {
+      username,
+      state: "LIVE" || "DEACTIVATED",
     },
   };
 }

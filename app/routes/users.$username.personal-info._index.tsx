@@ -5,9 +5,12 @@ import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
 import { findUserByUsername } from "~/librairies/data/users";
 import { findUserPinnedAnswersByUserId } from "~/librairies/data/answers";
+import invariant from "tiny-invariant";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
-  const user = await findUserByUsername(params.username!);
+  invariant(params.username, "Expected params.username");
+
+  const user = await findUserByUsername(params.username);
   if (!user) {
     throw new Response("Could not find requested user.", {
       status: 404,

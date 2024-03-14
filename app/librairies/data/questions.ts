@@ -1,4 +1,4 @@
-import { prisma } from "~/utilities/db.server";
+import { prisma } from "~/utilities/server/db.server";
 import {
   DEFAULT_QUESTIONS_ORDER_BY,
   ARBITRARY_QUESTIONS_LIMIT,
@@ -13,7 +13,7 @@ const take = ARBITRARY_QUESTIONS_LIMIT;
 export async function findUnansweredNativeNotIrlQuestionsByUserId(
   userId: string
 ) {
-  const select = selectUnansweredNativeQuestions();
+  const select = selectUnansweredNativeQuestions;
   const where = whereUnansweredNativeQuestionsByUserIdAndKind(userId, "NATIVE");
 
   return await prisma.question.findMany({
@@ -25,7 +25,7 @@ export async function findUnansweredNativeNotIrlQuestionsByUserId(
 }
 
 export async function findUnansweredNativeIrlQuestionsByUserId(userId: string) {
-  const select = selectUnansweredNativeQuestions();
+  const select = selectUnansweredNativeQuestions;
   const where = whereUnansweredNativeQuestionsByUserIdAndKind(
     userId,
     "NATIVEIRL"
