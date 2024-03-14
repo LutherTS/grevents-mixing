@@ -1,9 +1,9 @@
 import { Prisma } from "@prisma/client";
-import { selectContacts2 } from "~/librairies/subdata/contacts";
+import { selectContacts } from "~/librairies/subdata/contacts";
 
 export function defineContactRelCombo(
   contact: Prisma.ContactGetPayload<{
-    select: typeof selectContacts2;
+    select: typeof selectContacts;
   }>,
   relCombo?: string
 ) {

@@ -17,7 +17,7 @@ const orderBy = DEFAULT_CONTACTS_ORDER_BY;
 const take = ARBITRARY_CONTACTS_LIMIT;
 
 export async function findSentFriendToContactsByUserId(userId: string) {
-  const select = selectContacts();
+  const select = selectContacts;
   const where = whereSentToContactsByUserIdAndProcessRelationship(
     userId,
     "SENTFRIEND"
@@ -45,7 +45,7 @@ export async function countSentFriendToContactsByUserId(userId: string) {
 }
 
 export async function findSentIrlToContactsByUserId(userId: string) {
-  const select = selectContacts();
+  const select = selectContacts;
   const where = whereSentToContactsByUserIdAndProcessRelationship(
     userId,
     "SENTIRL"
@@ -73,7 +73,7 @@ export async function countSentIrlToContactsByUserId(userId: string) {
 }
 
 export async function findSentFriendFromContactsByUserId(userId: string) {
-  const select = selectContacts();
+  const select = selectContacts;
   const where = whereSentFromContactsByUserIdAndProcessRelationship(
     userId,
     "SENTFRIEND"
@@ -103,7 +103,7 @@ export async function countSentFriendFromContactsByUserId(userId: string) {
 }
 
 export async function findSentIrlFromContactsByUserId(userId: string) {
-  const select = selectContacts();
+  const select = selectContacts;
   const where = whereSentFromContactsByUserIdAndProcessRelationship(
     userId,
     "SENTIRL"
@@ -133,7 +133,7 @@ export async function countSentIrlFromContactsByUserId(userId: string) {
 }
 
 export async function findUserNotIrlFriendsByUserId(userId: string) {
-  const select = selectContacts();
+  const select = selectContacts;
   const where = whereUserFriendsByUserIdAndKind(userId, "FRIEND");
   // const orderBy = defaultContactsOrderBy();
 
@@ -146,7 +146,7 @@ export async function findUserNotIrlFriendsByUserId(userId: string) {
 }
 
 export async function findUserIrlFriendsByUserId(userId: string) {
-  const select = selectContacts();
+  const select = selectContacts;
   const where = whereUserFriendsByUserIdAndKind(userId, "IRL");
 
   return await prisma.contact.findMany({
@@ -159,7 +159,7 @@ export async function findUserIrlFriendsByUserId(userId: string) {
 
 // plural implicit
 export async function findUserWhoIAmBlockingByUserId(userId: string) {
-  const select = selectContacts();
+  const select = selectContacts;
   const where = whereUserWhoIAmBlockingByUserId(userId);
 
   return await prisma.contact.findMany({
@@ -172,7 +172,7 @@ export async function findUserWhoIAmBlockingByUserId(userId: string) {
 
 // plural explicit
 export async function findUserWhoHaveMeBlockedByUserId(userId: string) {
-  const select = selectContacts();
+  const select = selectContacts;
   const where = whereUserWhoHaveMeBlockedByUserId(userId);
 
   return await prisma.contact.findMany({
@@ -187,7 +187,7 @@ export async function findUserFriendsNotToUserQuestionByUserQuestionIdAndUserId(
   userQuestionId: string,
   userFirstId: string
 ) {
-  const select = selectContacts();
+  const select = selectContacts;
   const where = whereUserFriendsNotToUserQuestionByUserQuestionIdAndUserId(
     userQuestionId,
     userFirstId
@@ -205,7 +205,7 @@ export async function findContactByUserFirstIdAndUserLastUsername(
   userFirstId: string,
   username: string
 ) {
-  const select = selectContacts(); // I'll need to customize that
+  const select = selectContacts; // I'll need to customize that
   const where = whereContactByUserFirstIdAndUserLastUsername(
     userFirstId,
     username

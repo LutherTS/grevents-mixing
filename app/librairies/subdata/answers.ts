@@ -88,8 +88,9 @@ export const selectUserPinnedAnswers = {
   },
 } satisfies Prisma.AnswerSelect;
 
-export function whereUserPinnedAnswersByUserId(id: string) {
-  // : Prisma.AnswerWhereInput
+export function whereUserPinnedAnswersByUserId(
+  id: string
+): Prisma.AnswerWhereInput {
   return {
     userQuestion: {
       user: {
@@ -138,8 +139,7 @@ export const selectUserNativeAnswers = {
 export function whereUserNativeAnswersByUserIdAndQuestionKind(
   id: string,
   kind: string
-) {
-  // : Prisma.AnswerWhereInput
+): Prisma.AnswerWhereInput {
   return {
     userQuestion: {
       user: {
@@ -186,8 +186,7 @@ export const selectUserPseudonativeAnswers = {
 export function whereUserPseudonativeAnswersByUserIdAndUserQuestionKind(
   id: string,
   kind: string
-) {
-  // : Prisma.AnswerWhereInput
+): Prisma.AnswerWhereInput {
   return {
     userQuestion: {
       user: {
@@ -242,8 +241,9 @@ export const selectUserCustomAnswers = {
 } satisfies Prisma.AnswerSelect;
 
 // currently the same as whereUserNativeAnswersByUserIdAndQuestionKind, with kind as "CUSTOM", and with userQuestion.state as "LIVE" only instead of "LIVE" || "HIDDEN"
-export function whereUserCustomAnswersByUserId(id: string) {
-  // : Prisma.AnswerWhereInput
+export function whereUserCustomAnswersByUserId(
+  id: string
+): Prisma.AnswerWhereInput {
   return {
     userQuestion: {
       user: {
@@ -298,8 +298,7 @@ export const selectUserCustomAnswer = {
 export function whereAnswerByUserQuestionIDAndUserID(
   userQuestionId: string,
   userId: string
-) {
-  // : Prisma.AnswerWhereUniqueInput
+): Prisma.AnswerWhereUniqueInput {
   return {
     userQuestionId,
     userId,
@@ -340,8 +339,9 @@ export const selectAnswers = {
 } satisfies Prisma.AnswerSelect;
 
 // currently the same as whereUserPinnedAnswersByUserId with OR [isNative, isPseudoNative]
-export function whereUserPinnedNotIrlAnswersByUserId(id: string) {
-  // : Prisma.AnswerWhereInput
+export function whereUserPinnedNotIrlAnswersByUserId(
+  id: string
+): Prisma.AnswerWhereInput {
   return {
     userQuestion: {
       user: {
@@ -363,8 +363,9 @@ export function whereUserPinnedNotIrlAnswersByUserId(id: string) {
 }
 
 // currently the same as whereUserPinnedAnswersByUserId with OR [isNative, isPseudoNative, isNativeIrl, isPseudonativeIrl]
-export function whereUserPinnedNotAndIrlAnswersByUserId(id: string) {
-  // : Prisma.AnswerWhereInput
+export function whereUserPinnedNotAndIrlAnswersByUserId(
+  id: string
+): Prisma.AnswerWhereInput {
   return {
     userQuestion: {
       user: {
@@ -389,8 +390,7 @@ export function whereUserPinnedNotAndIrlAnswersByUserId(id: string) {
 export function whereUserUnpinnedNativeAnswersByUserIdAndQuestionKind(
   id: string,
   kind: string
-) {
-  // : Prisma.AnswerWhereInput
+): Prisma.AnswerWhereInput {
   return {
     userQuestion: {
       user: {
@@ -415,8 +415,7 @@ export function whereUserUnpinnedNativeAnswersByUserIdAndQuestionKind(
 export function whereUserUnpinnedPseudonativeAnswersByUserIdAndUserQuestionKind(
   id: string,
   kind: string
-) {
-  // : Prisma.AnswerWhereInput
+): Prisma.AnswerWhereInput {
   return {
     userQuestion: {
       user: {
