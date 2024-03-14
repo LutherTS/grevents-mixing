@@ -3,7 +3,7 @@ import { ActionFunctionArgs } from "@remix-run/node";
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
 import { SignInForm } from "~/components/sign-in-form";
-import { signIn } from "~/utilities/server/session.server";
+import { createUserSession, signIn } from "~/utilities/server/session.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const form = await request.formData();
@@ -16,10 +16,18 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null;
   }
 
-  const verifiedSignInUser = await signIn(usernameOrEmail, password);
-  console.log(verifiedSignInUser);
+  const signedIn = await signIn(usernameOrEmail, password);
+  console.log(signedIn);
 
-  return verifiedSignInUser;
+  if (!signedIn) {
+    return null;
+  }
+
+  return createUserSession(
+    signedIn.verifiedSignInUser.id,
+    `/users/${signedIn.verifiedSignInUser.username}/dashboard`
+  );
+  // I think it's only the id that's going to be signed, then be used again, I shall see.
 };
 
 export default function SignInPage() {
