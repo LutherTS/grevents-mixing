@@ -22,6 +22,12 @@ export const selectSignInUser = {
 
 export const selectVerifiedSignInUser = {
   id: true,
+  username: true,
+} satisfies Prisma.UserSelect;
+
+/*
+export const selectVerifiedSessionUser = {
+  id: true,
   state: true,
   statusTitle: true,
   statusDashboard: true,
@@ -30,6 +36,7 @@ export const selectVerifiedSignInUser = {
   appWideName: true,
   hasTemporaryPassword: true,
 } satisfies Prisma.UserSelect;
+*/
 
 export function whereUserByUsername(
   username: string
