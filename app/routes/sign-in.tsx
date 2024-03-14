@@ -28,6 +28,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     `/users/${signedIn.verifiedSignInUser.username}/dashboard`
   );
   // I think it's only the id that's going to be signed, then be used again, I shall see.
+  // UPDATE: Indeed, only the id comes out. It is then reused to fetch the session user. So up next, returning only the id and separating the selects.
+  // And when I kill the server it also kills the cookies.
 };
 
 export default function SignInPage() {
