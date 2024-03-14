@@ -45,13 +45,13 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       findUserPinnedNotIrlAnswersByUserIdQueried(
         user.id,
         userToQueriedContact.id
-      ), // 2
+      ),
       findUserUnpinnedNativeNotIrlAnswersByUserIdQueried(user.id),
       findUserUnpinnedPseudonativeNotIrlAnswersByUserIdQueried(user.id),
       findUserUnpinnedSharedToContactCustomAnswersQueried(
         user.id,
         userToQueriedContact.id
-      ), // 2
+      ),
     ]);
     return { user, userToQueriedContact, a, b, c, d };
   } else if (userToQueriedContact && relCombo === "irl") {
@@ -59,7 +59,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       findUserPinnedNotIrlAnswersByUserIdQueried(
         user.id,
         userToQueriedContact.id
-      ), // 2
+      ),
       findUserUnpinnedNativeNotIrlAnswersByUserIdQueried(user.id),
       findUserUnpinnedPseudonativeNotIrlAnswersByUserIdQueried(user.id),
       findUserUnpinnedNativeIrlAnswersByUserIdQueried(user.id),
@@ -67,7 +67,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       findUserUnpinnedSharedToContactCustomAnswersQueried(
         user.id,
         userToQueriedContact.id
-      ), // 2
+      ),
     ]);
     return { user, userToQueriedContact, u, v, w, x, y, z };
   } else {
