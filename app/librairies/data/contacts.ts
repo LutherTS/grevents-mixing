@@ -205,7 +205,7 @@ export async function findContactByUserFirstIdAndUserLastUsername(
   userFirstId: string,
   username: string
 ) {
-  const select = selectContacts; // I'll need to customize that
+  const select = selectContacts;
   const where = whereContactByUserFirstIdAndUserLastUsername(
     userFirstId,
     username
@@ -216,29 +216,3 @@ export async function findContactByUserFirstIdAndUserLastUsername(
     where,
   });
 }
-
-export async function findUserPinnedNotIrlAnswersByUserIdQueried(
-  userId: string,
-  contactId: string
-) {}
-
-export async function findUserUnpinnedNativeNotIrlAnswersByUserIdQueried(
-  userId: string
-) {}
-
-export async function findUserUnpinnedPseudonativeNotIrlAnswersByUserIdQueried(
-  userId: string
-) {}
-
-export async function findUserUnpinnedNativeIrlAnswersByUserIdQueried(
-  userId: string
-) {}
-
-export async function findUserUnpinnedPseudonativeIrlAnswersByUserIdQueried(
-  userId: string
-) {}
-
-export async function findUserUnpinnedSharedToContactCustomAnswersQueried(
-  userId: string,
-  contactId: string
-) {}

@@ -257,3 +257,34 @@ export async function findUserUnpinnedPseudonativeIrlAnswersByUserId(
     take,
   });
 }
+
+export async function findUserPinnedNotIrlAnswersByUserIdQueried(
+  userId: string,
+  contactId: string
+) {}
+
+export async function findUserPinnedNotAndIrlAnswersByUserIdQueried(
+  userId: string,
+  contactId: string
+) {}
+
+export async function findUserUnpinnedNativeNotIrlAnswersByUserIdQueried(
+  userId: string
+) {}
+
+export async function findUserUnpinnedPseudonativeNotIrlAnswersByUserIdQueried(
+  userId: string
+) {}
+
+export async function findUserUnpinnedNativeIrlAnswersByUserIdQueried(
+  userId: string
+) {}
+
+export async function findUserUnpinnedPseudonativeIrlAnswersByUserIdQueried(
+  userId: string
+) {}
+
+export async function findUserUnpinnedSharedToContactCustomAnswersQueried(
+  userId: string,
+  contactId: string
+) {}

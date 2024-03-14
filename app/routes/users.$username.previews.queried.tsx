@@ -5,14 +5,15 @@ import invariant from "tiny-invariant";
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
 import {
-  findContactByUserFirstIdAndUserLastUsername,
   findUserPinnedNotIrlAnswersByUserIdQueried,
-  findUserUnpinnedNativeIrlAnswersByUserIdQueried,
   findUserUnpinnedNativeNotIrlAnswersByUserIdQueried,
-  findUserUnpinnedPseudonativeIrlAnswersByUserIdQueried,
   findUserUnpinnedPseudonativeNotIrlAnswersByUserIdQueried,
   findUserUnpinnedSharedToContactCustomAnswersQueried,
-} from "~/librairies/data/contacts";
+  findUserPinnedNotAndIrlAnswersByUserIdQueried,
+  findUserUnpinnedNativeIrlAnswersByUserIdQueried,
+  findUserUnpinnedPseudonativeIrlAnswersByUserIdQueried,
+} from "~/librairies/data/answers";
+import { findContactByUserFirstIdAndUserLastUsername } from "~/librairies/data/contacts";
 import { findUserByUsername } from "~/librairies/data/users";
 import { defineContactRelCombo } from "~/utilities/contacts";
 
@@ -33,15 +34,27 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const userToQueriedContact =
     await findContactByUserFirstIdAndUserLastUsername(user.id, userLast);
 
-  if (userToQueriedContact) {
+  if (userToQueriedContact && relCombo === "") {
     relCombo = defineContactRelCombo(userToQueriedContact, relCombo);
   }
 
-  let [a, b, c, d] = Array(4);
-  let [u, v, w, x, y, z] = Array(6);
+  // let [a, b, c, d] = Array(4);
+  // let [u, v, w, x, y, z] = Array(6);
+  let userPinnedNotIrlAnswers;
+  let userPinnedNotAndIrlAnswers;
+  let userUnpinnedNativeNotIrlAnswers;
+  let userUnpinnedPseudonativeNotIrlAnswers;
+  let userUnpinnedNativeIrlAnswers;
+  let userUnpinnedPseudonativeIrlAnswers;
+  let userUnpinnedSharedToContactCustomAnswers;
 
   if (userToQueriedContact && relCombo === "friend") {
-    [a, b, c, d] = await Promise.all([
+    [
+      userPinnedNotIrlAnswers,
+      userUnpinnedNativeNotIrlAnswers,
+      userUnpinnedPseudonativeNotIrlAnswers,
+      userUnpinnedSharedToContactCustomAnswers,
+    ] = await Promise.all([
       findUserPinnedNotIrlAnswersByUserIdQueried(
         user.id,
         userToQueriedContact.id
@@ -53,10 +66,26 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
         userToQueriedContact.id
       ),
     ]);
-    return { user, userToQueriedContact, a, b, c, d };
+    return {
+      user,
+      userToQueriedContact,
+      userLast,
+      relCombo,
+      userPinnedNotIrlAnswers,
+      userUnpinnedNativeNotIrlAnswers,
+      userUnpinnedPseudonativeNotIrlAnswers,
+      userUnpinnedSharedToContactCustomAnswers,
+    };
   } else if (userToQueriedContact && relCombo === "irl") {
-    [u, v, w, x, y, z] = await Promise.all([
-      findUserPinnedNotIrlAnswersByUserIdQueried(
+    [
+      userPinnedNotAndIrlAnswers,
+      userUnpinnedNativeNotIrlAnswers,
+      userUnpinnedPseudonativeNotIrlAnswers,
+      userUnpinnedNativeIrlAnswers,
+      userUnpinnedPseudonativeIrlAnswers,
+      userUnpinnedSharedToContactCustomAnswers,
+    ] = await Promise.all([
+      findUserPinnedNotAndIrlAnswersByUserIdQueried(
         user.id,
         userToQueriedContact.id
       ),
@@ -69,9 +98,20 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
         userToQueriedContact.id
       ),
     ]);
-    return { user, userToQueriedContact, u, v, w, x, y, z };
+    return {
+      user,
+      userToQueriedContact,
+      userLast,
+      relCombo,
+      userPinnedNotAndIrlAnswers,
+      userUnpinnedNativeNotIrlAnswers,
+      userUnpinnedPseudonativeNotIrlAnswers,
+      userUnpinnedNativeIrlAnswers,
+      userUnpinnedPseudonativeIrlAnswers,
+      userUnpinnedSharedToContactCustomAnswers,
+    };
   } else {
-    return { user, userToQueriedContact };
+    return { user, userToQueriedContact, userLast, relCombo };
   }
 };
 
