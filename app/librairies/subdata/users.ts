@@ -11,18 +11,36 @@ export const DEFAULT_USERS_ORDER_BY_2ND = {
 export const selectUser = {
   id: true,
   state: true,
-  statusTitle: true, // to be delegated to session
-  statusDashboard: true, // to be delegated to session
-  statusPersonalInfo: true, // to be delegated to session
   username: true,
   appWideName: true,
   friendCode: true,
-  hasTemporaryPassword: true, // to be delegated to session
-  // Verifying access to the page will require a completely different user call, since data like friendCode should not be disclosed.
+} satisfies Prisma.UserSelect;
+
+export const selectSignInUser = {
+  hashedPassword: true,
+} satisfies Prisma.UserSelect;
+
+export const selectVerifiedSignInUser = {
+  id: true,
+  state: true,
+  statusTitle: true,
+  statusDashboard: true,
+  statusPersonalInfo: true,
+  username: true,
+  appWideName: true,
+  hasTemporaryPassword: true,
 } satisfies Prisma.UserSelect;
 
 export function whereUserByUsername(
   username: string
 ): Prisma.UserWhereUniqueInput {
   return { username, state: "LIVE" || "DEACTIVATED" };
+}
+
+export function whereSignInUser(
+  usernameOrEmail: string
+): Prisma.UserWhereInput {
+  return {
+    OR: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
+  };
 }
