@@ -38,8 +38,6 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     relCombo = defineContactRelCombo(userToQueriedContact, relCombo);
   }
 
-  // let [a, b, c, d] = Array(4);
-  // let [u, v, w, x, y, z] = Array(6);
   let userPinnedNotIrlAnswers;
   let userPinnedNotAndIrlAnswers;
   let userUnpinnedNativeNotIrlAnswers;
