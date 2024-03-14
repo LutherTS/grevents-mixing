@@ -13,7 +13,7 @@ const take = ARBITRARY_QUESTIONS_LIMIT;
 export async function findUnansweredNativeNotIrlQuestionsByUserId(
   userId: string
 ) {
-  const select = selectUnansweredNativeQuestions();
+  const select = selectUnansweredNativeQuestions;
   const where = whereUnansweredNativeQuestionsByUserIdAndKind(userId, "NATIVE");
 
   return await prisma.question.findMany({
@@ -25,7 +25,7 @@ export async function findUnansweredNativeNotIrlQuestionsByUserId(
 }
 
 export async function findUnansweredNativeIrlQuestionsByUserId(userId: string) {
-  const select = selectUnansweredNativeQuestions();
+  const select = selectUnansweredNativeQuestions;
   const where = whereUnansweredNativeQuestionsByUserIdAndKind(
     userId,
     "NATIVEIRL"

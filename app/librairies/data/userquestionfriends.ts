@@ -13,7 +13,7 @@ const take = ARBITRARY_CONTACTS_LIMIT;
 export async function findUserQuestionFriendsByUserQuestionId(
   userQuestionId: string
 ) {
-  const select = selectUserQuestionFriends();
+  const select = selectUserQuestionFriends;
   const where = whereUserQuestionFriendsByUserQuestionId(userQuestionId);
 
   return await prisma.userQuestionFriend.findMany({
