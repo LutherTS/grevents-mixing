@@ -1,13 +1,10 @@
 import { Prisma } from "@prisma/client";
 
-// select n'a pas besoin d'être une fonction, et si je nomme bien mes where, ils n'ont pas besoin d'être des fonctions non... si quand même. Ce qui sont mappés demeurent des arguments.
+import { DEFAULT_QUESTIONS_ORDER_BY } from "./questions";
 
-// same as questions at this time but nested
 export const DEFAULT_ANSWERS_ORDER_BY = {
   userQuestion: {
-    question: {
-      name: "asc",
-    },
+    question: DEFAULT_QUESTIONS_ORDER_BY,
   },
 } satisfies Prisma.AnswerOrderByWithRelationInput;
 
@@ -27,33 +24,61 @@ export const PINNED_BY_USER_ANSWERS_LIMIT = 16;
 
 // would eventually be shifted to ./userquestions.ts
 export const isNative = {
+  state: "LIVE",
   question: {
     kind: "NATIVE",
+    state: "LIVE",
   },
 } satisfies Prisma.UserQuestionWhereInput;
 
 // would eventually be shifted to ./userquestions.ts
 export const isPseudoNative = {
   kind: "PSEUDONATIVE",
+  state: "LIVE",
   question: {
     kind: "PSEUDO",
+    state: "LIVE",
   },
 } satisfies Prisma.UserQuestionWhereInput;
 
 // would eventually be shifted to ./userquestions.ts
 export const isNativeIrl = {
+  state: "LIVE",
   question: {
     kind: "NATIVEIRL",
+    state: "LIVE",
   },
 } satisfies Prisma.UserQuestionWhereInput;
 
 // would eventually be shifted to ./userquestions.ts
 export const isPseudoNativeIrl = {
   kind: "PSEUDONATIVEIRL",
+  state: "LIVE",
   question: {
     kind: "PSEUDO",
+    state: "LIVE",
   },
 } satisfies Prisma.UserQuestionWhereInput;
+
+// would eventually be shifted to ./userquestions.ts
+export const isSharedToContactCustom = (
+  contactId: string
+): Prisma.UserQuestionWhereInput => {
+  return {
+    state: "LIVE",
+    question: {
+      kind: "CUSTOM",
+      state: "LIVE",
+    },
+    userQuestionFriends: {
+      some: {
+        contactId,
+        isSharedToFriend: true,
+        state: "LIVE",
+      },
+    },
+  };
+};
 
 export const selectUserPinnedAnswers = {
   userQuestion: {
@@ -240,7 +265,7 @@ export const selectUserCustomAnswers = {
   },
 } satisfies Prisma.AnswerSelect;
 
-// currently the same as whereUserNativeAnswersByUserIdAndQuestionKind, with kind as "CUSTOM", and with userQuestion.state as "LIVE" only instead of "LIVE" || "HIDDEN"
+// currently the same as whereUserNativeAnswersByUserIdAndQuestionKind, with kind as "CUSTOM", with userQuestion.state as "LIVE" only instead of "LIVE" || "HIDDEN"
 export function whereUserCustomAnswersByUserId(
   id: string
 ): Prisma.AnswerWhereInput {
@@ -347,11 +372,7 @@ export function whereUserPinnedNotIrlAnswersByUserId(
       user: {
         id,
       },
-      question: {
-        state: "LIVE",
-      },
       isPinned: true,
-      state: "LIVE",
       OR: [isNative, isPseudoNative],
     },
     user: {
@@ -371,11 +392,7 @@ export function whereUserPinnedNotAndIrlAnswersByUserId(
       user: {
         id,
       },
-      question: {
-        state: "LIVE",
-      },
       isPinned: true,
-      state: "LIVE",
       OR: [isNative, isPseudoNative, isNativeIrl, isPseudoNativeIrl],
     },
     user: {
@@ -386,7 +403,8 @@ export function whereUserPinnedNotAndIrlAnswersByUserId(
   };
 }
 
-// currently the same as whereUserNativeAnswersByUserIdAndQuestionKind with userQuestion.isPinned as false and without "HIDDEN" on userQuestion.state
+// whereUserNativeAnswersByUserIdAndQuestionKindPreviewed/Queried
+// currently the same as whereUserNativeAnswersByUserIdAndQuestionKind with userQuestion.isPinned as false, without "HIDDEN" on userQuestion.state
 export function whereUserUnpinnedNativeAnswersByUserIdAndQuestionKind(
   id: string,
   kind: string
@@ -411,6 +429,7 @@ export function whereUserUnpinnedNativeAnswersByUserIdAndQuestionKind(
   };
 }
 
+// whereUserPseudonativeAnswersByUserIdAndQuestionKindPreviewed/Queried
 // currently the same as whereUserPseudonativeAnswersByUserIdAndUserQuestionKind with userQuestion.isPinned as false
 export function whereUserUnpinnedPseudonativeAnswersByUserIdAndUserQuestionKind(
   id: string,
@@ -428,6 +447,75 @@ export function whereUserUnpinnedPseudonativeAnswersByUserIdAndUserQuestionKind(
       },
       kind,
       state: "LIVE",
+    },
+    user: {
+      id,
+      state: "LIVE" || "DEACTIVATED",
+    },
+    state: "LIVE",
+  };
+}
+
+// currently the same as whereUserPinnedAnswersByUserId with OR [isNative, isPseudoNative, isSharedToContactCustom]
+export function whereUserPinnedNotIrlAnswersByUserIdQueried(
+  id: string,
+  contactId: string
+): Prisma.AnswerWhereInput {
+  return {
+    userQuestion: {
+      user: {
+        id,
+      },
+      isPinned: true,
+      OR: [isNative, isPseudoNative, isSharedToContactCustom(contactId)],
+    },
+    user: {
+      id,
+      state: "LIVE" || "DEACTIVATED",
+    },
+    state: "LIVE",
+  };
+}
+
+// currently the same as whereUserPinnedAnswersByUserId with OR [isNative, isPseudoNative, isNativeIrl, isPseudonativeIrl, isSharedToContactCustom]
+export function whereUserPinnedNotAndIrlAnswersByUserIdQueried(
+  id: string,
+  contactId: string
+): Prisma.AnswerWhereInput {
+  return {
+    userQuestion: {
+      user: {
+        id,
+      },
+      isPinned: true,
+      OR: [
+        isNative,
+        isPseudoNative,
+        isNativeIrl,
+        isPseudoNativeIrl,
+        isSharedToContactCustom(contactId),
+      ],
+    },
+    user: {
+      id,
+      state: "LIVE" || "DEACTIVATED",
+    },
+    state: "LIVE",
+  };
+}
+
+// currently the same as whereUserNativeAnswersByUserIdAndQuestionKind, with kind as "CUSTOM", with userQuestion.state as "LIVE" only instead of "LIVE" || "HIDDEN", with userQuestion.isPinned as false, with AND userQuestion isSharedToContactCustom(contactId)
+export function whereUserUnpinnedSharedToContactCustomAnswersQueried(
+  id: string,
+  contactId: string
+): Prisma.AnswerWhereInput {
+  return {
+    userQuestion: {
+      user: {
+        id,
+      },
+      isPinned: false,
+      AND: isSharedToContactCustom(contactId),
     },
     user: {
       id,

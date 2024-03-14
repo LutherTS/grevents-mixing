@@ -1,5 +1,13 @@
 import { Prisma } from "@prisma/client";
 
+export const DEFAULT_USERS_ORDER_BY_1ST = {
+  appWideName: "asc",
+} as Prisma.UserOrderByWithRelationInput;
+
+export const DEFAULT_USERS_ORDER_BY_2ND = {
+  username: "asc",
+} as Prisma.UserOrderByWithRelationInput;
+
 export const selectUser = {
   id: true,
   state: true,

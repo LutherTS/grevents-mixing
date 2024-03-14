@@ -19,6 +19,9 @@ import {
   whereUserUnpinnedPseudonativeAnswersByUserIdAndUserQuestionKind,
   PINNED_BY_USER_ANSWERS_ORDER_BY,
   whereUserPinnedNotAndIrlAnswersByUserId,
+  whereUserPinnedNotIrlAnswersByUserIdQueried,
+  whereUserPinnedNotAndIrlAnswersByUserIdQueried,
+  whereUserUnpinnedSharedToContactCustomAnswersQueried,
 } from "../subdata/answers";
 
 const orderBy = DEFAULT_ANSWERS_ORDER_BY;
@@ -194,6 +197,7 @@ export async function findUserPinnedNotAndIrlAnswersByUserId(id: string) {
   });
 }
 
+// findUserNativeNotIrlAnswersByUserIdPreviewed/Queried
 export async function findUserUnpinnedNativeNotIrlAnswersByUserId(id: string) {
   const select = selectAnswers;
   const where = whereUserUnpinnedNativeAnswersByUserIdAndQuestionKind(
@@ -209,6 +213,7 @@ export async function findUserUnpinnedNativeNotIrlAnswersByUserId(id: string) {
   });
 }
 
+// findUserPseudonativeNotIrlAnswersByUserIdPreviewed/Queried
 export async function findUserUnpinnedPseudonativeNotIrlAnswersByUserId(
   id: string
 ) {
@@ -226,6 +231,7 @@ export async function findUserUnpinnedPseudonativeNotIrlAnswersByUserId(
   });
 }
 
+// findUserNativeIrlAnswersByUserIdPreviewed/Queried
 export async function findUserUnpinnedNativeIrlAnswersByUserId(id: string) {
   const select = selectAnswers;
   const where = whereUserUnpinnedNativeAnswersByUserIdAndQuestionKind(
@@ -241,6 +247,7 @@ export async function findUserUnpinnedNativeIrlAnswersByUserId(id: string) {
   });
 }
 
+// findUserPseudonativeIrlAnswersByUserIdPreviewed/Queried
 export async function findUserUnpinnedPseudonativeIrlAnswersByUserId(
   id: string
 ) {
@@ -261,30 +268,50 @@ export async function findUserUnpinnedPseudonativeIrlAnswersByUserId(
 export async function findUserPinnedNotIrlAnswersByUserIdQueried(
   userId: string,
   contactId: string
-) {}
+) {
+  const select = selectAnswers;
+  const where = whereUserPinnedNotIrlAnswersByUserIdQueried(userId, contactId);
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy,
+    take,
+  });
+}
 
 export async function findUserPinnedNotAndIrlAnswersByUserIdQueried(
   userId: string,
   contactId: string
-) {}
+) {
+  const select = selectAnswers;
+  const where = whereUserPinnedNotAndIrlAnswersByUserIdQueried(
+    userId,
+    contactId
+  );
 
-export async function findUserUnpinnedNativeNotIrlAnswersByUserIdQueried(
-  userId: string
-) {}
-
-export async function findUserUnpinnedPseudonativeNotIrlAnswersByUserIdQueried(
-  userId: string
-) {}
-
-export async function findUserUnpinnedNativeIrlAnswersByUserIdQueried(
-  userId: string
-) {}
-
-export async function findUserUnpinnedPseudonativeIrlAnswersByUserIdQueried(
-  userId: string
-) {}
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy,
+    take,
+  });
+}
 
 export async function findUserUnpinnedSharedToContactCustomAnswersQueried(
   userId: string,
   contactId: string
-) {}
+) {
+  const select = selectAnswers;
+  const where = whereUserUnpinnedSharedToContactCustomAnswersQueried(
+    userId,
+    contactId
+  );
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy,
+    take,
+  });
+}

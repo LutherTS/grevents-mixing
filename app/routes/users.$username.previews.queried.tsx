@@ -6,12 +6,12 @@ import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
 import {
   findUserPinnedNotIrlAnswersByUserIdQueried,
-  findUserUnpinnedNativeNotIrlAnswersByUserIdQueried,
-  findUserUnpinnedPseudonativeNotIrlAnswersByUserIdQueried,
+  findUserUnpinnedNativeNotIrlAnswersByUserId,
+  findUserUnpinnedPseudonativeNotIrlAnswersByUserId,
   findUserUnpinnedSharedToContactCustomAnswersQueried,
   findUserPinnedNotAndIrlAnswersByUserIdQueried,
-  findUserUnpinnedNativeIrlAnswersByUserIdQueried,
-  findUserUnpinnedPseudonativeIrlAnswersByUserIdQueried,
+  findUserUnpinnedNativeIrlAnswersByUserId,
+  findUserUnpinnedPseudonativeIrlAnswersByUserId,
 } from "~/librairies/data/answers";
 import { findContactByUserFirstIdAndUserLastUsername } from "~/librairies/data/contacts";
 import { findUserByUsername } from "~/librairies/data/users";
@@ -57,8 +57,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
         user.id,
         userToQueriedContact.id
       ),
-      findUserUnpinnedNativeNotIrlAnswersByUserIdQueried(user.id),
-      findUserUnpinnedPseudonativeNotIrlAnswersByUserIdQueried(user.id),
+      findUserUnpinnedNativeNotIrlAnswersByUserId(user.id),
+      findUserUnpinnedPseudonativeNotIrlAnswersByUserId(user.id),
       findUserUnpinnedSharedToContactCustomAnswersQueried(
         user.id,
         userToQueriedContact.id
@@ -87,10 +87,10 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
         user.id,
         userToQueriedContact.id
       ),
-      findUserUnpinnedNativeNotIrlAnswersByUserIdQueried(user.id),
-      findUserUnpinnedPseudonativeNotIrlAnswersByUserIdQueried(user.id),
-      findUserUnpinnedNativeIrlAnswersByUserIdQueried(user.id),
-      findUserUnpinnedPseudonativeIrlAnswersByUserIdQueried(user.id),
+      findUserUnpinnedNativeNotIrlAnswersByUserId(user.id),
+      findUserUnpinnedPseudonativeNotIrlAnswersByUserId(user.id),
+      findUserUnpinnedNativeIrlAnswersByUserId(user.id),
+      findUserUnpinnedPseudonativeIrlAnswersByUserId(user.id),
       findUserUnpinnedSharedToContactCustomAnswersQueried(
         user.id,
         userToQueriedContact.id

@@ -1,17 +1,15 @@
 import { Prisma } from "@prisma/client";
-
-// : Prisma.ContactWhereInput ne dérange pas donc je peux le garder.
+import {
+  DEFAULT_USERS_ORDER_BY_1ST,
+  DEFAULT_USERS_ORDER_BY_2ND,
+} from "./users";
 
 export const DEFAULT_CONTACTS_ORDER_BY = [
   {
-    userLast: {
-      appWideName: "asc",
-    },
+    userLast: DEFAULT_USERS_ORDER_BY_1ST,
   },
   {
-    userLast: {
-      username: "asc",
-    },
+    userLast: DEFAULT_USERS_ORDER_BY_2ND,
   },
 ] satisfies Prisma.ContactOrderByWithRelationInput[];
 
