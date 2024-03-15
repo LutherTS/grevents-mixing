@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, redirect } from "@remix-run/node";
+import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
@@ -33,7 +33,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     throw redirect(`/users/${verifiedUser.username}/dashboard`);
   }
 
-  return { verifiedUser, user };
+  return json({ verifiedUser, user });
 };
 
 export default function ProfilePage() {

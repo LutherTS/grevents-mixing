@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
@@ -23,7 +23,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     });
   }
 
-  return { verifiedUser, user };
+  return json({ verifiedUser, user });
 };
 
 export default function ProfilePage() {

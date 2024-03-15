@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, redirect } from "@remix-run/node";
+import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
@@ -54,7 +54,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     countUserNativeIrlAnswersByUserId(user.id),
   ]);
 
-  return {
+  return json({
     verifiedUser,
     user,
     userPinnedAnswerCount,
@@ -62,7 +62,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     userNativeNotIrlAnswersCount,
     userNativeIrlAnswers,
     userNativeIrlAnswersCount,
-  };
+  });
 };
 
 export default function PersonalInfoStandardizedPage() {

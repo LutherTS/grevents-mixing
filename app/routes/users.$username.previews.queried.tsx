@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, redirect } from "@remix-run/node";
+import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
 import { useLoaderData, useSearchParams } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
@@ -81,7 +81,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
         userToQueriedContact.id
       ),
     ]);
-    return {
+    return json({
       verifiedUser,
       user,
       userToQueriedContact,
@@ -91,7 +91,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       userUnpinnedNativeNotIrlAnswers,
       userUnpinnedPseudonativeNotIrlAnswers,
       userUnpinnedSharedToContactCustomAnswers,
-    };
+    });
   } else if (userToQueriedContact && relCombo === "irl") {
     [
       userPinnedNotAndIrlAnswers,
@@ -114,7 +114,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
         userToQueriedContact.id
       ),
     ]);
-    return {
+    return json({
       verifiedUser,
       user,
       userToQueriedContact,
@@ -126,9 +126,15 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       userUnpinnedNativeIrlAnswers,
       userUnpinnedPseudonativeIrlAnswers,
       userUnpinnedSharedToContactCustomAnswers,
-    };
+    });
   } else {
-    return { verifiedUser, user, userToQueriedContact, userLast, relCombo };
+    return json({
+      verifiedUser,
+      user,
+      userToQueriedContact,
+      userLast,
+      relCombo,
+    });
   }
 };
 

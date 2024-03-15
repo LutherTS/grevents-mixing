@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, redirect } from "@remix-run/node";
+import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
@@ -43,12 +43,12 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       findUserPseudonativeIrlAnswersByUserId(user.id),
     ]);
 
-  return {
+  return json({
     verifiedUser,
     user,
     userPseudonativeNotIrlAnswers,
     userPseudonativeIrlAnswers,
-  };
+  });
 };
 
 export default function ModifyCriteriaCustomizedPage() {

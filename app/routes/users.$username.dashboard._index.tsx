@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, redirect } from "@remix-run/node";
+import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
@@ -58,12 +58,13 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const sentFromContactsCount =
     sentFriendFromContactsCount + sentIrlFromContactsCount;
 
-  return {
+  return json({
     verifiedUser,
     user,
     sentToContactsCount,
     sentFromContactsCount,
-  };
+  });
+  // But I still don't know what this is used for yet.
 };
 
 export default function DashboardPage() {

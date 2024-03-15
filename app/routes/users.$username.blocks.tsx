@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, redirect } from "@remix-run/node";
+import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
@@ -42,7 +42,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     findUserWhoHaveMeBlockedByUserId(user.id),
   ]);
 
-  return { verifiedUser, user, userWhoIAmBlocking, userWhoHasMeBlocked };
+  return json({ verifiedUser, user, userWhoIAmBlocking, userWhoHasMeBlocked });
 };
 
 export default function BlocksPage() {

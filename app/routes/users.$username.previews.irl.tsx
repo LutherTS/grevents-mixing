@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, redirect } from "@remix-run/node";
+import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
@@ -54,7 +54,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     findUserUnpinnedPseudonativeIrlAnswersByUserId(user.id),
   ]);
 
-  return {
+  return json({
     verifiedUser,
     user,
     userPinnedNotAndIrlAnswers,
@@ -62,7 +62,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     userUnpinnedPseudonativeNotIrlAnswers,
     userUnpinnedNativeIrlAnswers,
     userUnpinnedPseudonativeIrlAnswers,
-  };
+  });
 };
 
 export default function IrlPreviewPage() {

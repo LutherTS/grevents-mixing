@@ -1,5 +1,6 @@
-import { LoaderFunctionArgs, redirect } from "@remix-run/node";
+import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { SignOutForm } from "~/components/sign-out-form";
@@ -7,7 +8,6 @@ import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
 import { findUserByUsername } from "~/librairies/data/users";
 import { findUserPinnedAnswersByUserId } from "~/librairies/data/answers";
-import invariant from "tiny-invariant";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 
@@ -36,7 +36,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
   const userPinnedAnswers = await findUserPinnedAnswersByUserId(user.id);
 
-  return { verifiedUser, user, userPinnedAnswers };
+  return json({ verifiedUser, user, userPinnedAnswers });
 };
 
 export default function PersonalInfoPage() {

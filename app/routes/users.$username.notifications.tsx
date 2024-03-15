@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, redirect } from "@remix-run/node";
+import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
@@ -42,7 +42,12 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     findSentIrlFromContactsByUserId(user.id),
   ]);
 
-  return { verifiedUser, user, sentFriendFromContacts, sentIrlFromContacts };
+  return json({
+    verifiedUser,
+    user,
+    sentFriendFromContacts,
+    sentIrlFromContacts,
+  });
 };
 
 export default function NotificationsPage() {

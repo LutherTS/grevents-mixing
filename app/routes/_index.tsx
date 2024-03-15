@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
 import { H1 } from "~/components/h1";
@@ -9,7 +9,7 @@ import { getVerifiedUser } from "~/utilities/server/session.server";
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const verifiedUser = await getVerifiedUser(request);
 
-  return { verifiedUser };
+  return json({ verifiedUser });
 };
 
 export default function HomePage() {
