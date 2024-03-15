@@ -2,12 +2,19 @@ import { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
+import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
-import { PageLink } from "~/components/page-link";
+import { SignOutForm } from "~/components/sign-out-form";
 import { findUserByUsername } from "~/librairies/data/users";
+import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   invariant(params.username, "Expected params.username");
+
+  const verifiedUser = await getVerifiedUser(request);
+  if (!verifiedUser) {
+    throw await kickOut(request);
+  }
 
   const user = await findUserByUsername(params.username);
   if (!user) {
@@ -16,7 +23,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     });
   }
 
-  return { user };
+  return { verifiedUser, user };
 };
 
 export default function ProfilePage() {
@@ -26,10 +33,10 @@ export default function ProfilePage() {
   return (
     <>
       <H1>Welcome to {data.user.appWideName}&apos;s Profile.</H1>
-
-      <PageLink href={`/users/${data.user.username}/dashboard`}>
-        back to dashboard (for now)
-      </PageLink>
+      <BackToDashboardLink
+        href={`/users/${data.verifiedUser.username}/dashboard`}
+      />
+      {data.verifiedUser && <SignOutForm />}
     </>
   );
 }

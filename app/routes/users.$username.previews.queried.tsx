@@ -1,9 +1,12 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
+import { LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { useLoaderData, useSearchParams } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
+import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
+import { SignOutForm } from "~/components/sign-out-form";
+import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import {
   findUserPinnedNotIrlAnswersByUserIdQueried,
   findUserUnpinnedNativeNotIrlAnswersByUserId,
@@ -16,15 +19,29 @@ import {
 import { findContactByUserFirstIdAndUserLastUsername } from "~/librairies/data/contacts";
 import { findUserByUsername } from "~/librairies/data/users";
 import { defineContactRelCombo } from "~/utilities/contacts";
+import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   invariant(params.username, "Expected params.username");
+
+  const verifiedUser = await getVerifiedUser(request);
+  if (!verifiedUser) {
+    throw await kickOut(request);
+  }
 
   const user = await findUserByUsername(params.username);
   if (!user) {
     throw new Response("Could not find requested user.", {
       status: 404,
     });
+  }
+
+  if (verifiedUser.id !== user.id) {
+    await updateUserStatusDashboardById(
+      verifiedUser.id,
+      "REDIRECTEDTODASHBOARD"
+    );
+    throw redirect(`/users/${verifiedUser.username}/dashboard`);
   }
 
   const url = new URL(request.url);
@@ -65,6 +82,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       ),
     ]);
     return {
+      verifiedUser,
       user,
       userToQueriedContact,
       userLast,
@@ -97,6 +115,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       ),
     ]);
     return {
+      verifiedUser,
       user,
       userToQueriedContact,
       userLast,
@@ -109,7 +128,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       userUnpinnedSharedToContactCustomAnswers,
     };
   } else {
-    return { user, userToQueriedContact, userLast, relCombo };
+    return { verifiedUser, user, userToQueriedContact, userLast, relCombo };
   }
 };
 
@@ -125,10 +144,10 @@ export default function QueriedPage() {
   return (
     <>
       <H1>Welcome to {data.user.appWideName}&apos;s Queried Previews.</H1>
-
-      <PageLink href={`/users/${data.user.username}/dashboard`}>
-        back to dashboard (for now)
-      </PageLink>
+      <BackToDashboardLink
+        href={`/users/${data.verifiedUser.username}/dashboard`}
+      />
+      {data.verifiedUser && <SignOutForm />}
 
       <PageLink href={`..`}>To Previews</PageLink>
       <PageLink href={`../../profile`}>To Your Profile</PageLink>
