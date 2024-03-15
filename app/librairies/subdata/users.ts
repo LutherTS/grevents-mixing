@@ -37,6 +37,12 @@ export const selectVerifiedUser = {
   email: true,
 } satisfies Prisma.UserSelect;
 
+export const selectVerifiedSignUpUser = {
+  id: true,
+  username: true,
+  email: true,
+} satisfies Prisma.UserSelect;
+
 export function whereUserByUsername(
   username: string
 ): Prisma.UserWhereUniqueInput {

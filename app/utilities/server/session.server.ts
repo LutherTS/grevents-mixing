@@ -10,6 +10,7 @@ import {
   whereSignInUser,
   whereVerifiedUser,
   dataSignUpUser,
+  selectVerifiedSignUpUser,
 } from "~/librairies/subdata/users";
 import { dataSignUpUserEmailAddressAnswer } from "~/librairies/subdata/answers";
 
@@ -30,6 +31,7 @@ export async function signIn(usernameOrEmail: string, signinpassword: string) {
     return null;
   }
 
+  // MISSING: update statusTitle WELCOMEBACKTOGREVENTS
   const verifiedSignInUser = await prisma.user.findFirst({
     select: selectVerifiedSignInUser,
     where: whereSignInUser(usernameOrEmail),
@@ -88,11 +90,15 @@ export async function getVerifiedUserId(request: Request) {
 
 export async function signOut(request: Request) {
   const session = await getVerifiedUserSession(request);
+  // MISSING: update all statuses to NONE
   return redirect("/sign-in", {
     headers: {
       "Set-Cookie": await storage.destroySession(session),
     },
   });
+  // PLUS:
+  // redirect to "/" if "correct signOut",
+  // redirect to "/sign-in" if "incorrect signOut"
 }
 
 export async function getVerifiedUser(request: Request) {
@@ -128,7 +134,7 @@ export async function signUp(
   const friendCode = uid(12);
 
   const signUpUser = await prisma.user.create({
-    select: selectVerifiedUser,
+    select: selectVerifiedSignUpUser,
     data: dataSignUpUser(
       username,
       appWideName,
@@ -136,6 +142,7 @@ export async function signUp(
       hashedPassword,
       friendCode
     ),
+    // MISSING: statusTitle WELCOMETOGREVENTS
   });
 
   // automatically creating signUpUser's email address criteria

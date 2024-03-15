@@ -1,7 +1,12 @@
 import { ActionFunctionArgs } from "@remix-run/node";
+
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
 import { SignUpForm } from "~/components/sign-up-form";
+import {
+  createVerifiedUserSession,
+  signUp,
+} from "~/utilities/server/session.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const form = await request.formData();
@@ -25,7 +30,24 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   ) {
     return null;
   }
-  return null;
+
+  const verifiedSignUpUser = await signUp(
+    username,
+    appWideName,
+    email,
+    signUpPassword,
+    confirmPassword
+  );
+  console.log(verifiedSignUpUser);
+
+  if (!verifiedSignUpUser) {
+    return null;
+  }
+
+  return createVerifiedUserSession(
+    verifiedSignUpUser.id,
+    `/users/${verifiedSignUpUser.username}/dashboard`
+  );
 };
 
 export default function SignUpPage() {
