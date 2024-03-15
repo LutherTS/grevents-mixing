@@ -3,7 +3,10 @@ import { ActionFunctionArgs } from "@remix-run/node";
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
 import { SignInForm } from "~/components/sign-in-form";
-import { createUserSession, signIn } from "~/utilities/server/session.server";
+import {
+  createVerifiedUserSession,
+  signIn,
+} from "~/utilities/server/session.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const form = await request.formData();
@@ -23,7 +26,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null;
   }
 
-  return createUserSession(
+  return createVerifiedUserSession(
     signedIn.verifiedSignInUser.id,
     `/users/${signedIn.verifiedSignInUser.username}/dashboard`
   );

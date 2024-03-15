@@ -5,7 +5,9 @@ import { prisma } from "./db.server";
 import {
   selectSignInUser,
   selectVerifiedSignInUser,
+  selectVerifiedUser,
   whereSignInUser,
+  whereVerifiedUser,
 } from "~/librairies/subdata/users";
 
 export async function signIn(usernameOrEmail: string, password: string) {
@@ -53,7 +55,7 @@ const storage = createCookieSessionStorage({
   },
 });
 
-export async function createUserSession(
+export async function createVerifiedUserSession(
   verifiedUserId: string,
   redirectTo: string
 ) {
@@ -68,24 +70,52 @@ export async function createUserSession(
 
 //
 
-function getUserSession(request: Request) {
+function getVerifiedUserSession(request: Request) {
   return storage.getSession(request.headers.get("Cookie"));
 }
 
-export async function getUserId(request: Request) {
-  const session = await getUserSession(request);
-  const userId = session.get("verifiedUserId");
-  if (!userId || typeof userId !== "string") {
+export async function getVerifiedUserId(request: Request) {
+  const session = await getVerifiedUserSession(request);
+  const verifiedUserId = session.get("verifiedUserId");
+  if (!verifiedUserId || typeof verifiedUserId !== "string") {
     return null;
   }
-  return userId;
+  return verifiedUserId;
 }
 
+export async function signOut(request: Request) {
+  const session = await getVerifiedUserSession(request);
+  return redirect("/sign-in", {
+    headers: {
+      "Set-Cookie": await storage.destroySession(session),
+    },
+  });
+}
+
+export async function getVerifiedUser(request: Request) {
+  const verifiedUserId = await getVerifiedUserId(request);
+  if (typeof verifiedUserId !== "string") {
+    return null;
+  }
+
+  const verifiedUser = await prisma.user.findUnique({
+    select: selectVerifiedUser,
+    where: whereVerifiedUser(verifiedUserId),
+  });
+
+  if (!verifiedUser) {
+    throw await signOut(request);
+  }
+
+  return verifiedUser;
+}
+
+/*
 export async function requireUserId(
   request: Request,
   redirectTo: string = new URL(request.url).pathname
 ) {
-  const session = await getUserSession(request);
+  const session = await getVerifiedUserSession(request);
   const userId = session.get("userId");
   if (!userId || typeof userId !== "string") {
     const searchParams = new URLSearchParams([["redirectTo", redirectTo]]);
@@ -93,3 +123,4 @@ export async function requireUserId(
   }
   return userId;
 }
+*/
