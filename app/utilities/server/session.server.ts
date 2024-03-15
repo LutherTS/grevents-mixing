@@ -11,6 +11,7 @@ import {
   whereVerifiedUser,
   dataSignUpUser,
   selectVerifiedSignUpUser,
+  dataResetUserStatutes,
 } from "~/librairies/subdata/users";
 import { dataSignUpUserEmailAddressAnswer } from "~/librairies/subdata/answers";
 
@@ -31,21 +32,16 @@ export async function signIn(usernameOrEmail: string, signinpassword: string) {
     return null;
   }
 
-  // MISSING: update statusTitle WELCOMEBACKTOGREVENTS
-  const verifiedSignInUser =
-    // await prisma.user.findFirst({
-    //   select: selectVerifiedSignInUser,
-    //   where: whereSignInUser(usernameOrEmail),
-    // });
-    await prisma.user.update({
-      select: selectVerifiedSignInUser,
-      where: {
-        id: signInUser.id,
-      },
-      data: {
-        statusTitle: "WELCOMEBACKTOGREVENTS",
-      },
-    });
+  // sign in with toast for "WELCOMEBACKTOGREVENTS"
+  const verifiedSignInUser = await prisma.user.update({
+    select: selectVerifiedSignInUser,
+    where: {
+      id: signInUser.id,
+    },
+    data: {
+      statusTitle: "WELCOMEBACKTOGREVENTS",
+    },
+  });
   if (!verifiedSignInUser) {
     return null;
   }
@@ -83,8 +79,6 @@ export async function createVerifiedUserSession(
   });
 }
 
-//
-
 function getVerifiedUserSession(request: Request) {
   return storage.getSession(request.headers.get("Cookie"));
 }
@@ -98,17 +92,38 @@ export async function getVerifiedUserId(request: Request) {
   return verifiedUserId;
 }
 
+// redirect to "/" if "correct signOut"
+// doubling getVerifiedUserId to get both the session and verifiedUserId
+// without calling getVerifiedUserSession twice
 export async function signOut(request: Request) {
   const session = await getVerifiedUserSession(request);
-  // MISSING: update all statuses to NONE
+  const verifiedUserId = session.get("verifiedUserId");
+  if (!verifiedUserId || typeof verifiedUserId !== "string") {
+    throw await kickOut(request);
+  }
+  await prisma.user.update({
+    select: selectVerifiedSignInUser,
+    where: {
+      id: verifiedUserId,
+    },
+    data: dataResetUserStatutes,
+  });
+
+  return redirect("/", {
+    headers: {
+      "Set-Cookie": await storage.destroySession(session),
+    },
+  });
+}
+
+// redirect to "/sign-in" if "incorrect signOut"
+export async function kickOut(request: Request) {
+  const session = await getVerifiedUserSession(request);
   return redirect("/sign-in", {
     headers: {
       "Set-Cookie": await storage.destroySession(session),
     },
   });
-  // PLUS:
-  // redirect to "/" if "correct signOut",
-  // redirect to "/sign-in" if "incorrect signOut"
 }
 
 export async function getVerifiedUser(request: Request) {
@@ -123,7 +138,7 @@ export async function getVerifiedUser(request: Request) {
   });
 
   if (!verifiedUser) {
-    throw await signOut(request);
+    throw await kickOut(request);
   }
 
   return verifiedUser;
@@ -143,6 +158,7 @@ export async function signUp(
   const hashedPassword = await bcrypt.hash(signUpPassword, 10);
   const friendCode = uid(12);
 
+  // sign in with toast for "WELCOMETOGREVENTS"
   const signUpUser = await prisma.user.create({
     select: selectVerifiedSignUpUser,
     data: dataSignUpUser(
@@ -152,7 +168,6 @@ export async function signUp(
       hashedPassword,
       friendCode
     ),
-    // MISSING: statusTitle WELCOMETOGREVENTS
   });
 
   // automatically creating signUpUser's email address criteria

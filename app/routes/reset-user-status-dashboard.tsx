@@ -1,6 +1,6 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import { updateUserStatusTitleById } from "~/librairies/changes/users";
+import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 
 import { getVerifiedUserId, kickOut } from "~/utilities/server/session.server";
 
@@ -11,7 +11,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     throw await kickOut(request);
   }
 
-  await updateUserStatusTitleById(verifiedUserId);
+  await updateUserStatusDashboardById(verifiedUserId);
 
   return null;
 };

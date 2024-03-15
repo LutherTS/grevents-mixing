@@ -1,12 +1,13 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
+import { LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
+import { StatusDashboardToasts } from "~/components/status-dashboard-toasts";
 import { StatusTitleToasts } from "~/components/status-title-toasts";
-import { ToastForm } from "~/components/toast-form";
+import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import {
   countSentFriendToContactsByUserId,
   countSentIrlToContactsByUserId,
@@ -14,17 +15,14 @@ import {
   countSentIrlFromContactsByUserId,
 } from "~/librairies/data/contacts";
 import { findUserByUsername } from "~/librairies/data/users";
-import { getVerifiedUser } from "~/utilities/server/session.server";
+import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   invariant(params.username, "Expected params.username");
 
   const verifiedUser = await getVerifiedUser(request);
   if (!verifiedUser) {
-    // for now until signOut or rather kickOut
-    throw new Response("Could not find requested verified user.", {
-      status: 404,
-    });
+    throw await kickOut(request);
   }
 
   const user = await findUserByUsername(params.username);
@@ -32,6 +30,14 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     throw new Response("Could not find requested user.", {
       status: 404,
     });
+  }
+
+  if (verifiedUser.id !== user.id) {
+    await updateUserStatusDashboardById(
+      verifiedUser.id,
+      "REDIRECTEDTODASHBOARD"
+    );
+    throw redirect(`/users/${verifiedUser.username}/dashboard`);
   }
 
   const [
@@ -69,6 +75,9 @@ export default function DashboardPage() {
   return (
     <>
       <StatusTitleToasts statusTitle={data.verifiedUser.statusTitle} />
+      <StatusDashboardToasts
+        statusDashboard={data.verifiedUser.statusDashboard}
+      />
       <H1>Welcome to {data.user.appWideName}&apos;s Dashboard.</H1>
       {data.verifiedUser && <SignOutForm />}
 

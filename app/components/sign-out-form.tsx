@@ -1,6 +1,6 @@
 import { Form } from "@remix-run/react";
 
-export function SignOutForm() {
+export function SignOutForm({ homepage }: { homepage?: boolean }) {
   return (
     <>
       <Form action="/sign-out" method="post">
@@ -8,7 +8,7 @@ export function SignOutForm() {
           type="submit"
           className="mt-2 inline-block text-blue-500 underline hover:text-blue-400 dark:hover:text-blue-600"
         >
-          sign out
+          {homepage ? "Sign out" : "sign out"}
         </button>
       </Form>
     </>

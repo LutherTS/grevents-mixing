@@ -1,12 +1,33 @@
-import { ActionFunctionArgs } from "@remix-run/node";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  redirect,
+} from "@remix-run/node";
 
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
 import { SignInForm } from "~/components/sign-in-form";
+import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import {
   createVerifiedUserSession,
+  getVerifiedUser,
+  kickOut,
   signIn,
 } from "~/utilities/server/session.server";
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const verifiedUser = await getVerifiedUser(request);
+
+  if (verifiedUser) {
+    await updateUserStatusDashboardById(
+      verifiedUser.id,
+      "REDIRECTEDTODASHBOARD"
+    );
+    throw redirect(`/users/${verifiedUser.username}/dashboard`);
+  }
+
+  return null;
+};
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const form = await request.formData();
@@ -30,10 +51,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     verifiedSignInUser.id,
     `/users/${verifiedSignInUser.username}/dashboard`
   );
-  // I think it's only the id that's going to be signed, then be used again, I shall see.
-  // UPDATE: Indeed, only the id comes out. It is then reused to fetch the session user. So up next, returning only the id and separating the selects.
-  // And when I kill the server it also kills the cookies.
-  // ...Not sure. Yup, the cookies is still there.
 };
 
 export default function SignInPage() {

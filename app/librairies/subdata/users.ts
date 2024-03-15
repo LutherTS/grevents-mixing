@@ -81,3 +81,9 @@ export function dataSignUpUser(
   };
 }
 // ...But only currently. */
+
+export const dataResetUserStatutes = {
+  statusTitle: "NONE",
+  statusDashboard: "NONE",
+  statusPersonalInfo: "NONE",
+} satisfies Prisma.UserUpdateInput;
