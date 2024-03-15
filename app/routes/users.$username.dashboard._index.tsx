@@ -5,6 +5,7 @@ import invariant from "tiny-invariant";
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
+import { StatusTitleToasts } from "~/components/status-title-toasts";
 import { ToastForm } from "~/components/toast-form";
 import {
   countSentFriendToContactsByUserId,
@@ -67,14 +68,7 @@ export default function DashboardPage() {
 
   return (
     <>
-      {data.verifiedUser.statusTitle === "WELCOMEBACKTOGREVENTS" && (
-        <ToastForm
-          action="/reset-user-status-title"
-          specifiedClasses="text-yellow-500 disabled:text-gray-500"
-        >
-          Welcome back to Grevents
-        </ToastForm>
-      )}
+      <StatusTitleToasts statusTitle={data.verifiedUser.statusTitle} />
       <H1>Welcome to {data.user.appWideName}&apos;s Dashboard.</H1>
       {data.verifiedUser && <SignOutForm />}
 

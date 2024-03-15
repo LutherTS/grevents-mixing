@@ -77,6 +77,7 @@ export function dataSignUpUser(
     hashedPassword,
     friendCode,
     state: "LIVE",
+    statusTitle: "WELCOMETOGREVENTS",
   };
 }
 // ...But only currently. */
