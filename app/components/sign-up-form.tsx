@@ -45,7 +45,7 @@ export function SignUpForm() {
           placeholder="Confirm your password"
           specifiedType="password"
         />
-        <FormButton>Sign in</FormButton>
+        <FormButton>Sign up</FormButton>
       </Form>
     </>
   );
