@@ -21,7 +21,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 
   const verifiedSignInUser = await signIn(usernameOrEmail, signinpassword);
-  console.log(verifiedSignInUser);
 
   if (!verifiedSignInUser) {
     return null;

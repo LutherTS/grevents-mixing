@@ -32,10 +32,20 @@ export async function signIn(usernameOrEmail: string, signinpassword: string) {
   }
 
   // MISSING: update statusTitle WELCOMEBACKTOGREVENTS
-  const verifiedSignInUser = await prisma.user.findFirst({
-    select: selectVerifiedSignInUser,
-    where: whereSignInUser(usernameOrEmail),
-  });
+  const verifiedSignInUser =
+    // await prisma.user.findFirst({
+    //   select: selectVerifiedSignInUser,
+    //   where: whereSignInUser(usernameOrEmail),
+    // });
+    await prisma.user.update({
+      select: selectVerifiedSignInUser,
+      where: {
+        id: signInUser.id,
+      },
+      data: {
+        statusTitle: "WELCOMEBACKTOGREVENTS",
+      },
+    });
   if (!verifiedSignInUser) {
     return null;
   }

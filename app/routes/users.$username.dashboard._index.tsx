@@ -5,6 +5,7 @@ import invariant from "tiny-invariant";
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
+import { ToastForm } from "~/components/toast-form";
 import {
   countSentFriendToContactsByUserId,
   countSentIrlToContactsByUserId,
@@ -18,6 +19,12 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   invariant(params.username, "Expected params.username");
 
   const verifiedUser = await getVerifiedUser(request);
+  if (!verifiedUser) {
+    // for now until signOut or rather kickOut
+    throw new Response("Could not find requested verified user.", {
+      status: 404,
+    });
+  }
 
   const user = await findUserByUsername(params.username);
   if (!user) {
@@ -60,6 +67,14 @@ export default function DashboardPage() {
 
   return (
     <>
+      {data.verifiedUser.statusTitle === "WELCOMEBACKTOGREVENTS" && (
+        <ToastForm
+          action="/reset-user-status-title"
+          specifiedClasses="text-yellow-500 disabled:text-gray-500"
+        >
+          Welcome back to Grevents
+        </ToastForm>
+      )}
       <H1>Welcome to {data.user.appWideName}&apos;s Dashboard.</H1>
       {data.verifiedUser && <SignOutForm />}
 

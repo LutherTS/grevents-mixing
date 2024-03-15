@@ -17,6 +17,7 @@ export const selectUser = {
 } satisfies Prisma.UserSelect;
 
 export const selectSignInUser = {
+  id: true,
   hashedPassword: true,
 } satisfies Prisma.UserSelect;
 
