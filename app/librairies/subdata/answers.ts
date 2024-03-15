@@ -524,3 +524,36 @@ export function whereUserUnpinnedSharedToContactCustomAnswersQueried(
     state: "LIVE",
   };
 }
+
+export function dataSignUpUserEmailAddressAnswer(
+  value: string,
+  id: string
+): Prisma.AnswerCreateInput {
+  return {
+    state: "LIVE",
+    value,
+    userQuestion: {
+      create: {
+        state: "LIVE",
+        user: {
+          connect: {
+            id,
+          },
+        },
+        question: {
+          connect: {
+            kind_name: {
+              kind: "NATIVE",
+              name: "Email address",
+            },
+          },
+        },
+      },
+    },
+    user: {
+      connect: {
+        id,
+      },
+    },
+  };
+}

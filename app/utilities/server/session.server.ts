@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
+import uid from "uid2";
 
 import { prisma } from "./db.server";
 import {
@@ -8,9 +9,11 @@ import {
   selectVerifiedUser,
   whereSignInUser,
   whereVerifiedUser,
+  dataSignUpUser,
 } from "~/librairies/subdata/users";
+import { dataSignUpUserEmailAddressAnswer } from "~/librairies/subdata/answers";
 
-export async function signIn(usernameOrEmail: string, password: string) {
+export async function signIn(usernameOrEmail: string, signinpassword: string) {
   const signInUser = await prisma.user.findFirst({
     select: selectSignInUser,
     where: whereSignInUser(usernameOrEmail),
@@ -20,7 +23,7 @@ export async function signIn(usernameOrEmail: string, password: string) {
   }
 
   const isCorrectPassword = await bcrypt.compare(
-    password,
+    signinpassword,
     signInUser.hashedPassword
   );
   if (!isCorrectPassword) {
@@ -35,7 +38,7 @@ export async function signIn(usernameOrEmail: string, password: string) {
     return null;
   }
 
-  return { verifiedSignInUser };
+  return verifiedSignInUser;
 }
 
 const sessionSecret = process.env.SESSION_SECRET;
@@ -110,13 +113,46 @@ export async function getVerifiedUser(request: Request) {
   return verifiedUser;
 }
 
+export async function signUp(
+  username: string,
+  appWideName: string,
+  email: string,
+  signUpPassword: string,
+  confirmPassword: string
+) {
+  if (signUpPassword !== confirmPassword) {
+    return null;
+  }
+
+  const hashedPassword = await bcrypt.hash(signUpPassword, 10);
+  const friendCode = uid(12);
+
+  const signUpUser = await prisma.user.create({
+    select: selectVerifiedUser,
+    data: dataSignUpUser(
+      username,
+      appWideName,
+      email,
+      hashedPassword,
+      friendCode
+    ),
+  });
+
+  // automatically creating signUpUser's email address criteria
+  await prisma.answer.create({
+    data: dataSignUpUserEmailAddressAnswer(signUpUser.email, signUpUser.id),
+  });
+
+  return signUpUser;
+}
+
 /*
 export async function requireUserId(
   request: Request,
   redirectTo: string = new URL(request.url).pathname
 ) {
   const session = await getVerifiedUserSession(request);
-  const userId = session.get("userId");
+  const userId = session.get("verifiedUserId");
   if (!userId || typeof userId !== "string") {
     const searchParams = new URLSearchParams([["redirectTo", redirectTo]]);
     throw redirect(`/login?${searchParams}`);

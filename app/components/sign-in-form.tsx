@@ -15,12 +15,12 @@ export function SignInForm() {
           name="usernameoremail"
           placeholder="Enter your username or your email"
         />
-        <label htmlFor="password">
+        <label htmlFor="sign-in-password">
           <p className="mt-4">Password *</p>
         </label>
         <SignInput
-          id="password"
-          name="password"
+          id="sign-in-password"
+          name="signinpassword"
           placeholder="Enter your password"
           specifiedType="password"
         />

@@ -34,6 +34,7 @@ export const selectVerifiedUser = {
   username: true,
   appWideName: true,
   hasTemporaryPassword: true,
+  email: true,
 } satisfies Prisma.UserSelect;
 
 export function whereUserByUsername(
@@ -53,3 +54,22 @@ export function whereSignInUser(
 export function whereVerifiedUser(id: string): Prisma.UserWhereUniqueInput {
   return { id };
 }
+
+// /* This is actually DRY-less.
+export function dataSignUpUser(
+  username: string,
+  appWideName: string,
+  email: string,
+  hashedPassword: string,
+  friendCode: string
+): Prisma.UserCreateInput {
+  return {
+    username,
+    appWideName,
+    email,
+    hashedPassword,
+    friendCode,
+    state: "LIVE",
+  };
+}
+// ...But only currently. */

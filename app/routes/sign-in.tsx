@@ -11,24 +11,25 @@ import {
 export const action = async ({ request }: ActionFunctionArgs) => {
   const form = await request.formData();
   const usernameOrEmail = form.get("usernameoremail");
-  const password = form.get("password");
-  console.log(usernameOrEmail);
-  console.log(password);
+  const signinpassword = form.get("signinpassword");
 
-  if (typeof usernameOrEmail !== "string" || typeof password !== "string") {
+  if (
+    typeof usernameOrEmail !== "string" ||
+    typeof signinpassword !== "string"
+  ) {
     return null;
   }
 
-  const signedIn = await signIn(usernameOrEmail, password);
-  console.log(signedIn);
+  const verifiedSignInUser = await signIn(usernameOrEmail, signinpassword);
+  console.log(verifiedSignInUser);
 
-  if (!signedIn) {
+  if (!verifiedSignInUser) {
     return null;
   }
 
   return createVerifiedUserSession(
-    signedIn.verifiedSignInUser.id,
-    `/users/${signedIn.verifiedSignInUser.username}/dashboard`
+    verifiedSignInUser.id,
+    `/users/${verifiedSignInUser.username}/dashboard`
   );
   // I think it's only the id that's going to be signed, then be used again, I shall see.
   // UPDATE: Indeed, only the id comes out. It is then reused to fetch the session user. So up next, returning only the id and separating the selects.
