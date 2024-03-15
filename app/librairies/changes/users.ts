@@ -20,6 +20,7 @@ export async function updateUserStatusTitleById(
   });
 }
 
+// if statusDashboard is undefined, resetUserStatusDashboardById
 export async function updateUserStatusDashboardById(
   id: string,
   statusDashboard?: string

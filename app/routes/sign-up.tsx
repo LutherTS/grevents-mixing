@@ -35,11 +35,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const email = form.get("email");
   const signUpPassword = form.get("signuppassword");
   const confirmPassword = form.get("confirmpassword");
-  console.log(username);
-  console.log(appWideName);
-  console.log(email);
-  console.log(signUpPassword);
-  console.log(confirmPassword);
 
   if (
     typeof username !== "string" ||
@@ -58,7 +53,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     signUpPassword,
     confirmPassword
   );
-  console.log(verifiedSignUpUser);
 
   if (!verifiedSignUpUser) {
     return null;

@@ -11,7 +11,6 @@ import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import {
   createVerifiedUserSession,
   getVerifiedUser,
-  kickOut,
   signIn,
 } from "~/utilities/server/session.server";
 
