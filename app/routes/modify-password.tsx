@@ -2,10 +2,7 @@ import type { ActionFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import bcrypt from "bcryptjs";
 
-import {
-  updateUserAppWideNameById,
-  updateUserPasswordById,
-} from "~/librairies/changes/users";
+import { updateUserPasswordById } from "~/librairies/changes/users";
 import { findPasswordUserById } from "~/librairies/data/users";
 import { getVerifiedUserId, kickOut } from "~/utilities/server/session.server";
 
