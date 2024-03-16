@@ -138,7 +138,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   }
 };
 
-export default function QueriedPage() {
+export default function QueriedPreviewPage() {
   const data = useLoaderData<typeof loader>();
   console.log(data);
 

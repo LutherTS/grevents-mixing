@@ -36,7 +36,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   return json({ verifiedUser, user });
 };
 
-export default function BlockingBlockedPage() {
+export default function BlockingBlockedPreviewPage() {
   const data = useLoaderData<typeof loader>();
   console.log(data);
 

@@ -36,7 +36,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   return json({ verifiedUser, user });
 };
 
-export default function ProfilePage() {
+export default function DashboardModifyPage() {
   const data = useLoaderData<typeof loader>();
 
   return (
