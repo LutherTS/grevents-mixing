@@ -9,6 +9,7 @@ import { EmailForm } from "~/components/email-form";
 import { FriendCodeForm } from "~/components/friend-code-form";
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
+import { PasswordForm } from "~/components/password-form";
 import { SignOutForm } from "~/components/sign-out-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import { findUserByUsername } from "~/librairies/data/users";
@@ -51,11 +52,12 @@ export default function DashboardModifyPage() {
         href={`/users/${data.verifiedUser.username}/dashboard`}
       />
       {data.verifiedUser && <SignOutForm />}
-      <div className="my-2">
+      <div className="my-4">
         <AppWideNameForm appWideName={data.verifiedUser.appWideName} />
         <EmailForm email={data.verifiedUser.email} />
         <FriendCodeForm />
         <DeactivateReactivateForms state={data.verifiedUser.state} />
+        <PasswordForm />
       </div>
       <PageLink href={`..`}>Cancel</PageLink>
     </>

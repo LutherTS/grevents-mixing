@@ -1,5 +1,5 @@
-import bcrypt from "bcryptjs";
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
+import bcrypt from "bcryptjs";
 import uid from "uid2";
 
 import { prisma } from "./db.server";

@@ -30,6 +30,11 @@ export function StatusDashboardToasts({
           Friend code updated
         </ToastForm>
       )}
+      {statusDashboard === "PASSWORDUPDATED" && (
+        <ToastForm action="/reset-user-status-dashboard">
+          Password updated
+        </ToastForm>
+      )}
       {statusDashboard === "NOWDEACTIVATED" && (
         <ToastForm action="/reset-user-status-dashboard">
           You&apos;ve deactivated your profile

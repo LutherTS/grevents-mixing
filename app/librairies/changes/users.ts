@@ -135,3 +135,22 @@ export async function updateReactivateUserById(id: string) {
     data,
   });
 }
+
+// select needed to return the username
+export async function updateUserPasswordById(
+  id: string,
+  hashedPassword: string
+) {
+  const select = selectVerifiedUser;
+  const where: Prisma.UserWhereUniqueInput = { id };
+  const data: Prisma.UserUpdateInput = {
+    hashedPassword,
+    statusDashboard: "PASSWORDUPDATED",
+  };
+
+  return await prisma.user.update({
+    select,
+    where,
+    data,
+  });
+}

@@ -16,7 +16,7 @@ export function DeactivateForm() {
 
   return (
     <>
-      <fetcher.Form action="/deactivate-profile" method="post" className="mt-2">
+      <fetcher.Form action="/deactivate-profile" method="post" className="mt-4">
         <LinkButton disabled={disabled}>
           Click to deactivate your profile
         </LinkButton>
@@ -34,7 +34,7 @@ export function ReactivateForm() {
 
   return (
     <>
-      <fetcher.Form action="/reactivate-profile" method="post" className="mt-2">
+      <fetcher.Form action="/reactivate-profile" method="post" className="mt-4">
         <LinkButton disabled={disabled}>
           Click to reactivate your profile
         </LinkButton>
