@@ -22,7 +22,7 @@ export function DeactivateForm() {
         </LinkButton>
       </fetcher.Form>
       <p className="mt-2">
-        All other users will no longer be able to see your profile.
+        All other users will no longer be able to see your Profile page.
       </p>
     </>
   );
@@ -40,7 +40,7 @@ export function ReactivateForm() {
         </LinkButton>
       </fetcher.Form>
       <p className="mt-2">
-        All other users will no longer be able to see your profile.
+        All your friends will once again have access to your profile.
       </p>
     </>
   );

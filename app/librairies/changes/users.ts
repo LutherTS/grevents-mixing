@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 
 import { prisma } from "~/utilities/server/db.server";
+import { selectVerifiedUser } from "../subdata/users";
 
 // if statusTitle is undefined, resetUserStatusTitleById
 export async function updateUserStatusTitleById(
@@ -38,10 +39,12 @@ export async function updateUserStatusDashboardById(
   });
 }
 
+// select needed to return the username
 export async function updateUserAppWideNameById(
   id: string,
   appWideName: string
 ) {
+  const select = selectVerifiedUser;
   const where: Prisma.UserWhereUniqueInput = { id };
   const data: Prisma.UserUpdateInput = {
     appWideName,
@@ -49,16 +52,19 @@ export async function updateUserAppWideNameById(
   };
 
   return await prisma.user.update({
+    select,
     where,
     data,
   });
 }
 
+// select needed to return the username
 export async function updateUserEmailByIdAndAnswerId(
   id: string,
   email: string,
   answerId: string
 ) {
+  const select = selectVerifiedUser;
   const where: Prisma.UserWhereUniqueInput = { id };
   const data: Prisma.UserUpdateInput = {
     email,
@@ -76,6 +82,55 @@ export async function updateUserEmailByIdAndAnswerId(
   };
 
   return await prisma.user.update({
+    select,
+    where,
+    data,
+  });
+}
+
+// select needed to return the username
+export async function updateUserFriendCodeById(id: string, friendCode: string) {
+  const select = selectVerifiedUser;
+  const where: Prisma.UserWhereUniqueInput = { id };
+  const data: Prisma.UserUpdateInput = {
+    friendCode,
+    statusDashboard: "FRIENDCODEUPDATED",
+  };
+
+  return await prisma.user.update({
+    select,
+    where,
+    data,
+  });
+}
+
+export async function updateDeactivateUserById(id: string) {
+  const select = selectVerifiedUser;
+  const where: Prisma.UserWhereUniqueInput = { id };
+
+  let data: Prisma.UserUpdateInput = {
+    state: "DEACTIVATED",
+    statusDashboard: "NOWDEACTIVATED",
+  };
+
+  return await prisma.user.update({
+    select,
+    where,
+    data,
+  });
+}
+
+export async function updateReactivateUserById(id: string) {
+  const select = selectVerifiedUser;
+  const where: Prisma.UserWhereUniqueInput = { id };
+
+  let data: Prisma.UserUpdateInput = {
+    state: "LIVE",
+    statusDashboard: "NOWREACTIVATED",
+  };
+
+  return await prisma.user.update({
+    select,
     where,
     data,
   });

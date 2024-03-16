@@ -27,13 +27,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null;
   }
 
-  await updateUserEmailByIdAndAnswerId(
+  const verifiedUser = await updateUserEmailByIdAndAnswerId(
     verifiedUserId,
     email,
     verifiedUserEmailAddressAnswer.id
   );
 
-  return null;
+  return redirect(`/users/${verifiedUser.username}/dashboard`);
 };
 
 export const loader = async () => redirect("/");

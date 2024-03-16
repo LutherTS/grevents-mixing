@@ -4,7 +4,7 @@ import invariant from "tiny-invariant";
 
 import { AppWideNameForm } from "~/components/app-wide-name-form";
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
-import { DeactivateReactivateForms } from "~/components/deactivate-form";
+import { DeactivateReactivateForms } from "~/components/deactivate-forms";
 import { EmailForm } from "~/components/email-form";
 import { FriendCodeForm } from "~/components/friend-code-form";
 import { H1 } from "~/components/h1";
@@ -42,6 +42,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
 export default function DashboardModifyPage() {
   const data = useLoaderData<typeof loader>();
+  console.log(data);
 
   return (
     <>

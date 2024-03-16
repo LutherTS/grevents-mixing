@@ -129,7 +129,7 @@ export function whereUserPinnedAnswersByUserId(
     },
     user: {
       id,
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
     state: "LIVE",
   };
@@ -570,7 +570,7 @@ export function whereEmailAddressByUserId(id: string): Prisma.AnswerWhereInput {
       },
       question: {
         kind: "NATIVE",
-        name: "Email Address",
+        name: "Email address",
       },
     },
     user: {
