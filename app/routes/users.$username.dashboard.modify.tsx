@@ -2,7 +2,11 @@ import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
+import { AppWideNameForm } from "~/components/app-wide-name-form";
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
+import { DeactivateReactivateForms } from "~/components/deactivate-form";
+import { EmailForm } from "~/components/email-form";
+import { FriendCodeForm } from "~/components/friend-code-form";
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
@@ -41,12 +45,17 @@ export default function DashboardModifyPage() {
 
   return (
     <>
-      <H1>Welcome to {data.user.appWideName}&apos;s Modify App-Wide Name.</H1>
+      <H1>Welcome to {data.user.appWideName}&apos;s Modify.</H1>
       <BackToDashboardLink
         href={`/users/${data.verifiedUser.username}/dashboard`}
       />
       {data.verifiedUser && <SignOutForm />}
-
+      <div className="my-2">
+        <AppWideNameForm appWideName={data.verifiedUser.appWideName} />
+        <EmailForm email={data.verifiedUser.email} />
+        <FriendCodeForm />
+        <DeactivateReactivateForms state={data.verifiedUser.state} />
+      </div>
       <PageLink href={`..`}>Cancel</PageLink>
     </>
   );

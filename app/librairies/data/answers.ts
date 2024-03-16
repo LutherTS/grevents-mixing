@@ -22,6 +22,8 @@ import {
   whereUserPinnedNotIrlAnswersByUserIdQueried,
   whereUserPinnedNotAndIrlAnswersByUserIdQueried,
   whereUserUnpinnedSharedToContactCustomAnswersQueried,
+  selectAnswerId,
+  whereEmailAddressByUserId,
 } from "../subdata/answers";
 
 const orderBy = DEFAULT_ANSWERS_ORDER_BY;
@@ -313,5 +315,15 @@ export async function findUserUnpinnedSharedToContactCustomAnswersQueried(
     where,
     orderBy,
     take,
+  });
+}
+
+export async function findEmailAddressAnswerByUserId(userId: string) {
+  const select = selectAnswerId;
+  const where = whereEmailAddressByUserId(userId);
+
+  return await prisma.answer.findFirst({
+    select,
+    where,
   });
 }

@@ -37,3 +37,46 @@ export async function updateUserStatusDashboardById(
     data,
   });
 }
+
+export async function updateUserAppWideNameById(
+  id: string,
+  appWideName: string
+) {
+  const where: Prisma.UserWhereUniqueInput = { id };
+  const data: Prisma.UserUpdateInput = {
+    appWideName,
+    statusDashboard: "APPWIDENAMEUPDATED",
+  };
+
+  return await prisma.user.update({
+    where,
+    data,
+  });
+}
+
+export async function updateUserEmailByIdAndAnswerId(
+  id: string,
+  email: string,
+  answerId: string
+) {
+  const where: Prisma.UserWhereUniqueInput = { id };
+  const data: Prisma.UserUpdateInput = {
+    email,
+    statusDashboard: "EMAILUPDATED",
+    answers: {
+      update: {
+        data: {
+          value: email,
+        },
+        where: {
+          id: answerId,
+        },
+      },
+    },
+  };
+
+  return await prisma.user.update({
+    where,
+    data,
+  });
+}

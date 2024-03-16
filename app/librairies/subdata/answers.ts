@@ -557,3 +557,26 @@ export function dataSignUpUserEmailAddressAnswer(
     },
   };
 }
+
+export const selectAnswerId = {
+  id: true,
+} satisfies Prisma.AnswerSelect;
+
+export function whereEmailAddressByUserId(id: string): Prisma.AnswerWhereInput {
+  return {
+    userQuestion: {
+      user: {
+        id,
+      },
+      question: {
+        kind: "NATIVE",
+        name: "Email Address",
+      },
+    },
+    user: {
+      id,
+      state: "LIVE" || "DEACTIVATED",
+    },
+    state: "LIVE",
+  };
+}
