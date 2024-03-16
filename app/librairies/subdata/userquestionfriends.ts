@@ -45,7 +45,7 @@ export function whereUserQuestionFriendsByUserQuestionId(
     contact: {
       state: "LIVE",
       userFirst: {
-        state: "LIVE" || "DEACTIVATED",
+        OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
       },
       mirror: {
         state: "LIVE",

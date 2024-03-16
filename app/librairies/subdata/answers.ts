@@ -129,7 +129,7 @@ export function whereUserPinnedAnswersByUserId(
     },
     user: {
       id,
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
     state: "LIVE",
   };
@@ -174,11 +174,11 @@ export function whereUserNativeAnswersByUserIdAndQuestionKind(
         kind,
         state: "LIVE",
       },
-      state: "LIVE" || "HIDDEN",
+      OR: [{ state: "LIVE" }, { state: "HIDDEN" }],
     },
     user: {
       id,
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
     state: "LIVE",
   };
@@ -226,7 +226,7 @@ export function whereUserPseudonativeAnswersByUserIdAndUserQuestionKind(
     },
     user: {
       id,
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
     state: "LIVE",
   };
@@ -265,7 +265,7 @@ export const selectUserCustomAnswers = {
   },
 } satisfies Prisma.AnswerSelect;
 
-// currently the same as whereUserNativeAnswersByUserIdAndQuestionKind, with kind as "CUSTOM", with userQuestion.state as "LIVE" only instead of "LIVE" || "HIDDEN"
+// currently the same as whereUserNativeAnswersByUserIdAndQuestionKind, with kind as "CUSTOM", with userQuestion.state as "LIVE" only instead of OR: [{ state: "LIVE" }, { state: "HIDDEN" }]
 export function whereUserCustomAnswersByUserId(
   id: string
 ): Prisma.AnswerWhereInput {
@@ -282,7 +282,7 @@ export function whereUserCustomAnswersByUserId(
     },
     user: {
       id,
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
     state: "LIVE",
   };
@@ -335,7 +335,7 @@ export function whereAnswerByUserQuestionIDAndUserID(
       },
     },
     user: {
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
   };
 }
@@ -377,7 +377,7 @@ export function whereUserPinnedNotIrlAnswersByUserId(
     },
     user: {
       id,
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
     state: "LIVE",
   };
@@ -397,7 +397,7 @@ export function whereUserPinnedNotAndIrlAnswersByUserId(
     },
     user: {
       id,
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
     state: "LIVE",
   };
@@ -423,7 +423,7 @@ export function whereUserUnpinnedNativeAnswersByUserIdAndQuestionKind(
     },
     user: {
       id,
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
     state: "LIVE",
   };
@@ -450,7 +450,7 @@ export function whereUserUnpinnedPseudonativeAnswersByUserIdAndUserQuestionKind(
     },
     user: {
       id,
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
     state: "LIVE",
   };
@@ -471,7 +471,7 @@ export function whereUserPinnedNotIrlAnswersByUserIdQueried(
     },
     user: {
       id,
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
     state: "LIVE",
   };
@@ -498,13 +498,13 @@ export function whereUserPinnedNotAndIrlAnswersByUserIdQueried(
     },
     user: {
       id,
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
     state: "LIVE",
   };
 }
 
-// currently the same as whereUserNativeAnswersByUserIdAndQuestionKind, with kind as "CUSTOM", with userQuestion.state as "LIVE" only instead of "LIVE" || "HIDDEN", with userQuestion.isPinned as false, with AND userQuestion isSharedToContactCustom(contactId)
+// currently the same as whereUserNativeAnswersByUserIdAndQuestionKind, with kind as "CUSTOM", with userQuestion.state as "LIVE" only instead of OR: [{ state: "LIVE" }, { state: "HIDDEN" }], with userQuestion.isPinned as false, with AND userQuestion isSharedToContactCustom(contactId)
 export function whereUserUnpinnedSharedToContactCustomAnswersQueried(
   id: string,
   contactId: string
@@ -519,7 +519,63 @@ export function whereUserUnpinnedSharedToContactCustomAnswersQueried(
     },
     user: {
       id,
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
+    },
+    state: "LIVE",
+  };
+}
+
+export function dataSignUpUserEmailAddressAnswer(
+  value: string,
+  id: string
+): Prisma.AnswerCreateInput {
+  return {
+    state: "LIVE",
+    value,
+    userQuestion: {
+      create: {
+        state: "LIVE",
+        user: {
+          connect: {
+            id,
+          },
+        },
+        question: {
+          connect: {
+            kind_name: {
+              kind: "NATIVE",
+              name: "Email address",
+            },
+          },
+        },
+      },
+    },
+    user: {
+      connect: {
+        id,
+      },
+    },
+  };
+}
+
+export const selectAnswerId = {
+  id: true,
+} satisfies Prisma.AnswerSelect;
+
+export function whereEmailAddressByUserId(id: string): Prisma.AnswerWhereInput {
+  return {
+    userQuestion: {
+      user: {
+        id,
+      },
+      question: {
+        kind: "NATIVE",
+        name: "Email address",
+      },
+    },
+    user: {
+      id,
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
     state: "LIVE",
   };

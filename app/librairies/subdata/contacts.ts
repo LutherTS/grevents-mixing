@@ -80,10 +80,10 @@ export function whereSentToContactsByUserIdAndProcessRelationship(
       state: "LIVE",
     },
     userFirst: {
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
     userLast: {
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
   };
 }
@@ -100,10 +100,10 @@ export function whereSentFromContactsByUserIdAndProcessRelationship(
       state: "LIVE",
     },
     userFirst: {
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
     userLast: {
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
   };
 }
@@ -121,10 +121,10 @@ export function whereUserFriendsByUserIdAndKind(
       state: "LIVE",
     },
     userFirst: {
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
     userLast: {
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
   };
 }
@@ -143,10 +143,10 @@ export function whereUserWhoIAmBlockingByUserId(
       state: "LIVE",
     },
     userFirst: {
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
     userLast: {
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
   };
 }
@@ -165,10 +165,10 @@ export function whereUserWhoHaveMeBlockedByUserId(
       state: "LIVE",
     },
     userFirst: {
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
     userLast: {
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
   };
 }
@@ -181,7 +181,7 @@ export function whereUserFriendsNotToUserQuestionByUserQuestionIdAndUserId(
     userFirstId,
     state: "LIVE",
     userFirst: {
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
     mirror: {
       state: "LIVE",
@@ -211,11 +211,11 @@ export function whereContactByUserFirstIdAndUserLastUsername(
       state: "LIVE",
     },
     userFirst: {
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
     userLast: {
       username,
-      state: "LIVE" || "DEACTIVATED",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
   };
 }
