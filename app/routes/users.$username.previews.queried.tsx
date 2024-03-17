@@ -55,8 +55,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     relCombo = defineContactRelCombo(userToQueriedContact, relCombo);
   }
 
-  let userPinnedNotIrlAnswers;
-  let userPinnedNotAndIrlAnswers;
+  let userPinnedNotIrlAnswersQueried;
+  let userPinnedNotAndIrlAnswersQueried;
   let userUnpinnedNativeNotIrlAnswers;
   let userUnpinnedPseudonativeNotIrlAnswers;
   let userUnpinnedNativeIrlAnswers;
@@ -65,7 +65,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
   if (userToQueriedContact && relCombo === "friend") {
     [
-      userPinnedNotIrlAnswers,
+      userPinnedNotIrlAnswersQueried,
       userUnpinnedNativeNotIrlAnswers,
       userUnpinnedPseudonativeNotIrlAnswers,
       userUnpinnedSharedToContactCustomAnswers,
@@ -87,14 +87,14 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       userToQueriedContact,
       userLast,
       relCombo,
-      userPinnedNotIrlAnswers,
+      userPinnedNotIrlAnswersQueried,
       userUnpinnedNativeNotIrlAnswers,
       userUnpinnedPseudonativeNotIrlAnswers,
       userUnpinnedSharedToContactCustomAnswers,
     });
   } else if (userToQueriedContact && relCombo === "irl") {
     [
-      userPinnedNotAndIrlAnswers,
+      userPinnedNotAndIrlAnswersQueried,
       userUnpinnedNativeNotIrlAnswers,
       userUnpinnedPseudonativeNotIrlAnswers,
       userUnpinnedNativeIrlAnswers,
@@ -120,7 +120,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       userToQueriedContact,
       userLast,
       relCombo,
-      userPinnedNotAndIrlAnswers,
+      userPinnedNotAndIrlAnswersQueried,
       userUnpinnedNativeNotIrlAnswers,
       userUnpinnedPseudonativeNotIrlAnswers,
       userUnpinnedNativeIrlAnswers,

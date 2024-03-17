@@ -1,0 +1,452 @@
+import { Prisma } from "@prisma/client";
+
+import { selectContacts } from "~/librairies/subdata/contacts";
+import { PageLinkDivless } from "./page-link";
+
+// OneAnswer // Default
+// OneAnswerModify // only answer part changes
+// OneAnswerPinnable // only answer part changes
+// OneAnswerPinnablePseudoable // only answer part changes
+// OneAnswerPinnableByFriend // only answer part changes
+// OneAnswerCancelPinnableByFriend // only answer part changes
+// OneLinkAnswer // question part changes, answer part Pinnable // now obsolete
+
+/*
+I'm gonna need to rethink, not from the capabilities of the components that I thought up progressively, but rather from the situations where the components are going to be used, and that's what I need to define. 
+
+Then even if two case have the exact same composition, it would not matter because with their names different, I'll be able to better understand watch each of them are for.
+
+So here's the list: 
+- PinnedAnswers // OneAnswer personalView true // OneAnswerPersonal
+- NativeAnswers // OneAnswerPinnable
+- PseudonativeAnswers // OneAnswerPinnablePseudoable
+- CustomAnswers // OneLinkAnswer (NON, LE LIEN EST SUR LA QUESTION)
+- AnswersModify // OneAnswerModify
+- PreviewedAnswers // OneAnswer personalView false // OneAnswerPreviewed (that includes Queried which will show no number of UserQuestionFriends)
+- ExposedAnswers // OneAnswerPinnableByFriend, OneAnswerCancelPinnableByFriend
+
+Du coup comme typeof c'est du JavaScript, je pourrai l'utiliser pour router correctement en fonction du type de liste qui est fourni. À réfléchir. 
+Mais pour ça il faudra que leurs types soient vraiment différents, et pas uniquement nominalement différents.
+
+Custom ::
+PinnedAnswers : sans lien, avec nombre
+CustomAnswers : avec lien, avec nombre
+PreviewedAnswers : sans lien, sans nombre, "share to you"
+ExposedAnswers : sans lien, sans nombre, "share to you"
+
+Je pense que je vais pouvoir utiliser des booleans sur le ManyAnswers pour définir ce comportement et plus encore.
+Au lieu d'un boolean je peux faire un enum
+context: 'PINNED' | 'STANDARDIZED' | 'CUSTOMIZED' | 'USERCRITERIA' | 'PREVIEWED' | 'EXPOSED'
+*/
+export function OneCriteria({
+  contact,
+}: {
+  contact: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+}) {
+  return (
+    <>
+      <p className="mt-2">
+        {contact.mirror?.userFirst.state === "DEACTIVATED" ? (
+          <>
+            <span className="font-semibold text-gray-500">
+              {contact.mirror?.userFirst.appWideName}
+            </span>
+          </>
+        ) : (
+          <>
+            <PageLinkDivless
+              href={`/users/${contact.mirror?.userFirst.username}/profile`}
+              specifiedClasses="font-semibold text-blue-500 hover:text-blue-400 dark:hover:text-blue-600"
+            >
+              {contact.mirror?.userFirst.appWideName}
+            </PageLinkDivless>
+          </>
+        )}{" "}
+        / {contact.mirror?.userFirst.username}
+      </p>
+    </>
+  );
+}
+
+// OneAnswerQuestion
+// OneAnswerValue
+
+/* TOUT ÇA LÀ DOIT ÊTRE DANS UN FICHIER ONEQUESTION, one-question.tsx.
+Finalement tu restes. */
+function OneCriteriaQuestion({
+  answer,
+  context,
+}: {
+  answer: Answer;
+  context?: string;
+}) {
+  return (
+    <>
+      <p className="mt-2">
+        {answer.question_kind === "NATIVE" && (
+          <span className="text-violet-500">
+            <span className="font-semibold">{answer.question_name}</span> /
+            native
+          </span>
+        )}
+        {answer.question_kind === "NATIVEIRL" && (
+          <span className="text-purple-500">
+            <span className="font-semibold">{answer.question_name}</span> /
+            native irl
+          </span>
+        )}
+        {answer.question_kind === "PSEUDO" &&
+          answer.userquestion_kind === "PSEUDONATIVE" && (
+            <span className="text-green-500">
+              <span className="font-semibold">{answer.question_name}</span> /
+              pseudonative
+            </span>
+          )}
+        {answer.question_kind === "PSEUDO" &&
+          answer.userquestion_kind === "PSEUDONATIVEIRL" && (
+            <span className="text-emerald-500">
+              <span className="font-semibold">{answer.question_name}</span> /
+              pseudonative irl
+            </span>
+          )}
+        {/* no link, UserQuestionFriends counted */}
+        {(answer.question_kind === "CUSTOM" && context === "PINNED") ||
+          ("USERCRITERIA" && (
+            <span className="text-lime-500">
+              <span className="font-semibold">{answer.question_name}</span> /
+              custom{" "}
+              {answer.userquestionfriends_count &&
+              answer.userquestionfriends_count >= 1 ? (
+                <>/ shared ({answer.userquestionfriends_count})</>
+              ) : (
+                <>/ not shared</>
+              )}
+            </span>
+          ))}
+        {/* no link, UserQuestionFriends not counted */}
+        {(answer.question_kind === "CUSTOM" && context === "PREVIEWED") ||
+          ("EXPOSED" && (
+            <span className="text-lime-500">
+              <span className="font-semibold">{answer.question_name}</span> /
+              custom / shared to you
+            </span>
+          ))}
+        {/* link, UserQuestionFriends counted */}
+        {/* basically the only unused case is: link, UserQuestionFriends not counted */}
+        {answer.question_kind === "CUSTOM" && context === "CUSTOMIZED" && (
+          <div>
+            <Link
+              href={`/users/${answer.user_username}/personal-info/user-criteria/${answer.userquestion_id}`}
+              className="inline-block underline"
+            >
+              <span className="text-lime-500 underline hover:text-lime-400 dark:hover:text-lime-600">
+                <span className="font-semibold">{answer.question_name}</span> /
+                custom{" "}
+                {answer.userquestionfriends_count &&
+                answer.userquestionfriends_count >= 1 ? (
+                  <>/ shared ({answer.userquestionfriends_count})</>
+                ) : (
+                  <>/ not shared</>
+                )}
+              </span>
+            </Link>
+          </div>
+        )}
+      </p>
+    </>
+  );
+}
+
+// function OneLinkCriteriaQuestion({ answer }: { answer: Answer }) {
+//   return (
+//     <>
+//       <p className="mt-2">
+//         {answer.question_kind === "CUSTOM" && (
+//           <span className="text-lime-500 underline hover:text-lime-400 dark:hover:text-lime-600">
+//             <span className="font-semibold">{answer.question_name}</span> /
+//             custom{" "}
+//             {answer.userquestionfriends_count &&
+//             answer.userquestionfriends_count >= 1 ? (
+//               <>/ shared ({answer.userquestionfriends_count})</>
+//             ) : (
+//               <>/ not shared</>
+//             )}
+//           </span>
+//         )}
+//       </p>
+//     </>
+//   );
+// }
+
+// Here is what survives.
+// OneAnswer // default
+// OneAnswerModify // only answer part changes
+// OneAnswerPinnable // only answer part changes
+// OneAnswerPinnablePseudoable // only answer part changes
+// OneAnswerPinnableByFriend // only answer part changes
+// OneAnswerCancelPinnableByFriend // only answer part changes
+
+// The HIDDEN thing is OK as a global because:
+// HIDDEN userquestion will only show on the previous personal view contexts
+// and wherever they show in that context, this is how they should be presented in a default OneAnswer
+function OneAnswer({ answer }: { answer: Answer }) {
+  return (
+    <>
+      <p
+        className={
+          answer.userquestion_state === "HIDDEN" ? "mt-2 text-gray-500" : "mt-2"
+        }
+      >
+        {answer.answer_value}
+      </p>
+    </>
+  );
+}
+
+// OneCriteria (no such component as OneCriteria though)
+// OneQuestion
+// OneAnswer
+
+// Where in question I was needing context, I think in answer it's just going to have to remain what it can do, and therefore be different OneAnswer.
+// Ensuite en effet je nomme le haut de mes composants en fonction de ce que je recherche. ManyUserPinnedCriteria made of OneQuestion and OneUserPinnedAnswer.
+
+// So, what, other than default, survives, and what they need
+
+// OneAnswerModify ::
+// OneCriteriaAnswerModifyForm
+// ButtonHiddableForm
+
+// OneAnswerPinnable ::
+// ButtonPinnableForm
+
+// OneAnswerPinnablePseudoable ::
+// ButtonPinnableForm
+// ButtonPseudoableForm
+
+// OneAnswerPinnableByFriend ::
+// ButtonPinUserQuestionFriendForm
+
+// OneAnswerCancelPinnableByFriend ::
+// ButtonCancelPinUserQuestionFriendForm
+
+//
+
+// Here's the list now without profile and UserCriteriaPage
+
+// ManyUserCriteria
+// ManyUserPinnedCriteria :: (original)
+// => OneUserPinnedCriteria
+// => => OneQuestion
+// => => OneAnswer
+
+// ManyUserCriteriaPinnable
+// ManyUserNativeNotIrlCriteria :: (original)
+// => OneUserNativeNotIrlCriteria
+// => => OneQuestion
+// => => OneAnswerPinnable
+
+// ManyUserNativeIrlCriteria :: (same)
+// => OneUserNativeIrlCriteria
+// => => OneQuestion
+// => => OneAnswerPinnable
+
+// ManyUserCriteriaModify
+// ManyUserNativeNotIrlCriteriaModify :: (original)
+// => OneUserNativeNotIrlCriteriaModify
+// => => OneQuestion
+// => => OneAnswerModify
+
+// ManyUserNativeIrlCriteriaModify :: (same)
+// => OneUserNativeIrlCriteriaModify
+// => => OneQuestion
+// => => OneAnswerModify
+
+// ManyUserCriteriaPinnablePseudoable
+// ManyUserPseudonativeNotIrlCriteria :: (original)
+// => OneUserPseudonativeNotIrlCriteria
+// => => OneQuestion
+// => => OneAnswerPinnablePseudoable
+
+// ManyUserPseudonativeIrlCriteria :: (same)
+// => OneUserPseudonativeIrlCriteria
+// => => OneQuestion
+// => => OneAnswerPinnablePseudoable
+
+// ManyUserCustomCriteria :: (same)
+// => OneUserCustomCriteria
+// => => OneQuestion
+// => => OneAnswerPinnable
+
+// ManyUserPseudonativeNotIrlCriteriaModify :: (same)
+// => OneUserPseudonativeNotIrlCriteriaModify
+// => => OneQuestion
+// => => OneAnswerModify
+
+// ManyUserPseudonativeIrlCriteriaModify :: (same)
+// => OneUserPseudonativeIrlCriteriaModify
+// => => OneQuestion
+// => => OneAnswerModify
+
+// ManyUserCustomCriteriaModify :: (same)
+// => OneUserCustomCriteriaModify
+// => => OneQuestion
+// => => OneAnswerModify
+
+// ManyUserPinnedNotIrlCriteria :: (same)
+// => OneUserPinnedNotIrlCriteria
+// => => OneQuestion
+// => => OneAnswer
+
+// ManyUserUnpinnedNativeNotIrlCriteria :: (same)
+// => OneUserUnpinnedNativeNotIrlCriteria
+// => => OneQuestion
+// => => OneAnswer
+
+// ManyUserUnpinnedPseudonativeNotIrlCriteria :: (same)
+// => OneUserUnpinnedPseudonativeNotIrlCriteria
+// => => OneQuestion
+// => => OneAnswer
+
+// ManyUserPinnedNotAndIrlCriteria :: (same)
+// => OneUserPinnedNotAndIrlCriteria
+// => => OneQuestion
+// => => OneAnswer
+
+// ManyUserUnpinnedNativeIrlCriteria :: (same)
+// => OneUserUnpinnedNativeIrlCriteria
+// => => OneQuestion
+// => => OneAnswer
+
+// ManyUserUnpinnedPseudonativeIrlCriteria :: (same)
+// => OneUserUnpinnedPseudonativeIrlCriteria
+// => => OneQuestion
+// => => OneAnswer
+
+// ManyUserPinnedNotIrlCriteriaQueried :: (same)
+// => OneUserPinnedNotIrlCriteriaQueried
+// => => OneQuestion
+// => => OneAnswer
+
+// ManyUserPinnedNotAndIrlCriteriaQueried :: (same)
+// => OneUserPinnedNotAndIrlCriteriaQueried
+// => => OneQuestion
+// => => OneAnswer
+
+// ManyUserUnpinnedSharedToContactCustomCriteria :: (same)
+// => OneUserUnpinnedSharedToContactCustomCriteria
+// => => OneQuestion
+// => => OneAnswer
+
+function OneCriteriaAnswerModify({ answer }: { answer: Answer }) {
+  return (
+    <>
+      <div className="relative mt-2 inline-flex items-center justify-center">
+        <OneCriteriaAnswerModifyForm answer={answer} />
+        {answer.question_name === "Email address" &&
+          answer.question_kind === "NATIVE" && (
+            <ButtonHiddableForm answer={answer} />
+          )}
+      </div>
+    </>
+  );
+}
+
+function OneCriteriaAnswerPinnable({
+  answer,
+  pinnedAnswersCount,
+}: {
+  answer: Answer;
+  pinnedAnswersCount: number;
+}) {
+  return (
+    <>
+      <div className="mt-2 flex justify-center">
+        {/* <ButtonPinnableForm answer={answer} /> */}
+        {pinnedAnswersCount < ANSWERS_PINNED_BY_USER_LIMIT && (
+          <ButtonPinnableForm answer={answer} />
+        )}
+        {pinnedAnswersCount >= ANSWERS_PINNED_BY_USER_LIMIT &&
+          answer.userquestion_is_pinned === true && (
+            <ButtonPinnableForm answer={answer} />
+          )}
+        <p
+          className={
+            answer.userquestion_state === "HIDDEN"
+              ? "text-gray-300 dark:text-gray-700"
+              : "text-inherit"
+          }
+        >
+          {answer.answer_value}
+        </p>
+      </div>
+    </>
+  );
+}
+
+function OneCriteriaAnswerPinnablePseudoable({
+  answer,
+  pinnedAnswersCount,
+}: {
+  answer: Answer;
+  pinnedAnswersCount: number;
+}) {
+  return (
+    <>
+      <div className="mt-2 flex justify-center">
+        {/* <ButtonPinnableForm answer={answer} /> */}
+        {pinnedAnswersCount < ANSWERS_PINNED_BY_USER_LIMIT && (
+          <ButtonPinnableForm answer={answer} />
+        )}
+        {pinnedAnswersCount >= ANSWERS_PINNED_BY_USER_LIMIT &&
+          answer.userquestion_is_pinned === true && (
+            <ButtonPinnableForm answer={answer} />
+          )}
+        <p>{answer.answer_value}</p>
+        <ButtonPseudoableForm answer={answer} />
+      </div>
+    </>
+  );
+}
+
+function OneCriteriaAnswerPinnableByFriend({
+  answer,
+  contact,
+  pinnedbyFriendAnswersLength,
+}: {
+  answer: Answer;
+  contact: FoundContact;
+  pinnedbyFriendAnswersLength: number;
+}) {
+  return (
+    <>
+      <div className="mt-2 flex justify-center">
+        {pinnedbyFriendAnswersLength < ANSWERS_PINNED_BY_FRIEND_LIMIT && (
+          <ButtonPinUserQuestionFriendForm answer={answer} contact={contact} />
+        )}
+        <p>{answer.answer_value}</p>
+      </div>
+    </>
+  );
+}
+
+function OneCriteriaAnswerCancelPinnableByFriend({
+  answer,
+  contact,
+}: {
+  answer: Answer;
+  contact: FoundContact;
+}) {
+  return (
+    <>
+      <div className="mt-2 flex justify-center">
+        <ButtonCancelPinUserQuestionFriendForm
+          answer={answer}
+          contact={contact}
+        />
+        <p>{answer.answer_value}</p>
+      </div>
+    </>
+  );
+}

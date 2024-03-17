@@ -17,7 +17,7 @@ const orderBy = DEFAULT_CONTACTS_ORDER_BY;
 const take = ARBITRARY_CONTACTS_LIMIT;
 
 export async function findSentFriendToContactsByUserId(userId: string) {
-  const select = selectContacts;
+  const select = selectContacts; // this could simply become the default select at this point, given the reliance on a many "select type" elsewhere
   const where = whereSentToContactsByUserIdAndProcessRelationship(
     userId,
     "SENTFRIEND"

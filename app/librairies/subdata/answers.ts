@@ -131,7 +131,7 @@ export function whereUserPinnedAnswersByUserId(
       id,
       OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
-    state: "LIVE",
+    OR: [{ state: "LIVE" }, { state: "HIDDEN" }],
   };
 }
 
