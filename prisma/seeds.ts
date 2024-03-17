@@ -475,7 +475,71 @@ async function seed() {
     }),
   ]);
 
-  // “me” and Danny / relation combination nonexistent
+  // “me” and Danny / relation combination “friend”
+  // reaching 5 userNotIrlFriends for pagination testing
+
+  const lePapierToDDan = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: dDan.id,
+        },
+      },
+      state: "LIVE",
+      kind: "FRIEND",
+    },
+  });
+
+  const dDanToLePapier = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: dDan.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      state: "LIVE",
+      kind: "FRIEND",
+    },
+  });
+
+  await Promise.all([
+    await db.contact.update({
+      where: {
+        id: lePapierToDDan.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: dDanToLePapier.id,
+          },
+        },
+        friendAt: new Date(),
+      },
+    }),
+    await db.contact.update({
+      where: {
+        id: dDanToLePapier.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: lePapierToDDan.id,
+          },
+        },
+        friendAt: new Date(),
+      },
+    }),
+  ]);
 
   // “me” and Elijah / relation combination nonexistent
 

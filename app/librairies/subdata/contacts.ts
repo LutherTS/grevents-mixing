@@ -93,11 +93,11 @@ export function whereSentFromContactsByUserIdAndProcessRelationship(
   processRelationship: string
 ): Prisma.ContactWhereInput {
   return {
-    userLastId,
-    processRelationship,
     state: "LIVE",
     mirror: {
       state: "LIVE",
+      userLastId,
+      processRelationship,
     },
     userFirst: {
       OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],

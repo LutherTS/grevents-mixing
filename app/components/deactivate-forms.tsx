@@ -10,7 +10,7 @@ export function DeactivateReactivateForms({ state }: { state: string }) {
   );
 }
 
-export function DeactivateForm() {
+function DeactivateForm() {
   const fetcher = useFetcher();
   const disabled = fetcher.state !== "idle";
 
@@ -28,7 +28,7 @@ export function DeactivateForm() {
   );
 }
 
-export function ReactivateForm() {
+function ReactivateForm() {
   const fetcher = useFetcher();
   const disabled = fetcher.state !== "idle";
 
