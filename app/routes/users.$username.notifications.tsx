@@ -4,6 +4,7 @@ import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
+import { ManyContacts } from "~/components/many-contacts";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
@@ -61,6 +62,19 @@ export default function NotificationsPage() {
         href={`/users/${data.verifiedUser.username}/dashboard`}
       />
       {data.verifiedUser && <SignOutForm />}
+
+      <div className="space-y-4 my-4">
+        <ManyContacts
+          contacts={data.sentFriendFromContacts}
+          label="Friend requests received"
+          notLabel="You have not received any friend requests."
+        />
+        <ManyContacts
+          contacts={data.sentIrlFromContacts}
+          label="Irl upgrade requests received"
+          notLabel="You have not received any irl upgrade requests."
+        />
+      </div>
 
       <PageLink href={`../requests`}>To requests</PageLink>
     </>

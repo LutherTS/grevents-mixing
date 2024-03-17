@@ -6,6 +6,8 @@ import { selectContacts } from "~/librairies/subdata/contacts";
 import { OneContact } from "./one-contact";
 import { LinkButtonOnClick } from "./link-button";
 
+// For UserQuestionFriends, contacts will also be from a different payload, then I can do if contacts is from Contact, then, if contacts is from UserQuestionFriends, then.
+// So it's going to be in the typing, and then as a return condition. I'll find the way.
 export function ManyContacts({
   contacts,
   label,

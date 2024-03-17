@@ -4,6 +4,7 @@ import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
+import { ManyContacts } from "~/components/many-contacts";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
@@ -56,6 +57,19 @@ export default function BlocksPage() {
         href={`/users/${data.verifiedUser.username}/dashboard`}
       />
       {data.verifiedUser && <SignOutForm />}
+
+      <div className="space-y-4 my-4">
+        <ManyContacts
+          contacts={data.userWhoIAmBlocking}
+          label="Users who I am blocking"
+          notLabel="You do not have any users who you are blocking."
+        />
+        <ManyContacts
+          contacts={data.userWhoHasMeBlocked}
+          label="Users who have me blocked"
+          notLabel="You do not have any users who have you blocked."
+        />
+      </div>
 
       <p className="mt-2">
         If you&apos;ve blocked each other, the other user may appear in both
