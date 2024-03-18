@@ -4,6 +4,7 @@ import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
+import { ManyCriteria } from "~/components/many-criteria";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
@@ -63,6 +64,25 @@ export default function ModifyCriteriaCustomizedPage() {
         href={`/users/${data.verifiedUser.username}/dashboard`}
       />
       {data.verifiedUser && <SignOutForm />}
+
+      <div className="space-y-4 my-4">
+        <ManyCriteria
+          answers={data.userPseudonativeNotIrlAnswers}
+          answerComponentRequired="OneAnswerModify"
+          label="Find your pseudonative criteria below"
+          notLabel="No pseudonative criteria yet."
+        />
+        <ManyCriteria
+          answers={data.userPseudonativeIrlAnswers}
+          answerComponentRequired="OneAnswerModify"
+          label="Find your pseudonative irl criteria below"
+          notLabel="No pseudonative irl criteria yet."
+        />
+        <p className="mt-2">
+          (Custom criteria have their own dynamic modify page directly available
+          from the Personal Info Customized page.)
+        </p>
+      </div>
 
       <PageLink href={`..`}>Cancel</PageLink>
     </>
