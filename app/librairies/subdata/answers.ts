@@ -238,6 +238,7 @@ export const selectUserCustomAnswers = {
     select: {
       isPinned: true,
       id: true,
+      kind: true, // keeping for should be "NONE"
       question: {
         select: {
           name: true,

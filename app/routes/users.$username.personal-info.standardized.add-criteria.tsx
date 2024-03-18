@@ -8,6 +8,10 @@ import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import {
+  countUserNativeIrlAnswersByUserId,
+  countUserNativeNotIrlAnswersByUserId,
+} from "~/librairies/data/answers";
+import {
   findUnansweredNativeIrlQuestionsByUserId,
   findUnansweredNativeNotIrlQuestionsByUserId,
 } from "~/librairies/data/questions";
@@ -37,17 +41,25 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     throw redirect(`/users/${verifiedUser.username}/dashboard`);
   }
 
-  const [unansweredNativeNotIrlQuestions, unansweredNativeIrlQuestions] =
-    await Promise.all([
-      findUnansweredNativeNotIrlQuestionsByUserId(user.id),
-      findUnansweredNativeIrlQuestionsByUserId(user.id),
-    ]);
+  const [
+    unansweredNativeNotIrlQuestions,
+    unansweredNativeIrlQuestions,
+    userNativeNotIrlAnswersCount,
+    userNativeIrlAnswersCount,
+  ] = await Promise.all([
+    findUnansweredNativeNotIrlQuestionsByUserId(user.id),
+    findUnansweredNativeIrlQuestionsByUserId(user.id),
+    countUserNativeNotIrlAnswersByUserId(user.id),
+    countUserNativeIrlAnswersByUserId(user.id),
+  ]);
 
   return json({
     verifiedUser,
     user,
     unansweredNativeNotIrlQuestions,
     unansweredNativeIrlQuestions,
+    userNativeNotIrlAnswersCount,
+    userNativeIrlAnswersCount,
   });
 };
 

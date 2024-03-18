@@ -10,6 +10,7 @@ import { findUserByUsername } from "~/librairies/data/users";
 import { findUserPinnedAnswersByUserId } from "~/librairies/data/answers";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
+import { ManyUserCriteria } from "~/components/many-criteria";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   invariant(params.username, "Expected params.username");
@@ -50,6 +51,13 @@ export default function PersonalInfoPage() {
         href={`/users/${data.verifiedUser.username}/dashboard`}
       />
       {data.verifiedUser && <SignOutForm />}
+
+      <ManyUserCriteria
+        answers={data.userPinnedAnswers}
+        selectContext="PersonalInfo"
+        label="Find your pinned criteria below"
+        notLabel="No pinned criteria yet."
+      />
 
       <PageLink href={`standardized`}>To Standardized criteria</PageLink>
       <PageLink href={`customized`}>To Customized criteria</PageLink>

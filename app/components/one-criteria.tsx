@@ -1,7 +1,144 @@
 import { Prisma } from "@prisma/client";
 
 import { selectContacts } from "~/librairies/subdata/contacts";
-import { PageLinkDivless } from "./page-link";
+import { PageLink, PageLinkDivless } from "./page-link";
+
+////////
+
+// FINAL TOP LEVEL COMPONENTS EXPORTED HERE
+
+export function OneQuestion({
+  answer,
+  selectContext,
+}: {
+  answer: {
+    id: string;
+    value: string;
+    userQuestion: {
+      id: string;
+      kind: string;
+      isPinned?: boolean;
+      question: {
+        kind: string;
+        name: string;
+      };
+      _count?: {
+        userQuestionFriends: number;
+      };
+    };
+    user: {
+      id: string;
+      username: string;
+    };
+  }; // a type by end is the only viable solution at this time
+  // given variable depth and a variable number of arguments
+  // https://dev.to/lucianbc/union-type-merging-in-typescript-9al
+  selectContext?: string;
+}) {
+  return (
+    <>
+      <p className="mt-2">
+        {answer.userQuestion.question.kind === "NATIVE" &&
+          answer.userQuestion.kind === "NONE" && (
+            <span className="text-violet-500">
+              <span className="font-semibold">
+                {answer.userQuestion.question.name}
+              </span>{" "}
+              / native
+            </span>
+          )}
+        {answer.userQuestion.question.kind === "NATIVEIRL" &&
+          answer.userQuestion.kind === "NONE" && (
+            <span className="text-purple-500">
+              <span className="font-semibold">
+                {answer.userQuestion.question.name}
+              </span>{" "}
+              / native irl
+            </span>
+          )}
+        {answer.userQuestion.question.kind === "PSEUDO" &&
+          answer.userQuestion.kind === "PSEUDONATIVE" && (
+            <span className="text-green-500">
+              <span className="font-semibold">
+                {answer.userQuestion.question.name}
+              </span>{" "}
+              / pseudonative
+            </span>
+          )}
+        {answer.userQuestion.question.kind === "PSEUDO" &&
+          answer.userQuestion.kind === "PSEUDONATIVEIRL" && (
+            <span className="text-emerald-500">
+              <span className="font-semibold">
+                {answer.userQuestion.question.name}
+              </span>{" "}
+              / pseudonative irl
+            </span>
+          )}
+        {/* no link, UserQuestionFriends counted */}
+        {answer.userQuestion.question.kind === "CUSTOM" &&
+          answer.userQuestion.kind === "NONE" &&
+          answer.userQuestion._count &&
+          selectContext ===
+            ("PersonalInfo" ||
+              "UserCriteria" ||
+              "ModifyCriteriaCustomized") && (
+            <span className="text-lime-500">
+              <span className="font-semibold">
+                {answer.userQuestion.question.name}
+              </span>{" "}
+              / custom{" "}
+              {answer.userQuestion._count.userQuestionFriends &&
+              answer.userQuestion._count.userQuestionFriends >= 1 ? (
+                <>/ shared ({answer.userQuestion._count.userQuestionFriends})</>
+              ) : (
+                <>/ not shared</>
+              )}
+            </span>
+          )}
+        {/* no link, UserQuestionFriends not counted */}
+        {answer.userQuestion.question.kind === "CUSTOM" &&
+          answer.userQuestion.kind === "NONE" &&
+          selectContext === ("QueriedPreview" || "Profile") && (
+            <span className="text-lime-500">
+              <span className="font-semibold">
+                {answer.userQuestion.question.name}
+              </span>{" "}
+              / custom / shared to you
+            </span>
+          )}
+        {/* link, UserQuestionFriends counted */}
+        {/* basically the only unused case is: link, UserQuestionFriends not counted */}
+        {answer.userQuestion.question.kind === "CUSTOM" &&
+          answer.userQuestion.kind === "NONE" &&
+          selectContext === "PersonalInfoCustomized" && (
+            <PageLink
+              href={`/users/${answer.user.username}/personal-info/user-criteria/${answer.userQuestion.id}`}
+              specifiedClasses="inline-block underline"
+            >
+              <span className="text-lime-500 underline hover:text-lime-400 dark:hover:text-lime-600">
+                <span className="font-semibold">
+                  {answer.userQuestion.question.name}
+                </span>{" "}
+                / custom{" "}
+                {answer.userQuestion._count &&
+                answer.userQuestion._count.userQuestionFriends >= 1 ? (
+                  <>
+                    / shared ({answer.userQuestion._count.userQuestionFriends})
+                  </>
+                ) : (
+                  <>/ not shared</>
+                )}
+              </span>
+            </PageLink>
+          )}
+      </p>
+    </>
+  );
+}
+
+// data.userCustomAnswers[0].userQuestion._count.userQuestionFriends
+
+////////
 
 // OneAnswer // Default
 // OneAnswerModify // only answer part changes
@@ -112,8 +249,11 @@ function OneCriteriaQuestion({
             </span>
           )}
         {/* no link, UserQuestionFriends counted */}
-        {(answer.question_kind === "CUSTOM" && context === "PINNED") ||
-          ("USERCRITERIA" && (
+        {answer.question_kind === "CUSTOM" &&
+          context ===
+            ("PersonalInfo" ||
+              "UserCriteria" ||
+              "ModifyCriteriaCustomized") && (
             <span className="text-lime-500">
               <span className="font-semibold">{answer.question_name}</span> /
               custom{" "}
@@ -124,36 +264,37 @@ function OneCriteriaQuestion({
                 <>/ not shared</>
               )}
             </span>
-          ))}
+          )}
         {/* no link, UserQuestionFriends not counted */}
-        {(answer.question_kind === "CUSTOM" && context === "PREVIEWED") ||
-          ("EXPOSED" && (
+        {answer.question_kind === "CUSTOM" &&
+          context === ("QueriedPreview" || "Profile") && (
             <span className="text-lime-500">
               <span className="font-semibold">{answer.question_name}</span> /
               custom / shared to you
             </span>
-          ))}
+          )}
         {/* link, UserQuestionFriends counted */}
         {/* basically the only unused case is: link, UserQuestionFriends not counted */}
-        {answer.question_kind === "CUSTOM" && context === "CUSTOMIZED" && (
-          <div>
-            <Link
-              href={`/users/${answer.user_username}/personal-info/user-criteria/${answer.userquestion_id}`}
-              className="inline-block underline"
-            >
-              <span className="text-lime-500 underline hover:text-lime-400 dark:hover:text-lime-600">
-                <span className="font-semibold">{answer.question_name}</span> /
-                custom{" "}
-                {answer.userquestionfriends_count &&
-                answer.userquestionfriends_count >= 1 ? (
-                  <>/ shared ({answer.userquestionfriends_count})</>
-                ) : (
-                  <>/ not shared</>
-                )}
-              </span>
-            </Link>
-          </div>
-        )}
+        {answer.question_kind === "CUSTOM" &&
+          context === "PersonalInfoCustomized" && (
+            <div>
+              <Link
+                href={`/users/${answer.user_username}/personal-info/user-criteria/${answer.userquestion_id}`}
+                className="inline-block underline"
+              >
+                <span className="text-lime-500 underline hover:text-lime-400 dark:hover:text-lime-600">
+                  <span className="font-semibold">{answer.question_name}</span>{" "}
+                  / custom{" "}
+                  {answer.userquestionfriends_count &&
+                  answer.userquestionfriends_count >= 1 ? (
+                    <>/ shared ({answer.userquestionfriends_count})</>
+                  ) : (
+                    <>/ not shared</>
+                  )}
+                </span>
+              </Link>
+            </div>
+          )}
       </p>
     </>
   );
