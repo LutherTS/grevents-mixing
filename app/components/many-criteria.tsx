@@ -13,13 +13,19 @@ import {
   selectUserPinnedAnswers,
   selectUserPseudonativeAnswers,
 } from "~/librairies/subdata/answers";
-import { OneAnswer, OneQuestion } from "./one-criteria";
+import {
+  OneAnswer,
+  OneAnswerPinnable,
+  OneAnswerPinnablePseudoable,
+  OneQuestion,
+} from "./one-criteria";
 
 ////////
 
 // FINAL TOP LEVEL COMPONENTS EXPORTED HERE
 
 // And how would I refactor this then?
+// When complete I'll call it ManyCriteria
 export function ManyUserCriteria({
   answers,
   selectContext,
@@ -54,6 +60,8 @@ export function ManyUserCriteria({
                 <ol>
                   {answers.map((answer) => {
                     return (
+                      // this though, can also be refactored
+                      // and that's... OneCriteria
                       <li key={answer.id}>
                         <OneQuestion
                           answer={answer}
@@ -62,6 +70,25 @@ export function ManyUserCriteria({
                         {answerComponentRequired === "OneAnswer" && (
                           <OneAnswer answer={answer} />
                         )}
+                        {answerComponentRequired === "OneAnswerPinnable" &&
+                          pinnedAnswersCount && (
+                            <OneAnswerPinnable
+                              answer={answer}
+                              pinnedAnswersCount={pinnedAnswersCount}
+                            />
+                          )}
+                        {answerComponentRequired ===
+                          "OneAnswerPinnablePseudoable" &&
+                          pinnedAnswersCount &&
+                          otherPseudonativeAnswersCount && (
+                            <OneAnswerPinnablePseudoable
+                              answer={answer}
+                              pinnedAnswersCount={pinnedAnswersCount}
+                              otherPseudonativeAnswersCount={
+                                otherPseudonativeAnswersCount
+                              }
+                            />
+                          )}
                       </li>
                     );
                   })}
@@ -71,6 +98,8 @@ export function ManyUserCriteria({
               <ManyPaginatedCriteria
                 answers={answers}
                 selectContext={selectContext}
+                pinnedAnswersCount={pinnedAnswersCount}
+                otherPseudonativeAnswersCount={otherPseudonativeAnswersCount}
                 answerComponentRequired={answerComponentRequired}
               />
             )}
@@ -122,6 +151,24 @@ function ManyPaginatedCriteria({
                 {answerComponentRequired === "OneAnswer" && (
                   <OneAnswer answer={answer} />
                 )}
+                {answerComponentRequired === "OneAnswerPinnable" &&
+                  pinnedAnswersCount && (
+                    <OneAnswerPinnable
+                      answer={answer}
+                      pinnedAnswersCount={pinnedAnswersCount}
+                    />
+                  )}
+                {answerComponentRequired === "OneAnswerPinnablePseudoable" &&
+                  pinnedAnswersCount &&
+                  otherPseudonativeAnswersCount && (
+                    <OneAnswerPinnablePseudoable
+                      answer={answer}
+                      pinnedAnswersCount={pinnedAnswersCount}
+                      otherPseudonativeAnswersCount={
+                        otherPseudonativeAnswersCount
+                      }
+                    />
+                  )}
               </li>
             );
           })}

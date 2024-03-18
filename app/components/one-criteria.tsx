@@ -2,7 +2,11 @@ import { Prisma } from "@prisma/client";
 
 import { selectContacts } from "~/librairies/subdata/contacts";
 import { PageLink, PageLinkDivless } from "./page-link";
-import { GlobalAnswerTypeByHand } from "~/librairies/subdata/answers";
+import {
+  GlobalAnswerTypeByHand,
+  PINNED_BY_USER_ANSWERS_LIMIT,
+  DEFAULT_ANSWERS_LIMIT,
+} from "~/librairies/subdata/answers";
 
 ////////
 
@@ -90,11 +94,11 @@ export function OneQuestion({
             </span>
           )}
         {/* link, UserQuestionFriends counted */}
-        {/* basically the only unused case is: link, UserQuestionFriends not counted */}
+        {/* basically the only unused use case is: link, UserQuestionFriends not counted */}
         {answer.userQuestion.question.kind === "CUSTOM" &&
           answer.userQuestion.kind === "NONE" &&
           selectContext === "PersonalInfoCustomized" && (
-            <PageLink
+            <PageLinkDivless
               href={`/users/${answer.user.username}/personal-info/user-criteria/${answer.userQuestion.id}`}
               specifiedClasses="inline-block underline"
             >
@@ -112,7 +116,7 @@ export function OneQuestion({
                   <>/ not shared</>
                 )}
               </span>
-            </PageLink>
+            </PageLinkDivless>
           )}
       </p>
     </>
@@ -129,6 +133,78 @@ export function OneAnswer({ answer }: { answer: GlobalAnswerTypeByHand }) {
       >
         {answer.value}
       </p>
+    </>
+  );
+}
+
+export function OneAnswerPinnable({
+  answer,
+  pinnedAnswersCount,
+}: {
+  answer: GlobalAnswerTypeByHand;
+  pinnedAnswersCount: number;
+}) {
+  return (
+    <>
+      <div className="mt-2 flex justify-center">
+        {/* Coming up */}
+        {/* If you're still allowed to pin */}
+        {/* {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
+          <ButtonPinnableForm answer={answer} />
+        )} */}
+        {/* If you're only allowed to unpin */}
+        {/* {pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
+          answer.userQuestion.isPinned === true && (
+            <ButtonPinnableForm answer={answer} />
+          )} */}
+        <p
+          className={
+            answer.userQuestion.state === "HIDDEN"
+              ? "text-gray-300 dark:text-gray-700"
+              : "text-inherit"
+          }
+        >
+          {answer.value}
+        </p>
+      </div>
+    </>
+  );
+}
+
+export function OneAnswerPinnablePseudoable({
+  answer,
+  pinnedAnswersCount,
+  otherPseudonativeAnswersCount,
+}: {
+  answer: GlobalAnswerTypeByHand;
+  pinnedAnswersCount: number;
+  otherPseudonativeAnswersCount: number;
+}) {
+  return (
+    <>
+      <div className="mt-2 flex justify-center">
+        {/* Coming up */}
+        {/* If you're still allowed to pin */}
+        {/* {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
+          <ButtonPinnableForm answer={answer} />
+        )} */}
+        {/* If you're only allowed to unpin */}
+        {/* {pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
+          answer.userQuestion.isPinned === true && (
+            <ButtonPinnableForm answer={answer} />
+          )} */}
+        <p>{answer.value}</p>
+        {/* Also coming up */}
+        {/* If you're still allowed to pin */}
+        {/* {otherPseudonativeAnswersCount < DEFAULT_ANSWERS_LIMIT && (
+          <ButtonPseudoableForm answer={answer} />
+        )} */}
+        {/* If you're only allowed to unpin */}
+        {/* {otherPseudonativeAnswersCount >= DEFAULT_ANSWERS_LIMIT &&
+          answer.userQuestion.isPinned === true && (
+            <ButtonPseudoableForm answer={answer} />
+          )} */}
+      </div>
     </>
   );
 }

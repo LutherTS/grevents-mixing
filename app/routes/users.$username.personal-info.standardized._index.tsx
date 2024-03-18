@@ -4,6 +4,7 @@ import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
+import { ManyUserCriteria } from "~/components/many-criteria";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
@@ -78,6 +79,21 @@ export default function PersonalInfoStandardizedPage() {
         href={`/users/${data.verifiedUser.username}/dashboard`}
       />
       {data.verifiedUser && <SignOutForm />}
+
+      <ManyUserCriteria
+        answers={data.userNativeNotIrlAnswers}
+        pinnedAnswersCount={data.userPinnedAnswerCount}
+        answerComponentRequired="OneAnswerPinnable"
+        label="Find your native criteria below"
+        notLabel="No native criteria yet."
+      />
+      <ManyUserCriteria
+        answers={data.userNativeIrlAnswers}
+        pinnedAnswersCount={data.userPinnedAnswerCount}
+        answerComponentRequired="OneAnswerPinnable"
+        label="Find your native irl criteria below"
+        notLabel="No native irl criteria yet."
+      />
 
       <PageLink href={`modify-criteria`}>Modify</PageLink>
       <PageLink href={`add-criteria`}>Add standardized criteria</PageLink>
