@@ -1,66 +1,13 @@
-import { Prisma } from "@prisma/client";
 import { useState } from "react";
 import _ from "lodash";
 
-import { selectContacts } from "~/librairies/subdata/contacts";
-import { OneContact } from "./one-contact";
 import { LinkButtonOnClick } from "./link-button";
-import {
-  GlobalAnswerTypeByHand,
-  UnionAnswerType,
-  selectAnswers,
-  selectUserCustomAnswers,
-  selectUserNativeAnswers,
-  selectUserPinnedAnswers,
-  selectUserPseudonativeAnswers,
-} from "~/librairies/subdata/answers";
-import {
-  OneAnswer,
-  OneAnswerPinnable,
-  OneAnswerPinnablePseudoable,
-  OneQuestion,
-} from "./one-criteria";
+import { UnionAnswerType } from "~/librairies/subdata/answers";
+import { OneCriteria } from "./one-criteria";
 
 ////////
 
 // FINAL TOP LEVEL COMPONENTS EXPORTED HERE
-
-export function OneCriteria({
-  answer,
-  selectContext,
-  pinnedAnswersCount,
-  otherPseudonativeAnswersCount,
-  answerComponentRequired,
-}: {
-  answer: GlobalAnswerTypeByHand;
-  selectContext?: string;
-  pinnedAnswersCount?: number;
-  otherPseudonativeAnswersCount?: number;
-  answerComponentRequired: string;
-}) {
-  return (
-    <>
-      <OneQuestion answer={answer} selectContext={selectContext} />
-      {answerComponentRequired === "OneAnswer" && <OneAnswer answer={answer} />}
-      {answerComponentRequired === "OneAnswerPinnable" &&
-        pinnedAnswersCount && (
-          <OneAnswerPinnable
-            answer={answer}
-            pinnedAnswersCount={pinnedAnswersCount}
-          />
-        )}
-      {answerComponentRequired === "OneAnswerPinnablePseudoable" &&
-        pinnedAnswersCount &&
-        otherPseudonativeAnswersCount && (
-          <OneAnswerPinnablePseudoable
-            answer={answer}
-            pinnedAnswersCount={pinnedAnswersCount}
-            otherPseudonativeAnswersCount={otherPseudonativeAnswersCount}
-          />
-        )}
-    </>
-  );
-}
 
 export function ManyCriteria({
   answers,
@@ -189,53 +136,53 @@ function ManyPaginatedCriteria({
   );
 }
 
-//
+////////
 
-export function ManyUserCriteriaPinnable({
-  answers,
-  selectContext,
-  pinnedAnswersCount,
-}: {
-  answers:
-    | Prisma.AnswerGetPayload<{
-        select: typeof selectUserNativeAnswers;
-      }>[]
-    | Prisma.AnswerGetPayload<{
-        select: typeof selectUserCustomAnswers;
-      }>[];
-  selectContext?: string;
-  pinnedAnswersCount: number;
-}) {
-  return <></>;
-}
+// export function ManyUserCriteriaPinnable({
+//   answers,
+//   selectContext,
+//   pinnedAnswersCount,
+// }: {
+//   answers:
+//     | Prisma.AnswerGetPayload<{
+//         select: typeof selectUserNativeAnswers;
+//       }>[]
+//     | Prisma.AnswerGetPayload<{
+//         select: typeof selectUserCustomAnswers;
+//       }>[];
+//   selectContext?: string;
+//   pinnedAnswersCount: number;
+// }) {
+//   return <></>;
+// }
 
-export function ManyUserCriteriaModify({
-  answers,
-}: {
-  answers:
-    | Prisma.AnswerGetPayload<{
-        select: typeof selectUserNativeAnswers;
-      }>[]
-    | Prisma.AnswerGetPayload<{
-        select: typeof selectUserPseudonativeAnswers;
-      }>[];
-}) {
-  return <></>;
-}
+// export function ManyUserCriteriaModify({
+//   answers,
+// }: {
+//   answers:
+//     | Prisma.AnswerGetPayload<{
+//         select: typeof selectUserNativeAnswers;
+//       }>[]
+//     | Prisma.AnswerGetPayload<{
+//         select: typeof selectUserPseudonativeAnswers;
+//       }>[];
+// }) {
+//   return <></>;
+// }
 
-export function ManyUserCriteriaPinnablePseudoable({
-  answers,
-  pinnedAnswersCount,
-  otherPseudonativeAnswersCount,
-}: {
-  answers: Prisma.AnswerGetPayload<{
-    select: typeof selectUserPseudonativeAnswers;
-  }>[];
-  pinnedAnswersCount: number;
-  otherPseudonativeAnswersCount: number;
-}) {
-  return <></>;
-}
+// export function ManyUserCriteriaPinnablePseudoable({
+//   answers,
+//   pinnedAnswersCount,
+//   otherPseudonativeAnswersCount,
+// }: {
+//   answers: Prisma.AnswerGetPayload<{
+//     select: typeof selectUserPseudonativeAnswers;
+//   }>[];
+//   pinnedAnswersCount: number;
+//   otherPseudonativeAnswersCount: number;
+// }) {
+//   return <></>;
+// }
 
 ////////
 
@@ -435,105 +382,3 @@ export function ManyUserCriteriaPinnablePseudoable({
 // I'm gonna need hidden input to catch former bind data in request.formData
 
 //
-
-export function ManyAnswers({
-  answers,
-  personalView,
-  label,
-  notLabel,
-}: {
-  answers: Prisma.ContactGetPayload<{
-    select: typeof selectContacts;
-  }>[];
-  personalView?: boolean;
-  label: string;
-
-  notLabel: string;
-}) {
-  return (
-    <>
-      <div>
-        <p className="mt-2 font-semibold text-zinc-500">{label}</p>
-        {answers.length > 0 && (
-          <>
-            {answers.length <= 4 ? (
-              <>
-                <ol>
-                  {answers.map((answer) => {
-                    return (
-                      <li key={answer.answer_id}>
-                        <OneCriteria
-                          answer={answer}
-                          personalView={personalView}
-                        />
-                      </li>
-                    );
-                  })}
-                </ol>
-              </>
-            ) : (
-              <ManyPaginatedContacts
-                answers={answers}
-                personalView={personalView}
-              />
-            )}
-          </>
-        )}
-        {answers.length === 0 && (
-          <>
-            <p className="mt-2">{notLabel}</p>
-          </>
-        )}
-      </div>
-    </>
-  );
-}
-
-function ManyPaginatedContacts({
-  answers,
-}: {
-  answers: Prisma.ContactGetPayload<{
-    select: typeof selectContacts;
-  }>[];
-}) {
-  const chunkedContacts = _.chunk(answers, 4);
-
-  const [position, setPosition] = useState(0);
-
-  function handlePreviousPosition() {
-    setPosition(position - 1);
-  }
-
-  function handleNextPosition() {
-    setPosition(position + 1);
-  }
-
-  return (
-    <>
-      <ol>
-        {chunkedContacts[position].map((answer) => {
-          return (
-            <li key={answer.id}>
-              <OneContact answer={answer} />
-            </li>
-          );
-        })}
-      </ol>
-      <p className="mt-2">
-        <LinkButtonOnClick
-          handleClick={handlePreviousPosition}
-          disabled={position === 0}
-        >
-          Previous
-        </LinkButtonOnClick>
-        &nbsp;/&nbsp;
-        <LinkButtonOnClick
-          handleClick={handleNextPosition}
-          disabled={position === chunkedContacts.length - 1}
-        >
-          Next
-        </LinkButtonOnClick>
-      </p>
-    </>
-  );
-}

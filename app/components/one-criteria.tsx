@@ -1,7 +1,4 @@
-import { Prisma } from "@prisma/client";
-
-import { selectContacts } from "~/librairies/subdata/contacts";
-import { PageLink, PageLinkDivless } from "./page-link";
+import { PageLinkDivless } from "./page-link";
 import {
   GlobalAnswerTypeByHand,
   PINNED_BY_USER_ANSWERS_LIMIT,
@@ -12,42 +9,42 @@ import {
 
 // FINAL TOP LEVEL COMPONENTS EXPORTED HERE
 
-// export function OneCriteria({
-//   answer,
-//   selectContext,
-//   pinnedAnswersCount,
-//   otherPseudonativeAnswersCount,
-//   answerComponentRequired,
-// }: {
-//   answer: GlobalAnswerTypeByHand;
-//   selectContext?: string;
-//   pinnedAnswersCount?: number;
-//   otherPseudonativeAnswersCount?: number;
-//   answerComponentRequired: string;
-// }) {
-//   return (
-//     <>
-//       <OneQuestion answer={answer} selectContext={selectContext} />
-//       {answerComponentRequired === "OneAnswer" && <OneAnswer answer={answer} />}
-//       {answerComponentRequired === "OneAnswerPinnable" &&
-//         pinnedAnswersCount && (
-//           <OneAnswerPinnable
-//             answer={answer}
-//             pinnedAnswersCount={pinnedAnswersCount}
-//           />
-//         )}
-//       {answerComponentRequired === "OneAnswerPinnablePseudoable" &&
-//         pinnedAnswersCount &&
-//         otherPseudonativeAnswersCount && (
-//           <OneAnswerPinnablePseudoable
-//             answer={answer}
-//             pinnedAnswersCount={pinnedAnswersCount}
-//             otherPseudonativeAnswersCount={otherPseudonativeAnswersCount}
-//           />
-//         )}
-//     </>
-//   );
-// }
+export function OneCriteria({
+  answer,
+  selectContext,
+  pinnedAnswersCount,
+  otherPseudonativeAnswersCount,
+  answerComponentRequired,
+}: {
+  answer: GlobalAnswerTypeByHand;
+  selectContext?: string;
+  pinnedAnswersCount?: number;
+  otherPseudonativeAnswersCount?: number;
+  answerComponentRequired: string;
+}) {
+  return (
+    <>
+      <OneQuestion answer={answer} selectContext={selectContext} />
+      {answerComponentRequired === "OneAnswer" && <OneAnswer answer={answer} />}
+      {answerComponentRequired === "OneAnswerPinnable" &&
+        pinnedAnswersCount && (
+          <OneAnswerPinnable
+            answer={answer}
+            pinnedAnswersCount={pinnedAnswersCount}
+          />
+        )}
+      {answerComponentRequired === "OneAnswerPinnablePseudoable" &&
+        pinnedAnswersCount &&
+        otherPseudonativeAnswersCount && (
+          <OneAnswerPinnablePseudoable
+            answer={answer}
+            pinnedAnswersCount={pinnedAnswersCount}
+            otherPseudonativeAnswersCount={otherPseudonativeAnswersCount}
+          />
+        )}
+    </>
+  );
+}
 
 export function OneQuestion({
   answer,
@@ -246,6 +243,8 @@ export function OneAnswerPinnablePseudoable({
   );
 }
 
+////////
+
 // data.userCustomAnswers[0].userQuestion._count.userQuestionFriends
 
 ////////
@@ -285,130 +284,130 @@ Je pense que je vais pouvoir utiliser des booleans sur le ManyAnswers pour défi
 Au lieu d'un boolean je peux faire un enum
 context: 'PINNED' | 'STANDARDIZED' | 'CUSTOMIZED' | 'USERCRITERIA' | 'PREVIEWED' | 'EXPOSED'
 */
-export function OneCriteria({
-  contact,
-}: {
-  contact: Prisma.ContactGetPayload<{
-    select: typeof selectContacts;
-  }>;
-}) {
-  return (
-    <>
-      <p className="mt-2">
-        {contact.mirror?.userFirst.state === "DEACTIVATED" ? (
-          <>
-            <span className="font-semibold text-gray-500">
-              {contact.mirror?.userFirst.appWideName}
-            </span>
-          </>
-        ) : (
-          <>
-            <PageLinkDivless
-              href={`/users/${contact.mirror?.userFirst.username}/profile`}
-              specifiedClasses="font-semibold text-blue-500 hover:text-blue-400 dark:hover:text-blue-600"
-            >
-              {contact.mirror?.userFirst.appWideName}
-            </PageLinkDivless>
-          </>
-        )}{" "}
-        / {contact.mirror?.userFirst.username}
-      </p>
-    </>
-  );
-}
+// export function OneCriteria({
+//   contact,
+// }: {
+//   contact: Prisma.ContactGetPayload<{
+//     select: typeof selectContacts;
+//   }>;
+// }) {
+//   return (
+//     <>
+//       <p className="mt-2">
+//         {contact.mirror?.userFirst.state === "DEACTIVATED" ? (
+//           <>
+//             <span className="font-semibold text-gray-500">
+//               {contact.mirror?.userFirst.appWideName}
+//             </span>
+//           </>
+//         ) : (
+//           <>
+//             <PageLinkDivless
+//               href={`/users/${contact.mirror?.userFirst.username}/profile`}
+//               specifiedClasses="font-semibold text-blue-500 hover:text-blue-400 dark:hover:text-blue-600"
+//             >
+//               {contact.mirror?.userFirst.appWideName}
+//             </PageLinkDivless>
+//           </>
+//         )}{" "}
+//         / {contact.mirror?.userFirst.username}
+//       </p>
+//     </>
+//   );
+// }
 
 // OneAnswerQuestion
 // OneAnswerValue
 
 /* TOUT ÇA LÀ DOIT ÊTRE DANS UN FICHIER ONEQUESTION, one-question.tsx.
 Finalement tu restes. */
-function OneCriteriaQuestion({
-  answer,
-  context,
-}: {
-  answer: Answer;
-  context?: string;
-}) {
-  return (
-    <>
-      <p className="mt-2">
-        {answer.question_kind === "NATIVE" && (
-          <span className="text-violet-500">
-            <span className="font-semibold">{answer.question_name}</span> /
-            native
-          </span>
-        )}
-        {answer.question_kind === "NATIVEIRL" && (
-          <span className="text-purple-500">
-            <span className="font-semibold">{answer.question_name}</span> /
-            native irl
-          </span>
-        )}
-        {answer.question_kind === "PSEUDO" &&
-          answer.userquestion_kind === "PSEUDONATIVE" && (
-            <span className="text-green-500">
-              <span className="font-semibold">{answer.question_name}</span> /
-              pseudonative
-            </span>
-          )}
-        {answer.question_kind === "PSEUDO" &&
-          answer.userquestion_kind === "PSEUDONATIVEIRL" && (
-            <span className="text-emerald-500">
-              <span className="font-semibold">{answer.question_name}</span> /
-              pseudonative irl
-            </span>
-          )}
-        {/* no link, UserQuestionFriends counted */}
-        {answer.question_kind === "CUSTOM" &&
-          context ===
-            ("PersonalInfo" ||
-              "UserCriteria" ||
-              "ModifyCriteriaCustomized") && (
-            <span className="text-lime-500">
-              <span className="font-semibold">{answer.question_name}</span> /
-              custom{" "}
-              {answer.userquestionfriends_count &&
-              answer.userquestionfriends_count >= 1 ? (
-                <>/ shared ({answer.userquestionfriends_count})</>
-              ) : (
-                <>/ not shared</>
-              )}
-            </span>
-          )}
-        {/* no link, UserQuestionFriends not counted */}
-        {answer.question_kind === "CUSTOM" &&
-          context === ("QueriedPreview" || "Profile") && (
-            <span className="text-lime-500">
-              <span className="font-semibold">{answer.question_name}</span> /
-              custom / shared to you
-            </span>
-          )}
-        {/* link, UserQuestionFriends counted */}
-        {/* basically the only unused case is: link, UserQuestionFriends not counted */}
-        {answer.question_kind === "CUSTOM" &&
-          context === "PersonalInfoCustomized" && (
-            <div>
-              <Link
-                href={`/users/${answer.user_username}/personal-info/user-criteria/${answer.userquestion_id}`}
-                className="inline-block underline"
-              >
-                <span className="text-lime-500 underline hover:text-lime-400 dark:hover:text-lime-600">
-                  <span className="font-semibold">{answer.question_name}</span>{" "}
-                  / custom{" "}
-                  {answer.userquestionfriends_count &&
-                  answer.userquestionfriends_count >= 1 ? (
-                    <>/ shared ({answer.userquestionfriends_count})</>
-                  ) : (
-                    <>/ not shared</>
-                  )}
-                </span>
-              </Link>
-            </div>
-          )}
-      </p>
-    </>
-  );
-}
+// function OneCriteriaQuestion({
+//   answer,
+//   context,
+// }: {
+//   answer: Answer;
+//   context?: string;
+// }) {
+//   return (
+//     <>
+//       <p className="mt-2">
+//         {answer.question_kind === "NATIVE" && (
+//           <span className="text-violet-500">
+//             <span className="font-semibold">{answer.question_name}</span> /
+//             native
+//           </span>
+//         )}
+//         {answer.question_kind === "NATIVEIRL" && (
+//           <span className="text-purple-500">
+//             <span className="font-semibold">{answer.question_name}</span> /
+//             native irl
+//           </span>
+//         )}
+//         {answer.question_kind === "PSEUDO" &&
+//           answer.userquestion_kind === "PSEUDONATIVE" && (
+//             <span className="text-green-500">
+//               <span className="font-semibold">{answer.question_name}</span> /
+//               pseudonative
+//             </span>
+//           )}
+//         {answer.question_kind === "PSEUDO" &&
+//           answer.userquestion_kind === "PSEUDONATIVEIRL" && (
+//             <span className="text-emerald-500">
+//               <span className="font-semibold">{answer.question_name}</span> /
+//               pseudonative irl
+//             </span>
+//           )}
+//         {/* no link, UserQuestionFriends counted */}
+//         {answer.question_kind === "CUSTOM" &&
+//           context ===
+//             ("PersonalInfo" ||
+//               "UserCriteria" ||
+//               "ModifyCriteriaCustomized") && (
+//             <span className="text-lime-500">
+//               <span className="font-semibold">{answer.question_name}</span> /
+//               custom{" "}
+//               {answer.userquestionfriends_count &&
+//               answer.userquestionfriends_count >= 1 ? (
+//                 <>/ shared ({answer.userquestionfriends_count})</>
+//               ) : (
+//                 <>/ not shared</>
+//               )}
+//             </span>
+//           )}
+//         {/* no link, UserQuestionFriends not counted */}
+//         {answer.question_kind === "CUSTOM" &&
+//           context === ("QueriedPreview" || "Profile") && (
+//             <span className="text-lime-500">
+//               <span className="font-semibold">{answer.question_name}</span> /
+//               custom / shared to you
+//             </span>
+//           )}
+//         {/* link, UserQuestionFriends counted */}
+//         {/* basically the only unused case is: link, UserQuestionFriends not counted */}
+//         {answer.question_kind === "CUSTOM" &&
+//           context === "PersonalInfoCustomized" && (
+//             <div>
+//               <Link
+//                 href={`/users/${answer.user_username}/personal-info/user-criteria/${answer.userquestion_id}`}
+//                 className="inline-block underline"
+//               >
+//                 <span className="text-lime-500 underline hover:text-lime-400 dark:hover:text-lime-600">
+//                   <span className="font-semibold">{answer.question_name}</span>{" "}
+//                   / custom{" "}
+//                   {answer.userquestionfriends_count &&
+//                   answer.userquestionfriends_count >= 1 ? (
+//                     <>/ shared ({answer.userquestionfriends_count})</>
+//                   ) : (
+//                     <>/ not shared</>
+//                   )}
+//                 </span>
+//               </Link>
+//             </div>
+//           )}
+//       </p>
+//     </>
+//   );
+// }
 
 // function OneLinkCriteriaQuestion({ answer }: { answer: Answer }) {
 //   return (
@@ -442,19 +441,19 @@ function OneCriteriaQuestion({
 // The HIDDEN thing is OK as a global because:
 // HIDDEN userquestion will only show on the previous personal view contexts
 // and wherever they show in that context, this is how they should be presented in a default OneAnswer
-function OneAnswerOriginal({ answer }: { answer: Answer }) {
-  return (
-    <>
-      <p
-        className={
-          answer.userquestion_state === "HIDDEN" ? "mt-2 text-gray-500" : "mt-2"
-        }
-      >
-        {answer.answer_value}
-      </p>
-    </>
-  );
-}
+// function OneAnswerOriginal({ answer }: { answer: Answer }) {
+//   return (
+//     <>
+//       <p
+//         className={
+//           answer.userquestion_state === "HIDDEN" ? "mt-2 text-gray-500" : "mt-2"
+//         }
+//       >
+//         {answer.answer_value}
+//       </p>
+//     </>
+//   );
+// }
 
 // OneCriteria (no such component as OneCriteria though)
 // OneQuestion
@@ -590,114 +589,114 @@ function OneAnswerOriginal({ answer }: { answer: Answer }) {
 // => => OneQuestion
 // => => OneAnswer
 
-function OneCriteriaAnswerModify({ answer }: { answer: Answer }) {
-  return (
-    <>
-      <div className="relative mt-2 inline-flex items-center justify-center">
-        <OneCriteriaAnswerModifyForm answer={answer} />
-        {answer.question_name === "Email address" &&
-          answer.question_kind === "NATIVE" && (
-            <ButtonHiddableForm answer={answer} />
-          )}
-      </div>
-    </>
-  );
-}
+// function OneCriteriaAnswerModify({ answer }: { answer: Answer }) {
+//   return (
+//     <>
+//       <div className="relative mt-2 inline-flex items-center justify-center">
+//         <OneCriteriaAnswerModifyForm answer={answer} />
+//         {answer.question_name === "Email address" &&
+//           answer.question_kind === "NATIVE" && (
+//             <ButtonHiddableForm answer={answer} />
+//           )}
+//       </div>
+//     </>
+//   );
+// }
 
-function OneCriteriaAnswerPinnable({
-  answer,
-  pinnedAnswersCount,
-}: {
-  answer: Answer;
-  pinnedAnswersCount: number;
-}) {
-  return (
-    <>
-      <div className="mt-2 flex justify-center">
-        {/* <ButtonPinnableForm answer={answer} /> */}
-        {pinnedAnswersCount < ANSWERS_PINNED_BY_USER_LIMIT && (
-          <ButtonPinnableForm answer={answer} />
-        )}
-        {pinnedAnswersCount >= ANSWERS_PINNED_BY_USER_LIMIT &&
-          answer.userquestion_is_pinned === true && (
-            <ButtonPinnableForm answer={answer} />
-          )}
-        <p
-          className={
-            answer.userquestion_state === "HIDDEN"
-              ? "text-gray-300 dark:text-gray-700"
-              : "text-inherit"
-          }
-        >
-          {answer.answer_value}
-        </p>
-      </div>
-    </>
-  );
-}
+// function OneCriteriaAnswerPinnable({
+//   answer,
+//   pinnedAnswersCount,
+// }: {
+//   answer: Answer;
+//   pinnedAnswersCount: number;
+// }) {
+//   return (
+//     <>
+//       <div className="mt-2 flex justify-center">
+//         {/* <ButtonPinnableForm answer={answer} /> */}
+//         {pinnedAnswersCount < ANSWERS_PINNED_BY_USER_LIMIT && (
+//           <ButtonPinnableForm answer={answer} />
+//         )}
+//         {pinnedAnswersCount >= ANSWERS_PINNED_BY_USER_LIMIT &&
+//           answer.userquestion_is_pinned === true && (
+//             <ButtonPinnableForm answer={answer} />
+//           )}
+//         <p
+//           className={
+//             answer.userquestion_state === "HIDDEN"
+//               ? "text-gray-300 dark:text-gray-700"
+//               : "text-inherit"
+//           }
+//         >
+//           {answer.answer_value}
+//         </p>
+//       </div>
+//     </>
+//   );
+// }
 
-function OneCriteriaAnswerPinnablePseudoable({
-  answer,
-  pinnedAnswersCount,
-}: {
-  answer: Answer;
-  pinnedAnswersCount: number;
-}) {
-  return (
-    <>
-      <div className="mt-2 flex justify-center">
-        {/* <ButtonPinnableForm answer={answer} /> */}
-        {pinnedAnswersCount < ANSWERS_PINNED_BY_USER_LIMIT && (
-          <ButtonPinnableForm answer={answer} />
-        )}
-        {pinnedAnswersCount >= ANSWERS_PINNED_BY_USER_LIMIT &&
-          answer.userquestion_is_pinned === true && (
-            <ButtonPinnableForm answer={answer} />
-          )}
-        <p>{answer.answer_value}</p>
-        <ButtonPseudoableForm answer={answer} />
-      </div>
-    </>
-  );
-}
+// function OneCriteriaAnswerPinnablePseudoable({
+//   answer,
+//   pinnedAnswersCount,
+// }: {
+//   answer: Answer;
+//   pinnedAnswersCount: number;
+// }) {
+//   return (
+//     <>
+//       <div className="mt-2 flex justify-center">
+//         {/* <ButtonPinnableForm answer={answer} /> */}
+//         {pinnedAnswersCount < ANSWERS_PINNED_BY_USER_LIMIT && (
+//           <ButtonPinnableForm answer={answer} />
+//         )}
+//         {pinnedAnswersCount >= ANSWERS_PINNED_BY_USER_LIMIT &&
+//           answer.userquestion_is_pinned === true && (
+//             <ButtonPinnableForm answer={answer} />
+//           )}
+//         <p>{answer.answer_value}</p>
+//         <ButtonPseudoableForm answer={answer} />
+//       </div>
+//     </>
+//   );
+// }
 
-function OneCriteriaAnswerPinnableByFriend({
-  answer,
-  contact,
-  pinnedbyFriendAnswersLength,
-}: {
-  answer: Answer;
-  contact: FoundContact;
-  pinnedbyFriendAnswersLength: number;
-}) {
-  return (
-    <>
-      <div className="mt-2 flex justify-center">
-        {pinnedbyFriendAnswersLength < ANSWERS_PINNED_BY_FRIEND_LIMIT && (
-          <ButtonPinUserQuestionFriendForm answer={answer} contact={contact} />
-        )}
-        <p>{answer.answer_value}</p>
-      </div>
-    </>
-  );
-}
+// function OneCriteriaAnswerPinnableByFriend({
+//   answer,
+//   contact,
+//   pinnedbyFriendAnswersLength,
+// }: {
+//   answer: Answer;
+//   contact: FoundContact;
+//   pinnedbyFriendAnswersLength: number;
+// }) {
+//   return (
+//     <>
+//       <div className="mt-2 flex justify-center">
+//         {pinnedbyFriendAnswersLength < ANSWERS_PINNED_BY_FRIEND_LIMIT && (
+//           <ButtonPinUserQuestionFriendForm answer={answer} contact={contact} />
+//         )}
+//         <p>{answer.answer_value}</p>
+//       </div>
+//     </>
+//   );
+// }
 
-function OneCriteriaAnswerCancelPinnableByFriend({
-  answer,
-  contact,
-}: {
-  answer: Answer;
-  contact: FoundContact;
-}) {
-  return (
-    <>
-      <div className="mt-2 flex justify-center">
-        <ButtonCancelPinUserQuestionFriendForm
-          answer={answer}
-          contact={contact}
-        />
-        <p>{answer.answer_value}</p>
-      </div>
-    </>
-  );
-}
+// function OneCriteriaAnswerCancelPinnableByFriend({
+//   answer,
+//   contact,
+// }: {
+//   answer: Answer;
+//   contact: FoundContact;
+// }) {
+//   return (
+//     <>
+//       <div className="mt-2 flex justify-center">
+//         <ButtonCancelPinUserQuestionFriendForm
+//           answer={answer}
+//           contact={contact}
+//         />
+//         <p>{answer.answer_value}</p>
+//       </div>
+//     </>
+//   );
+// }

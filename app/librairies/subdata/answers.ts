@@ -2,6 +2,23 @@ import { Prisma } from "@prisma/client";
 
 import { DEFAULT_QUESTIONS_ORDER_BY } from "./questions";
 
+export type UnionAnswerType =
+  | Prisma.AnswerGetPayload<{
+      select: typeof selectUserPinnedAnswers;
+    }>[]
+  | Prisma.AnswerGetPayload<{
+      select: typeof selectAnswers;
+    }>[]
+  | Prisma.AnswerGetPayload<{
+      select: typeof selectUserNativeAnswers;
+    }>[]
+  | Prisma.AnswerGetPayload<{
+      select: typeof selectUserPseudonativeAnswers;
+    }>[]
+  | Prisma.AnswerGetPayload<{
+      select: typeof selectUserCustomAnswers;
+    }>[];
+
 export type GlobalAnswerTypeByHand = {
   id: string;
   value: string;
@@ -23,23 +40,6 @@ export type GlobalAnswerTypeByHand = {
     username: string;
   };
 };
-
-export type UnionAnswerType =
-  | Prisma.AnswerGetPayload<{
-      select: typeof selectUserPinnedAnswers;
-    }>[]
-  | Prisma.AnswerGetPayload<{
-      select: typeof selectAnswers;
-    }>[]
-  | Prisma.AnswerGetPayload<{
-      select: typeof selectUserNativeAnswers;
-    }>[]
-  | Prisma.AnswerGetPayload<{
-      select: typeof selectUserPseudonativeAnswers;
-    }>[]
-  | Prisma.AnswerGetPayload<{
-      select: typeof selectUserCustomAnswers;
-    }>[];
 
 export const DEFAULT_ANSWERS_ORDER_BY = {
   userQuestion: {
