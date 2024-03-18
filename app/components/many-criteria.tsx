@@ -3,7 +3,11 @@ import _ from "lodash";
 
 import { LinkButtonOnClick } from "./link-button";
 import { UnionAnswerType } from "~/librairies/subdata/answers";
-import { OneCriteria } from "./one-criteria";
+import {
+  AnswerComponentRequired,
+  OneCriteria,
+  SelectContext,
+} from "./one-criteria";
 
 ////////
 
@@ -19,10 +23,10 @@ export function ManyCriteria({
   notLabel,
 }: {
   answers: UnionAnswerType;
-  selectContext?: string;
+  selectContext?: SelectContext;
   pinnedAnswersCount?: number;
   otherPseudonativeAnswersCount?: number;
-  answerComponentRequired: string;
+  answerComponentRequired: AnswerComponentRequired;
   label: string;
   notLabel: string;
 }) {
@@ -81,10 +85,10 @@ function ManyPaginatedCriteria({
   answerComponentRequired,
 }: {
   answers: UnionAnswerType;
-  selectContext?: string;
+  selectContext?: SelectContext;
   pinnedAnswersCount?: number;
   otherPseudonativeAnswersCount?: number;
-  answerComponentRequired: string;
+  answerComponentRequired: AnswerComponentRequired;
 }) {
   const chunkedAnswers = _.chunk(answers, 4);
 

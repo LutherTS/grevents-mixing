@@ -4,6 +4,7 @@ import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
+import { LinkButtonMockup } from "~/components/link-button";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
@@ -49,6 +50,19 @@ export default function BlockingBlockedPreviewPage() {
         href={`/users/${data.verifiedUser.username}/dashboard`}
       />
       {data.verifiedUser && <SignOutForm />}
+
+      <div className="space-y-4 my-4">
+        <div>
+          <p className="mt-2 font-semibold text-red-500">
+            <span className="text-black dark:text-white">
+              YOU AND {data.user.username.toUpperCase()}
+            </span>{" "}
+            CAN NO LONGER ACCESS EACH OTHER&apos;S INFORMATION ACROSS THE ENTIRE
+            APPLICATION, FUTURE COMMON GROUPS AND FUTURE COMMON EVENTS INCLUDED.
+          </p>
+          <LinkButtonMockup>Unblock if it&apos;s OK with you</LinkButtonMockup>
+        </div>
+      </div>
 
       <PageLink href={`..`}>To Previews</PageLink>
     </>

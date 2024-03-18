@@ -40,3 +40,11 @@ export function LinkButtonOnClick({
     </>
   );
 }
+
+export function LinkButtonMockup({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <p className="mt-2 text-sky-500">{children}</p>
+    </>
+  );
+}

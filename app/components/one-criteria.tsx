@@ -1,3 +1,6 @@
+import clsx from "clsx";
+import { useFetcher } from "@remix-run/react";
+
 import { PageLinkDivless } from "./page-link";
 import {
   GlobalAnswerTypeByHand,
@@ -6,6 +9,21 @@ import {
 } from "~/librairies/subdata/answers";
 
 ////////
+
+export type SelectContext =
+  | "PersonalInfo"
+  | "PersonalInfoCustomized"
+  | "UserCriteria"
+  | "ModifyCriteriaCustomized"
+  | "QueriedPreview"
+  | "Profile";
+
+export type AnswerComponentRequired =
+  | "OneAnswer"
+  | "OneAnswerPinnable"
+  | "OneAnswerPinnablePseudoable"
+  | "OneAnswerModify"
+  | "OneAnswerPinnableByFriend";
 
 // FINAL TOP LEVEL COMPONENTS EXPORTED HERE
 
@@ -17,31 +35,38 @@ export function OneCriteria({
   answerComponentRequired,
 }: {
   answer: GlobalAnswerTypeByHand;
-  selectContext?: string;
+  selectContext?: SelectContext;
   pinnedAnswersCount?: number;
   otherPseudonativeAnswersCount?: number;
-  answerComponentRequired: string;
+  answerComponentRequired: AnswerComponentRequired;
 }) {
   return (
     <>
-      <OneQuestion answer={answer} selectContext={selectContext} />
-      {answerComponentRequired === "OneAnswer" && <OneAnswer answer={answer} />}
-      {answerComponentRequired === "OneAnswerPinnable" &&
-        pinnedAnswersCount && (
-          <OneAnswerPinnable
-            answer={answer}
-            pinnedAnswersCount={pinnedAnswersCount}
-          />
+      <div>
+        <OneQuestion answer={answer} selectContext={selectContext} />
+        {answerComponentRequired === "OneAnswer" && (
+          <OneAnswer answer={answer} />
         )}
-      {answerComponentRequired === "OneAnswerPinnablePseudoable" &&
-        pinnedAnswersCount &&
-        otherPseudonativeAnswersCount && (
-          <OneAnswerPinnablePseudoable
-            answer={answer}
-            pinnedAnswersCount={pinnedAnswersCount}
-            otherPseudonativeAnswersCount={otherPseudonativeAnswersCount}
-          />
+        {answerComponentRequired === "OneAnswerPinnable" &&
+          pinnedAnswersCount && (
+            <OneAnswerPinnable
+              answer={answer}
+              pinnedAnswersCount={pinnedAnswersCount}
+            />
+          )}
+        {answerComponentRequired === "OneAnswerPinnablePseudoable" &&
+          pinnedAnswersCount &&
+          otherPseudonativeAnswersCount && (
+            <OneAnswerPinnablePseudoable
+              answer={answer}
+              pinnedAnswersCount={pinnedAnswersCount}
+              otherPseudonativeAnswersCount={otherPseudonativeAnswersCount}
+            />
+          )}
+        {answerComponentRequired === "OneAnswerModify" && (
+          <OneAnswerModify answer={answer} />
         )}
+      </div>
     </>
   );
 }
@@ -99,10 +124,9 @@ export function OneQuestion({
         {answer.userQuestion.question.kind === "CUSTOM" &&
           answer.userQuestion.kind === "NONE" &&
           answer.userQuestion._count &&
-          selectContext ===
-            ("PersonalInfo" ||
-              "UserCriteria" ||
-              "ModifyCriteriaCustomized") && (
+          (selectContext === "PersonalInfo" ||
+            selectContext === "UserCriteria" ||
+            selectContext === "ModifyCriteriaCustomized") && (
             <span className="text-lime-500">
               <span className="font-semibold">
                 {answer.userQuestion.question.name}
@@ -119,7 +143,8 @@ export function OneQuestion({
         {/* no link, UserQuestionFriends not counted */}
         {answer.userQuestion.question.kind === "CUSTOM" &&
           answer.userQuestion.kind === "NONE" &&
-          selectContext === ("QueriedPreview" || "Profile") && (
+          (selectContext === "QueriedPreview" ||
+            selectContext === "Profile") && (
             <span className="text-lime-500">
               <span className="font-semibold">
                 {answer.userQuestion.question.name}
@@ -133,7 +158,7 @@ export function OneQuestion({
           answer.userQuestion.kind === "NONE" &&
           selectContext === "PersonalInfoCustomized" && (
             <PageLinkDivless
-              href={`/users/${answer.user.username}/personal-info/user-criteria/${answer.userQuestion.id}`}
+              href={`/users/${answer.user.username}/personal-info/customized/user-criteria/${answer.userQuestion.id}`}
               specifiedClasses="inline-block underline"
             >
               <span className="text-lime-500 underline hover:text-lime-400 dark:hover:text-lime-600">
@@ -242,6 +267,177 @@ export function OneAnswerPinnablePseudoable({
     </>
   );
 }
+
+export function OneAnswerModify({
+  answer,
+}: {
+  answer: GlobalAnswerTypeByHand;
+}) {
+  return (
+    <>
+      <div className="relative mt-2 inline-flex items-center justify-center">
+        <OneAnswerModifyForm answer={answer} />
+        <ButtonHiddableForm answer={answer} />
+      </div>
+    </>
+  );
+}
+
+function OneAnswerModifyForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form action="/modify-answer" method="post">
+        <label className="sr-only" htmlFor={answer.id}>
+          Modify answer &quot;{answer.value}&quot;
+        </label>
+        <input
+          className="w-[32ch] max-w-[50ch] truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:!text-white sm:w-[40ch]"
+          type="text"
+          id={answer.id}
+          name="answervalue"
+          placeholder={answer.value}
+          disabled={
+            fetcher.state !== "idle" ||
+            (answer.userQuestion.question.kind === "NATIVE" &&
+              answer.userQuestion.question.name === "Email address")
+          }
+        />
+      </fetcher.Form>
+    </>
+  );
+}
+
+function ButtonHiddableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      {answer.userQuestion.question.kind === "NATIVE" &&
+        answer.userQuestion.question.name === "Email address" && (
+          <form
+            action="/hide-user-question"
+            method="post"
+            className="absolute right-4 flex items-center"
+          >
+            <button
+              disabled={fetcher.state !== "idle"}
+              className={clsx(
+                "h-4 w-4 rounded-full disabled:!bg-gray-400 disabled:hover:bg-gray-400 dark:disabled:!bg-gray-600 dark:disabled:hover:bg-gray-600",
+                {
+                  "bg-cyan-500 hover:bg-pink-300 dark:hover:bg-pink-700":
+                    answer.userQuestion.state === "LIVE",
+                  "bg-pink-500 hover:bg-cyan-300 dark:hover:bg-cyan-700":
+                    answer.userQuestion.state === "HIDDEN",
+                }
+              )}
+            ></button>
+          </form>
+        )}
+    </>
+  );
+}
+
+////////
+
+// function OneCriteriaAnswerModify({
+//   answer,
+// }: {
+//   answer: GlobalAnswerTypeByHand;
+// }) {
+//   return (
+//     <>
+//       <div className="relative mt-2 inline-flex items-center justify-center">
+//         <OneCriteriaAnswerModifyForm answer={answer} />
+//         {answer.userQuestion.question.name === "Email address" &&
+//           answer.userQuestion.question.kind === "NATIVE" && (
+//             <ButtonHiddableForm answer={answer} />
+//           )}
+//       </div>
+//     </>
+//   );
+// }
+
+// export function OneCriteriaAnswerModifyForm({ answer }: { answer: Answer }) {
+//   const fetcher = useFetcher();
+
+//   return (
+//     <>
+//       <form className="" action={formAction}>
+//         <label className="sr-only" htmlFor={answer.answer_id}>
+//           Modify answer &quot;{answer.answer_value}&quot;
+//         </label>
+//         <OneCriteriaAnswerModifyInput answer={answer} />
+//         {state && state.errors?.answerValue ? (
+//           <div id={`answer-value-error-${answer.answer_id}`} aria-live="polite">
+//             {state.errors.answerValue.map((error: string) => (
+//               <p className="mt-2 text-red-500" key={error}>
+//                 {error}
+//               </p>
+//             ))}
+//           </div>
+//         ) : null}
+//         {state && state.message ? (
+//           <div id={`form-error-${answer.answer_id}`} aria-live="polite">
+//             <p className="mt-2 text-red-500">{state.message}</p>
+//           </div>
+//         ) : null}
+//       </form>
+//     </>
+//   );
+// }
+
+// export function OneCriteriaAnswerModifyInput({ answer }: { answer: Answer }) {
+//   const status = useFormStatus();
+
+//   return (
+//     <>
+//       <input
+//         className="w-[32ch] max-w-[50ch] truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:!text-white sm:w-[40ch]"
+//         type="text"
+//         id={answer.answer_id}
+//         name="answervalue"
+//         placeholder={answer.answer_value}
+//         disabled={status.pending || answer.question_name === "Email address"}
+//       />
+//     </>
+//   );
+// }
+
+// export function ButtonHiddableFormOld({ answer }: { answer: Answer }) {
+//   return (
+//     <>
+//       <form
+//         className="absolute right-4 flex items-center"
+//         action={() => hideOrUnhideUserQuestionOfAnswer(answer)}
+//       >
+//         <ButtonHiddable answer={answer} />
+//       </form>
+//     </>
+//   );
+// }
+
+// export function ButtonHiddable({ answer }: { answer: Answer }) {
+//   const status = useFormStatus();
+
+//   return (
+//     <>
+//       <button
+//         disabled={status.pending}
+//         className={clsx(
+//           "h-4 w-4 rounded-full disabled:!bg-gray-400 disabled:hover:bg-gray-400 dark:disabled:!bg-gray-600 dark:disabled:hover:bg-gray-600",
+//           {
+//             "bg-cyan-500 hover:bg-pink-300 dark:hover:bg-pink-700":
+//               answer.userquestion_state === "LIVE",
+//             "bg-pink-500 hover:bg-cyan-300 dark:hover:bg-cyan-700":
+//               answer.userquestion_state === "HIDDEN",
+//           }
+//         )}
+//       ></button>
+//     </>
+//   );
+// }
 
 ////////
 

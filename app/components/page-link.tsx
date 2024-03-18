@@ -43,17 +43,17 @@ export function PageLinkDivless({
 }) {
   return (
     <>
-        <Link
-          to={href}
-          relative={relative ? relative : "path"}
-          className={
-            specifiedClasses
-              ? specifiedClasses
-              : "mt-2 inline-block text-blue-500 underline hover:text-blue-400 dark:hover:text-blue-600"
-          }
-        >
-          {children}
-        </Link>
+      <Link
+        to={href}
+        relative={relative ? relative : "path"}
+        className={
+          specifiedClasses
+            ? specifiedClasses
+            : "mt-2 inline-block text-blue-500 underline hover:text-blue-400 dark:hover:text-blue-600"
+        }
+      >
+        {children}
+      </Link>
     </>
   );
 }

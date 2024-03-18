@@ -4,6 +4,7 @@ import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
+import { OneCriteria } from "~/components/one-criteria";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
@@ -83,6 +84,14 @@ export default function UserCriteriaPage() {
         href={`/users/${data.verifiedUser.username}/dashboard`}
       />
       {data.verifiedUser && <SignOutForm />}
+
+      <div className="space-y-4 my-4">
+        <OneCriteria
+          answer={data.userQuestionAnswer}
+          selectContext="UserCriteria"
+          answerComponentRequired="OneAnswerModify"
+        />
+      </div>
 
       <PageLink href={`../..`}>To Customized criteria</PageLink>
       <PageLink href={`../../..`}>To Personal Info</PageLink>

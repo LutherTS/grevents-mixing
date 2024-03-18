@@ -333,6 +333,7 @@ export const selectUserCustomAnswer = {
   userQuestion: {
     select: {
       id: true,
+      kind: true,
       question: {
         select: {
           name: true,
