@@ -6,21 +6,26 @@ import { selectContacts } from "~/librairies/subdata/contacts";
 import { OneContact } from "./one-contact";
 import { LinkButtonOnClick } from "./link-button";
 import {
+  GlobalAnswerTypeByHand,
   selectAnswers,
   selectUserCustomAnswers,
   selectUserNativeAnswers,
   selectUserPinnedAnswers,
   selectUserPseudonativeAnswers,
 } from "~/librairies/subdata/answers";
-import { OneQuestion } from "./one-criteria";
+import { OneAnswer, OneQuestion } from "./one-criteria";
 
 ////////
 
 // FINAL TOP LEVEL COMPONENTS EXPORTED HERE
 
+// And how would I refactor this then?
 export function ManyUserCriteria({
   answers,
   selectContext,
+  pinnedAnswersCount,
+  otherPseudonativeAnswersCount,
+  answerComponentRequired,
   label,
   notLabel,
 }: {
@@ -32,6 +37,9 @@ export function ManyUserCriteria({
         select: typeof selectAnswers;
       }>[];
   selectContext?: string;
+  pinnedAnswersCount?: number;
+  otherPseudonativeAnswersCount?: number;
+  answerComponentRequired: string;
   label: string;
   notLabel: string;
 }) {
@@ -51,29 +59,20 @@ export function ManyUserCriteria({
                           answer={answer}
                           selectContext={selectContext}
                         />
+                        {answerComponentRequired === "OneAnswer" && (
+                          <OneAnswer answer={answer} />
+                        )}
                       </li>
                     );
                   })}
                 </ol>
               </>
             ) : (
-              // <ManyPaginatedContacts
-              //   answers={answers}
-              //   personalView={personalView}
-              // />
-              <ol>
-                {answers.map((answer) => {
-                  return (
-                    <li key={answer.id}>
-                      <OneQuestion
-                        answer={answer}
-                        selectContext={selectContext}
-                      />
-                    </li>
-                  );
-                })}
-              </ol>
-              // for now just to see it work, but I'll actually do pagination right away.
+              <ManyPaginatedCriteria
+                answers={answers}
+                selectContext={selectContext}
+                answerComponentRequired={answerComponentRequired}
+              />
             )}
           </>
         )}
@@ -83,6 +82,66 @@ export function ManyUserCriteria({
           </>
         )}
       </div>
+    </>
+  );
+}
+
+function ManyPaginatedCriteria({
+  answers,
+  selectContext,
+  pinnedAnswersCount,
+  otherPseudonativeAnswersCount,
+  answerComponentRequired,
+}: {
+  answers: GlobalAnswerTypeByHand[];
+  selectContext?: string;
+  pinnedAnswersCount?: number;
+  otherPseudonativeAnswersCount?: number;
+  answerComponentRequired: string;
+}) {
+  const chunkedAnswers = _.chunk(answers, 4);
+
+  const [position, setPosition] = useState(0);
+
+  function handlePreviousPosition() {
+    setPosition(position - 1);
+  }
+
+  function handleNextPosition() {
+    setPosition(position + 1);
+  }
+
+  return (
+    <>
+      {
+        <ol>
+          {chunkedAnswers[position].map((answer) => {
+            return (
+              <li key={answer.id}>
+                <OneQuestion answer={answer} selectContext={selectContext} />
+                {answerComponentRequired === "OneAnswer" && (
+                  <OneAnswer answer={answer} />
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      }
+      <p className="mt-2">
+        <LinkButtonOnClick
+          handleClick={handlePreviousPosition}
+          disabled={position === 0}
+        >
+          Previous
+        </LinkButtonOnClick>
+        &nbsp;/&nbsp;
+        <LinkButtonOnClick
+          handleClick={handleNextPosition}
+          disabled={position === chunkedAnswers.length - 1}
+        >
+          Next
+        </LinkButtonOnClick>
+      </p>
     </>
   );
 }

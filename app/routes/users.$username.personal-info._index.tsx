@@ -55,6 +55,7 @@ export default function PersonalInfoPage() {
       <ManyUserCriteria
         answers={data.userPinnedAnswers}
         selectContext="PersonalInfo"
+        answerComponentRequired="OneAnswer"
         label="Find your pinned criteria below"
         notLabel="No pinned criteria yet."
       />

@@ -2,6 +2,28 @@ import { Prisma } from "@prisma/client";
 
 import { DEFAULT_QUESTIONS_ORDER_BY } from "./questions";
 
+export type GlobalAnswerTypeByHand = {
+  id: string;
+  value: string;
+  userQuestion: {
+    id: string;
+    state?: string;
+    kind: string;
+    isPinned?: boolean;
+    question: {
+      kind: string;
+      name: string;
+    };
+    _count?: {
+      userQuestionFriends: number;
+    };
+  };
+  user: {
+    id: string;
+    username: string;
+  };
+};
+
 export const DEFAULT_ANSWERS_ORDER_BY = {
   userQuestion: {
     question: DEFAULT_QUESTIONS_ORDER_BY,

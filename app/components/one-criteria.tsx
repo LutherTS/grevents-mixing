@@ -2,6 +2,7 @@ import { Prisma } from "@prisma/client";
 
 import { selectContacts } from "~/librairies/subdata/contacts";
 import { PageLink, PageLinkDivless } from "./page-link";
+import { GlobalAnswerTypeByHand } from "~/librairies/subdata/answers";
 
 ////////
 
@@ -11,26 +12,8 @@ export function OneQuestion({
   answer,
   selectContext,
 }: {
-  answer: {
-    id: string;
-    value: string;
-    userQuestion: {
-      id: string;
-      kind: string;
-      isPinned?: boolean;
-      question: {
-        kind: string;
-        name: string;
-      };
-      _count?: {
-        userQuestionFriends: number;
-      };
-    };
-    user: {
-      id: string;
-      username: string;
-    };
-  }; // a type by end is the only viable solution at this time
+  answer: GlobalAnswerTypeByHand;
+  // a type by hand is the only viable solution at this time
   // given variable depth and a variable number of arguments
   // https://dev.to/lucianbc/union-type-merging-in-typescript-9al
   selectContext?: string;
@@ -131,6 +114,20 @@ export function OneQuestion({
               </span>
             </PageLink>
           )}
+      </p>
+    </>
+  );
+}
+
+export function OneAnswer({ answer }: { answer: GlobalAnswerTypeByHand }) {
+  return (
+    <>
+      <p
+        className={
+          answer.userQuestion.state === "HIDDEN" ? "mt-2 text-gray-500" : "mt-2"
+        }
+      >
+        {answer.value}
       </p>
     </>
   );
@@ -332,7 +329,7 @@ function OneCriteriaQuestion({
 // The HIDDEN thing is OK as a global because:
 // HIDDEN userquestion will only show on the previous personal view contexts
 // and wherever they show in that context, this is how they should be presented in a default OneAnswer
-function OneAnswer({ answer }: { answer: Answer }) {
+function OneAnswerOriginal({ answer }: { answer: Answer }) {
   return (
     <>
       <p
