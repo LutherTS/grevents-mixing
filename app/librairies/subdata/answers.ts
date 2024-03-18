@@ -24,6 +24,23 @@ export type GlobalAnswerTypeByHand = {
   };
 };
 
+export type UnionAnswerType =
+  | Prisma.AnswerGetPayload<{
+      select: typeof selectUserPinnedAnswers;
+    }>[]
+  | Prisma.AnswerGetPayload<{
+      select: typeof selectAnswers;
+    }>[]
+  | Prisma.AnswerGetPayload<{
+      select: typeof selectUserNativeAnswers;
+    }>[]
+  | Prisma.AnswerGetPayload<{
+      select: typeof selectUserPseudonativeAnswers;
+    }>[]
+  | Prisma.AnswerGetPayload<{
+      select: typeof selectUserCustomAnswers;
+    }>[];
+
 export const DEFAULT_ANSWERS_ORDER_BY = {
   userQuestion: {
     question: DEFAULT_QUESTIONS_ORDER_BY,

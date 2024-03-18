@@ -10,7 +10,7 @@ import { findUserByUsername } from "~/librairies/data/users";
 import { findUserPinnedAnswersByUserId } from "~/librairies/data/answers";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
-import { ManyUserCriteria } from "~/components/many-criteria";
+import { ManyCriteria } from "~/components/many-criteria";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   invariant(params.username, "Expected params.username");
@@ -52,7 +52,7 @@ export default function PersonalInfoPage() {
       />
       {data.verifiedUser && <SignOutForm />}
 
-      <ManyUserCriteria
+      <ManyCriteria
         answers={data.userPinnedAnswers}
         selectContext="PersonalInfo"
         answerComponentRequired="OneAnswer"

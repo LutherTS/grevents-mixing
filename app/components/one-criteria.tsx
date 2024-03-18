@@ -12,6 +12,43 @@ import {
 
 // FINAL TOP LEVEL COMPONENTS EXPORTED HERE
 
+// export function OneCriteria({
+//   answer,
+//   selectContext,
+//   pinnedAnswersCount,
+//   otherPseudonativeAnswersCount,
+//   answerComponentRequired,
+// }: {
+//   answer: GlobalAnswerTypeByHand;
+//   selectContext?: string;
+//   pinnedAnswersCount?: number;
+//   otherPseudonativeAnswersCount?: number;
+//   answerComponentRequired: string;
+// }) {
+//   return (
+//     <>
+//       <OneQuestion answer={answer} selectContext={selectContext} />
+//       {answerComponentRequired === "OneAnswer" && <OneAnswer answer={answer} />}
+//       {answerComponentRequired === "OneAnswerPinnable" &&
+//         pinnedAnswersCount && (
+//           <OneAnswerPinnable
+//             answer={answer}
+//             pinnedAnswersCount={pinnedAnswersCount}
+//           />
+//         )}
+//       {answerComponentRequired === "OneAnswerPinnablePseudoable" &&
+//         pinnedAnswersCount &&
+//         otherPseudonativeAnswersCount && (
+//           <OneAnswerPinnablePseudoable
+//             answer={answer}
+//             pinnedAnswersCount={pinnedAnswersCount}
+//             otherPseudonativeAnswersCount={otherPseudonativeAnswersCount}
+//           />
+//         )}
+//     </>
+//   );
+// }
+
 export function OneQuestion({
   answer,
   selectContext,

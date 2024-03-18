@@ -7,6 +7,7 @@ import { OneContact } from "./one-contact";
 import { LinkButtonOnClick } from "./link-button";
 import {
   GlobalAnswerTypeByHand,
+  UnionAnswerType,
   selectAnswers,
   selectUserCustomAnswers,
   selectUserNativeAnswers,
@@ -24,9 +25,44 @@ import {
 
 // FINAL TOP LEVEL COMPONENTS EXPORTED HERE
 
-// And how would I refactor this then?
-// When complete I'll call it ManyCriteria
-export function ManyUserCriteria({
+export function OneCriteria({
+  answer,
+  selectContext,
+  pinnedAnswersCount,
+  otherPseudonativeAnswersCount,
+  answerComponentRequired,
+}: {
+  answer: GlobalAnswerTypeByHand;
+  selectContext?: string;
+  pinnedAnswersCount?: number;
+  otherPseudonativeAnswersCount?: number;
+  answerComponentRequired: string;
+}) {
+  return (
+    <>
+      <OneQuestion answer={answer} selectContext={selectContext} />
+      {answerComponentRequired === "OneAnswer" && <OneAnswer answer={answer} />}
+      {answerComponentRequired === "OneAnswerPinnable" &&
+        pinnedAnswersCount && (
+          <OneAnswerPinnable
+            answer={answer}
+            pinnedAnswersCount={pinnedAnswersCount}
+          />
+        )}
+      {answerComponentRequired === "OneAnswerPinnablePseudoable" &&
+        pinnedAnswersCount &&
+        otherPseudonativeAnswersCount && (
+          <OneAnswerPinnablePseudoable
+            answer={answer}
+            pinnedAnswersCount={pinnedAnswersCount}
+            otherPseudonativeAnswersCount={otherPseudonativeAnswersCount}
+          />
+        )}
+    </>
+  );
+}
+
+export function ManyCriteria({
   answers,
   selectContext,
   pinnedAnswersCount,
@@ -35,13 +71,7 @@ export function ManyUserCriteria({
   label,
   notLabel,
 }: {
-  answers:
-    | Prisma.AnswerGetPayload<{
-        select: typeof selectUserPinnedAnswers;
-      }>[]
-    | Prisma.AnswerGetPayload<{
-        select: typeof selectAnswers;
-      }>[];
+  answers: UnionAnswerType;
   selectContext?: string;
   pinnedAnswersCount?: number;
   otherPseudonativeAnswersCount?: number;
@@ -60,35 +90,16 @@ export function ManyUserCriteria({
                 <ol>
                   {answers.map((answer) => {
                     return (
-                      // this though, can also be refactored
-                      // and that's... OneCriteria
                       <li key={answer.id}>
-                        <OneQuestion
+                        <OneCriteria
                           answer={answer}
                           selectContext={selectContext}
+                          pinnedAnswersCount={pinnedAnswersCount}
+                          otherPseudonativeAnswersCount={
+                            otherPseudonativeAnswersCount
+                          }
+                          answerComponentRequired={answerComponentRequired}
                         />
-                        {answerComponentRequired === "OneAnswer" && (
-                          <OneAnswer answer={answer} />
-                        )}
-                        {answerComponentRequired === "OneAnswerPinnable" &&
-                          pinnedAnswersCount && (
-                            <OneAnswerPinnable
-                              answer={answer}
-                              pinnedAnswersCount={pinnedAnswersCount}
-                            />
-                          )}
-                        {answerComponentRequired ===
-                          "OneAnswerPinnablePseudoable" &&
-                          pinnedAnswersCount &&
-                          otherPseudonativeAnswersCount && (
-                            <OneAnswerPinnablePseudoable
-                              answer={answer}
-                              pinnedAnswersCount={pinnedAnswersCount}
-                              otherPseudonativeAnswersCount={
-                                otherPseudonativeAnswersCount
-                              }
-                            />
-                          )}
                       </li>
                     );
                   })}
@@ -122,7 +133,7 @@ function ManyPaginatedCriteria({
   otherPseudonativeAnswersCount,
   answerComponentRequired,
 }: {
-  answers: GlobalAnswerTypeByHand[];
+  answers: UnionAnswerType;
   selectContext?: string;
   pinnedAnswersCount?: number;
   otherPseudonativeAnswersCount?: number;
@@ -147,28 +158,13 @@ function ManyPaginatedCriteria({
           {chunkedAnswers[position].map((answer) => {
             return (
               <li key={answer.id}>
-                <OneQuestion answer={answer} selectContext={selectContext} />
-                {answerComponentRequired === "OneAnswer" && (
-                  <OneAnswer answer={answer} />
-                )}
-                {answerComponentRequired === "OneAnswerPinnable" &&
-                  pinnedAnswersCount && (
-                    <OneAnswerPinnable
-                      answer={answer}
-                      pinnedAnswersCount={pinnedAnswersCount}
-                    />
-                  )}
-                {answerComponentRequired === "OneAnswerPinnablePseudoable" &&
-                  pinnedAnswersCount &&
-                  otherPseudonativeAnswersCount && (
-                    <OneAnswerPinnablePseudoable
-                      answer={answer}
-                      pinnedAnswersCount={pinnedAnswersCount}
-                      otherPseudonativeAnswersCount={
-                        otherPseudonativeAnswersCount
-                      }
-                    />
-                  )}
+                <OneCriteria
+                  answer={answer}
+                  selectContext={selectContext}
+                  pinnedAnswersCount={pinnedAnswersCount}
+                  otherPseudonativeAnswersCount={otherPseudonativeAnswersCount}
+                  answerComponentRequired={answerComponentRequired}
+                />
               </li>
             );
           })}
@@ -192,6 +188,8 @@ function ManyPaginatedCriteria({
     </>
   );
 }
+
+//
 
 export function ManyUserCriteriaPinnable({
   answers,

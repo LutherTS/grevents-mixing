@@ -4,7 +4,7 @@ import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
-import { ManyUserCriteria } from "~/components/many-criteria";
+import { ManyCriteria } from "~/components/many-criteria";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
@@ -88,7 +88,7 @@ export default function PersonalInfoCustomizedPage() {
       />
       {data.verifiedUser && <SignOutForm />}
 
-      <ManyUserCriteria
+      <ManyCriteria
         answers={data.userPseudonativeNotIrlAnswers}
         pinnedAnswersCount={data.userPinnedAnswerCount}
         otherPseudonativeAnswersCount={data.userPseudonativeIrlAnswersCount}
@@ -96,7 +96,7 @@ export default function PersonalInfoCustomizedPage() {
         label="Find your pseudonative criteria below"
         notLabel="No pseudonative criteria yet."
       />
-      <ManyUserCriteria
+      <ManyCriteria
         answers={data.userPseudonativeIrlAnswers}
         pinnedAnswersCount={data.userPinnedAnswerCount}
         otherPseudonativeAnswersCount={data.userPseudonativeNotIrlAnswersCount}
@@ -104,7 +104,7 @@ export default function PersonalInfoCustomizedPage() {
         label="Find your pseudonative irl criteria below"
         notLabel="No pseudonative irl criteria yet."
       />
-      <ManyUserCriteria
+      <ManyCriteria
         answers={data.userCustomAnswers}
         selectContext="PersonalInfoCustomized"
         pinnedAnswersCount={data.userPinnedAnswerCount}
