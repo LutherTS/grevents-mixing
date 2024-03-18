@@ -88,30 +88,34 @@ export default function PersonalInfoCustomizedPage() {
       />
       {data.verifiedUser && <SignOutForm />}
 
-      <ManyCriteria
-        answers={data.userPseudonativeNotIrlAnswers}
-        pinnedAnswersCount={data.userPinnedAnswerCount}
-        otherPseudonativeAnswersCount={data.userPseudonativeIrlAnswersCount}
-        answerComponentRequired="OneAnswerPinnablePseudoable"
-        label="Find your pseudonative criteria below"
-        notLabel="No pseudonative criteria yet."
-      />
-      <ManyCriteria
-        answers={data.userPseudonativeIrlAnswers}
-        pinnedAnswersCount={data.userPinnedAnswerCount}
-        otherPseudonativeAnswersCount={data.userPseudonativeNotIrlAnswersCount}
-        answerComponentRequired="OneAnswerPinnablePseudoable"
-        label="Find your pseudonative irl criteria below"
-        notLabel="No pseudonative irl criteria yet."
-      />
-      <ManyCriteria
-        answers={data.userCustomAnswers}
-        selectContext="PersonalInfoCustomized"
-        pinnedAnswersCount={data.userPinnedAnswerCount}
-        answerComponentRequired="OneAnswerPinnable"
-        label="Find your custom criteria below"
-        notLabel="No custom criteria yet."
-      />
+      <div className="space-y-4 my-4">
+        <ManyCriteria
+          answers={data.userPseudonativeNotIrlAnswers}
+          pinnedAnswersCount={data.userPinnedAnswerCount}
+          otherPseudonativeAnswersCount={data.userPseudonativeIrlAnswersCount}
+          answerComponentRequired="OneAnswerPinnablePseudoable"
+          label="Find your pseudonative criteria below"
+          notLabel="No pseudonative criteria yet."
+        />
+        <ManyCriteria
+          answers={data.userPseudonativeIrlAnswers}
+          pinnedAnswersCount={data.userPinnedAnswerCount}
+          otherPseudonativeAnswersCount={
+            data.userPseudonativeNotIrlAnswersCount
+          }
+          answerComponentRequired="OneAnswerPinnablePseudoable"
+          label="Find your pseudonative irl criteria below"
+          notLabel="No pseudonative irl criteria yet."
+        />
+        <ManyCriteria
+          answers={data.userCustomAnswers}
+          selectContext="PersonalInfoCustomized"
+          pinnedAnswersCount={data.userPinnedAnswerCount}
+          answerComponentRequired="OneAnswerPinnable"
+          label="Find your custom criteria below"
+          notLabel="No custom criteria yet."
+        />
+      </div>
 
       <PageLink href={`modify-criteria`}>Modify</PageLink>
       <PageLink href={`add-criteria`}>Add customized criteria</PageLink>

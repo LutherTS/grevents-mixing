@@ -80,20 +80,22 @@ export default function PersonalInfoStandardizedPage() {
       />
       {data.verifiedUser && <SignOutForm />}
 
-      <ManyCriteria
-        answers={data.userNativeNotIrlAnswers}
-        pinnedAnswersCount={data.userPinnedAnswerCount}
-        answerComponentRequired="OneAnswerPinnable"
-        label="Find your native criteria below"
-        notLabel="No native criteria yet."
-      />
-      <ManyCriteria
-        answers={data.userNativeIrlAnswers}
-        pinnedAnswersCount={data.userPinnedAnswerCount}
-        answerComponentRequired="OneAnswerPinnable"
-        label="Find your native irl criteria below"
-        notLabel="No native irl criteria yet."
-      />
+      <div className="space-y-4 my-4">
+        <ManyCriteria
+          answers={data.userNativeNotIrlAnswers}
+          pinnedAnswersCount={data.userPinnedAnswerCount}
+          answerComponentRequired="OneAnswerPinnable"
+          label="Find your native criteria below"
+          notLabel="No native criteria yet."
+        />
+        <ManyCriteria
+          answers={data.userNativeIrlAnswers}
+          pinnedAnswersCount={data.userPinnedAnswerCount}
+          answerComponentRequired="OneAnswerPinnable"
+          label="Find your native irl criteria below"
+          notLabel="No native irl criteria yet."
+        />
+      </div>
 
       <PageLink href={`modify-criteria`}>Modify</PageLink>
       <PageLink href={`add-criteria`}>Add standardized criteria</PageLink>

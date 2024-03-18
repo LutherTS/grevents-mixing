@@ -52,13 +52,15 @@ export default function PersonalInfoPage() {
       />
       {data.verifiedUser && <SignOutForm />}
 
-      <ManyCriteria
-        answers={data.userPinnedAnswers}
-        selectContext="PersonalInfo"
-        answerComponentRequired="OneAnswer"
-        label="Find your pinned criteria below"
-        notLabel="No pinned criteria yet."
-      />
+      <div className="space-y-4 my-4">
+        <ManyCriteria
+          answers={data.userPinnedAnswers}
+          selectContext="PersonalInfo"
+          answerComponentRequired="OneAnswer"
+          label="Find your pinned criteria below"
+          notLabel="No pinned criteria yet."
+        />
+      </div>
 
       <PageLink href={`standardized`}>To Standardized criteria</PageLink>
       <PageLink href={`customized`}>To Customized criteria</PageLink>
