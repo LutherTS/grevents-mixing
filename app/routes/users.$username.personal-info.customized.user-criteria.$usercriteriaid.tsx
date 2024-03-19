@@ -4,6 +4,8 @@ import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
+import { ManyContacts } from "~/components/many-contacts";
+import { ManyUserQuestionFriends } from "~/components/many-userquestionfriends";
 import { OneCriteria } from "~/components/one-criteria";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
@@ -90,6 +92,16 @@ export default function UserCriteriaPage() {
           answer={data.userQuestionAnswer}
           selectContext="UserCriteria"
           answerComponentRequired="OneAnswerModify"
+        />
+        <ManyContacts
+          contacts={data.userFriendsNotToUserQuestion}
+          answer={data.userQuestionAnswer}
+          contactComponentRequired="OneContactAddable"
+          label="Find your list of friend(s) to share to below"
+          notLabel="No remaining friends yet."
+        />
+        <ManyUserQuestionFriends
+          userQuestionFriends={data.userQuestionFriends}
         />
       </div>
 

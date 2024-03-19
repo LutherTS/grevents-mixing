@@ -185,13 +185,17 @@ export function OneQuestion({
 export function OneAnswer({ answer }: { answer: GlobalAnswerTypeByHand }) {
   return (
     <>
-      <p
-        className={
-          answer.userQuestion.state === "HIDDEN" ? "mt-2 text-gray-500" : "mt-2"
-        }
-      >
-        {answer.value}
-      </p>
+      <div>
+        <p
+          className={
+            answer.userQuestion.state === "HIDDEN"
+              ? "mt-2 text-gray-500"
+              : "mt-2"
+          }
+        >
+          {answer.value}
+        </p>
+      </div>
     </>
   );
 }
@@ -208,14 +212,14 @@ export function OneAnswerPinnable({
       <div className="mt-2 flex justify-center">
         {/* Coming up */}
         {/* If you're still allowed to pin */}
-        {/* {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
+        {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
           <ButtonPinnableForm answer={answer} />
-        )} */}
+        )}
         {/* If you're only allowed to unpin */}
-        {/* {pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
+        {pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
           answer.userQuestion.isPinned === true && (
             <ButtonPinnableForm answer={answer} />
-          )} */}
+          )}
         <p
           className={
             answer.userQuestion.state === "HIDDEN"
@@ -226,6 +230,33 @@ export function OneAnswerPinnable({
           {answer.value}
         </p>
       </div>
+    </>
+  );
+}
+
+function ButtonPinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form
+        action="/pin-answer"
+        method="post"
+        className="me-2 flex items-center"
+      >
+        <button
+          disabled={fetcher.state !== "idle"}
+          className={clsx(
+            "h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500",
+            {
+              "bg-cyan-500 hover:bg-pink-300 dark:hover:bg-pink-700":
+                answer.userQuestion.isPinned === true,
+              "bg-pink-500 hover:bg-cyan-300 dark:hover:bg-cyan-700":
+                answer.userQuestion.isPinned === false,
+            }
+          )}
+        />
+      </fetcher.Form>
     </>
   );
 }
@@ -244,26 +275,55 @@ export function OneAnswerPinnablePseudoable({
       <div className="mt-2 flex justify-center">
         {/* Coming up */}
         {/* If you're still allowed to pin */}
-        {/* {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
+        {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
           <ButtonPinnableForm answer={answer} />
-        )} */}
+        )}
         {/* If you're only allowed to unpin */}
-        {/* {pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
+        {pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
           answer.userQuestion.isPinned === true && (
             <ButtonPinnableForm answer={answer} />
-          )} */}
+          )}
         <p>{answer.value}</p>
         {/* Also coming up */}
         {/* If you're still allowed to pin */}
-        {/* {otherPseudonativeAnswersCount < DEFAULT_ANSWERS_LIMIT && (
+        {otherPseudonativeAnswersCount < DEFAULT_ANSWERS_LIMIT && (
           <ButtonPseudoableForm answer={answer} />
-        )} */}
+        )}
         {/* If you're only allowed to unpin */}
-        {/* {otherPseudonativeAnswersCount >= DEFAULT_ANSWERS_LIMIT &&
+        {otherPseudonativeAnswersCount >= DEFAULT_ANSWERS_LIMIT &&
           answer.userQuestion.isPinned === true && (
             <ButtonPseudoableForm answer={answer} />
-          )} */}
+          )}
       </div>
+    </>
+  );
+}
+
+function ButtonPseudoableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form
+        action="/pseudo-answer"
+        method="post"
+        className="ms-2 flex items-center"
+      >
+        <button
+          disabled={fetcher.state !== "idle"}
+          className={clsx(
+            "h-4 w-4 rounded-full bg-yellow-500 disabled:!bg-gray-500 disabled:hover:bg-gray-500",
+            {
+              "hover:bg-emerald-300 dark:hover:bg-emerald-700":
+                answer.userQuestion.question.kind === "PSEUDO" &&
+                answer.userQuestion.kind === "PSEUDONATIVE",
+              "hover:bg-green-300 dark:hover:bg-green-700":
+                answer.userQuestion.question.kind === "PSEUDO" &&
+                answer.userQuestion.kind === "PSEUDONATIVEIRL",
+            }
+          )}
+        />
+      </fetcher.Form>
     </>
   );
 }

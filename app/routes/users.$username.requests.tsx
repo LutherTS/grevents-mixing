@@ -61,11 +61,13 @@ export default function RequestsPage() {
       <div className="space-y-4 my-4">
         <ManyContacts
           contacts={data.sentFriendToContacts}
+          contactComponentRequired="OneContact"
           label="Friend requests sent"
           notLabel="You have not sent any friend requests."
         />
         <ManyContacts
           contacts={data.sentIrlToContacts}
+          contactComponentRequired="OneContact"
           label="Irl upgrade requests sent"
           notLabel="You have not sent any irl friend requests."
         />

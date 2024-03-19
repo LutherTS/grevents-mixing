@@ -61,11 +61,13 @@ export default function BlocksPage() {
       <div className="space-y-4 my-4">
         <ManyContacts
           contacts={data.userWhoIAmBlocking}
+          contactComponentRequired="OneContact"
           label="Users who I am blocking"
           notLabel="You do not have any users who you are blocking."
         />
         <ManyContacts
           contacts={data.userWhoHasMeBlocked}
+          contactComponentRequired="OneContact"
           label="Users who have me blocked"
           notLabel="You do not have any users who have you blocked."
         />

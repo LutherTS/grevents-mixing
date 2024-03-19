@@ -66,11 +66,13 @@ export default function NotificationsPage() {
       <div className="space-y-4 my-4">
         <ManyContacts
           contacts={data.sentFriendFromContacts}
+          contactComponentRequired="OneContact"
           label="Friend requests received"
           notLabel="You have not received any friend requests."
         />
         <ManyContacts
           contacts={data.sentIrlFromContacts}
+          contactComponentRequired="OneContact"
           label="Irl upgrade requests received"
           notLabel="You have not received any irl upgrade requests."
         />

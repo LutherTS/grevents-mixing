@@ -3,21 +3,28 @@ import { useState } from "react";
 import _ from "lodash";
 
 import { selectContacts } from "~/librairies/subdata/contacts";
-import { OneContact } from "./one-contact";
+import { OneContact, OneContactAddable } from "./one-contact";
 import { LinkButtonOnClick } from "./link-button";
+import { selectUserCustomAnswer } from "~/librairies/subdata/answers";
 
 // For UserQuestionFriends, contacts will also be from a different payload, then I can do if contacts is from Contact, then, if contacts is from UserQuestionFriends, then.
 // So it's going to be in the typing, and then as a return condition. I'll find the way.
+// Edit: Given the unreliableness of Union Types, I'm gonna have to make many-userquestionfriends.tsx and one-userquestionfriends.tsx components.
 export function ManyContacts({
   contacts,
+  answer,
+  contactComponentRequired,
   label,
   notLabel,
 }: {
   contacts: Prisma.ContactGetPayload<{
     select: typeof selectContacts;
   }>[];
+  answer?: Prisma.AnswerGetPayload<{
+    select: typeof selectUserCustomAnswer;
+  }>;
+  contactComponentRequired: string;
   label: string;
-
   notLabel: string;
 }) {
   return (
@@ -32,14 +39,27 @@ export function ManyContacts({
                   {contacts.map((contact) => {
                     return (
                       <li key={contact.id}>
-                        <OneContact contact={contact} />
+                        {contactComponentRequired === "OneContact" && (
+                          <OneContact contact={contact} />
+                        )}
+                        {contactComponentRequired === "OneContactAddable" &&
+                          answer && (
+                            <OneContactAddable
+                              contact={contact}
+                              answer={answer}
+                            />
+                          )}
                       </li>
                     );
                   })}
                 </ol>
               </>
             ) : (
-              <ManyPaginatedContacts contacts={contacts} />
+              <ManyPaginatedContacts
+                contacts={contacts}
+                contactComponentRequired={contactComponentRequired}
+                answer={answer}
+              />
             )}
           </>
         )}
@@ -55,10 +75,16 @@ export function ManyContacts({
 
 function ManyPaginatedContacts({
   contacts,
+  answer,
+  contactComponentRequired,
 }: {
   contacts: Prisma.ContactGetPayload<{
     select: typeof selectContacts;
   }>[];
+  answer?: Prisma.AnswerGetPayload<{
+    select: typeof selectUserCustomAnswer;
+  }>;
+  contactComponentRequired: string;
 }) {
   const chunkedContacts = _.chunk(contacts, 4);
 
@@ -78,7 +104,12 @@ function ManyPaginatedContacts({
         {chunkedContacts[position].map((contact) => {
           return (
             <li key={contact.id}>
-              <OneContact contact={contact} />
+              {contactComponentRequired === "OneContact" && (
+                <OneContact contact={contact} />
+              )}
+              {contactComponentRequired === "OneContactAddable" && answer && (
+                <OneContactAddable contact={contact} answer={answer} />
+              )}
             </li>
           );
         })}
