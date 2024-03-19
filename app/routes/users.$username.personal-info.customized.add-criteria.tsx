@@ -2,6 +2,11 @@ import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
+import {
+  CustomAnswerForm,
+  PseudonativeIrlAnswerForm,
+  PseudonativeNotIrlAnswerForm,
+} from "~/components/answer-forms";
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
@@ -70,6 +75,16 @@ export default function AddCriteriaCustomizedPage() {
         href={`/users/${data.verifiedUser.username}/dashboard`}
       />
       {data.verifiedUser && <SignOutForm />}
+
+      <div className="space-y-4 my-4">
+        <PseudonativeNotIrlAnswerForm
+          answerCount={data.userPseudonativeNotIrlAnswersCount}
+        />
+        <PseudonativeIrlAnswerForm
+          answerCount={data.userPseudonativeIrlAnswersCount}
+        />
+        <CustomAnswerForm answerCount={data.userCustomAnswersCount} />
+      </div>
 
       <PageLink href={`..`}>Cancel</PageLink>
     </>
