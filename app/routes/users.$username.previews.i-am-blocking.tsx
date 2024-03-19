@@ -4,8 +4,8 @@ import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
-import { LinkButtonMockup } from "~/components/link-button";
 import { PageLink } from "~/components/page-link";
+import { RelationCombinationIAmBlockingPreviewed } from "~/components/relcombos-previewed";
 import { SignOutForm } from "~/components/sign-out-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import { findUserByUsername } from "~/librairies/data/users";
@@ -50,14 +50,7 @@ export default function IAmBlockingPreviewPage() {
       {data.verifiedUser && <SignOutForm />}
 
       <div className="space-y-4 my-4">
-        <div>
-          <p className="mt-2 font-semibold text-red-500">
-            YOU CAN NO LONGER ACCESS ANY OF THE INFORMATION OF{" "}
-            {data.user.username.toUpperCase()} ACROSS THE ENTIRE APPLICATION,
-            FUTURE COMMON GROUPS AND FUTURE COMMON EVENTS INCLUDED.
-          </p>
-          <LinkButtonMockup>Block them back</LinkButtonMockup>
-        </div>
+        <RelationCombinationIAmBlockingPreviewed user={data.user} />
       </div>
 
       <PageLink href={`..`}>To Previews</PageLink>
