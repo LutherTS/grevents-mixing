@@ -119,6 +119,21 @@ export const isSharedToContactCustom = (
   };
 };
 
+// would eventually be shifted to ./userquestions.ts
+export const noneIsPinnedByFriend = (
+  contactId: string
+): Prisma.UserQuestionWhereInput => {
+  return {
+    userQuestionFriends: {
+      none: {
+        contactId,
+        isPinnedByFriend: true,
+        state: "LIVE",
+      },
+    },
+  };
+};
+
 export const selectUserPinnedAnswers = {
   userQuestion: {
     select: {
@@ -613,6 +628,137 @@ export function whereEmailAddressByUserId(id: string): Prisma.AnswerWhereInput {
         kind: "NATIVE",
         name: "Email address",
       },
+    },
+    user: {
+      id,
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
+    },
+    state: "LIVE",
+  };
+}
+
+// Profile subfunctions
+
+// currently the same as whereUserPinnedAnswersByUserId with OR [isNative, isPseudoNative, isSharedToContactCustom], with noneIsPinnedByFriend(contactId)
+export function whereUserPinnedNotIrlAnswersByUserIdExposed(
+  id: string,
+  contactId: string
+): Prisma.AnswerWhereInput {
+  return {
+    userQuestion: {
+      user: {
+        id,
+      },
+      isPinned: true,
+      OR: [isNative, isPseudoNative, isSharedToContactCustom(contactId)],
+      AND: noneIsPinnedByFriend(contactId),
+    },
+    user: {
+      id,
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
+    },
+    state: "LIVE",
+  };
+}
+
+// currently the same as whereUserPinnedAnswersByUserId with OR [isNative, isPseudoNative, isNativeIrl, isPseudonativeIrl, isSharedToContactCustom], with noneIsPinnedByFriend(contactId)
+export function whereUserPinnedNotAndIrlAnswersByUserIdExposed(
+  id: string,
+  contactId: string
+): Prisma.AnswerWhereInput {
+  return {
+    userQuestion: {
+      user: {
+        id,
+      },
+      isPinned: true,
+      OR: [
+        isNative,
+        isPseudoNative,
+        isNativeIrl,
+        isPseudoNativeIrl,
+        isSharedToContactCustom(contactId),
+      ],
+      AND: noneIsPinnedByFriend(contactId),
+    },
+    user: {
+      id,
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
+    },
+    state: "LIVE",
+  };
+}
+
+// currently the same as whereUserNativeAnswersByUserIdAndQuestionKind with userQuestion.isPinned as false, without "HIDDEN" on userQuestion.state, with noneIsPinnedByFriend(contactId)
+export function whereUserUnpinnedNativeAnswersByUserIdAndQuestionKindExposed(
+  id: string,
+  kind: string,
+  contactId: string
+): Prisma.AnswerWhereInput {
+  return {
+    userQuestion: {
+      user: {
+        id,
+      },
+      isPinned: false,
+      question: {
+        kind,
+        state: "LIVE",
+      },
+      state: "LIVE",
+      AND: noneIsPinnedByFriend(contactId),
+    },
+    user: {
+      id,
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
+    },
+    state: "LIVE",
+  };
+}
+
+// currently the same as whereUserPseudonativeAnswersByUserIdAndUserQuestionKind with userQuestion.isPinned as false, with noneIsPinnedByFriend(contactId)
+export function whereUserUnpinnedPseudonativeAnswersByUserIdAndUserQuestionKindExposed(
+  id: string,
+  kind: string,
+  contactId: string
+): Prisma.AnswerWhereInput {
+  return {
+    userQuestion: {
+      user: {
+        id,
+      },
+      isPinned: false,
+      question: {
+        kind: "PSEUDO",
+        state: "LIVE",
+      },
+      kind,
+      state: "LIVE",
+      AND: noneIsPinnedByFriend(contactId),
+    },
+    user: {
+      id,
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
+    },
+    state: "LIVE",
+  };
+}
+
+// currently the same as whereUserNativeAnswersByUserIdAndQuestionKind, with kind as "CUSTOM", with userQuestion.state as "LIVE" only instead of OR: [{ state: "LIVE" }, { state: "HIDDEN" }], with userQuestion.isPinned as false, with AND userQuestion isSharedToContactCustom(contactId), with noneIsPinnedByFriend(contactId)
+export function whereUserUnpinnedSharedToContactCustomAnswersExposed(
+  id: string,
+  contactId: string
+): Prisma.AnswerWhereInput {
+  return {
+    userQuestion: {
+      user: {
+        id,
+      },
+      isPinned: false,
+      AND: [
+        isSharedToContactCustom(contactId),
+        noneIsPinnedByFriend(contactId),
+      ],
     },
     user: {
       id,

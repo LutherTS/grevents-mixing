@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
-import { useLoaderData, useSearchParams } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
@@ -188,11 +188,6 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 export default function QueriedPreviewPage() {
   const data: QueriedPreviewLoaderByHand = useLoaderData(); // <typeof loader>();
   console.log(data);
-
-  /* For eventual use
-  const [searchParams, setSearchParams] = useSearchParams();
-  console.log(searchParams);
-  */
 
   return (
     <>
