@@ -29,7 +29,7 @@ import { findUserByUsername } from "~/librairies/data/users";
 import { selectAnswers } from "~/librairies/subdata/answers";
 import { selectContacts } from "~/librairies/subdata/contacts";
 import { selectUser, selectVerifiedUser } from "~/librairies/subdata/users";
-import { defineContactRelCombo } from "~/utilities/contacts";
+import { decideContactRelCombo } from "~/utilities/contacts";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 type QueriedPreviewLoaderByHand = {
@@ -99,7 +99,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     await findContactByUserFirstIdAndUserLastUsername(user.id, userLast);
 
   if (userToQueriedContact && relCombo === "") {
-    relCombo = defineContactRelCombo(userToQueriedContact, relCombo);
+    relCombo = decideContactRelCombo(userToQueriedContact, relCombo);
   }
 
   let userPinnedNotIrlAnswersQueried;
