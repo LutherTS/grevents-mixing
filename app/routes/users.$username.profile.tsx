@@ -4,6 +4,7 @@ import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
+import { ManyCriteria } from "~/components/many-criteria";
 import { SignOutForm } from "~/components/sign-out-form";
 import {
   findUserPinnedNotAndIrlAnswersByUserIdExposed,
@@ -88,6 +89,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       verifiedUser,
       user,
       userToVerifiedUserContact,
+      relCombo,
       userQuestionFriendsAnswersPinnedByFriend,
       userPinnedNotIrlAnswersExposed,
       userUnpinnedNativeNotIrlAnswersExposed,
@@ -137,6 +139,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       verifiedUser,
       user,
       userToVerifiedUserContact,
+      relCombo,
       userQuestionFriendsAnswersPinnedByFriend,
       userPinnedNotAndIrlAnswersExposed,
       userUnpinnedNativeNotIrlAnswersExposed,
@@ -150,6 +153,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       verifiedUser,
       user,
       userToVerifiedUserContact,
+      relCombo,
     });
   }
 };
@@ -165,6 +169,56 @@ export default function ProfilePage() {
         href={`/users/${data.verifiedUser.username}/dashboard`}
       />
       {data.verifiedUser && <SignOutForm />}
+
+      <div className="space-y-4 my-4">
+        {data.verifiedUser.state === "DEACTIVATED" ? (
+          <>
+            <p className="mt-2">
+              You cannot see other users&apos; profiles while yours is
+              deactivated.
+            </p>
+          </>
+        ) : (
+          <>
+            {data.user.state === "DEACTIVATED" ? (
+              <>
+                <p className="mt-2">
+                  {data.user.username} has deactivated their profile.
+                </p>
+              </>
+            ) : (
+              <>
+                {data.relCombo === "none" && <></>}
+                {data.relCombo === "friend" && (
+                  <>
+                    <ManyCriteria
+                      answers={data.userPinnedNotIrlAnswersExposed}
+                      selectContext="Profile"
+                      answerComponentRequired="OneAnswer"
+                      label="Find their pinned for friend criteria below"
+                      notLabel="No pinned criteria yet."
+                    />
+                  </>
+                )}
+                {data.relCombo === "irl" && (
+                  <>
+                    <ManyCriteria
+                      answers={data.userPinnedNotAndIrlAnswersExposed}
+                      selectContext="Profile"
+                      answerComponentRequired="OneAnswer"
+                      label="Find their pinned for irl criteria below"
+                      notLabel="No pinned criteria yet."
+                    />
+                  </>
+                )}
+                {data.relCombo === "i-am-blocking" && <></>}
+                {data.relCombo === "has-me-blocked" && <></>}
+                {data.relCombo === "blocking-blocked" && <></>}
+              </>
+            )}
+          </>
+        )}
+      </div>
     </>
   );
 }
