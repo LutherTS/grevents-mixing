@@ -4,7 +4,14 @@ import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
+import { ManyCriteria } from "~/components/many-criteria";
 import { PageLink } from "~/components/page-link";
+import {
+  RelationCombinationBlockingBlockedPreviewed,
+  RelationCombinationHasMeBlockedPreviewed,
+  RelationCombinationIAmBlockingPreviewed,
+  RelationCombinationNonePreviewed,
+} from "~/components/relcombos-previewed";
 import { SignOutForm } from "~/components/sign-out-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import {
@@ -154,6 +161,97 @@ export default function QueriedPreviewPage() {
         href={`/users/${data.verifiedUser.username}/dashboard`}
       />
       {data.verifiedUser && <SignOutForm />}
+
+      <div className="space-y-4 my-4">
+        {/* TypeScript desperately needs to get an upgrade. */}
+        {data.user && data.userLast && data.relCombo === "none" && (
+          <RelationCombinationNonePreviewed />
+        )}
+        {/* @ts-ignore */}
+        {data.userPinnedNotIrlAnswersQueried && (
+          <ManyCriteria
+            // @ts-ignore
+            answers={data.userPinnedNotIrlAnswersQueried}
+            selectContext="QueriedPreview"
+            answerComponentRequired="OneAnswer"
+            label="Find their pinned for friend criteria below"
+            notLabel="No pinned criteria yet."
+          />
+        )}
+        {/* @ts-ignore */}
+        {data.userPinnedNotAndIrlAnswersQueried && (
+          <ManyCriteria
+            // @ts-ignore
+            answers={data.userPinnedNotAndIrlAnswersQueried}
+            selectContext="QueriedPreview"
+            answerComponentRequired="OneAnswer"
+            label="Find their pinned for irl criteria below"
+            notLabel="No pinned criteria yet."
+          />
+        )}
+        {/* @ts-ignore */}
+        {data.userUnpinnedNativeNotIrlAnswers && (
+          <ManyCriteria
+            // @ts-ignore
+            answers={data.userUnpinnedNativeNotIrlAnswers}
+            answerComponentRequired="OneAnswer"
+            label="Find their (other) native criteria below"
+            notLabel="No native criteria yet."
+          />
+        )}
+        {/* @ts-ignore */}
+        {data.userUnpinnedPseudonativeNotIrlAnswers && (
+          <ManyCriteria
+            // @ts-ignore
+            answers={data.userUnpinnedPseudonativeNotIrlAnswers}
+            answerComponentRequired="OneAnswer"
+            label="Find their (other) pseudonative criteria below"
+            notLabel="No native irl criteria yet."
+          />
+        )}
+        {/* @ts-ignore */}
+        {data.userUnpinnedNativeIrlAnswers && (
+          <ManyCriteria
+            // @ts-ignore
+            answers={data.userUnpinnedNativeIrlAnswers}
+            answerComponentRequired="OneAnswer"
+            label="Find their (other) native irl criteria below"
+            notLabel="No native criteria yet."
+          />
+        )}
+        {/* @ts-ignore */}
+        {data.userUnpinnedPseudonativeIrlAnswers && (
+          <ManyCriteria
+            // @ts-ignore
+            answers={data.userUnpinnedPseudonativeIrlAnswers}
+            answerComponentRequired="OneAnswer"
+            label="Find their (other) pseudonative irl criteria below"
+            notLabel="No native irl criteria yet."
+          />
+        )}
+        {/* @ts-ignore */}
+        {data.userUnpinnedSharedToContactCustomAnswers &&
+          // @ts-ignore
+          data.userUnpinnedSharedToContactCustomAnswers.length > 0 && (
+            <ManyCriteria
+              // @ts-ignore
+              answers={data.userUnpinnedSharedToContactCustomAnswers}
+              selectContext="QueriedPreview"
+              answerComponentRequired="OneAnswer"
+              label="See their (other) custom answers shared to you below"
+              notLabel="No custom criteria yet."
+            />
+          )}
+        {data.user && data.userLast && data.relCombo === "i-am-blocking" && (
+          <RelationCombinationIAmBlockingPreviewed user={data.user} />
+        )}
+        {data.user && data.userLast && data.relCombo === "has-me-blocked" && (
+          <RelationCombinationHasMeBlockedPreviewed user={data.user} />
+        )}
+        {data.user && data.userLast && data.relCombo === "blocking-blocked" && (
+          <RelationCombinationBlockingBlockedPreviewed user={data.user} />
+        )}
+      </div>
 
       <PageLink href={`..`}>To Previews</PageLink>
       <PageLink href={`../../profile`}>To Your Profile</PageLink>

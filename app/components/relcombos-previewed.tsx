@@ -1,6 +1,9 @@
-import { selectUser } from "~/librairies/subdata/users";
-import { LinkButtonMockup } from "./link-button";
 import { Prisma } from "@prisma/client";
+
+import { selectUser } from "~/librairies/subdata/users";
+import { selectAnswers } from "~/librairies/subdata/answers";
+import { LinkButtonMockup } from "./link-button";
+import { ManyCriteria } from "./many-criteria";
 
 export function RelationCombinationNonePreviewed() {
   return (
@@ -9,6 +12,104 @@ export function RelationCombinationNonePreviewed() {
         <LinkButtonMockup>Send friend request</LinkButtonMockup>
         <LinkButtonMockup>Block</LinkButtonMockup>
       </div>
+    </>
+  );
+}
+
+export function RelationCombinationFriendPreviewed({
+  pinnedNotIrlAnswers,
+  unpinnedNativeNotIrlAnswers,
+  unpinnedPseudonativeNotIrlAnswers,
+}: {
+  pinnedNotIrlAnswers: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+  unpinnedNativeNotIrlAnswers: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+  unpinnedPseudonativeNotIrlAnswers: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+}) {
+  return (
+    <>
+      <ManyCriteria
+        answers={pinnedNotIrlAnswers}
+        answerComponentRequired="OneAnswer"
+        label="Find their pinned for friend criteria below"
+        notLabel="No pinned criteria yet."
+      />
+      <ManyCriteria
+        answers={unpinnedNativeNotIrlAnswers}
+        answerComponentRequired="OneAnswer"
+        label="Find their (other) native criteria below"
+        notLabel="No native criteria yet."
+      />
+      <ManyCriteria
+        answers={unpinnedPseudonativeNotIrlAnswers}
+        answerComponentRequired="OneAnswer"
+        label="Find their (other) pseudonative criteria below"
+        notLabel="No native irl criteria yet."
+      />
+    </>
+  );
+}
+
+export function RelationCombinationIrlPreviewed({
+  pinnedNotAndIrlAnswers,
+  unpinnedNativeNotIrlAnswers,
+  unpinnedPseudonativeNotIrlAnswers,
+  unpinnedNativeIrlAnswers,
+  unpinnedPseudonativeIrlAnswers,
+}: {
+  pinnedNotAndIrlAnswers: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+  unpinnedNativeNotIrlAnswers: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+  unpinnedPseudonativeNotIrlAnswers: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+  unpinnedNativeIrlAnswers: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+  unpinnedPseudonativeIrlAnswers: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+}) {
+  return (
+    <>
+      <ManyCriteria
+        answers={pinnedNotAndIrlAnswers}
+        answerComponentRequired="OneAnswer"
+        label="Find their pinned for irl criteria below"
+        notLabel="No pinned criteria yet."
+      />
+      <ManyCriteria
+        answers={unpinnedNativeNotIrlAnswers}
+        answerComponentRequired="OneAnswer"
+        label="Find their (other) native criteria below"
+        notLabel="No native criteria yet."
+      />
+      <ManyCriteria
+        answers={unpinnedPseudonativeNotIrlAnswers}
+        answerComponentRequired="OneAnswer"
+        label="Find their (other) pseudonative criteria below"
+        notLabel="No native irl criteria yet."
+      />
+      <ManyCriteria
+        answers={unpinnedNativeIrlAnswers}
+        answerComponentRequired="OneAnswer"
+        label="Find their (other) native irl criteria below"
+        notLabel="No native criteria yet."
+      />
+      <ManyCriteria
+        answers={unpinnedPseudonativeIrlAnswers}
+        answerComponentRequired="OneAnswer"
+        label="Find their (other) pseudonative irl criteria below"
+        notLabel="No native irl criteria yet."
+      />
     </>
   );
 }

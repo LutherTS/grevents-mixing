@@ -277,8 +277,8 @@ export async function findUserPinnedNotIrlAnswersByUserIdQueried(
   return await prisma.answer.findMany({
     select,
     where,
-    orderBy,
-    take,
+    orderBy: PINNED_BY_USER_ANSWERS_ORDER_BY,
+    take: PINNED_BY_USER_ANSWERS_LIMIT,
   });
 }
 
@@ -295,8 +295,8 @@ export async function findUserPinnedNotAndIrlAnswersByUserIdQueried(
   return await prisma.answer.findMany({
     select,
     where,
-    orderBy,
-    take,
+    orderBy: PINNED_BY_USER_ANSWERS_ORDER_BY,
+    take: PINNED_BY_USER_ANSWERS_LIMIT,
   });
 }
 
