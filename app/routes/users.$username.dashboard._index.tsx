@@ -116,7 +116,7 @@ export default function DashboardPage() {
       <PageLink href={`/`}>Return home</PageLink>
       {data.user.state === "DEACTIVATED" && (
         <p className="mt-8 font-bold text-red-500">
-          You&apos;ve deactived your profile.
+          You&apos;ve deactivated your profile.
         </p>
       )}
     </>

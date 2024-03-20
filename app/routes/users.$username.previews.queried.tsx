@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
 import { useLoaderData, useSearchParams } from "@remix-run/react";
 import invariant from "tiny-invariant";
@@ -25,8 +26,47 @@ import {
 } from "~/librairies/data/answers";
 import { findContactByUserFirstIdAndUserLastUsername } from "~/librairies/data/contacts";
 import { findUserByUsername } from "~/librairies/data/users";
+import { selectAnswers } from "~/librairies/subdata/answers";
+import { selectContacts } from "~/librairies/subdata/contacts";
+import { selectUser, selectVerifiedUser } from "~/librairies/subdata/users";
 import { defineContactRelCombo } from "~/utilities/contacts";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
+
+type QueriedPreviewLoaderByHand = {
+  // because TypeScript Union Types are once again failing.
+  verifiedUser: Prisma.UserGetPayload<{
+    select: typeof selectVerifiedUser;
+  }>;
+  user: Prisma.UserGetPayload<{
+    select: typeof selectUser;
+  }>;
+  userToQueriedContact: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+  userLast: string;
+  relCombo: string;
+  userPinnedNotIrlAnswersQueried?: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+  userPinnedNotAndIrlAnswersQueried?: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+  userUnpinnedNativeNotIrlAnswers?: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+  userUnpinnedPseudonativeNotIrlAnswers?: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+  userUnpinnedNativeIrlAnswers?: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+  userUnpinnedPseudonativeIrlAnswers?: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+  userUnpinnedSharedToContactCustomAnswers?: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+};
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   invariant(params.username, "Expected params.username");
@@ -146,7 +186,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 };
 
 export default function QueriedPreviewPage() {
-  const data = useLoaderData<typeof loader>();
+  const data: QueriedPreviewLoaderByHand = useLoaderData(); // <typeof loader>();
   console.log(data);
 
   /* For eventual use
@@ -163,14 +203,45 @@ export default function QueriedPreviewPage() {
       {data.verifiedUser && <SignOutForm />}
 
       <div className="space-y-4 my-4">
+        {data.user.state === "DEACTIVATED" && data.userToQueriedContact && (
+          <>
+            <div>
+              <p className="mt-2 font-semibold text-red-500">IMPORTANT</p>
+              <p className="mt-2 text-red-500">
+                You have deactivated your profile.
+              </p>
+              <p className="mt-2">
+                This means the only user interface other users such as{" "}
+                {data.userToQueriedContact.mirror?.userFirst.username} are able
+                to see at this time is the following:
+              </p>
+              <p className="my-4">
+                {data.user.username} has deactivated their profile.
+              </p>
+              <p className="mt-2">
+                What you see now is what{" "}
+                {data.userToQueriedContact.mirror?.userFirst.username} will be
+                able to see once you'll have reactivated your profile.
+              </p>
+              <p className="mt-2">
+                Specifically, this feature is designed to give you full control
+                over what you want{" "}
+                {data.userToQueriedContact.mirror?.userFirst.username} in this
+                case and other users for that matter to have access to, before
+                you make the decision to lift the veil on your profile.
+              </p>
+            </div>
+            <div className="py-4">
+              <div className="h-[1px] bg-black dark:bg-white w-[90%] mx-auto" />
+            </div>
+          </>
+        )}
         {/* TypeScript desperately needs to get an upgrade. */}
         {data.user && data.userLast && data.relCombo === "none" && (
           <RelationCombinationNonePreviewed />
         )}
-        {/* @ts-ignore */}
         {data.userPinnedNotIrlAnswersQueried && (
           <ManyCriteria
-            // @ts-ignore
             answers={data.userPinnedNotIrlAnswersQueried}
             selectContext="QueriedPreview"
             answerComponentRequired="OneAnswer"
@@ -178,10 +249,8 @@ export default function QueriedPreviewPage() {
             notLabel="No pinned criteria yet."
           />
         )}
-        {/* @ts-ignore */}
         {data.userPinnedNotAndIrlAnswersQueried && (
           <ManyCriteria
-            // @ts-ignore
             answers={data.userPinnedNotAndIrlAnswersQueried}
             selectContext="QueriedPreview"
             answerComponentRequired="OneAnswer"
@@ -189,52 +258,41 @@ export default function QueriedPreviewPage() {
             notLabel="No pinned criteria yet."
           />
         )}
-        {/* @ts-ignore */}
         {data.userUnpinnedNativeNotIrlAnswers && (
           <ManyCriteria
-            // @ts-ignore
             answers={data.userUnpinnedNativeNotIrlAnswers}
             answerComponentRequired="OneAnswer"
             label="Find their (other) native criteria below"
             notLabel="No native criteria yet."
           />
         )}
-        {/* @ts-ignore */}
         {data.userUnpinnedPseudonativeNotIrlAnswers && (
           <ManyCriteria
-            // @ts-ignore
             answers={data.userUnpinnedPseudonativeNotIrlAnswers}
             answerComponentRequired="OneAnswer"
             label="Find their (other) pseudonative criteria below"
             notLabel="No native irl criteria yet."
           />
         )}
-        {/* @ts-ignore */}
         {data.userUnpinnedNativeIrlAnswers && (
           <ManyCriteria
-            // @ts-ignore
             answers={data.userUnpinnedNativeIrlAnswers}
             answerComponentRequired="OneAnswer"
             label="Find their (other) native irl criteria below"
             notLabel="No native criteria yet."
           />
         )}
-        {/* @ts-ignore */}
         {data.userUnpinnedPseudonativeIrlAnswers && (
           <ManyCriteria
-            // @ts-ignore
             answers={data.userUnpinnedPseudonativeIrlAnswers}
             answerComponentRequired="OneAnswer"
             label="Find their (other) pseudonative irl criteria below"
             notLabel="No native irl criteria yet."
           />
         )}
-        {/* @ts-ignore */}
         {data.userUnpinnedSharedToContactCustomAnswers &&
-          // @ts-ignore
           data.userUnpinnedSharedToContactCustomAnswers.length > 0 && (
             <ManyCriteria
-              // @ts-ignore
               answers={data.userUnpinnedSharedToContactCustomAnswers}
               selectContext="QueriedPreview"
               answerComponentRequired="OneAnswer"
