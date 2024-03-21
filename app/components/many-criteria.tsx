@@ -8,6 +8,8 @@ import {
   OneCriteria,
   SelectContext,
 } from "./one-criteria";
+import { Prisma } from "@prisma/client";
+import { selectContacts } from "~/librairies/subdata/contacts";
 
 ////////
 
@@ -19,6 +21,8 @@ export function ManyCriteria({
   pinnedAnswersCount,
   otherPseudonativeAnswersCount,
   answerComponentRequired,
+  contact,
+  answersPinnedbyFriendAnswersCount,
   label,
   notLabel,
 }: {
@@ -27,8 +31,12 @@ export function ManyCriteria({
   pinnedAnswersCount?: number;
   otherPseudonativeAnswersCount?: number;
   answerComponentRequired: AnswerComponentRequired;
+  contact?: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+  answersPinnedbyFriendAnswersCount?: number;
   label: string;
-  notLabel: string;
+  notLabel?: string;
 }) {
   return (
     <>
@@ -50,6 +58,10 @@ export function ManyCriteria({
                             otherPseudonativeAnswersCount
                           }
                           answerComponentRequired={answerComponentRequired}
+                          contact={contact}
+                          answersPinnedbyFriendAnswersCount={
+                            answersPinnedbyFriendAnswersCount
+                          }
                         />
                       </li>
                     );
@@ -63,6 +75,10 @@ export function ManyCriteria({
                 pinnedAnswersCount={pinnedAnswersCount}
                 otherPseudonativeAnswersCount={otherPseudonativeAnswersCount}
                 answerComponentRequired={answerComponentRequired}
+                contact={contact}
+                answersPinnedbyFriendAnswersCount={
+                  answersPinnedbyFriendAnswersCount
+                }
               />
             )}
           </>
@@ -83,12 +99,18 @@ function ManyPaginatedCriteria({
   pinnedAnswersCount,
   otherPseudonativeAnswersCount,
   answerComponentRequired,
+  contact,
+  answersPinnedbyFriendAnswersCount,
 }: {
   answers: UnionAnswerType;
   selectContext?: SelectContext;
   pinnedAnswersCount?: number;
   otherPseudonativeAnswersCount?: number;
   answerComponentRequired: AnswerComponentRequired;
+  contact?: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+  answersPinnedbyFriendAnswersCount?: number;
 }) {
   const chunkedAnswers = _.chunk(answers, 4);
 
@@ -115,6 +137,10 @@ function ManyPaginatedCriteria({
                   pinnedAnswersCount={pinnedAnswersCount}
                   otherPseudonativeAnswersCount={otherPseudonativeAnswersCount}
                   answerComponentRequired={answerComponentRequired}
+                  contact={contact}
+                  answersPinnedbyFriendAnswersCount={
+                    answersPinnedbyFriendAnswersCount
+                  }
                 />
               </li>
             );

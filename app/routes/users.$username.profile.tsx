@@ -5,6 +5,7 @@ import invariant from "tiny-invariant";
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
 import { ManyCriteria } from "~/components/many-criteria";
+import { ManyUserQuestionFriendsPinned } from "~/components/many-userquestionfriends";
 import { SignOutForm } from "~/components/sign-out-form";
 import {
   findUserPinnedNotAndIrlAnswersByUserIdExposed,
@@ -16,7 +17,10 @@ import {
   findUserUnpinnedSharedToContactCustomAnswersExposed,
 } from "~/librairies/data/answers";
 import { findContactByUserFirstIdAndUserLastId } from "~/librairies/data/contacts";
-import { findUserQuestionFriendsAnswersPinnedByFriend } from "~/librairies/data/userquestionfriends";
+import {
+  countUserQuestionFriendsAnswersPinnedByFriend,
+  findUserQuestionFriendsAnswersPinnedByFriend,
+} from "~/librairies/data/userquestionfriends";
 import { findUserByUsername } from "~/librairies/data/users";
 import { defineContactRelCombo } from "~/utilities/contacts";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
@@ -48,6 +52,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   }
 
   let userQuestionFriendsAnswersPinnedByFriend;
+  let userQuestionFriendsAnswersPinnedByFriendCount;
   let userPinnedNotIrlAnswersExposed;
   let userPinnedNotAndIrlAnswersExposed;
   let userUnpinnedNativeNotIrlAnswersExposed;
@@ -63,6 +68,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       userUnpinnedNativeNotIrlAnswersExposed,
       userUnpinnedPseudonativeNotIrlAnswersExposed,
       userUnpinnedSharedToContactCustomAnswersExposed,
+      userQuestionFriendsAnswersPinnedByFriendCount,
     ] = await Promise.all([
       findUserQuestionFriendsAnswersPinnedByFriend(
         user.id,
@@ -84,6 +90,10 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
         user.id,
         userToVerifiedUserContact.id
       ),
+      countUserQuestionFriendsAnswersPinnedByFriend(
+        user.id,
+        userToVerifiedUserContact.id
+      ),
     ]);
     return json({
       verifiedUser,
@@ -95,6 +105,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       userUnpinnedNativeNotIrlAnswersExposed,
       userUnpinnedPseudonativeNotIrlAnswersExposed,
       userUnpinnedSharedToContactCustomAnswersExposed,
+      userQuestionFriendsAnswersPinnedByFriendCount,
     });
   } else if (userToVerifiedUserContact && relCombo === "irl") {
     [
@@ -105,6 +116,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       userUnpinnedNativeIrlAnswersExposed,
       userUnpinnedPseudonativeIrlAnswersExposed,
       userUnpinnedSharedToContactCustomAnswersExposed,
+      userQuestionFriendsAnswersPinnedByFriendCount,
     ] = await Promise.all([
       findUserQuestionFriendsAnswersPinnedByFriend(
         user.id,
@@ -134,6 +146,10 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
         user.id,
         userToVerifiedUserContact.id
       ),
+      countUserQuestionFriendsAnswersPinnedByFriend(
+        user.id,
+        userToVerifiedUserContact.id
+      ),
     ]);
     return json({
       verifiedUser,
@@ -147,6 +163,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       userUnpinnedNativeIrlAnswersExposed,
       userUnpinnedPseudonativeIrlAnswersExposed,
       userUnpinnedSharedToContactCustomAnswersExposed,
+      userQuestionFriendsAnswersPinnedByFriendCount,
     });
   } else {
     return json({
@@ -171,49 +188,181 @@ export default function ProfilePage() {
       {data.verifiedUser && <SignOutForm />}
 
       <div className="space-y-4 my-4">
-        {data.verifiedUser.state === "DEACTIVATED" ? (
-          <>
-            <p className="mt-2">
-              You cannot see other users&apos; profiles while yours is
-              deactivated.
-            </p>
-          </>
+        {data.verifiedUser.id === data.user.id ? (
+          <></>
         ) : (
           <>
-            {data.user.state === "DEACTIVATED" ? (
+            {data.verifiedUser.state === "DEACTIVATED" ? (
               <>
                 <p className="mt-2">
-                  {data.user.username} has deactivated their profile.
+                  You cannot see other users&apos; profiles while yours is
+                  deactivated.
                 </p>
               </>
             ) : (
               <>
-                {data.relCombo === "none" && <></>}
-                {data.relCombo === "friend" && (
+                {data.user.state === "DEACTIVATED" ? (
                   <>
-                    <ManyCriteria
-                      answers={data.userPinnedNotIrlAnswersExposed}
-                      selectContext="Profile"
-                      answerComponentRequired="OneAnswer"
-                      label="Find their pinned for friend criteria below"
-                      notLabel="No pinned criteria yet."
-                    />
+                    <p className="mt-2">
+                      {data.user.username} has deactivated their profile.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    {data.relCombo === "none" && <></>}
+                    {data.relCombo === "friend" &&
+                      data.userToVerifiedUserContact && (
+                        <>
+                          <ManyUserQuestionFriendsPinned
+                            userQuestionFriendsAnswers={
+                              data.userQuestionFriendsAnswersPinnedByFriend
+                            }
+                            label="Find their pinned by you for friend criteria below"
+                            notLabel="No pinned by you criteria yet."
+                          />
+                          <ManyCriteria
+                            answers={data.userPinnedNotIrlAnswersExposed}
+                            selectContext="Profile"
+                            answerComponentRequired="OneAnswerPinnableByFriend"
+                            label="Find their pinned for friend criteria below"
+                            notLabel="No pinned criteria yet."
+                            contact={data.userToVerifiedUserContact}
+                            answersPinnedbyFriendAnswersCount={
+                              data.userQuestionFriendsAnswersPinnedByFriendCount
+                            }
+                          />
+                          <ManyCriteria
+                            answers={
+                              data.userUnpinnedNativeNotIrlAnswersExposed
+                            }
+                            answerComponentRequired="OneAnswerPinnableByFriend"
+                            label="Find their (other) native criteria below"
+                            notLabel="No native criteria yet."
+                            contact={data.userToVerifiedUserContact}
+                            answersPinnedbyFriendAnswersCount={
+                              data.userQuestionFriendsAnswersPinnedByFriendCount
+                            }
+                          />
+                          <ManyCriteria
+                            answers={
+                              data.userUnpinnedPseudonativeNotIrlAnswersExposed
+                            }
+                            answerComponentRequired="OneAnswerPinnableByFriend"
+                            label="Find their (other) pseudonative criteria below"
+                            notLabel="No pseudonative criteria yet."
+                            contact={data.userToVerifiedUserContact}
+                            answersPinnedbyFriendAnswersCount={
+                              data.userQuestionFriendsAnswersPinnedByFriendCount
+                            }
+                          />
+                          {data.userUnpinnedSharedToContactCustomAnswersExposed &&
+                            data.userUnpinnedSharedToContactCustomAnswersExposed
+                              .length > 0 && (
+                              <ManyCriteria
+                                answers={
+                                  data.userUnpinnedSharedToContactCustomAnswersExposed
+                                }
+                                selectContext="Profile"
+                                answerComponentRequired="OneAnswerPinnableByFriend"
+                                label="See their (other) custom answers shared to you below"
+                                contact={data.userToVerifiedUserContact}
+                                answersPinnedbyFriendAnswersCount={
+                                  data.userQuestionFriendsAnswersPinnedByFriendCount
+                                }
+                              />
+                            )}
+                        </>
+                      )}
+                    {data.relCombo === "irl" &&
+                      data.userToVerifiedUserContact && (
+                        <>
+                          <ManyUserQuestionFriendsPinned
+                            userQuestionFriendsAnswers={
+                              data.userQuestionFriendsAnswersPinnedByFriend
+                            }
+                            label="Find their pinned by you for irl criteria below"
+                            notLabel="No pinned by you criteria yet."
+                          />
+                          <ManyCriteria
+                            answers={data.userPinnedNotAndIrlAnswersExposed}
+                            selectContext="Profile"
+                            answerComponentRequired="OneAnswerPinnableByFriend"
+                            label="Find their pinned for irl criteria below"
+                            notLabel="No pinned criteria yet."
+                            contact={data.userToVerifiedUserContact}
+                            answersPinnedbyFriendAnswersCount={
+                              data.userQuestionFriendsAnswersPinnedByFriendCount
+                            }
+                          />
+                          <ManyCriteria
+                            answers={
+                              data.userUnpinnedNativeNotIrlAnswersExposed
+                            }
+                            answerComponentRequired="OneAnswerPinnableByFriend"
+                            label="Find their (other) native criteria below"
+                            notLabel="No native criteria yet."
+                            contact={data.userToVerifiedUserContact}
+                            answersPinnedbyFriendAnswersCount={
+                              data.userQuestionFriendsAnswersPinnedByFriendCount
+                            }
+                          />
+                          <ManyCriteria
+                            answers={
+                              data.userUnpinnedPseudonativeNotIrlAnswersExposed
+                            }
+                            answerComponentRequired="OneAnswerPinnableByFriend"
+                            label="Find their (other) pseudonative criteria below"
+                            notLabel="No pseudonative criteria yet."
+                            contact={data.userToVerifiedUserContact}
+                            answersPinnedbyFriendAnswersCount={
+                              data.userQuestionFriendsAnswersPinnedByFriendCount
+                            }
+                          />
+                          <ManyCriteria
+                            answers={data.userUnpinnedNativeIrlAnswersExposed}
+                            answerComponentRequired="OneAnswerPinnableByFriend"
+                            label="Find their (other) native irl criteria below"
+                            notLabel="No native irl criteria yet."
+                            contact={data.userToVerifiedUserContact}
+                            answersPinnedbyFriendAnswersCount={
+                              data.userQuestionFriendsAnswersPinnedByFriendCount
+                            }
+                          />
+                          <ManyCriteria
+                            answers={
+                              data.userUnpinnedPseudonativeIrlAnswersExposed
+                            }
+                            answerComponentRequired="OneAnswerPinnableByFriend"
+                            label="Find their (other) pseudonative irl criteria below"
+                            notLabel="No pseudonative irl criteria yet."
+                            contact={data.userToVerifiedUserContact}
+                            answersPinnedbyFriendAnswersCount={
+                              data.userQuestionFriendsAnswersPinnedByFriendCount
+                            }
+                          />
+                          {data.userUnpinnedSharedToContactCustomAnswersExposed &&
+                            data.userUnpinnedSharedToContactCustomAnswersExposed
+                              .length > 0 && (
+                              <ManyCriteria
+                                answers={
+                                  data.userUnpinnedSharedToContactCustomAnswersExposed
+                                }
+                                selectContext="Profile"
+                                answerComponentRequired="OneAnswerPinnableByFriend"
+                                label="See their (other) custom answers shared to you below"
+                                contact={data.userToVerifiedUserContact}
+                                answersPinnedbyFriendAnswersCount={
+                                  data.userQuestionFriendsAnswersPinnedByFriendCount
+                                }
+                              />
+                            )}
+                        </>
+                      )}
+                    {data.relCombo === "i-am-blocking" && <></>}
+                    {data.relCombo === "has-me-blocked" && <></>}
+                    {data.relCombo === "blocking-blocked" && <></>}
                   </>
                 )}
-                {data.relCombo === "irl" && (
-                  <>
-                    <ManyCriteria
-                      answers={data.userPinnedNotAndIrlAnswersExposed}
-                      selectContext="Profile"
-                      answerComponentRequired="OneAnswer"
-                      label="Find their pinned for irl criteria below"
-                      notLabel="No pinned criteria yet."
-                    />
-                  </>
-                )}
-                {data.relCombo === "i-am-blocking" && <></>}
-                {data.relCombo === "has-me-blocked" && <></>}
-                {data.relCombo === "blocking-blocked" && <></>}
               </>
             )}
           </>

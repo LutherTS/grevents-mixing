@@ -7,6 +7,9 @@ import {
   PINNED_BY_USER_ANSWERS_LIMIT,
   DEFAULT_ANSWERS_LIMIT,
 } from "~/librairies/subdata/answers";
+import { PINNED_BY_FRIEND_ANSWERS_LIMIT } from "~/librairies/subdata/userquestionfriends";
+import { selectContacts } from "~/librairies/subdata/contacts";
+import { Prisma } from "@prisma/client";
 
 ////////
 
@@ -33,12 +36,18 @@ export function OneCriteria({
   pinnedAnswersCount,
   otherPseudonativeAnswersCount,
   answerComponentRequired,
+  contact,
+  answersPinnedbyFriendAnswersCount,
 }: {
   answer: GlobalAnswerTypeByHand;
   selectContext?: SelectContext;
   pinnedAnswersCount?: number;
   otherPseudonativeAnswersCount?: number;
   answerComponentRequired: AnswerComponentRequired;
+  contact?: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+  answersPinnedbyFriendAnswersCount?: number;
 }) {
   return (
     <>
@@ -66,6 +75,18 @@ export function OneCriteria({
         {answerComponentRequired === "OneAnswerModify" && (
           <OneAnswerModify answer={answer} />
         )}
+        {answerComponentRequired === "OneAnswerPinnableByFriend" &&
+          contact &&
+          typeof answersPinnedbyFriendAnswersCount === "number" &&
+          answersPinnedbyFriendAnswersCount >= 0 && (
+            <OneAnswerPinnableByFriend
+              answer={answer}
+              contact={contact}
+              answersPinnedbyFriendAnswersCount={
+                answersPinnedbyFriendAnswersCount
+              }
+            />
+          )}
       </div>
     </>
   );
@@ -392,9 +413,63 @@ function ButtonHiddableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
                     answer.userQuestion.state === "HIDDEN",
                 }
               )}
-            ></button>
+            />
           </form>
         )}
+    </>
+  );
+}
+
+// export function OneAnswerPinnableByFriend
+
+export function OneAnswerPinnableByFriend({
+  answer,
+  contact,
+  answersPinnedbyFriendAnswersCount,
+}: {
+  answer: GlobalAnswerTypeByHand;
+  contact: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+  answersPinnedbyFriendAnswersCount: number;
+}) {
+  return (
+    <>
+      <div className="mt-2 flex justify-center">
+        {answersPinnedbyFriendAnswersCount < PINNED_BY_FRIEND_ANSWERS_LIMIT && (
+          <ButtonPinnableByFriendForm answer={answer} contact={contact} />
+        )}
+        <p>{answer.value}</p>
+      </div>
+    </>
+  );
+}
+
+// function ButtonPinnableByFriendForm
+
+function ButtonPinnableByFriendForm({
+  answer,
+  contact,
+}: {
+  answer: GlobalAnswerTypeByHand;
+  contact: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form
+        action="/pin-user-question-friend"
+        method="post"
+        className="me-2 flex items-center"
+      >
+        <button
+          disabled={fetcher.state !== "idle"}
+          className="h-4 w-4 rounded-full bg-cyan-500 hover:bg-cyan-300 disabled:!bg-gray-500 disabled:hover:bg-gray-500 dark:hover:bg-cyan-700"
+        />
+      </fetcher.Form>
     </>
   );
 }

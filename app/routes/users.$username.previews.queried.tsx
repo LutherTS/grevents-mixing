@@ -266,7 +266,7 @@ export default function QueriedPreviewPage() {
             answers={data.userUnpinnedPseudonativeNotIrlAnswers}
             answerComponentRequired="OneAnswer"
             label="Find their (other) pseudonative criteria below"
-            notLabel="No native irl criteria yet."
+            notLabel="No pseudonative criteria yet."
           />
         )}
         {data.userUnpinnedNativeIrlAnswers && (
@@ -274,7 +274,7 @@ export default function QueriedPreviewPage() {
             answers={data.userUnpinnedNativeIrlAnswers}
             answerComponentRequired="OneAnswer"
             label="Find their (other) native irl criteria below"
-            notLabel="No native criteria yet."
+            notLabel="No native irl criteria yet."
           />
         )}
         {data.userUnpinnedPseudonativeIrlAnswers && (
@@ -282,7 +282,7 @@ export default function QueriedPreviewPage() {
             answers={data.userUnpinnedPseudonativeIrlAnswers}
             answerComponentRequired="OneAnswer"
             label="Find their (other) pseudonative irl criteria below"
-            notLabel="No native irl criteria yet."
+            notLabel="No pseudonative irl criteria yet."
           />
         )}
         {data.userUnpinnedSharedToContactCustomAnswers &&
