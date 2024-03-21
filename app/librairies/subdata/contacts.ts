@@ -232,10 +232,10 @@ export function whereContactByUserFirstIdAndUserLastId(
       state: "LIVE",
     },
     userFirst: {
-      state: "LIVE",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
     userLast: {
-      state: "LIVE",
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
   };
 }

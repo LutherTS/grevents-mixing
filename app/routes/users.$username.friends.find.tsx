@@ -1,4 +1,9 @@
-import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  json,
+  redirect,
+} from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
@@ -36,6 +41,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
   return json({ verifiedUser, user });
 };
+
+export const action = async ({ request }: ActionFunctionArgs) => {};
 
 export default function FindContactsPage() {
   const data = useLoaderData<typeof loader>();

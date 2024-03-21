@@ -14,7 +14,7 @@ export function QueriedForm({
 
   return (
     <>
-      <fetcher.Form action="/queried" method="post" className="mt-2">
+      <fetcher.Form method="post" className="mt-2">
         <fieldset disabled={fetcher.state !== "idle"} className="space-y-4">
           <div>
             <label htmlFor="user-last">

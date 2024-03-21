@@ -1,5 +1,10 @@
 import { Prisma } from "@prisma/client";
-import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  json,
+  redirect,
+} from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
@@ -189,6 +194,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   }
 };
 
+export const action = async ({ request }: ActionFunctionArgs) => {};
+
 export default function QueriedPreviewPage() {
   const data: QueriedPreviewLoaderByHand = useLoaderData();
   console.log(data);
@@ -273,20 +280,23 @@ export default function QueriedPreviewPage() {
                         }
                         &apos;s Profile
                       </PageLink>
-                      <p className="mt-2">
-                        Here&apos;s how{" "}
-                        {
-                          data.userToQueriedContact.mirror?.userFirst
-                            .appWideName
-                        }{" "}
-                        {defineContactRelCombo(data.userToQueriedContact) ===
-                        data.relCombo ? (
-                          <>is</>
-                        ) : (
-                          <>would be</>
-                        )}{" "}
-                        seeing yours.
-                      </p>
+                      {data.userToQueriedContact.userFirst.state !==
+                        "DEACTIVATED" && (
+                        <p className="mt-2">
+                          Here&apos;s how{" "}
+                          {
+                            data.userToQueriedContact.mirror?.userFirst
+                              .appWideName
+                          }{" "}
+                          {defineContactRelCombo(data.userToQueriedContact) ===
+                          data.relCombo ? (
+                            <>is</>
+                          ) : (
+                            <>would be</>
+                          )}{" "}
+                          seeing yours.
+                        </p>
+                      )}
                     </>
                   )}
                 </div>

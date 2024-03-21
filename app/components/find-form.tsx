@@ -14,7 +14,7 @@ export function FindForm({
 
   return (
     <>
-      <fetcher.Form action="/find" method="post" className="mt-2">
+      <fetcher.Form method="post" className="mt-2">
         <label htmlFor="friend-code">
           <p>Find a user by their friend code.</p>
         </label>
