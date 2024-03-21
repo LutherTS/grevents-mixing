@@ -14,7 +14,7 @@ export function AppWideNameForm({ appWideName }: { appWideName: string }) {
           <p>Change your app-wide name here</p>
         </label>
         <input
-          className="mt-2 w-[32ch] max-w-[40ch] truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:!text-white sm:w-[40ch]"
+          className="mt-2 w-[32ch] max-w-[40ch] truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:!text-white disabled:placeholder:!text-gray-400 sm:w-[40ch]"
           type="text"
           id="app-wide-name"
           name="appwidename"

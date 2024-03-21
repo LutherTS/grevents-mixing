@@ -374,7 +374,7 @@ function OneAnswerModifyForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
           Modify answer &quot;{answer.value}&quot;
         </label>
         <input
-          className="w-[32ch] max-w-[50ch] truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:!text-white sm:w-[40ch]"
+          className="w-[32ch] max-w-[50ch] truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:!text-white disabled:placeholder:!text-gray-400 sm:w-[40ch]"
           type="text"
           id={answer.id}
           name="answervalue"
@@ -529,7 +529,7 @@ function ButtonPinnableByFriendForm({
 //   return (
 //     <>
 //       <input
-//         className="w-[32ch] max-w-[50ch] truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:!text-white sm:w-[40ch]"
+//         className="w-[32ch] max-w-[50ch] truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:!text-white disabled:placeholder:!text-gray-400 sm:w-[40ch]"
 //         type="text"
 //         id={answer.answer_id}
 //         name="answervalue"

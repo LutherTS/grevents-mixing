@@ -161,7 +161,7 @@ export function AnswerInput({
   return (
     <>
       <input
-        className="mt-4 w-[32ch] max-w-[50ch] truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:placeholder:!text-gray-400 sm:w-[40ch]"
+        className="mt-4 w-[32ch] max-w-[50ch] truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:!text-white disabled:placeholder:!text-gray-400 sm:w-[40ch]"
         type="text"
         id={id}
         name={name}

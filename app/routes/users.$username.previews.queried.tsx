@@ -7,6 +7,7 @@ import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
 import { ManyCriteria } from "~/components/many-criteria";
 import { PageLink } from "~/components/page-link";
+import { QueriedForm } from "~/components/queried-form";
 import {
   RelationCombinationBlockingBlockedPreviewed,
   RelationCombinationHasMeBlockedPreviewed,
@@ -201,6 +202,7 @@ export default function QueriedPreviewPage() {
       {data.verifiedUser && <SignOutForm />}
 
       <div className="space-y-4 my-4">
+        <QueriedForm contact={data.userToQueriedContact} />
         {data.user.username === data.userLast ? (
           <>
             <p className="mt-2">
@@ -245,8 +247,8 @@ export default function QueriedPreviewPage() {
             )}
             {data.userToQueriedContact && (
               <>
-                {/* pb-2 as makeshift styling */}
-                <div className="pb-2">
+                {/* py-2 as makeshift styling */}
+                <div className="py-2">
                   {data.userToQueriedContact.mirror?.userFirst.state ===
                   "DEACTIVATED" ? (
                     <>
