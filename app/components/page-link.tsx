@@ -8,8 +8,8 @@ export function PageLink({
 }: {
   href: string;
   relative?: "route" | "path";
-  specifiedClasses?: string;
   children: React.ReactNode;
+  specifiedClasses?: string;
 }) {
   return (
     <>

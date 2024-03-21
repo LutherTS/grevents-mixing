@@ -6,9 +6,12 @@ import invariant from "tiny-invariant";
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
 import {
+  RelationCombinationBlockingBlockedExposed,
   RelationCombinationFriendExposed,
   RelationCombinationIrlExposed,
   RelationCombinationNoneExposed,
+  RelationCombinationUserIsBlockedExposed,
+  RelationCombinationUserIsBlockingExposed,
 } from "~/components/relcombos-exposed";
 import { SignOutForm } from "~/components/sign-out-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
@@ -358,9 +361,27 @@ export default function ProfilePage() {
                           />
                         </>
                       )}
-                    {data.relCombo === "i-am-blocking" && <></>}
-                    {data.relCombo === "has-me-blocked" && <></>}
-                    {data.relCombo === "blocking-blocked" && <></>}
+                    {data.relCombo === "i-am-blocking" && (
+                      <>
+                        <RelationCombinationUserIsBlockingExposed
+                          contact={data.userToVerifiedUserContact}
+                        />
+                      </>
+                    )}
+                    {data.relCombo === "has-me-blocked" && (
+                      <>
+                        <RelationCombinationUserIsBlockedExposed
+                          contact={data.userToVerifiedUserContact}
+                        />
+                      </>
+                    )}
+                    {data.relCombo === "blocking-blocked" && (
+                      <>
+                        <RelationCombinationBlockingBlockedExposed
+                          contact={data.userToVerifiedUserContact}
+                        />
+                      </>
+                    )}
                   </>
                 )}
               </>

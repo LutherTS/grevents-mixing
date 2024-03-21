@@ -9,8 +9,6 @@ import { selectContacts } from "~/librairies/subdata/contacts";
 import { LinkButton } from "./link-button";
 import { PageLink } from "./page-link";
 
-// export function RelationCombinationNoneExposed() {
-
 export function RelationCombinationNoneExposed({
   contact,
 }: {
@@ -20,115 +18,124 @@ export function RelationCombinationNoneExposed({
 }) {
   return (
     <>
-      {contact.mirror?.processRelationship === "SENTFRIEND" && (
-        <>
-          <AnnulFriendForm contact={contact} />
-        </>
-      )}
-      {contact.processRelationship === "ANNULFRIEND" && (
-        <>
-          <p className="mt-2 text-gray-500 line-through">Send friend request</p>
-        </>
-      )}
-      {contact.processRelationship === "SENTFRIEND" && (
-        <>
-          <p className="mt-2">
-            <AcceptFriendForm contact={contact} />
-            &nbsp;/&nbsp;
-            <DeclineFriendForm contact={contact} />
-          </p>
-        </>
-      )}
-      {contact.mirror?.processRelationship !== "SENTFRIEND" &&
-        contact.mirror?.processRelationship !== "ANNULFRIEND" &&
-        contact.processRelationship !== "SENTFRIEND" && (
+      <div>
+        {contact.mirror?.processRelationship === "SENTFRIEND" && (
           <>
-            <SendFriendForm contact={contact} />
+            <AnnulFriendForm contact={contact} />
           </>
         )}
-      {contact.mirror?.processRelationship !== "SENTFRIEND" && (
-        <>
-          <BlockForm contact={contact} />
-        </>
-      )}
-      {contact.mirror?.processRelationship === "SENTFRIEND" && (
-        <>
-          <p className="mt-2 text-orange-500">
-            Friend request sent and pending. However, do take into consideration
-            that canceling your friend request to{" "}
-            {contact.userFirst.appWideName} will prevent you from sending{" "}
-            {contact.userFirst.appWideName} another friend request at this time.
-          </p>
-        </>
-      )}
-      {contact.mirror?.processRelationship === "ANNULFRIEND" && (
-        <>
-          <p className="mt-2 text-red-500">
-            As a consequence of you annulling your friend request sent to{" "}
-            {contact.userFirst.appWideName}, to prevent mass requesting you
-            cannot send {contact.userFirst.appWideName} another friend request
-            at this time.
-          </p>
-        </>
-      )}
-      {contact.processRelationship === "SENTFRIEND" && (
-        <>
-          <p className="mt-2 text-orange-500">
-            {contact.userFirst.appWideName} has sent you a friend request. By
-            accepting this request, {contact.userFirst.appWideName} will have
-            access to all of your native criteria, present and future, and you
-            will have access to all the native criteria of{" "}
-            {contact.userFirst.appWideName}, present and future all the same.
-            Irl native criteria, however, will require upgrading your friendship
-            for shared access between the two of you.
-          </p>
-          <PageLink
-            href={`/users/${contact.mirror?.userFirst.username}/previews/queried?userlast=${contact.userFirst.username}&relcombo=friend`}
-          >
-            Preview the criteria you&apos;ll give access to $
-            {contact.userFirst.appWideName}
-          </PageLink>
-        </>
-      )}
-      {contact.processRelationship === "ANNULFRIEND" && (
-        <>
-          <p className="mt-2 text-neutral-500">
-            (Just letting you know that {contact.userFirst.appWideName} has
-            annulled a friend request, so you&apos;re the only one between the
-            two of you who can initiate a friend request at this time.)
-          </p>
-        </>
-      )}
+        {contact.mirror?.processRelationship === "ANNULFRIEND" && (
+          <>
+            <p className="mt-2 text-gray-500 line-through">
+              Send friend request
+            </p>
+          </>
+        )}
+        {contact.processRelationship === "SENTFRIEND" && (
+          <>
+            <p className="mt-2">
+              <AcceptFriendForm contact={contact} />
+              &nbsp;/&nbsp;
+              <DeclineFriendForm contact={contact} />
+            </p>
+          </>
+        )}
+        {contact.mirror?.processRelationship !== "SENTFRIEND" &&
+          contact.mirror?.processRelationship !== "ANNULFRIEND" &&
+          contact.processRelationship !== "SENTFRIEND" && (
+            <>
+              <SendFriendForm contact={contact} />
+            </>
+          )}
+        {contact.mirror?.processRelationship !== "SENTFRIEND" && (
+          <>
+            <BlockForm contact={contact} />
+          </>
+        )}
+      </div>
+      <div>
+        {contact.mirror?.processRelationship === "SENTFRIEND" && (
+          <>
+            <p className="mt-2 text-orange-500">
+              Friend request sent and pending. However, do take into
+              consideration that canceling your friend request to{" "}
+              {contact.userFirst.appWideName} will prevent you from sending{" "}
+              {contact.userFirst.appWideName} another friend request at this
+              time.
+            </p>
+          </>
+        )}
+        {contact.mirror?.processRelationship === "ANNULFRIEND" && (
+          <>
+            <p className="mt-2 text-red-500">
+              As a consequence of you annulling your friend request sent to{" "}
+              {contact.userFirst.appWideName}, to prevent mass requesting you
+              cannot send {contact.userFirst.appWideName} another friend request
+              at this time.
+            </p>
+          </>
+        )}
+        {contact.processRelationship === "SENTFRIEND" && (
+          <>
+            <p className="mt-2 text-orange-500">
+              {contact.userFirst.appWideName} has sent you a friend request. By
+              accepting this request, {contact.userFirst.appWideName} will have
+              access to all of your native criteria, present and future, and you
+              will have access to all the native criteria of{" "}
+              {contact.userFirst.appWideName}, present and future all the same.
+              Irl native criteria, however, will require upgrading your
+              friendship for shared access between the two of you.
+            </p>
+            <PageLink
+              href={`/users/${contact.mirror?.userFirst.username}/previews/queried?userlast=${contact.userFirst.username}&relcombo=friend`}
+            >
+              Preview the criteria you&apos;ll give access to{" "}
+              {contact.userFirst.appWideName}
+            </PageLink>
+          </>
+        )}
+        {contact.processRelationship === "ANNULFRIEND" && (
+          <>
+            <p className="mt-2 text-neutral-500">
+              (Just letting you know that {contact.userFirst.appWideName} has
+              annulled a friend request, so you&apos;re the only one between the
+              two of you who can initiate a friend request at this time.)
+            </p>
+          </>
+        )}
+      </div>
     </>
   );
 }
-
-// ProfileForm
 
 // Because contact will be shared via hidden input, like a bind.
 function ProfileForm({
   contact,
   action,
   children,
+  specifiedClasses,
 }: {
   contact: Prisma.ContactGetPayload<{
     select: typeof selectContacts;
   }>;
   action: string;
   children: React.ReactNode;
+  specifiedClasses?: string;
 }) {
   const fetcher = useFetcher();
 
   return (
     <>
-      <fetcher.Form action={action} method="post" className="mt-2">
+      <fetcher.Form
+        action={action}
+        method="post"
+        className={specifiedClasses ? specifiedClasses : "mt-2"}
+      >
         <LinkButton disabled={fetcher.state !== "idle"}>{children}</LinkButton>
       </fetcher.Form>
     </>
   );
 }
-
-// SendFriendForm
 
 function SendFriendForm({
   contact,
@@ -148,8 +155,6 @@ function SendFriendForm({
   );
 }
 
-// BlockForm
-
 function BlockForm({
   contact,
 }: {
@@ -167,8 +172,6 @@ function BlockForm({
     </>
   );
 }
-
-// AnnulFriendForm
 
 function AnnulFriendForm({
   contact,
@@ -188,8 +191,6 @@ function AnnulFriendForm({
   );
 }
 
-// AcceptFriendForm
-
 function AcceptFriendForm({
   contact,
 }: {
@@ -201,14 +202,16 @@ function AcceptFriendForm({
 
   return (
     <>
-      <ProfileForm contact={contact} action="/accept-friend-request">
+      <ProfileForm
+        contact={contact}
+        action="/accept-friend-request"
+        specifiedClasses="inline"
+      >
         Accept
       </ProfileForm>
     </>
   );
 }
-
-// DeclineFriendForm
 
 function DeclineFriendForm({
   contact,
@@ -221,7 +224,11 @@ function DeclineFriendForm({
 
   return (
     <>
-      <ProfileForm contact={contact} action="/decline-friend-request">
+      <ProfileForm
+        contact={contact}
+        action="/decline-friend-request"
+        specifiedClasses="inline"
+      >
         Decline
       </ProfileForm>
     </>
@@ -404,8 +411,119 @@ export function RelationCombinationIrlExposed({
   );
 }
 
-// export function RelationCombinationIAmBlockingExposed({
+export function RelationCombinationUserIsBlockingExposed({
+  contact,
+}: {
+  contact: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+}) {
+  return (
+    <>
+      <p className="mt-2 font-semibold text-red-500">
+        YOU CAN NO LONGER ACCESS ANY OF THE INFORMATION OF{" "}
+        {contact.userFirst.username.toUpperCase()} ACROSS THE ENTIRE
+        APPLICATION, FUTURE COMMON GROUPS AND FUTURE COMMON EVENTS INCLUDED.
+      </p>
+      <BlockBackForm contact={contact} />
+    </>
+  );
+}
 
-// export function RelationCombinationHasMeBlockedExposed({
+function BlockBackForm({
+  contact,
+}: {
+  contact: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+}) {
+  const fetcher = useFetcher();
 
-// export function RelationCombinationBlockingBlockedExposed({
+  return (
+    <>
+      <ProfileForm contact={contact} action="/block">
+        Block back
+      </ProfileForm>
+    </>
+  );
+}
+
+// export function RelationCombinationUserIsBlockedExposed({
+
+export function RelationCombinationUserIsBlockedExposed({
+  contact,
+}: {
+  contact: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+}) {
+  return (
+    <>
+      <p className="mt-2 font-semibold">
+        {contact.userFirst.username.toUpperCase()} CAN NO LONGER ACCESS ANY OF
+        YOUR INFORMATION ACROSS THE ENTIRE APPLICATION, FUTURE COMMON GROUPS AND
+        FUTURE COMMON EVENTS INCLUDED.
+      </p>
+      <UnblockForm contact={contact} />
+    </>
+  );
+}
+
+function UnblockForm({
+  contact,
+}: {
+  contact: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <ProfileForm contact={contact} action="/unblock">
+        Unblock
+      </ProfileForm>
+    </>
+  );
+}
+
+// export function RelationCombinationUserBlockedBlockingExposed({
+
+export function RelationCombinationBlockingBlockedExposed({
+  contact,
+}: {
+  contact: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+}) {
+  return (
+    <>
+      <p className="mt-2 font-semibold text-red-500">
+        <span className="text-black dark:text-white">
+          YOU AND {contact.userFirst.username.toUpperCase()}
+        </span>{" "}
+        CAN NO LONGER ACCESS EACH OTHER&apos;S INFORMATION ACROSS THE ENTIRE
+        APPLICATION, FUTURE COMMON GROUPS AND FUTURE COMMON EVENTS INCLUDED.
+      </p>
+      <UnblockIfThatsOKWithYouForm contact={contact} />
+    </>
+  );
+}
+
+function UnblockIfThatsOKWithYouForm({
+  contact,
+}: {
+  contact: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <ProfileForm contact={contact} action="/unblock">
+        Unblock if that&apos;s OK with you
+      </ProfileForm>
+    </>
+  );
+}
