@@ -284,7 +284,8 @@ export default function ProfilePage() {
                       data.userUnpinnedNativeNotIrlAnswersExposed &&
                       data.userUnpinnedPseudonativeNotIrlAnswersExposed &&
                       data.userUnpinnedSharedToContactCustomAnswersExposed &&
-                      data.userQuestionFriendsAnswersPinnedByFriendCount && (
+                      typeof data.userQuestionFriendsAnswersPinnedByFriendCount ===
+                        "number" && (
                         <>
                           <RelationCombinationFriendExposed
                             contact={data.userToVerifiedUserContact}
@@ -318,7 +319,8 @@ export default function ProfilePage() {
                       data.userUnpinnedNativeIrlAnswersExposed &&
                       data.userUnpinnedPseudonativeIrlAnswersExposed &&
                       data.userUnpinnedSharedToContactCustomAnswersExposed &&
-                      data.userQuestionFriendsAnswersPinnedByFriendCount && (
+                      typeof data.userQuestionFriendsAnswersPinnedByFriendCount ===
+                        "number" && (
                         <>
                           <RelationCombinationIrlExposed
                             contact={data.userToVerifiedUserContact}
