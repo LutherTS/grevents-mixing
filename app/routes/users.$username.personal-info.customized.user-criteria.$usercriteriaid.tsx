@@ -5,7 +5,7 @@ import invariant from "tiny-invariant";
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
 import { ManyContacts } from "~/components/many-contacts";
-import { ManyUserQuestionFriends } from "~/components/many-userquestionfriends";
+import { ManyUserQuestionFriendsShared } from "~/components/many-userquestionfriends";
 import { OneCriteria } from "~/components/one-criteria";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
@@ -100,7 +100,7 @@ export default function UserCriteriaPage() {
           label="Find your list of friend(s) to share to below"
           notLabel="No remaining friends yet."
         />
-        <ManyUserQuestionFriends
+        <ManyUserQuestionFriendsShared
           userQuestionFriends={data.userQuestionFriends}
         />
       </div>

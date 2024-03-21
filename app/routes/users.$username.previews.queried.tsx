@@ -186,7 +186,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 };
 
 export default function QueriedPreviewPage() {
-  const data: QueriedPreviewLoaderByHand = useLoaderData(); // <typeof loader>();
+  const data: QueriedPreviewLoaderByHand = useLoaderData();
   console.log(data);
 
   return (

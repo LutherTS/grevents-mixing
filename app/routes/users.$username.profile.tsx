@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
@@ -22,8 +23,51 @@ import {
   findUserQuestionFriendsAnswersPinnedByFriend,
 } from "~/librairies/data/userquestionfriends";
 import { findUserByUsername } from "~/librairies/data/users";
+import { selectAnswers } from "~/librairies/subdata/answers";
+import { selectContacts } from "~/librairies/subdata/contacts";
+import { selectUserQuestionFriendsAnswers } from "~/librairies/subdata/userquestionfriends";
+import { selectUser, selectVerifiedUser } from "~/librairies/subdata/users";
 import { defineContactRelCombo } from "~/utilities/contacts";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
+
+type ProfileLoaderByHand = {
+  // because TypeScript Union Types are once again failing.
+  verifiedUser: Prisma.UserGetPayload<{
+    select: typeof selectVerifiedUser;
+  }>;
+  user: Prisma.UserGetPayload<{
+    select: typeof selectUser;
+  }>;
+  userToVerifiedUserContact: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+  relCombo?: string;
+  userQuestionFriendsAnswersPinnedByFriend?: Prisma.UserQuestionFriendGetPayload<{
+    select: typeof selectUserQuestionFriendsAnswers;
+  }>[];
+  userPinnedNotIrlAnswersExposed?: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+  userPinnedNotAndIrlAnswersExposed?: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+  userUnpinnedNativeNotIrlAnswersExposed?: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+  userUnpinnedPseudonativeNotIrlAnswersExposed?: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+  userUnpinnedNativeIrlAnswersExposed?: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+  userUnpinnedPseudonativeIrlAnswersExposed?: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+  userUnpinnedSharedToContactCustomAnswersExposed?: Prisma.AnswerGetPayload<{
+    select: typeof selectAnswers;
+  }>[];
+  userQuestionFriendsAnswersPinnedByFriendCount?: number;
+};
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   invariant(params.username, "Expected params.username");
@@ -52,7 +96,6 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   }
 
   let userQuestionFriendsAnswersPinnedByFriend;
-  let userQuestionFriendsAnswersPinnedByFriendCount;
   let userPinnedNotIrlAnswersExposed;
   let userPinnedNotAndIrlAnswersExposed;
   let userUnpinnedNativeNotIrlAnswersExposed;
@@ -60,6 +103,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   let userUnpinnedNativeIrlAnswersExposed;
   let userUnpinnedPseudonativeIrlAnswersExposed;
   let userUnpinnedSharedToContactCustomAnswersExposed;
+  let userQuestionFriendsAnswersPinnedByFriendCount; // honestly optional,
+  // can be obtained by userQuestionFriendsAnswersPinnedByFriend.length
 
   if (userToVerifiedUserContact && relCombo === "friend") {
     [
@@ -176,7 +221,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 };
 
 export default function ProfilePage() {
-  const data = useLoaderData<typeof loader>();
+  const data: ProfileLoaderByHand = useLoaderData();
   console.log(data);
 
   return (
@@ -211,7 +256,12 @@ export default function ProfilePage() {
                   <>
                     {data.relCombo === "none" && <></>}
                     {data.relCombo === "friend" &&
-                      data.userToVerifiedUserContact && (
+                      data.userToVerifiedUserContact &&
+                      data.userQuestionFriendsAnswersPinnedByFriend &&
+                      data.userPinnedNotIrlAnswersExposed &&
+                      data.userUnpinnedNativeNotIrlAnswersExposed &&
+                      data.userUnpinnedPseudonativeNotIrlAnswersExposed &&
+                      data.userUnpinnedSharedToContactCustomAnswersExposed && (
                         <>
                           <ManyUserQuestionFriendsPinned
                             userQuestionFriendsAnswers={
@@ -255,26 +305,32 @@ export default function ProfilePage() {
                               data.userQuestionFriendsAnswersPinnedByFriendCount
                             }
                           />
-                          {data.userUnpinnedSharedToContactCustomAnswersExposed &&
-                            data.userUnpinnedSharedToContactCustomAnswersExposed
-                              .length > 0 && (
-                              <ManyCriteria
-                                answers={
-                                  data.userUnpinnedSharedToContactCustomAnswersExposed
-                                }
-                                selectContext="Profile"
-                                answerComponentRequired="OneAnswerPinnableByFriend"
-                                label="See their (other) custom answers shared to you below"
-                                contact={data.userToVerifiedUserContact}
-                                answersPinnedbyFriendAnswersCount={
-                                  data.userQuestionFriendsAnswersPinnedByFriendCount
-                                }
-                              />
-                            )}
+                          {data.userUnpinnedSharedToContactCustomAnswersExposed
+                            .length > 0 && (
+                            <ManyCriteria
+                              answers={
+                                data.userUnpinnedSharedToContactCustomAnswersExposed
+                              }
+                              selectContext="Profile"
+                              answerComponentRequired="OneAnswerPinnableByFriend"
+                              label="See their (other) custom answers shared to you below"
+                              contact={data.userToVerifiedUserContact}
+                              answersPinnedbyFriendAnswersCount={
+                                data.userQuestionFriendsAnswersPinnedByFriendCount
+                              }
+                            />
+                          )}
                         </>
                       )}
                     {data.relCombo === "irl" &&
-                      data.userToVerifiedUserContact && (
+                      data.userToVerifiedUserContact &&
+                      data.userQuestionFriendsAnswersPinnedByFriend &&
+                      data.userPinnedNotAndIrlAnswersExposed &&
+                      data.userUnpinnedNativeNotIrlAnswersExposed &&
+                      data.userUnpinnedPseudonativeNotIrlAnswersExposed &&
+                      data.userUnpinnedNativeIrlAnswersExposed &&
+                      data.userUnpinnedPseudonativeIrlAnswersExposed &&
+                      data.userUnpinnedSharedToContactCustomAnswersExposed && (
                         <>
                           <ManyUserQuestionFriendsPinned
                             userQuestionFriendsAnswers={
@@ -340,22 +396,21 @@ export default function ProfilePage() {
                               data.userQuestionFriendsAnswersPinnedByFriendCount
                             }
                           />
-                          {data.userUnpinnedSharedToContactCustomAnswersExposed &&
-                            data.userUnpinnedSharedToContactCustomAnswersExposed
-                              .length > 0 && (
-                              <ManyCriteria
-                                answers={
-                                  data.userUnpinnedSharedToContactCustomAnswersExposed
-                                }
-                                selectContext="Profile"
-                                answerComponentRequired="OneAnswerPinnableByFriend"
-                                label="See their (other) custom answers shared to you below"
-                                contact={data.userToVerifiedUserContact}
-                                answersPinnedbyFriendAnswersCount={
-                                  data.userQuestionFriendsAnswersPinnedByFriendCount
-                                }
-                              />
-                            )}
+                          {data.userUnpinnedSharedToContactCustomAnswersExposed
+                            .length > 0 && (
+                            <ManyCriteria
+                              answers={
+                                data.userUnpinnedSharedToContactCustomAnswersExposed
+                              }
+                              selectContext="Profile"
+                              answerComponentRequired="OneAnswerPinnableByFriend"
+                              label="See their (other) custom answers shared to you below"
+                              contact={data.userToVerifiedUserContact}
+                              answersPinnedbyFriendAnswersCount={
+                                data.userQuestionFriendsAnswersPinnedByFriendCount
+                              }
+                            />
+                          )}
                         </>
                       )}
                     {data.relCombo === "i-am-blocking" && <></>}

@@ -12,7 +12,7 @@ import {
   OneUserQuestionFriendUnpinnable,
 } from "./one-userquestionfriend";
 
-export function ManyUserQuestionFriends({
+export function ManyUserQuestionFriendsShared({
   userQuestionFriends,
 }: {
   userQuestionFriends: Prisma.UserQuestionFriendGetPayload<{
@@ -48,7 +48,7 @@ export function ManyUserQuestionFriends({
                 </ol>
               </>
             ) : (
-              <ManyPaginatedUserQuestionFriends
+              <ManyPaginatedUserQuestionFriendsShared
                 userQuestionFriends={userQuestionFriends}
               />
             )}
@@ -59,7 +59,7 @@ export function ManyUserQuestionFriends({
   );
 }
 
-function ManyPaginatedUserQuestionFriends({
+function ManyPaginatedUserQuestionFriendsShared({
   userQuestionFriends,
 }: {
   userQuestionFriends: Prisma.UserQuestionFriendGetPayload<{
