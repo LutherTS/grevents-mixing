@@ -8,6 +8,7 @@ import { H1 } from "~/components/h1";
 import {
   RelationCombinationFriendExposed,
   RelationCombinationIrlExposed,
+  RelationCombinationNoneExposed,
 } from "~/components/relcombos-exposed";
 import { SignOutForm } from "~/components/sign-out-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
@@ -276,7 +277,13 @@ export default function ProfilePage() {
                   </>
                 ) : (
                   <>
-                    {data.relCombo === "none" && <></>}
+                    {data.relCombo === "none" && (
+                      <>
+                        <RelationCombinationNoneExposed
+                          contact={data.userToVerifiedUserContact}
+                        />
+                      </>
+                    )}
                     {data.relCombo === "friend" &&
                       data.userToVerifiedUserContact &&
                       data.userQuestionFriendsAnswersPinnedByFriend &&
