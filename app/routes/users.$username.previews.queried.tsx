@@ -29,7 +29,10 @@ import { findUserByUsername } from "~/librairies/data/users";
 import { selectAnswers } from "~/librairies/subdata/answers";
 import { selectContacts } from "~/librairies/subdata/contacts";
 import { selectUser, selectVerifiedUser } from "~/librairies/subdata/users";
-import { decideContactRelCombo } from "~/utilities/contacts";
+import {
+  decideContactRelCombo,
+  defineContactRelCombo,
+} from "~/utilities/contacts";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 type QueriedPreviewLoaderByHand = {
@@ -198,111 +201,175 @@ export default function QueriedPreviewPage() {
       {data.verifiedUser && <SignOutForm />}
 
       <div className="space-y-4 my-4">
-        {data.user.state === "DEACTIVATED" && data.userToQueriedContact && (
+        {data.user.username === data.userLast ? (
           <>
-            <div>
-              <p className="mt-2 font-semibold text-red-500">IMPORTANT</p>
-              <p className="mt-2 text-red-500">
-                You have deactivated your profile.
-              </p>
-              <p className="mt-2">
-                This means the only user interface other users such as{" "}
-                {data.userToQueriedContact.mirror?.userFirst.username} are able
-                to see at this time is the following:
-              </p>
-              <p className="my-4">
-                {data.user.username} has deactivated their profile.
-              </p>
-              <p className="mt-2">
-                What you see now is what{" "}
-                {data.userToQueriedContact.mirror?.userFirst.username} will be
-                able to see once you'll have reactivated your profile.
-              </p>
-              <p className="mt-2">
-                Specifically, this feature is designed to give you full control
-                over what you want{" "}
-                {data.userToQueriedContact.mirror?.userFirst.username} in this
-                case and other users for that matter to have access to, before
-                you make the decision to lift the veil on your profile.
-              </p>
-            </div>
-            <div className="py-4">
-              <div className="h-[1px] bg-black dark:bg-white w-[90%] mx-auto" />
-            </div>
+            <p className="mt-2">
+              That's your own username you&apos;ve entered.
+            </p>
           </>
-        )}
-        {/* TypeScript desperately needs to get an upgrade. */}
-        {data.user && data.userLast && data.relCombo === "none" && (
-          <RelationCombinationNonePreviewed />
-        )}
-        {data.userPinnedNotIrlAnswersQueried && (
-          <ManyCriteria
-            answers={data.userPinnedNotIrlAnswersQueried}
-            selectContext="QueriedPreview"
-            answerComponentRequired="OneAnswer"
-            label="Find their pinned for friend criteria below"
-            notLabel="No pinned criteria yet."
-          />
-        )}
-        {data.userPinnedNotAndIrlAnswersQueried && (
-          <ManyCriteria
-            answers={data.userPinnedNotAndIrlAnswersQueried}
-            selectContext="QueriedPreview"
-            answerComponentRequired="OneAnswer"
-            label="Find their pinned for irl criteria below"
-            notLabel="No pinned criteria yet."
-          />
-        )}
-        {data.userUnpinnedNativeNotIrlAnswers && (
-          <ManyCriteria
-            answers={data.userUnpinnedNativeNotIrlAnswers}
-            answerComponentRequired="OneAnswer"
-            label="Find their (other) native criteria below"
-            notLabel="No native criteria yet."
-          />
-        )}
-        {data.userUnpinnedPseudonativeNotIrlAnswers && (
-          <ManyCriteria
-            answers={data.userUnpinnedPseudonativeNotIrlAnswers}
-            answerComponentRequired="OneAnswer"
-            label="Find their (other) pseudonative criteria below"
-            notLabel="No pseudonative criteria yet."
-          />
-        )}
-        {data.userUnpinnedNativeIrlAnswers && (
-          <ManyCriteria
-            answers={data.userUnpinnedNativeIrlAnswers}
-            answerComponentRequired="OneAnswer"
-            label="Find their (other) native irl criteria below"
-            notLabel="No native irl criteria yet."
-          />
-        )}
-        {data.userUnpinnedPseudonativeIrlAnswers && (
-          <ManyCriteria
-            answers={data.userUnpinnedPseudonativeIrlAnswers}
-            answerComponentRequired="OneAnswer"
-            label="Find their (other) pseudonative irl criteria below"
-            notLabel="No pseudonative irl criteria yet."
-          />
-        )}
-        {data.userUnpinnedSharedToContactCustomAnswers &&
-          data.userUnpinnedSharedToContactCustomAnswers.length > 0 && (
-            <ManyCriteria
-              answers={data.userUnpinnedSharedToContactCustomAnswers}
-              selectContext="QueriedPreview"
-              answerComponentRequired="OneAnswer"
-              label="See their (other) custom answers shared to you below"
-              notLabel="No custom criteria yet."
-            />
-          )}
-        {data.user && data.userLast && data.relCombo === "i-am-blocking" && (
-          <RelationCombinationIAmBlockingPreviewed user={data.user} />
-        )}
-        {data.user && data.userLast && data.relCombo === "has-me-blocked" && (
-          <RelationCombinationHasMeBlockedPreviewed user={data.user} />
-        )}
-        {data.user && data.userLast && data.relCombo === "blocking-blocked" && (
-          <RelationCombinationBlockingBlockedPreviewed user={data.user} />
+        ) : (
+          <>
+            {data.user.state === "DEACTIVATED" && data.userToQueriedContact && (
+              <>
+                <div>
+                  <p className="mt-2 font-semibold text-red-500">IMPORTANT</p>
+                  <p className="mt-2 text-red-500">
+                    You have deactivated your profile.
+                  </p>
+                  <p className="mt-2">
+                    This means the only user interface other users such as{" "}
+                    {data.userToQueriedContact.mirror?.userFirst.username} are
+                    able to see at this time is the following:
+                  </p>
+                  <p className="my-4">
+                    {data.user.username} has deactivated their profile.
+                  </p>
+                  <p className="mt-2">
+                    What you see now is what{" "}
+                    {data.userToQueriedContact.mirror?.userFirst.username} will
+                    be able to see once you'll have reactivated your profile.
+                  </p>
+                  <p className="mt-2">
+                    Specifically, this feature is designed to give you full
+                    control over what you want{" "}
+                    {data.userToQueriedContact.mirror?.userFirst.username} in
+                    this case and other users for that matter to have access to,
+                    before you make the decision to lift the veil on your
+                    profile.
+                  </p>
+                </div>
+                <div className="py-4">
+                  <div className="h-[1px] bg-black dark:bg-white w-[90%] mx-auto" />
+                </div>
+              </>
+            )}
+            {data.userToQueriedContact && (
+              <>
+                {/* pb-2 as makeshift styling */}
+                <div className="pb-2">
+                  {data.userToQueriedContact.mirror?.userFirst.state ===
+                  "DEACTIVATED" ? (
+                    <>
+                      <span className="font-semibold text-gray-500">
+                        To{" "}
+                        {
+                          data.userToQueriedContact.mirror?.userFirst
+                            .appWideName
+                        }
+                        &apos;s Profile
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <PageLink
+                        href={`/users/${data.userToQueriedContact.mirror?.userFirst.username}/profile`}
+                      >
+                        To{" "}
+                        {
+                          data.userToQueriedContact.mirror?.userFirst
+                            .appWideName
+                        }
+                        &apos;s Profile
+                      </PageLink>
+                      <p className="mt-2">
+                        Here&apos;s how{" "}
+                        {
+                          data.userToQueriedContact.mirror?.userFirst
+                            .appWideName
+                        }{" "}
+                        {defineContactRelCombo(data.userToQueriedContact) ===
+                        data.relCombo ? (
+                          <>is</>
+                        ) : (
+                          <>would be</>
+                        )}{" "}
+                        seeing yours.
+                      </p>
+                    </>
+                  )}
+                </div>
+              </>
+            )}
+            {/* TypeScript desperately needs to get an upgrade. */}
+            {data.user && data.userLast && data.relCombo === "none" && (
+              <RelationCombinationNonePreviewed />
+            )}
+            {data.userPinnedNotIrlAnswersQueried && (
+              <ManyCriteria
+                answers={data.userPinnedNotIrlAnswersQueried}
+                selectContext="QueriedPreview"
+                answerComponentRequired="OneAnswer"
+                label="Find their pinned for friend criteria below"
+                notLabel="No pinned criteria yet."
+              />
+            )}
+            {data.userPinnedNotAndIrlAnswersQueried && (
+              <ManyCriteria
+                answers={data.userPinnedNotAndIrlAnswersQueried}
+                selectContext="QueriedPreview"
+                answerComponentRequired="OneAnswer"
+                label="Find their pinned for irl criteria below"
+                notLabel="No pinned criteria yet."
+              />
+            )}
+            {data.userUnpinnedNativeNotIrlAnswers && (
+              <ManyCriteria
+                answers={data.userUnpinnedNativeNotIrlAnswers}
+                answerComponentRequired="OneAnswer"
+                label="Find their (other) native criteria below"
+                notLabel="No native criteria yet."
+              />
+            )}
+            {data.userUnpinnedPseudonativeNotIrlAnswers && (
+              <ManyCriteria
+                answers={data.userUnpinnedPseudonativeNotIrlAnswers}
+                answerComponentRequired="OneAnswer"
+                label="Find their (other) pseudonative criteria below"
+                notLabel="No pseudonative criteria yet."
+              />
+            )}
+            {data.userUnpinnedNativeIrlAnswers && (
+              <ManyCriteria
+                answers={data.userUnpinnedNativeIrlAnswers}
+                answerComponentRequired="OneAnswer"
+                label="Find their (other) native irl criteria below"
+                notLabel="No native irl criteria yet."
+              />
+            )}
+            {data.userUnpinnedPseudonativeIrlAnswers && (
+              <ManyCriteria
+                answers={data.userUnpinnedPseudonativeIrlAnswers}
+                answerComponentRequired="OneAnswer"
+                label="Find their (other) pseudonative irl criteria below"
+                notLabel="No pseudonative irl criteria yet."
+              />
+            )}
+            {data.userUnpinnedSharedToContactCustomAnswers &&
+              data.userUnpinnedSharedToContactCustomAnswers.length > 0 && (
+                <ManyCriteria
+                  answers={data.userUnpinnedSharedToContactCustomAnswers}
+                  selectContext="QueriedPreview"
+                  answerComponentRequired="OneAnswer"
+                  label="See their (other) custom answers shared to you below"
+                  notLabel="No custom criteria yet."
+                />
+              )}
+            {data.user &&
+              data.userLast &&
+              data.relCombo === "i-am-blocking" && (
+                <RelationCombinationIAmBlockingPreviewed user={data.user} />
+              )}
+            {data.user &&
+              data.userLast &&
+              data.relCombo === "has-me-blocked" && (
+                <RelationCombinationHasMeBlockedPreviewed user={data.user} />
+              )}
+            {data.user &&
+              data.userLast &&
+              data.relCombo === "blocking-blocked" && (
+                <RelationCombinationBlockingBlockedPreviewed user={data.user} />
+              )}
+          </>
         )}
       </div>
 
