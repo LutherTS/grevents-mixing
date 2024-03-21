@@ -9,8 +9,7 @@ export function RelationCombinationNonePreviewed() {
   return (
     <>
       <div>
-        <LinkButtonMockup>Send friend request</LinkButtonMockup>
-        <LinkButtonMockup>Block</LinkButtonMockup>
+        <p className="mt-2">Nothing to see here...</p>
       </div>
     </>
   );
@@ -129,7 +128,6 @@ export function RelationCombinationIAmBlockingPreviewed({
           {user.username.toUpperCase()} ACROSS THE ENTIRE APPLICATION, FUTURE
           COMMON GROUPS AND FUTURE COMMON EVENTS INCLUDED.
         </p>
-        <LinkButtonMockup>Block them back</LinkButtonMockup>
       </div>
     </>
   );
@@ -150,7 +148,6 @@ export function RelationCombinationHasMeBlockedPreviewed({
           INFORMATION ACROSS THE ENTIRE APPLICATION, FUTURE COMMON GROUPS AND
           FUTURE COMMON EVENTS INCLUDED.
         </p>
-        <LinkButtonMockup>Unblock</LinkButtonMockup>
       </div>
     </>
   );
@@ -173,7 +170,6 @@ export function RelationCombinationBlockingBlockedPreviewed({
           CAN NO LONGER ACCESS EACH OTHER&apos;S INFORMATION ACROSS THE ENTIRE
           APPLICATION, FUTURE COMMON GROUPS AND FUTURE COMMON EVENTS INCLUDED.
         </p>
-        <LinkButtonMockup>Unblock if it&apos;s OK with you</LinkButtonMockup>
       </div>
     </>
   );

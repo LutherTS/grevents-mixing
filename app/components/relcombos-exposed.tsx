@@ -21,6 +21,7 @@ export function RelationCombinationUserNoneExposed({
 }) {
   return (
     <>
+      <p className="mt-2">Nothing to see here...</p>
       <div>
         {contact.mirror?.processRelationship === "SENTFRIEND" && (
           <>
