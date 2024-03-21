@@ -71,12 +71,12 @@ export default function BlocksPage() {
           label="Users who have me blocked"
           notLabel="You do not have any users who have you blocked."
         />
+        <p className="mt-2">
+          If you&apos;ve blocked each other, the other user may appear in both
+          Users who I am blocking and Users who have me blocked.
+        </p>
       </div>
 
-      <p className="mt-2">
-        If you&apos;ve blocked each other, the other user may appear in both
-        Users who I am blocking and Users who have me blocked.
-      </p>
       <PageLink href={`../friends`}>See friends</PageLink>
     </>
   );

@@ -7,9 +7,9 @@ import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
 import {
   RelationCombinationBlockingBlockedExposed,
-  RelationCombinationFriendExposed,
-  RelationCombinationIrlExposed,
-  RelationCombinationNoneExposed,
+  RelationCombinationUserFriendExposed,
+  RelationCombinationUserIrlExposed,
+  RelationCombinationUserNoneExposed,
   RelationCombinationUserIsBlockedExposed,
   RelationCombinationUserIsBlockingExposed,
 } from "~/components/relcombos-exposed";
@@ -282,7 +282,7 @@ export default function ProfilePage() {
                   <>
                     {data.relCombo === "none" && (
                       <>
-                        <RelationCombinationNoneExposed
+                        <RelationCombinationUserNoneExposed
                           contact={data.userToVerifiedUserContact}
                         />
                       </>
@@ -297,7 +297,7 @@ export default function ProfilePage() {
                       typeof data.userQuestionFriendsAnswersPinnedByFriendCount ===
                         "number" && (
                         <>
-                          <RelationCombinationFriendExposed
+                          <RelationCombinationUserFriendExposed
                             contact={data.userToVerifiedUserContact}
                             userQuestionFriendsAnswersPinnedByFriend={
                               data.userQuestionFriendsAnswersPinnedByFriend
@@ -332,7 +332,7 @@ export default function ProfilePage() {
                       typeof data.userQuestionFriendsAnswersPinnedByFriendCount ===
                         "number" && (
                         <>
-                          <RelationCombinationIrlExposed
+                          <RelationCombinationUserIrlExposed
                             contact={data.userToVerifiedUserContact}
                             userQuestionFriendsAnswersPinnedByFriend={
                               data.userQuestionFriendsAnswersPinnedByFriend

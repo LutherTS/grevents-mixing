@@ -9,7 +9,10 @@ import { selectContacts } from "~/librairies/subdata/contacts";
 import { LinkButton } from "./link-button";
 import { PageLink } from "./page-link";
 
-export function RelationCombinationNoneExposed({
+// contact. c'est user
+// contact.mirror c'est verifiedUser
+
+export function RelationCombinationUserNoneExposed({
   contact,
 }: {
   contact: Prisma.ContactGetPayload<{
@@ -235,7 +238,7 @@ function DeclineFriendForm({
   );
 }
 
-export function RelationCombinationFriendExposed({
+export function RelationCombinationUserFriendExposed({
   contact,
   userQuestionFriendsAnswersPinnedByFriend,
   pinnedNotIrlAnswersExposed,
@@ -266,11 +269,14 @@ export function RelationCombinationFriendExposed({
 }) {
   return (
     <>
-      <ManyUserQuestionFriendsPinned
-        userQuestionFriendsAnswers={userQuestionFriendsAnswersPinnedByFriend}
-        label="Find their pinned by you for friend criteria below"
-        notLabel="No pinned by you criteria yet."
-      />
+      {/* pt-2 as makeshift styling */}
+      <div className="pt-2">
+        <ManyUserQuestionFriendsPinned
+          userQuestionFriendsAnswers={userQuestionFriendsAnswersPinnedByFriend}
+          label="Find their pinned by you for friend criteria below"
+          notLabel="No pinned by you criteria yet."
+        />
+      </div>
       <ManyCriteria
         answers={pinnedNotIrlAnswersExposed}
         selectContext="Profile"
@@ -306,13 +312,200 @@ export function RelationCombinationFriendExposed({
           answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
         />
       )}
+      {/* pt-2 as makeshift styling */}
+      <div className="pt-2">
+        {contact.mirror?.processRelationship === "SENTIRL" && (
+          <>
+            <AnnulIrlForm contact={contact} />
+          </>
+        )}
+        {contact.mirror?.processRelationship === "ANNULIRL" && (
+          <>
+            <p className="mt-2 text-gray-500 line-through">
+              Upgrade friendship to irl
+            </p>
+          </>
+        )}
+        {contact.processRelationship === "SENTIRL" && (
+          <>
+            <p className="mt-2">
+              <AcceptIrlForm contact={contact} />
+              &nbsp;/&nbsp;
+              <DeclineIrlForm contact={contact} />
+            </p>
+          </>
+        )}
+        {contact.mirror?.processRelationship !== "SENTIRL" &&
+          contact.mirror?.processRelationship !== "ANNULIRL" &&
+          contact.processRelationship !== "SENTIRL" && (
+            <>
+              <UpgradeToIrlForm contact={contact} />
+            </>
+          )}
+        {contact.mirror?.processRelationship !== "SENTIRL" && (
+          <>
+            <UnfriendForm contact={contact} />
+          </>
+        )}
+      </div>
+      <div>
+        {contact.mirror?.processRelationship === "SENTIRL" && (
+          <>
+            <p className="mt-2 text-orange-500">
+              Irl upgrade request sent and pending. However, do take into
+              consideration that canceling your irl upgrade request to{" "}
+              {contact.userFirst.appWideName} will prevent you from sending{" "}
+              {contact.userFirst.appWideName} another irl upgrade request at
+              this time.
+            </p>
+          </>
+        )}
+        {contact.mirror?.processRelationship === "ANNULIRL" && (
+          <>
+            <p className="mt-2 text-red-500">
+              As a consequence of you annulling your irl upgrade request sent to{" "}
+              {contact.userFirst.appWideName}, to prevent mass requesting you
+              cannot send {contact.userFirst.appWideName} another irl upgrade
+              request at this time.
+            </p>
+          </>
+        )}
+        {contact.processRelationship === "SENTIRL" && (
+          <>
+            <p className="mt-2 text-orange-500">
+              {contact.userFirst.appWideName} has sent you an irl upgrade
+              request. By accepting this request,{" "}
+              {contact.userFirst.appWideName} will have additional access to all
+              of your irl native criteria (such as Last name and Address),
+              present and future, and you will have access to all the irl native
+              criteria of {contact.userFirst.appWideName}, present and future
+              all the same. Once this friendship is upgraded, you can downgrade
+              this friendship from irl with a click at your own discretion
+              without requiring the consent of {contact.userFirst.appWideName},
+              so accepting this irl upgrade request is easily reversible.
+            </p>
+            <PageLink
+              href={`/users/${contact.mirror?.userFirst.username}/previews/queried?userlast=${contact.userFirst.username}&relcombo=irl`}
+            >
+              Preview the criteria you&apos;ll give access to{" "}
+              {contact.userFirst.appWideName}
+            </PageLink>
+          </>
+        )}
+        {contact.processRelationship === "ANNULIRL" && (
+          <>
+            <p className="mt-2 text-neutral-500">
+              (Just letting you know that {contact.userFirst.appWideName} has
+              annulled an irl upgrade request, so you&apos;re the only one
+              between the two of you who can initiate an irl upgrade request at
+              this time.)
+            </p>
+          </>
+        )}
+      </div>
     </>
   );
 }
 
-// export function RelationCombinationIrlExposed({
+function UpgradeToIrlForm({
+  contact,
+}: {
+  contact: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+}) {
+  const fetcher = useFetcher();
 
-export function RelationCombinationIrlExposed({
+  return (
+    <>
+      <ProfileForm contact={contact} action="/send-irl-request">
+        Upgrade friendship to irl
+      </ProfileForm>
+    </>
+  );
+}
+
+function UnfriendForm({
+  contact,
+}: {
+  contact: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <ProfileForm contact={contact} action="/unfriend">
+        Unfriend
+      </ProfileForm>
+    </>
+  );
+}
+
+function AnnulIrlForm({
+  contact,
+}: {
+  contact: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <ProfileForm contact={contact} action="/annul-irl-request">
+        Annul irl upgrade request
+      </ProfileForm>
+    </>
+  );
+}
+
+function AcceptIrlForm({
+  contact,
+}: {
+  contact: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <ProfileForm
+        contact={contact}
+        action="/accept-irl-request"
+        specifiedClasses="inline"
+      >
+        Accept
+      </ProfileForm>
+    </>
+  );
+}
+
+function DeclineIrlForm({
+  contact,
+}: {
+  contact: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <ProfileForm
+        contact={contact}
+        action="/decline-irl-request"
+        specifiedClasses="inline"
+      >
+        Decline
+      </ProfileForm>
+    </>
+  );
+}
+
+export function RelationCombinationUserIrlExposed({
   contact,
   userQuestionFriendsAnswersPinnedByFriend,
   pinnedNotAndIrlAnswersExposed,
@@ -351,11 +544,14 @@ export function RelationCombinationIrlExposed({
 }) {
   return (
     <>
-      <ManyUserQuestionFriendsPinned
-        userQuestionFriendsAnswers={userQuestionFriendsAnswersPinnedByFriend}
-        label="Find their pinned by you for irl criteria below"
-        notLabel="No pinned by you criteria yet."
-      />
+      {/* pt-2 as makeshift styling */}
+      <div className="pt-2">
+        <ManyUserQuestionFriendsPinned
+          userQuestionFriendsAnswers={userQuestionFriendsAnswersPinnedByFriend}
+          label="Find their pinned by you for irl criteria below"
+          notLabel="No pinned by you criteria yet."
+        />
+      </div>
       <ManyCriteria
         answers={pinnedNotAndIrlAnswersExposed}
         selectContext="Profile"
@@ -407,6 +603,29 @@ export function RelationCombinationIrlExposed({
           answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
         />
       )}
+      {/* pt-2 as makeshift styling */}
+      <div className="pt-2">
+        <DowngradeFriendshipFromIrlForm contact={contact} />
+        <UnfriendForm contact={contact} />
+      </div>
+    </>
+  );
+}
+
+function DowngradeFriendshipFromIrlForm({
+  contact,
+}: {
+  contact: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <ProfileForm contact={contact} action="/downgrade-from-irl">
+        Downgrade friendship from irl
+      </ProfileForm>
     </>
   );
 }
@@ -448,8 +667,6 @@ function BlockBackForm({
   );
 }
 
-// export function RelationCombinationUserIsBlockedExposed({
-
 export function RelationCombinationUserIsBlockedExposed({
   contact,
 }: {
@@ -486,8 +703,6 @@ function UnblockForm({
     </>
   );
 }
-
-// export function RelationCombinationUserBlockedBlockingExposed({
 
 export function RelationCombinationBlockingBlockedExposed({
   contact,
