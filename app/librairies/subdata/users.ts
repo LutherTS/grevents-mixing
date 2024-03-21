@@ -36,6 +36,7 @@ export const selectVerifiedUser = {
   appWideName: true,
   hasTemporaryPassword: true,
   email: true,
+  friendCode: true,
 } satisfies Prisma.UserSelect;
 
 export const selectVerifiedSignUpUser = {

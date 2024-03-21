@@ -70,8 +70,6 @@ export function ButtonCancelShareUserQuestionFriendForm({
   );
 }
 
-// export function OneUserQuestionFriendUnpinnable({
-
 export function OneUserQuestionFriendUnpinnable({
   userQuestionFriend,
 }: {
@@ -140,8 +138,6 @@ export function OneUserQuestionFriendUnpinnable({
     </>
   );
 }
-
-// function ButtonUnpinnableByFriendForm({
 
 // Because userQuestionFriend will be shared via hidden input, like a bind.
 function ButtonUnpinnableByFriendForm({

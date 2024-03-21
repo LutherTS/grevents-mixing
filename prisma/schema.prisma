@@ -47,6 +47,8 @@ model Contact {
   updatedAt            DateTime     @updatedAt
   sentFriendAt         DateTime?
   sentIrlAt            DateTime?
+  annulFriendAt        DateTime?
+  annulIrlAt           DateTime?
   friendAt             DateTime?
   irlAt                DateTime?
   blockedAt            DateTime?

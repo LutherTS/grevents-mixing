@@ -110,8 +110,6 @@ function ManyPaginatedUserQuestionFriendsShared({
   );
 }
 
-// export function ManyUserQuestionFriendsPinned({
-
 export function ManyUserQuestionFriendsPinned({
   userQuestionFriendsAnswers,
   label,
@@ -159,8 +157,6 @@ export function ManyUserQuestionFriendsPinned({
     </>
   );
 }
-
-// function ManyPaginatedUserQuestionFriendsPinned({
 
 function ManyPaginatedUserQuestionFriendsPinned({
   userQuestionFriendsAnswers,
