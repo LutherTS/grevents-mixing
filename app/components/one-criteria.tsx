@@ -265,6 +265,11 @@ function ButtonPinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
         method="post"
         className="me-2 flex items-center"
       >
+        <input
+          type="hidden"
+          name="userquestionid"
+          value={answer.userQuestion.id}
+        />
         <button
           disabled={fetcher.state !== "idle"}
           className={clsx(
