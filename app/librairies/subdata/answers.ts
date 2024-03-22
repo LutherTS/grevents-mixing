@@ -582,39 +582,6 @@ export function whereUserUnpinnedSharedToContactCustomAnswersQueried(
   };
 }
 
-export function dataSignUpUserEmailAddressAnswer(
-  value: string,
-  id: string
-): Prisma.AnswerCreateInput {
-  return {
-    state: "LIVE",
-    value,
-    userQuestion: {
-      create: {
-        state: "LIVE",
-        user: {
-          connect: {
-            id,
-          },
-        },
-        question: {
-          connect: {
-            kind_name: {
-              kind: "NATIVE",
-              name: "Email address",
-            },
-          },
-        },
-      },
-    },
-    user: {
-      connect: {
-        id,
-      },
-    },
-  };
-}
-
 export const selectAnswerId = {
   id: true,
 } satisfies Prisma.AnswerSelect;
@@ -776,40 +743,5 @@ export function whereAnswerByIDAndUserID(
   return {
     id,
     userId,
-  };
-}
-
-// These are going to need to be in subchanges.
-// So yeah, this final exercice is going to take me the whole week as expected.
-
-export function dataPinAnswerUserQuestion(): Prisma.AnswerUpdateInput {
-  return {
-    userQuestion: {
-      update: {
-        isPinned: true,
-        pinnedAt: new Date(),
-      },
-    },
-    user: {
-      update: {
-        statusPersonalInfo: "CRITERIAPINNED",
-      },
-    },
-  };
-}
-
-export function dataUnpinAnswerUserQuestion(): Prisma.AnswerUpdateInput {
-  return {
-    userQuestion: {
-      update: {
-        isPinned: false,
-        pinnedAt: null,
-      },
-    },
-    user: {
-      update: {
-        statusPersonalInfo: "CRITERIAUNPINNED",
-      },
-    },
   };
 }

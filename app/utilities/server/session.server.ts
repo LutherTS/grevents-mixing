@@ -9,11 +9,13 @@ import {
   selectVerifiedUser,
   whereSignInUser,
   whereVerifiedUser,
-  dataSignUpUser,
   selectVerifiedSignUpUser,
-  dataResetUserStatutes,
 } from "~/librairies/subdata/users";
-import { dataSignUpUserEmailAddressAnswer } from "~/librairies/subdata/answers";
+import { dataSignUpUserEmailAddressAnswer } from "~/librairies/subchanges/answers";
+import {
+  dataResetUserStatutes,
+  dataSignUpUser,
+} from "~/librairies/subchanges/users";
 
 export async function signIn(usernameOrEmail: string, signinpassword: string) {
   const signInUser = await prisma.user.findFirst({

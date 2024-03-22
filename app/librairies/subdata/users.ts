@@ -62,29 +62,3 @@ export function whereSignInUser(
 export function whereVerifiedUser(id: string): Prisma.UserWhereUniqueInput {
   return { id };
 }
-
-// /* This is actually DRY-less.
-export function dataSignUpUser(
-  username: string,
-  appWideName: string,
-  email: string,
-  hashedPassword: string,
-  friendCode: string
-): Prisma.UserCreateInput {
-  return {
-    username,
-    appWideName,
-    email,
-    hashedPassword,
-    friendCode,
-    state: "LIVE",
-    statusTitle: "WELCOMETOGREVENTS",
-  };
-}
-// ...But only currently. */
-
-export const dataResetUserStatutes = {
-  statusTitle: "NONE",
-  statusDashboard: "NONE",
-  statusPersonalInfo: "NONE",
-} satisfies Prisma.UserUpdateInput;
