@@ -4,9 +4,11 @@ import {
   whereAnswerByIdAndUserId,
 } from "../subdata/answers";
 import {
+  dataHideAnswerUserQuestion,
   dataPinAnswerUserQuestion,
   dataPseudoIrlAnswerUserQuestion,
   dataPseudoNotIrlAnswerUserQuestion,
+  dataRevealAnswerUserQuestion,
   dataUnpinAnswerUserQuestion,
   dataUpsertAnswerUserQuestionFriendPinnedByFriend,
   dataUpsertAnswerUserQuestionFriendSharedToFriend,
@@ -92,6 +94,32 @@ export async function upsertAnswerUserQuestionFriendPinnedByFriend(
     userQuestionId,
     contactId
   );
+
+  return await prisma.answer.update({
+    where,
+    data,
+  });
+}
+
+export async function hideAnswerUserQuestionByIdAndUserId(
+  id: string,
+  userId: string
+) {
+  const where = whereAnswerByIdAndUserId(id, userId);
+  const data = dataHideAnswerUserQuestion();
+
+  return await prisma.answer.update({
+    where,
+    data,
+  });
+}
+
+export async function revealAnswerUserQuestionByIdAndUserId(
+  id: string,
+  userId: string
+) {
+  const where = whereAnswerByIdAndUserId(id, userId);
+  const data = dataRevealAnswerUserQuestion();
 
   return await prisma.answer.update({
     where,

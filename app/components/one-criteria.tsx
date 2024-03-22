@@ -396,6 +396,7 @@ function ButtonHiddableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
             method="post"
             className="absolute right-4 flex items-center"
           >
+            <input type="hidden" name="answerid" value={answer.id} />
             <button
               disabled={fetcher.state !== "idle"}
               className={clsx(

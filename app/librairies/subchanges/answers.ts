@@ -174,3 +174,33 @@ export function dataUpsertAnswerUserQuestionFriendPinnedByFriend(
     },
   };
 }
+
+export function dataHideAnswerUserQuestion(): Prisma.AnswerUpdateInput {
+  return {
+    userQuestion: {
+      update: {
+        state: "HIDDEN",
+      },
+    },
+    user: {
+      update: {
+        statusPersonalInfo: "CRITERIAHIDDEN",
+      },
+    },
+  };
+}
+
+export function dataRevealAnswerUserQuestion(): Prisma.AnswerUpdateInput {
+  return {
+    userQuestion: {
+      update: {
+        state: "LIVE",
+      },
+    },
+    user: {
+      update: {
+        statusPersonalInfo: "CRITERIAREVEALED",
+      },
+    },
+  };
+}

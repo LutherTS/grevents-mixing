@@ -21,6 +21,27 @@ export function StatusPersonalInfoToasts({
   );
 }
 
+export function StatusPersonalInfoStandardizedToasts({
+  statusPersonalInfo,
+}: {
+  statusPersonalInfo: string;
+}) {
+  return (
+    <>
+      {statusPersonalInfo === "CRITERIAHIDDEN" && (
+        <ToastForm action="/reset-user-status-personal-info">
+          Criteria hidden
+        </ToastForm>
+      )}
+      {statusPersonalInfo === "CRITERIAREVEALED" && (
+        <ToastForm action="/reset-user-status-personal-info">
+          Criteria revealed
+        </ToastForm>
+      )}
+    </>
+  );
+}
+
 export function StatusPersonalInfoCustomizedToasts({
   statusPersonalInfo,
 }: {

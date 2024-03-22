@@ -7,6 +7,7 @@ import { H1 } from "~/components/h1";
 import { ManyCriteria } from "~/components/many-criteria";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
+import { StatusPersonalInfoStandardizedToasts } from "~/components/status-personal-info-toasts";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import {
   countUserNativeIrlAnswersByUserId,
@@ -73,6 +74,9 @@ export default function PersonalInfoStandardizedPage() {
 
   return (
     <>
+      <StatusPersonalInfoStandardizedToasts
+        statusPersonalInfo={data.verifiedUser.statusPersonalInfo}
+      />
       {data.userPinnedAnswerCount >= PINNED_BY_USER_ANSWERS_LIMIT && (
         <p className="mb-2 cursor-default text-orange-500">
           You cannot pin more than {PINNED_BY_USER_ANSWERS_LIMIT} of your own

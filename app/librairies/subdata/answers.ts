@@ -401,6 +401,7 @@ export const selectAnswers = {
     select: {
       id: true,
       kind: true,
+      state: true,
       isPinned: true,
       question: {
         select: {
