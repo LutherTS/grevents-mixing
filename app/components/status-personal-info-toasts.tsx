@@ -41,3 +41,24 @@ export function StatusPersonalInfoCustomizedToasts({
     </>
   );
 }
+
+export function StatusPersonalInfoCustomizedUserCriteriaToasts({
+  statusPersonalInfo,
+}: {
+  statusPersonalInfo: string;
+}) {
+  return (
+    <>
+      {statusPersonalInfo === "USERQUESTIONFRIENDSHARED" && (
+        <ToastForm action="/reset-user-status-personal-info">
+          Criteria shared to friend
+        </ToastForm>
+      )}
+      {statusPersonalInfo === "USERQUESTIONFRIENDUNSHARED" && (
+        <ToastForm action="/reset-user-status-personal-info">
+          Criteria unshared from friend
+        </ToastForm>
+      )}
+    </>
+  );
+}

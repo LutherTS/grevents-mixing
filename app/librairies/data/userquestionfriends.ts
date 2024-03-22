@@ -5,6 +5,7 @@ import {
   PINNED_BY_FRIEND_ANSWERS_ORDER_BY,
   selectUserQuestionFriends,
   selectUserQuestionFriendsAnswers,
+  whereByIdAndContactUserFirstId,
   wherePinnedByFriend,
   whereUserQuestionFriendsByUserQuestionId,
 } from "../subdata/userquestionfriends";
@@ -28,8 +29,6 @@ export async function findUserQuestionFriendsByUserQuestionId(
   });
 }
 
-// Profile functions
-
 export async function findUserQuestionFriendsAnswersPinnedByFriend(
   userId: string,
   contactId: string
@@ -52,6 +51,19 @@ export async function countUserQuestionFriendsAnswersPinnedByFriend(
   const where = wherePinnedByFriend(userId, contactId);
 
   return await prisma.userQuestionFriend.count({
+    where,
+  });
+}
+
+export async function findUserQuestionFriendByIdAndContactUserFirstId(
+  id: string,
+  userFirstId: string
+) {
+  const select = selectUserQuestionFriendsAnswers;
+  const where = whereByIdAndContactUserFirstId(id, userFirstId);
+
+  return await prisma.userQuestionFriend.findUnique({
+    select,
     where,
   });
 }

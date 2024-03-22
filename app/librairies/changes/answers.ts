@@ -1,17 +1,18 @@
 import { prisma } from "~/utilities/server/db.server";
-import { whereAnswerByIDAndUserID } from "../subdata/answers";
+import { whereAnswerByIdAndUserId } from "../subdata/answers";
 import {
   dataPinAnswerUserQuestion,
   dataPseudoIrlAnswerUserQuestion,
   dataPseudoNotIrlAnswerUserQuestion,
   dataUnpinAnswerUserQuestion,
+  dataUpsertAnswerUserQuestionFriendSharedToFriend,
 } from "../subchanges/answers";
 
 export async function pinAnswerUserQuestionByIdAndUserId(
   id: string,
   userId: string
 ) {
-  const where = whereAnswerByIDAndUserID(id, userId);
+  const where = whereAnswerByIdAndUserId(id, userId);
   const data = dataPinAnswerUserQuestion();
 
   return await prisma.answer.update({
@@ -24,7 +25,7 @@ export async function unpinAnswerUserQuestionByIdAndUserId(
   id: string,
   userId: string
 ) {
-  const where = whereAnswerByIDAndUserID(id, userId);
+  const where = whereAnswerByIdAndUserId(id, userId);
   const data = dataUnpinAnswerUserQuestion();
 
   return await prisma.answer.update({
@@ -37,7 +38,7 @@ export async function pseudoIrlAnswerUserQuestionByIdAndUserId(
   id: string,
   userId: string
 ) {
-  const where = whereAnswerByIDAndUserID(id, userId);
+  const where = whereAnswerByIdAndUserId(id, userId);
   const data = dataPseudoIrlAnswerUserQuestion();
 
   return await prisma.answer.update({
@@ -50,8 +51,26 @@ export async function pseudoNotIrlAnswerUserQuestionByIdAndUserId(
   id: string,
   userId: string
 ) {
-  const where = whereAnswerByIDAndUserID(id, userId);
+  const where = whereAnswerByIdAndUserId(id, userId);
   const data = dataPseudoNotIrlAnswerUserQuestion();
+
+  return await prisma.answer.update({
+    where,
+    data,
+  });
+}
+
+export async function upsertAnswerUserQuestionFriendSharedToFriend(
+  id: string,
+  userId: string,
+  userQuestionId: string,
+  contactId: string
+) {
+  const where = whereAnswerByIdAndUserId(id, userId);
+  const data = dataUpsertAnswerUserQuestionFriendSharedToFriend(
+    userQuestionId,
+    contactId
+  );
 
   return await prisma.answer.update({
     where,

@@ -736,7 +736,7 @@ export function whereUserUnpinnedSharedToContactCustomAnswersExposed(
   };
 }
 
-export function whereAnswerByIDAndUserID(
+export function whereAnswerByIdAndUserId(
   id: string,
   userId: string
 ): Prisma.AnswerWhereUniqueInput {

@@ -94,3 +94,39 @@ export function dataPseudoNotIrlAnswerUserQuestion(): Prisma.AnswerUpdateInput {
     },
   };
 }
+
+export function dataUpsertAnswerUserQuestionFriendSharedToFriend(
+  userQuestionId: string,
+  contactId: string
+): Prisma.AnswerUpdateInput {
+  return {
+    userQuestion: {
+      update: {
+        userQuestionFriends: {
+          upsert: {
+            where: {
+              userQuestionId_contactId: { userQuestionId, contactId },
+            },
+            create: {
+              isSharedToFriend: true,
+              sharedToFriendAt: new Date(),
+              state: "LIVE",
+              contactId,
+            },
+            update: {
+              isSharedToFriend: true,
+              sharedToFriendAt: new Date(),
+              state: "LIVE",
+              contactId,
+            },
+          },
+        },
+      },
+    },
+    user: {
+      update: {
+        statusPersonalInfo: "USERQUESTIONFRIENDSHARED",
+      },
+    },
+  };
+}

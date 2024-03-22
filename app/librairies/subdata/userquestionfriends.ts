@@ -139,3 +139,15 @@ export function wherePinnedByFriend(
     },
   };
 }
+
+export function whereByIdAndContactUserFirstId(
+  id: string,
+  userFirstId: string
+): Prisma.UserQuestionFriendWhereUniqueInput {
+  return {
+    id,
+    contact: {
+      userFirstId,
+    },
+  };
+}

@@ -4,7 +4,7 @@ import { redirect } from "@remix-run/node";
 import { getVerifiedUserId, kickOut } from "~/utilities/server/session.server";
 import {
   countUserPinnedAnswersByUserId,
-  findAnswerByIDAndUserID,
+  findAnswerByIdAndUserId,
 } from "~/librairies/data/answers";
 import { PINNED_BY_USER_ANSWERS_LIMIT } from "~/librairies/subdata/answers";
 import {
@@ -26,7 +26,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null;
   }
 
-  const answer = await findAnswerByIDAndUserID(answerId, verifiedUserId);
+  const answer = await findAnswerByIdAndUserId(answerId, verifiedUserId);
 
   if (!answer) {
     return null;

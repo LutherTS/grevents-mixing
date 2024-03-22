@@ -100,6 +100,8 @@ export function ButtonShareUserQuestionFriendForm({
         method="post"
         className="me-2 flex items-center"
       >
+        <input type="hidden" name="contactid" value={contact.id} />
+        <input type="hidden" name="answerid" value={answer.id} />
         <button
           disabled={fetcher.state !== "idle"}
           className="h-4 w-4 rounded-full bg-cyan-500 hover:bg-cyan-300 disabled:!bg-gray-500 disabled:hover:bg-gray-500 dark:hover:bg-cyan-700"

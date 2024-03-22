@@ -11,6 +11,7 @@ import {
   whereUserWhoIAmBlockingByUserId,
   whereContactByUserFirstIdAndUserLastUsername,
   whereContactByUserFirstIdAndUserLastId,
+  whereContactByIdAndUserFirstId,
 } from "../subdata/contacts";
 
 const orderBy = DEFAULT_CONTACTS_ORDER_BY;
@@ -226,6 +227,19 @@ export async function findContactByUserFirstIdAndUserLastId(
   const where = whereContactByUserFirstIdAndUserLastId(userFirstId, userLastId);
 
   return await prisma.contact.findFirst({
+    select,
+    where,
+  });
+}
+
+export async function findContactByIdAndUserFirstId(
+  id: string,
+  userFirstId: string
+) {
+  const select = selectContacts;
+  const where = whereContactByIdAndUserFirstId(id, userFirstId);
+
+  return await prisma.contact.findUnique({
     select,
     where,
   });

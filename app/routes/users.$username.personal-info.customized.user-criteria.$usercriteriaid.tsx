@@ -9,6 +9,7 @@ import { ManyUserQuestionFriendsShared } from "~/components/many-userquestionfri
 import { OneCriteria } from "~/components/one-criteria";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
+import { StatusPersonalInfoCustomizedUserCriteriaToasts } from "~/components/status-personal-info-toasts";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import { findAnswerByUserQuestionIDAndUserID } from "~/librairies/data/answers";
 import { findUserFriendsNotToUserQuestionByUserQuestionIdAndUserId } from "~/librairies/data/contacts";
@@ -77,6 +78,9 @@ export default function UserCriteriaPage() {
 
   return (
     <>
+      <StatusPersonalInfoCustomizedUserCriteriaToasts
+        statusPersonalInfo={data.verifiedUser.statusPersonalInfo}
+      />
       <H1>
         Welcome to {data.user.appWideName}&apos;s &quot;
         {data.userQuestionAnswer.userQuestion.question.name}&quot; User

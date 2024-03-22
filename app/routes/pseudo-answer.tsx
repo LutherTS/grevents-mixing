@@ -6,7 +6,7 @@ import {
   countUserPinnedAnswersByUserId,
   countUserPseudonativeIrlAnswersByUserId,
   countUserPseudonativeNotIrlAnswersByUserId,
-  findAnswerByIDAndUserID,
+  findAnswerByIdAndUserId,
 } from "~/librairies/data/answers";
 import {
   DEFAULT_ANSWERS_LIMIT,
@@ -33,7 +33,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null;
   }
 
-  const answer = await findAnswerByIDAndUserID(answerId, verifiedUserId);
+  const answer = await findAnswerByIdAndUserId(answerId, verifiedUserId);
 
   if (!answer) {
     return null;
