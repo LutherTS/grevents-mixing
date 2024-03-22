@@ -11,6 +11,7 @@ import { findUserPinnedAnswersByUserId } from "~/librairies/data/answers";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import { ManyCriteria } from "~/components/many-criteria";
+import { StatusPersonalInfoToasts } from "~/components/status-personal-info-toasts";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   invariant(params.username, "Expected params.username");
@@ -46,6 +47,9 @@ export default function PersonalInfoPage() {
 
   return (
     <>
+      <StatusPersonalInfoToasts
+        statusPersonalInfo={data.verifiedUser.statusPersonalInfo}
+      />
       <H1>Welcome to {data.user.appWideName}&apos;s Personal Info.</H1>
       <BackToDashboardLink
         href={`/users/${data.verifiedUser.username}/dashboard`}

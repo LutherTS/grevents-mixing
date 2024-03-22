@@ -18,6 +18,7 @@ import {
   findUserPseudonativeNotIrlAnswersByUserId,
 } from "~/librairies/data/answers";
 import { findUserByUsername } from "~/librairies/data/users";
+import { PINNED_BY_USER_ANSWERS_LIMIT } from "~/librairies/subdata/answers";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
@@ -80,6 +81,12 @@ export default function PersonalInfoCustomizedPage() {
 
   return (
     <>
+      {data.userPinnedAnswerCount >= PINNED_BY_USER_ANSWERS_LIMIT && (
+        <p className="mb-2 cursor-default text-orange-500">
+          You cannot pin more than {PINNED_BY_USER_ANSWERS_LIMIT} of your own
+          criteria.
+        </p>
+      )}
       <H1>
         Welcome to {data.user.appWideName}&apos;s Personal Info Customized.
       </H1>
