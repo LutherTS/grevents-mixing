@@ -29,6 +29,7 @@ import {
   whereUserUnpinnedSharedToContactCustomAnswersExposed,
   whereUserUnpinnedNativeAnswersByUserIdAndQuestionKindExposed,
   whereUserUnpinnedPseudonativeAnswersByUserIdAndUserQuestionKindExposed,
+  whereAnswerByIDAndUserID,
 } from "../subdata/answers";
 
 const orderBy = DEFAULT_ANSWERS_ORDER_BY;
@@ -461,5 +462,15 @@ export async function findUserUnpinnedSharedToContactCustomAnswersExposed(
     where,
     orderBy,
     take,
+  });
+}
+
+export async function findAnswerByIDAndUserID(id: string, userId: string) {
+  const select = selectAnswers;
+  const where = whereAnswerByIDAndUserID(id, userId);
+
+  return await prisma.answer.findUnique({
+    select,
+    where,
   });
 }
