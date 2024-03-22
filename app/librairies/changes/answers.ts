@@ -1,5 +1,8 @@
 import { prisma } from "~/utilities/server/db.server";
-import { whereAnswerByIdAndUserId } from "../subdata/answers";
+import {
+  whereAnswerByIdAndContactId,
+  whereAnswerByIdAndUserId,
+} from "../subdata/answers";
 import {
   dataPinAnswerUserQuestion,
   dataPseudoIrlAnswerUserQuestion,
@@ -81,18 +84,13 @@ export async function upsertAnswerUserQuestionFriendSharedToFriend(
 
 export async function upsertAnswerUserQuestionFriendPinnedByFriend(
   id: string,
-  userId: string,
   userQuestionId: string,
-  contactId: string,
-  userFirstId: string,
-  userLastId: string
+  contactId: string
 ) {
-  const where = whereAnswerByIdAndUserId(id, userId);
+  const where = whereAnswerByIdAndContactId(id, contactId);
   const data = dataUpsertAnswerUserQuestionFriendPinnedByFriend(
     userQuestionId,
-    contactId,
-    userFirstId,
-    userLastId
+    contactId
   );
 
   return await prisma.answer.update({

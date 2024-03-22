@@ -14,6 +14,7 @@ import {
   RelationCombinationUserIsBlockingExposed,
 } from "~/components/relcombos-exposed";
 import { SignOutForm } from "~/components/sign-out-form";
+import { StatusOtherProfileToasts } from "~/components/status-other-profile-toasts";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import {
   findUserPinnedNotAndIrlAnswersByUserIdExposed,
@@ -32,7 +33,10 @@ import {
 import { findUserByUsername } from "~/librairies/data/users";
 import { selectAnswers } from "~/librairies/subdata/answers";
 import { selectContacts } from "~/librairies/subdata/contacts";
-import { selectUserQuestionFriendsAnswers } from "~/librairies/subdata/userquestionfriends";
+import {
+  PINNED_BY_FRIEND_ANSWERS_LIMIT,
+  selectUserQuestionFriendsAnswers,
+} from "~/librairies/subdata/userquestionfriends";
 import { selectUser, selectVerifiedUser } from "~/librairies/subdata/users";
 import { defineContactRelCombo } from "~/utilities/contacts";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
@@ -241,6 +245,15 @@ export default function ProfilePage() {
 
   return (
     <>
+      <StatusOtherProfileToasts contact={data.userToVerifiedUserContact} />
+      {typeof data.userQuestionFriendsAnswersPinnedByFriendCount === "number" &&
+        data.userQuestionFriendsAnswersPinnedByFriendCount >=
+          PINNED_BY_FRIEND_ANSWERS_LIMIT && (
+          <p className="mb-2 cursor-default text-orange-500">
+            You cannot pin more than {PINNED_BY_FRIEND_ANSWERS_LIMIT} of your
+            friend&apos;s criteria.
+          </p>
+        )}
       <H1>Welcome to {data.user.appWideName}&apos;s Profile.</H1>
       <BackToDashboardLink
         href={`/users/${data.verifiedUser.username}/dashboard`}

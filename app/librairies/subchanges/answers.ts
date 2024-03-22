@@ -133,9 +133,7 @@ export function dataUpsertAnswerUserQuestionFriendSharedToFriend(
 // contact here has verifiedUser as userLast
 export function dataUpsertAnswerUserQuestionFriendPinnedByFriend(
   userQuestionId: string,
-  contactId: string,
-  userFirstId: string,
-  userLastId: string
+  contactId: string
 ): Prisma.AnswerUpdateInput {
   return {
     userQuestion: {
@@ -162,13 +160,10 @@ export function dataUpsertAnswerUserQuestionFriendPinnedByFriend(
     },
     user: {
       update: {
-        contactLasts: {
+        contactFirsts: {
           update: {
             where: {
-              userFirstId_userLastId: {
-                userFirstId,
-                userLastId,
-              },
+              id: contactId,
             },
             data: {
               statusOtherProfile: "USERQUESTIONFRIENDPINNED",

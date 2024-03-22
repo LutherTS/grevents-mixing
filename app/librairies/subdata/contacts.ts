@@ -42,6 +42,7 @@ export const selectContacts = {
   blocking: true,
   id: true,
   processRelationship: true,
+  statusOtherProfile: true,
   userFirst: {
     select: {
       id: true,
@@ -56,6 +57,7 @@ export const selectContacts = {
       blocking: true,
       id: true,
       processRelationship: true,
+      statusOtherProfile: true,
       userFirst: {
         select: {
           id: true,

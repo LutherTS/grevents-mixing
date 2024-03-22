@@ -32,7 +32,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     verifiedUserId
   );
 
-  if (!contact) {
+  if (!contact?.mirror) {
     return null;
   }
 

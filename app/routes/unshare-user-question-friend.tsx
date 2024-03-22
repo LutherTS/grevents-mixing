@@ -2,7 +2,6 @@ import type { ActionFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 
 import { getVerifiedUserId, kickOut } from "~/utilities/server/session.server";
-import { upsertAnswerUserQuestionFriendSharedToFriend } from "~/librairies/changes/answers";
 import { findUserQuestionFriendByIdAndContactUserFirstId } from "~/librairies/data/userquestionfriends";
 import { updateUserQuestionFriendCancelSharedToFriend } from "~/librairies/changes/userquestionfriends";
 

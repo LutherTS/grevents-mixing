@@ -28,18 +28,21 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   if (!contact?.mirror) {
     return null;
   }
+  console.log(contact);
 
   const answer = await findAnswerByIdAndContactId(answerId, contact.id);
 
   if (!answer) {
     return null;
   }
+  console.log(answer);
 
   const userQuestionFriendsAnswersPinnedByFriendCount =
     await countUserQuestionFriendsAnswersPinnedByFriend(
       answer.user.id,
       contact.id
     );
+  console.log(userQuestionFriendsAnswersPinnedByFriendCount);
 
   if (
     userQuestionFriendsAnswersPinnedByFriendCount <
@@ -47,11 +50,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   ) {
     await upsertAnswerUserQuestionFriendPinnedByFriend(
       answer.id,
-      verifiedUserId,
       answer.userQuestion.id,
-      contact.id,
-      contact.userFirst.id,
-      contact.mirror?.userFirst.id
+      contact.id
     );
   }
 

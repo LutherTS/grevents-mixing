@@ -15,3 +15,19 @@ export function dataUpdateUserQuestionFriendCancelSharedToFriend(): Prisma.UserQ
     },
   };
 }
+
+export function dataUpdateUserQuestionFriendCancelPinnedByFriend(): Prisma.UserQuestionFriendUpdateInput {
+  return {
+    isPinnedByFriend: false,
+    pinnedByFriendAt: null,
+    contact: {
+      update: {
+        userFirst: {
+          update: {
+            statusPersonalInfo: "USERQUESTIONFRIENDUNPINNED",
+          },
+        },
+      },
+    },
+  };
+}
