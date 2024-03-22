@@ -20,3 +20,24 @@ export function StatusPersonalInfoToasts({
     </>
   );
 }
+
+export function StatusPersonalInfoCustomizedToasts({
+  statusPersonalInfo,
+}: {
+  statusPersonalInfo: string;
+}) {
+  return (
+    <>
+      {statusPersonalInfo === "PSEUDONATIVECRITERIAUPPEDTOIRL" && (
+        <ToastForm action="/reset-user-status-personal-info">
+          Pseudonative criteria upped to irl
+        </ToastForm>
+      )}
+      {statusPersonalInfo === "PSEUDONATIVECRITERIADOWNEDFROMIRL" && (
+        <ToastForm action="/reset-user-status-personal-info">
+          Pseudonative criteria downed from irl
+        </ToastForm>
+      )}
+    </>
+  );
+}

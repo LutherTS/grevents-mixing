@@ -64,3 +64,33 @@ export function dataUnpinAnswerUserQuestion(): Prisma.AnswerUpdateInput {
     },
   };
 }
+
+export function dataPseudoIrlAnswerUserQuestion(): Prisma.AnswerUpdateInput {
+  return {
+    userQuestion: {
+      update: {
+        kind: "PSEUDONATIVEIRL",
+      },
+    },
+    user: {
+      update: {
+        statusPersonalInfo: "PSEUDONATIVECRITERIAUPPEDTOIRL",
+      },
+    },
+  };
+}
+
+export function dataPseudoNotIrlAnswerUserQuestion(): Prisma.AnswerUpdateInput {
+  return {
+    userQuestion: {
+      update: {
+        kind: "PSEUDONATIVE",
+      },
+    },
+    user: {
+      update: {
+        statusPersonalInfo: "PSEUDONATIVECRITERIADOWNEDFROMIRL",
+      },
+    },
+  };
+}

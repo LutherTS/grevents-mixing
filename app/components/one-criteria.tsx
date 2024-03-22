@@ -231,7 +231,6 @@ export function OneAnswerPinnable({
   return (
     <>
       <div className="mt-2 flex justify-center">
-        {/* Coming up */}
         {/* If you're still allowed to pin */}
         {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
           <ButtonPinnableForm answer={answer} />
@@ -295,7 +294,6 @@ export function OneAnswerPinnablePseudoable({
   return (
     <>
       <div className="mt-2 flex justify-center">
-        {/* Coming up */}
         {/* If you're still allowed to pin */}
         {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
           <ButtonPinnableForm answer={answer} />
@@ -306,16 +304,10 @@ export function OneAnswerPinnablePseudoable({
             <ButtonPinnableForm answer={answer} />
           )}
         <p>{answer.value}</p>
-        {/* Also coming up */}
-        {/* If you're still allowed to pin */}
+        {/* If both are max out, you'll have to delete an "otherPseudonativeAnswer" to re-access pseudo-answer. */}
         {otherPseudonativeAnswersCount < DEFAULT_ANSWERS_LIMIT && (
           <ButtonPseudoableForm answer={answer} />
         )}
-        {/* If you're only allowed to unpin */}
-        {otherPseudonativeAnswersCount >= DEFAULT_ANSWERS_LIMIT &&
-          answer.userQuestion.isPinned === true && (
-            <ButtonPseudoableForm answer={answer} />
-          )}
       </div>
     </>
   );
@@ -331,6 +323,7 @@ function ButtonPseudoableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
         method="post"
         className="ms-2 flex items-center"
       >
+        <input type="hidden" name="answerid" value={answer.id} />
         <button
           disabled={fetcher.state !== "idle"}
           className={clsx(

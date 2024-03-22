@@ -7,6 +7,7 @@ import { H1 } from "~/components/h1";
 import { ManyCriteria } from "~/components/many-criteria";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
+import { StatusPersonalInfoCustomizedToasts } from "~/components/status-personal-info-toasts";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import {
   countUserCustomAnswersByUserId,
@@ -18,7 +19,10 @@ import {
   findUserPseudonativeNotIrlAnswersByUserId,
 } from "~/librairies/data/answers";
 import { findUserByUsername } from "~/librairies/data/users";
-import { PINNED_BY_USER_ANSWERS_LIMIT } from "~/librairies/subdata/answers";
+import {
+  DEFAULT_ANSWERS_LIMIT,
+  PINNED_BY_USER_ANSWERS_LIMIT,
+} from "~/librairies/subdata/answers";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
@@ -81,9 +85,20 @@ export default function PersonalInfoCustomizedPage() {
 
   return (
     <>
+      <StatusPersonalInfoCustomizedToasts
+        statusPersonalInfo={data.verifiedUser.statusPersonalInfo}
+      />
       {data.userPinnedAnswerCount >= PINNED_BY_USER_ANSWERS_LIMIT && (
         <p className="mb-2 cursor-default text-orange-500">
           You cannot pin more than {PINNED_BY_USER_ANSWERS_LIMIT} of your own
+          criteria.
+        </p>
+      )}
+      {(data.userPseudonativeNotIrlAnswersCount ||
+        data.userPseudonativeIrlAnswersCount ||
+        data.userCustomAnswersCount) >= DEFAULT_ANSWERS_LIMIT && (
+        <p className="mb-2 cursor-default text-orange-500">
+          You cannot have more than {DEFAULT_ANSWERS_LIMIT} of a given kind of
           criteria.
         </p>
       )}

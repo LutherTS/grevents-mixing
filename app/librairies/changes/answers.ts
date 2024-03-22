@@ -2,6 +2,8 @@ import { prisma } from "~/utilities/server/db.server";
 import { whereAnswerByIDAndUserID } from "../subdata/answers";
 import {
   dataPinAnswerUserQuestion,
+  dataPseudoIrlAnswerUserQuestion,
+  dataPseudoNotIrlAnswerUserQuestion,
   dataUnpinAnswerUserQuestion,
 } from "../subchanges/answers";
 
@@ -24,6 +26,32 @@ export async function unpinAnswerUserQuestionByIdAndUserId(
 ) {
   const where = whereAnswerByIDAndUserID(id, userId);
   const data = dataUnpinAnswerUserQuestion();
+
+  return await prisma.answer.update({
+    where,
+    data,
+  });
+}
+
+export async function pseudoIrlAnswerUserQuestionByIdAndUserId(
+  id: string,
+  userId: string
+) {
+  const where = whereAnswerByIDAndUserID(id, userId);
+  const data = dataPseudoIrlAnswerUserQuestion();
+
+  return await prisma.answer.update({
+    where,
+    data,
+  });
+}
+
+export async function pseudoNotIrlAnswerUserQuestionByIdAndUserId(
+  id: string,
+  userId: string
+) {
+  const where = whereAnswerByIDAndUserID(id, userId);
+  const data = dataPseudoNotIrlAnswerUserQuestion();
 
   return await prisma.answer.update({
     where,
