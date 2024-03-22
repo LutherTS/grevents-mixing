@@ -1,5 +1,8 @@
 import { prisma } from "~/utilities/server/db.server";
-import { whereByIdAndContactUserFirstId } from "../subdata/userquestionfriends";
+import {
+  whereByIdAndContactUserFirstId,
+  whereByIdAndContactUserLastId,
+} from "../subdata/userquestionfriends";
 import {
   dataUpdateUserQuestionFriendCancelPinnedByFriend,
   dataUpdateUserQuestionFriendCancelSharedToFriend,
@@ -20,9 +23,9 @@ export async function updateUserQuestionFriendCancelSharedToFriend(
 
 export async function updateUserQuestionFriendCancelPinnedByFriend(
   id: string,
-  userFirstId: string
+  userLastId: string
 ) {
-  const where = whereByIdAndContactUserFirstId(id, userFirstId);
+  const where = whereByIdAndContactUserLastId(id, userLastId);
   const data = dataUpdateUserQuestionFriendCancelPinnedByFriend();
 
   return await prisma.userQuestionFriend.update({

@@ -35,10 +35,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
   console.log(userQuestionFriend);
 
-  // await updateUserQuestionFriendCancelPinnedByFriend(
-  //   userQuestionFriend.id,
-  //   verifiedUserId
-  // );
+  await updateUserQuestionFriendCancelPinnedByFriend(
+    userQuestionFriend.id,
+    verifiedUserId
+  );
 
   return null;
 };

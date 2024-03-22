@@ -22,11 +22,7 @@ export function dataUpdateUserQuestionFriendCancelPinnedByFriend(): Prisma.UserQ
     pinnedByFriendAt: null,
     contact: {
       update: {
-        userFirst: {
-          update: {
-            statusPersonalInfo: "USERQUESTIONFRIENDUNPINNED",
-          },
-        },
+        statusOtherProfile: "USERQUESTIONFRIENDUNPINNED",
       },
     },
   };
