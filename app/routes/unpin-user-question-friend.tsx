@@ -2,7 +2,10 @@ import type { ActionFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 
 import { getVerifiedUserId, kickOut } from "~/utilities/server/session.server";
-import { findUserQuestionFriendByIdAndContactUserFirstId } from "~/librairies/data/userquestionfriends";
+import {
+  findUserQuestionFriendByIdAndContactUserFirstId,
+  findUserQuestionFriendByIdAndContactUserLastId,
+} from "~/librairies/data/userquestionfriends";
 import { updateUserQuestionFriendCancelPinnedByFriend } from "~/librairies/changes/userquestionfriends";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -11,6 +14,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   if (!verifiedUserId) {
     throw await kickOut(request);
   }
+  console.log(verifiedUserId);
 
   const form = await request.formData();
   const userQuestionFriendId = form.get("userquestionfriendid");
@@ -18,9 +22,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   if (typeof userQuestionFriendId !== "string") {
     return null;
   }
+  console.log(userQuestionFriendId);
 
   const userQuestionFriend =
-    await findUserQuestionFriendByIdAndContactUserFirstId(
+    await findUserQuestionFriendByIdAndContactUserLastId(
       userQuestionFriendId,
       verifiedUserId
     );
@@ -28,11 +33,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   if (!userQuestionFriend) {
     return null;
   }
+  console.log(userQuestionFriend);
 
-  await updateUserQuestionFriendCancelPinnedByFriend(
-    userQuestionFriend.id,
-    verifiedUserId
-  );
+  // await updateUserQuestionFriendCancelPinnedByFriend(
+  //   userQuestionFriend.id,
+  //   verifiedUserId
+  // );
 
   return null;
 };

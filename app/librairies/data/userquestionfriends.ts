@@ -6,6 +6,7 @@ import {
   selectUserQuestionFriends,
   selectUserQuestionFriendsAnswers,
   whereByIdAndContactUserFirstId,
+  whereByIdAndContactUserLastId,
   wherePinnedByFriend,
   whereUserQuestionFriendsByUserQuestionId,
 } from "../subdata/userquestionfriends";
@@ -61,6 +62,19 @@ export async function findUserQuestionFriendByIdAndContactUserFirstId(
 ) {
   const select = selectUserQuestionFriendsAnswers;
   const where = whereByIdAndContactUserFirstId(id, userFirstId);
+
+  return await prisma.userQuestionFriend.findUnique({
+    select,
+    where,
+  });
+}
+
+export async function findUserQuestionFriendByIdAndContactUserLastId(
+  id: string,
+  userLastId: string
+) {
+  const select = selectUserQuestionFriendsAnswers;
+  const where = whereByIdAndContactUserLastId(id, userLastId);
 
   return await prisma.userQuestionFriend.findUnique({
     select,
