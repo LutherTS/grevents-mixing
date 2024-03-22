@@ -117,7 +117,6 @@ export function dataUpsertAnswerUserQuestionFriendSharedToFriend(
               isSharedToFriend: true,
               sharedToFriendAt: new Date(),
               state: "LIVE",
-              contactId,
             },
           },
         },
@@ -126,6 +125,56 @@ export function dataUpsertAnswerUserQuestionFriendSharedToFriend(
     user: {
       update: {
         statusPersonalInfo: "USERQUESTIONFRIENDSHARED",
+      },
+    },
+  };
+}
+
+// contact here has verifiedUser as userLast
+export function dataUpsertAnswerUserQuestionFriendPinnedByFriend(
+  userQuestionId: string,
+  contactId: string,
+  userFirstId: string,
+  userLastId: string
+): Prisma.AnswerUpdateInput {
+  return {
+    userQuestion: {
+      update: {
+        userQuestionFriends: {
+          upsert: {
+            where: {
+              userQuestionId_contactId: { userQuestionId, contactId },
+            },
+            create: {
+              isPinnedByFriend: true,
+              pinnedByFriendAt: new Date(),
+              state: "LIVE",
+              contactId,
+            },
+            update: {
+              isPinnedByFriend: true,
+              pinnedByFriendAt: new Date(),
+              state: "LIVE",
+            },
+          },
+        },
+      },
+    },
+    user: {
+      update: {
+        contactLasts: {
+          update: {
+            where: {
+              userFirstId_userLastId: {
+                userFirstId,
+                userLastId,
+              },
+            },
+            data: {
+              statusOtherProfile: "USERQUESTIONFRIENDPINNED",
+            },
+          },
+        },
       },
     },
   };

@@ -249,3 +249,13 @@ export function whereContactByIdAndUserFirstId(
     userFirstId,
   };
 }
+
+export function whereContactByIdAndUserLastId(
+  id: string,
+  userLastId: string
+): Prisma.ContactWhereUniqueInput {
+  return {
+    id,
+    userLastId,
+  };
+}

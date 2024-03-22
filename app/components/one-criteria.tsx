@@ -414,8 +414,6 @@ function ButtonHiddableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
   );
 }
 
-// export function OneAnswerPinnableByFriend
-
 export function OneAnswerPinnableByFriend({
   answer,
   contact,
@@ -439,8 +437,6 @@ export function OneAnswerPinnableByFriend({
   );
 }
 
-// function ButtonPinnableByFriendForm
-
 function ButtonPinnableByFriendForm({
   answer,
   contact,
@@ -459,6 +455,8 @@ function ButtonPinnableByFriendForm({
         method="post"
         className="me-2 flex items-center"
       >
+        <input type="hidden" name="answerid" value={answer.id} />
+        <input type="hidden" name="contactid" value={contact.id} />
         <button
           disabled={fetcher.state !== "idle"}
           className="h-4 w-4 rounded-full bg-cyan-500 hover:bg-cyan-300 disabled:!bg-gray-500 disabled:hover:bg-gray-500 dark:hover:bg-cyan-700"

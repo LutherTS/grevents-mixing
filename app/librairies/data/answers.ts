@@ -30,6 +30,7 @@ import {
   whereUserUnpinnedNativeAnswersByUserIdAndQuestionKindExposed,
   whereUserUnpinnedPseudonativeAnswersByUserIdAndUserQuestionKindExposed,
   whereAnswerByIdAndUserId,
+  whereAnswerByIdAndContactId,
 } from "../subdata/answers";
 
 const orderBy = DEFAULT_ANSWERS_ORDER_BY;
@@ -468,6 +469,19 @@ export async function findUserUnpinnedSharedToContactCustomAnswersExposed(
 export async function findAnswerByIdAndUserId(id: string, userId: string) {
   const select = selectAnswers;
   const where = whereAnswerByIdAndUserId(id, userId);
+
+  return await prisma.answer.findUnique({
+    select,
+    where,
+  });
+}
+
+export async function findAnswerByIdAndContactId(
+  id: string,
+  contactId: string
+) {
+  const select = selectAnswers;
+  const where = whereAnswerByIdAndContactId(id, contactId);
 
   return await prisma.answer.findUnique({
     select,

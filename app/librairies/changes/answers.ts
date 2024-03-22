@@ -5,6 +5,7 @@ import {
   dataPseudoIrlAnswerUserQuestion,
   dataPseudoNotIrlAnswerUserQuestion,
   dataUnpinAnswerUserQuestion,
+  dataUpsertAnswerUserQuestionFriendPinnedByFriend,
   dataUpsertAnswerUserQuestionFriendSharedToFriend,
 } from "../subchanges/answers";
 
@@ -70,6 +71,28 @@ export async function upsertAnswerUserQuestionFriendSharedToFriend(
   const data = dataUpsertAnswerUserQuestionFriendSharedToFriend(
     userQuestionId,
     contactId
+  );
+
+  return await prisma.answer.update({
+    where,
+    data,
+  });
+}
+
+export async function upsertAnswerUserQuestionFriendPinnedByFriend(
+  id: string,
+  userId: string,
+  userQuestionId: string,
+  contactId: string,
+  userFirstId: string,
+  userLastId: string
+) {
+  const where = whereAnswerByIdAndUserId(id, userId);
+  const data = dataUpsertAnswerUserQuestionFriendPinnedByFriend(
+    userQuestionId,
+    contactId,
+    userFirstId,
+    userLastId
   );
 
   return await prisma.answer.update({

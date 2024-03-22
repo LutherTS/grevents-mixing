@@ -745,3 +745,15 @@ export function whereAnswerByIdAndUserId(
     userId,
   };
 }
+
+export function whereAnswerByIdAndContactId(
+  id: string,
+  contactId: string
+): Prisma.AnswerWhereUniqueInput {
+  return {
+    id,
+    userQuestion: {
+      AND: noneIsPinnedByFriend(contactId),
+    },
+  };
+}

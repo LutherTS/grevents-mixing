@@ -12,6 +12,7 @@ import {
   whereContactByUserFirstIdAndUserLastUsername,
   whereContactByUserFirstIdAndUserLastId,
   whereContactByIdAndUserFirstId,
+  whereContactByIdAndUserLastId,
 } from "../subdata/contacts";
 
 const orderBy = DEFAULT_CONTACTS_ORDER_BY;
@@ -238,6 +239,19 @@ export async function findContactByIdAndUserFirstId(
 ) {
   const select = selectContacts;
   const where = whereContactByIdAndUserFirstId(id, userFirstId);
+
+  return await prisma.contact.findUnique({
+    select,
+    where,
+  });
+}
+
+export async function findContactByIdAndUserLastId(
+  id: string,
+  userLastId: string
+) {
+  const select = selectContacts;
+  const where = whereContactByIdAndUserLastId(id, userLastId);
 
   return await prisma.contact.findUnique({
     select,
