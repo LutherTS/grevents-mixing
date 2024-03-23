@@ -10,6 +10,8 @@ import {
   dataPseudoNotIrlAnswerUserQuestion,
   dataRevealAnswerUserQuestion,
   dataUnpinAnswerUserQuestion,
+  dataUpdateAnswerStateDeletedStatusPersonalInfo,
+  dataUpdateAnswerValueStatusPersonalInfo,
   dataUpsertAnswerUserQuestionFriendPinnedByFriend,
   dataUpsertAnswerUserQuestionFriendSharedToFriend,
 } from "../subchanges/answers";
@@ -120,6 +122,39 @@ export async function revealAnswerUserQuestionByIdAndUserId(
 ) {
   const where = whereAnswerByIdAndUserId(id, userId);
   const data = dataRevealAnswerUserQuestion();
+
+  return await prisma.answer.update({
+    where,
+    data,
+  });
+}
+
+export async function updateAnswerValueStatusPersonalInfoByIdAndUserId(
+  id: string,
+  userId: string,
+  value: string,
+  statusPersonalInfo: string
+) {
+  const where = whereAnswerByIdAndUserId(id, userId);
+  const data = dataUpdateAnswerValueStatusPersonalInfo(
+    value,
+    statusPersonalInfo
+  );
+
+  return await prisma.answer.update({
+    where,
+    data,
+  });
+}
+
+export async function updateAnswerStateDeletedStatusPersonalInfoByIdAndUserId(
+  id: string,
+  userId: string,
+  statusPersonalInfo: string
+) {
+  const where = whereAnswerByIdAndUserId(id, userId);
+  const data =
+    dataUpdateAnswerStateDeletedStatusPersonalInfo(statusPersonalInfo);
 
   return await prisma.answer.update({
     where,

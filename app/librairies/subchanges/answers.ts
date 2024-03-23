@@ -204,3 +204,30 @@ export function dataRevealAnswerUserQuestion(): Prisma.AnswerUpdateInput {
     },
   };
 }
+
+export function dataUpdateAnswerValueStatusPersonalInfo(
+  value: string,
+  statusPersonalInfo: string
+): Prisma.AnswerUpdateInput {
+  return {
+    value,
+    user: {
+      update: {
+        statusPersonalInfo,
+      },
+    },
+  };
+}
+
+export function dataUpdateAnswerStateDeletedStatusPersonalInfo(
+  statusPersonalInfo: string
+): Prisma.AnswerUpdateInput {
+  return {
+    state: "DELETED",
+    user: {
+      update: {
+        statusPersonalInfo,
+      },
+    },
+  };
+}

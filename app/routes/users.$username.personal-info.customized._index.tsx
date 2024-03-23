@@ -94,9 +94,9 @@ export default function PersonalInfoCustomizedPage() {
           criteria.
         </p>
       )}
-      {(data.userPseudonativeNotIrlAnswersCount ||
-        data.userPseudonativeIrlAnswersCount ||
-        data.userCustomAnswersCount) >= DEFAULT_ANSWERS_LIMIT && (
+      {(data.userPseudonativeNotIrlAnswersCount >= DEFAULT_ANSWERS_LIMIT ||
+        data.userPseudonativeIrlAnswersCount >= DEFAULT_ANSWERS_LIMIT ||
+        data.userCustomAnswersCount >= DEFAULT_ANSWERS_LIMIT) && (
         <p className="mb-2 cursor-default text-orange-500">
           You cannot have more than {DEFAULT_ANSWERS_LIMIT} of a given kind of
           criteria.
