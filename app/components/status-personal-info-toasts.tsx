@@ -38,6 +38,16 @@ export function StatusPersonalInfoStandardizedToasts({
           Criteria revealed
         </ToastForm>
       )}
+      {statusPersonalInfo === "STANDARDIZEDANSWERUPDATED" && (
+        <ToastForm action="/reset-user-status-personal-info">
+          Answer updated
+        </ToastForm>
+      )}
+      {statusPersonalInfo === "STANDARDIZEDANSWERDELETED" && (
+        <ToastForm action="/reset-user-status-personal-info">
+          Answer deleted
+        </ToastForm>
+      )}
     </>
   );
 }
@@ -57,6 +67,16 @@ export function StatusPersonalInfoCustomizedToasts({
       {statusPersonalInfo === "PSEUDONATIVECRITERIADOWNEDFROMIRL" && (
         <ToastForm action="/reset-user-status-personal-info">
           Pseudonative criteria downed from irl
+        </ToastForm>
+      )}
+      {statusPersonalInfo === "CUSTOMIZEDANSWERUPDATED" && (
+        <ToastForm action="/reset-user-status-personal-info">
+          Answer updated
+        </ToastForm>
+      )}
+      {statusPersonalInfo === "CUSTOMIZEDANSWERDELETED" && (
+        <ToastForm action="/reset-user-status-personal-info">
+          Answer deleted
         </ToastForm>
       )}
     </>
