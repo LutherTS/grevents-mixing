@@ -1,14 +1,14 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 
-import { getVerifiedUserId, kickOut } from "~/utilities/server/session.server";
+import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 import { findUserQuestionFriendByIdAndContactUserFirstId } from "~/librairies/data/userquestionfriends";
 import { updateUserQuestionFriendCancelSharedToFriend } from "~/librairies/changes/userquestionfriends";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const verifiedUserId = await getVerifiedUserId(request);
+  const verifiedUser = await getVerifiedUser(request);
 
-  if (!verifiedUserId) {
+  if (!verifiedUser) {
     throw await kickOut(request);
   }
 
@@ -22,7 +22,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const userQuestionFriend =
     await findUserQuestionFriendByIdAndContactUserFirstId(
       userQuestionFriendId,
-      verifiedUserId
+      verifiedUser.id
     );
 
   if (!userQuestionFriend) {
@@ -31,7 +31,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   await updateUserQuestionFriendCancelSharedToFriend(
     userQuestionFriend.id,
-    verifiedUserId
+    verifiedUser.id
   );
 
   return null;

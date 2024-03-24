@@ -3,12 +3,12 @@ import { redirect } from "@remix-run/node";
 
 import { updateContactStatusOtherProfileById } from "~/librairies/changes/contacts";
 import { findContactByIdAndUserLastId } from "~/librairies/data/contacts";
-import { getVerifiedUserId, kickOut } from "~/utilities/server/session.server";
+import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const verifiedUserId = await getVerifiedUserId(request);
+  const verifiedUser = await getVerifiedUser(request);
 
-  if (!verifiedUserId) {
+  if (!verifiedUser) {
     throw await kickOut(request);
   }
 
@@ -19,7 +19,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null;
   }
 
-  const contact = await findContactByIdAndUserLastId(contactId, verifiedUserId);
+  const contact = await findContactByIdAndUserLastId(
+    contactId,
+    verifiedUser.id
+  );
 
   if (!contact?.mirror) {
     return null;

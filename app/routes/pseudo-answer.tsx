@@ -1,28 +1,22 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 
-import { getVerifiedUserId, kickOut } from "~/utilities/server/session.server";
+import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 import {
-  countUserPinnedAnswersByUserId,
   countUserPseudonativeIrlAnswersByUserId,
   countUserPseudonativeNotIrlAnswersByUserId,
   findAnswerByIdAndUserId,
 } from "~/librairies/data/answers";
+import { DEFAULT_ANSWERS_LIMIT } from "~/librairies/subdata/answers";
 import {
-  DEFAULT_ANSWERS_LIMIT,
-  PINNED_BY_USER_ANSWERS_LIMIT,
-} from "~/librairies/subdata/answers";
-import {
-  pinAnswerUserQuestionByIdAndUserId,
   pseudoIrlAnswerUserQuestionByIdAndUserId,
   pseudoNotIrlAnswerUserQuestionByIdAndUserId,
-  unpinAnswerUserQuestionByIdAndUserId,
 } from "~/librairies/changes/answers";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const verifiedUserId = await getVerifiedUserId(request);
+  const verifiedUser = await getVerifiedUser(request);
 
-  if (!verifiedUserId) {
+  if (!verifiedUser) {
     throw await kickOut(request);
   }
 
@@ -33,7 +27,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null;
   }
 
-  const answer = await findAnswerByIdAndUserId(answerId, verifiedUserId);
+  const answer = await findAnswerByIdAndUserId(answerId, verifiedUser.id);
 
   if (!answer) {
     return null;
@@ -41,21 +35,25 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   if (answer.userQuestion.kind === "PSEUDONATIVE") {
     const userPseudonativeIrlAnswersCount =
-      await countUserPseudonativeIrlAnswersByUserId(verifiedUserId);
-    if (userPseudonativeIrlAnswersCount < DEFAULT_ANSWERS_LIMIT) {
-      await pseudoIrlAnswerUserQuestionByIdAndUserId(answer.id, verifiedUserId);
+      await countUserPseudonativeIrlAnswersByUserId(verifiedUser.id);
+    if (userPseudonativeIrlAnswersCount >= DEFAULT_ANSWERS_LIMIT) {
+      return null;
     }
+
+    await pseudoIrlAnswerUserQuestionByIdAndUserId(answer.id, verifiedUser.id);
   }
 
   if (answer.userQuestion.kind === "PSEUDONATIVEIRL") {
     const userPseudonativeNotIrlAnswersCount =
-      await countUserPseudonativeNotIrlAnswersByUserId(verifiedUserId);
-    if (userPseudonativeNotIrlAnswersCount < DEFAULT_ANSWERS_LIMIT) {
-      await pseudoNotIrlAnswerUserQuestionByIdAndUserId(
-        answer.id,
-        verifiedUserId
-      );
+      await countUserPseudonativeNotIrlAnswersByUserId(verifiedUser.id);
+    if (userPseudonativeNotIrlAnswersCount >= DEFAULT_ANSWERS_LIMIT) {
+      return null;
     }
+
+    await pseudoNotIrlAnswerUserQuestionByIdAndUserId(
+      answer.id,
+      verifiedUser.id
+    );
   }
 
   return null;

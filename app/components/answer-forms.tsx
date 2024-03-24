@@ -20,15 +20,21 @@ export function NativeNotIrlAnswerForm({
   return (
     <>
       <fetcher.Form
-        action="/create-native-answer"
+        action="/create-native-not-irl-answer"
         method="post"
         className="flex flex-col items-center"
       >
         <fieldset disabled={fetcher.state !== "idle" || isLimitReached}>
           {isLimitReached && (
-            <p className="mt-2 text-red-500">
-              Limit number of answers reached for this type of criteria
-            </p>
+            <div>
+              <p className="mt-2 text-red-500">
+                Limit number of answers reached for this type of criteria (
+                {DEFAULT_ANSWERS_LIMIT})
+              </p>
+              <p className="mt-2">
+                To delete an answer, modify it by sending an empty response.
+              </p>
+            </div>
           )}
           <label htmlFor="native-not-irl-question" className="sr-only">
             Select a native question below

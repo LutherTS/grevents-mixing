@@ -1,15 +1,15 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 
-import { getVerifiedUserId, kickOut } from "~/utilities/server/session.server";
+import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 import { findAnswerByIdAndUserId } from "~/librairies/data/answers";
 import { findContactByIdAndUserFirstId } from "~/librairies/data/contacts";
 import { upsertAnswerUserQuestionFriendSharedToFriend } from "~/librairies/changes/answers";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const verifiedUserId = await getVerifiedUserId(request);
+  const verifiedUser = await getVerifiedUser(request);
 
-  if (!verifiedUserId) {
+  if (!verifiedUser) {
     throw await kickOut(request);
   }
 
@@ -21,7 +21,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null;
   }
 
-  const answer = await findAnswerByIdAndUserId(answerId, verifiedUserId);
+  const answer = await findAnswerByIdAndUserId(answerId, verifiedUser.id);
 
   if (!answer) {
     return null;
@@ -29,7 +29,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const contact = await findContactByIdAndUserFirstId(
     contactId,
-    verifiedUserId
+    verifiedUser.id
   );
 
   if (!contact?.mirror) {
@@ -38,7 +38,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   await upsertAnswerUserQuestionFriendSharedToFriend(
     answer.id,
-    verifiedUserId,
+    verifiedUser.id,
     answer.userQuestion.id,
     contact.id
   );

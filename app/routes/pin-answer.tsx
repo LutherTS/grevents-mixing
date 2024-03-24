@@ -1,7 +1,7 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 
-import { getVerifiedUserId, kickOut } from "~/utilities/server/session.server";
+import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 import {
   countUserPinnedAnswersByUserId,
   findAnswerByIdAndUserId,
@@ -13,9 +13,9 @@ import {
 } from "~/librairies/changes/answers";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const verifiedUserId = await getVerifiedUserId(request);
+  const verifiedUser = await getVerifiedUser(request);
 
-  if (!verifiedUserId) {
+  if (!verifiedUser) {
     throw await kickOut(request);
   }
 
@@ -26,7 +26,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null;
   }
 
-  const answer = await findAnswerByIdAndUserId(answerId, verifiedUserId);
+  const answer = await findAnswerByIdAndUserId(answerId, verifiedUser.id);
 
   if (!answer) {
     return null;
@@ -34,15 +34,15 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   if (answer.userQuestion.isPinned === false) {
     const userPinnedAnswersCount = await countUserPinnedAnswersByUserId(
-      verifiedUserId
+      verifiedUser.id
     );
     if (userPinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT) {
-      await pinAnswerUserQuestionByIdAndUserId(answer.id, verifiedUserId);
+      await pinAnswerUserQuestionByIdAndUserId(answer.id, verifiedUser.id);
     }
   }
 
   if (answer.userQuestion.isPinned === true) {
-    await unpinAnswerUserQuestionByIdAndUserId(answer.id, verifiedUserId);
+    await unpinAnswerUserQuestionByIdAndUserId(answer.id, verifiedUser.id);
   }
 
   return redirect(`/users/${answer.user.username}/personal-info`);

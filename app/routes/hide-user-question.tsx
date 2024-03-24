@@ -1,7 +1,7 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 
-import { getVerifiedUserId, kickOut } from "~/utilities/server/session.server";
+import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 import { findAnswerByIdAndUserId } from "~/librairies/data/answers";
 import {
   hideAnswerUserQuestionByIdAndUserId,
@@ -9,9 +9,9 @@ import {
 } from "~/librairies/changes/answers";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const verifiedUserId = await getVerifiedUserId(request);
+  const verifiedUser = await getVerifiedUser(request);
 
-  if (!verifiedUserId) {
+  if (!verifiedUser) {
     throw await kickOut(request);
   }
 
@@ -22,18 +22,18 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null;
   }
 
-  const answer = await findAnswerByIdAndUserId(answerId, verifiedUserId);
+  const answer = await findAnswerByIdAndUserId(answerId, verifiedUser.id);
 
   if (!answer) {
     return null;
   }
 
   if (answer.userQuestion.state === "LIVE") {
-    await hideAnswerUserQuestionByIdAndUserId(answer.id, verifiedUserId);
+    await hideAnswerUserQuestionByIdAndUserId(answer.id, verifiedUser.id);
   }
 
   if (answer.userQuestion.state === "HIDDEN") {
-    await revealAnswerUserQuestionByIdAndUserId(answer.id, verifiedUserId);
+    await revealAnswerUserQuestionByIdAndUserId(answer.id, verifiedUser.id);
   }
 
   return redirect(`/users/${answer.user.username}/personal-info/standardized`);

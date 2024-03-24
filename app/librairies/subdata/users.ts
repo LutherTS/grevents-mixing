@@ -60,5 +60,5 @@ export function whereSignInUser(
 }
 
 export function whereVerifiedUser(id: string): Prisma.UserWhereUniqueInput {
-  return { id };
+  return { id, OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }] };
 }

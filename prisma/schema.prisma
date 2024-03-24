@@ -106,6 +106,8 @@ model UserQuestion {
 
   answer               Answer?
 }
+// There's some cascade I'm going to need to work there.
+// https://www.prisma.io/docs/orm/prisma-schema/data-model/relations/referential-actions
 
 model UserQuestionFriend {
   id                   String       @id @default(uuid())
@@ -135,6 +137,7 @@ model Answer {
   userQuestion         UserQuestion @relation(fields: [userQuestionId], references: [id])
   userId               String
   user                 User         @relation(fields: [userId], references: [id])
+  @@unique([userQuestionId, userId]) // added
 }
 
 // unused

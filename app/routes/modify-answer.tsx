@@ -6,12 +6,12 @@ import {
 } from "~/librairies/changes/answers";
 import { findAnswerByIdAndUserId } from "~/librairies/data/answers";
 
-import { getVerifiedUserId, kickOut } from "~/utilities/server/session.server";
+import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const verifiedUserId = await getVerifiedUserId(request);
+  const verifiedUser = await getVerifiedUser(request);
 
-  if (!verifiedUserId) {
+  if (!verifiedUser) {
     throw await kickOut(request);
   }
 
@@ -23,7 +23,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null;
   }
 
-  const answer = await findAnswerByIdAndUserId(answerId, verifiedUserId);
+  const answer = await findAnswerByIdAndUserId(answerId, verifiedUser.id);
 
   if (!answer) {
     return null;
@@ -36,7 +36,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     if (answerValue !== "") {
       await updateAnswerValueStatusPersonalInfoByIdAndUserId(
         answerId,
-        verifiedUserId,
+        verifiedUser.id,
         answerValue,
         "STANDARDIZEDANSWERUPDATED"
       );
@@ -44,7 +44,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     if (answerValue === "") {
       await updateAnswerStateDeletedStatusPersonalInfoByIdAndUserId(
         answerId,
-        verifiedUserId,
+        verifiedUser.id,
         "STANDARDIZEDANSWERDELETED"
       );
     }
@@ -61,7 +61,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     if (answerValue !== "") {
       await updateAnswerValueStatusPersonalInfoByIdAndUserId(
         answerId,
-        verifiedUserId,
+        verifiedUser.id,
         answerValue,
         "CUSTOMIZEDANSWERUPDATED"
       );
@@ -69,7 +69,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     if (answerValue === "") {
       await updateAnswerStateDeletedStatusPersonalInfoByIdAndUserId(
         answerId,
-        verifiedUserId,
+        verifiedUser.id,
         "CUSTOMIZEDANSWERDELETED"
       );
     }

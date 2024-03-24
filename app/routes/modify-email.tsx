@@ -3,12 +3,12 @@ import { redirect } from "@remix-run/node";
 import { updateUserEmailByIdAndAnswerId } from "~/librairies/changes/users";
 import { findEmailAddressAnswerByUserId } from "~/librairies/data/answers";
 
-import { getVerifiedUserId, kickOut } from "~/utilities/server/session.server";
+import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const verifiedUserId = await getVerifiedUserId(request);
+  const verifiedUser = await getVerifiedUser(request);
 
-  if (!verifiedUserId) {
+  if (!verifiedUser) {
     throw await kickOut(request);
   }
 
@@ -20,15 +20,15 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 
   const verifiedUserEmailAddressAnswer = await findEmailAddressAnswerByUserId(
-    verifiedUserId
+    verifiedUser.id
   );
 
   if (!verifiedUserEmailAddressAnswer) {
     return null;
   }
 
-  const verifiedUser = await updateUserEmailByIdAndAnswerId(
-    verifiedUserId,
+  await updateUserEmailByIdAndAnswerId(
+    verifiedUser.id,
     email,
     verifiedUserEmailAddressAnswer.id
   );
