@@ -174,18 +174,19 @@ export function whereUserPinnedAnswersByUserId(
     userQuestion: {
       user: {
         id,
+        OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
       },
       question: {
         state: "LIVE",
       },
       isPinned: true,
-      state: "LIVE",
+      OR: [{ state: "LIVE" }, { state: "HIDDEN" }],
     },
     user: {
       id,
       OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
-    OR: [{ state: "LIVE" }, { state: "HIDDEN" }],
+    state: "LIVE",
   };
 }
 

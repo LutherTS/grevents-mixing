@@ -49,7 +49,7 @@ type ProfileLoaderByHand = {
   user: Prisma.UserGetPayload<{
     select: typeof selectUser;
   }>;
-  userToVerifiedUserContact: Prisma.ContactGetPayload<{
+  userToVerifiedUserContact?: Prisma.ContactGetPayload<{
     select: typeof selectContacts;
   }>;
   relCombo?: string;
@@ -245,7 +245,9 @@ export default function ProfilePage() {
 
   return (
     <>
-      <StatusOtherProfileToasts contact={data.userToVerifiedUserContact} />
+      {data.userToVerifiedUserContact && (
+        <StatusOtherProfileToasts contact={data.userToVerifiedUserContact} />
+      )}
       {typeof data.userQuestionFriendsAnswersPinnedByFriendCount === "number" &&
         data.userQuestionFriendsAnswersPinnedByFriendCount >=
           PINNED_BY_FRIEND_ANSWERS_LIMIT && (
@@ -293,13 +295,14 @@ export default function ProfilePage() {
                   </>
                 ) : (
                   <>
-                    {data.relCombo === "none" && (
-                      <>
-                        <RelationCombinationUserNoneExposed
-                          contact={data.userToVerifiedUserContact}
-                        />
-                      </>
-                    )}
+                    {data.relCombo === "none" &&
+                      data.userToVerifiedUserContact && (
+                        <>
+                          <RelationCombinationUserNoneExposed
+                            contact={data.userToVerifiedUserContact}
+                          />
+                        </>
+                      )}
                     {data.relCombo === "friend" &&
                       data.userToVerifiedUserContact &&
                       data.userQuestionFriendsAnswersPinnedByFriend &&
@@ -374,27 +377,30 @@ export default function ProfilePage() {
                           />
                         </>
                       )}
-                    {data.relCombo === "i-am-blocking" && (
-                      <>
-                        <RelationCombinationUserIsBlockingExposed
-                          contact={data.userToVerifiedUserContact}
-                        />
-                      </>
-                    )}
-                    {data.relCombo === "has-me-blocked" && (
-                      <>
-                        <RelationCombinationUserIsBlockedExposed
-                          contact={data.userToVerifiedUserContact}
-                        />
-                      </>
-                    )}
-                    {data.relCombo === "blocking-blocked" && (
-                      <>
-                        <RelationCombinationBlockingBlockedExposed
-                          contact={data.userToVerifiedUserContact}
-                        />
-                      </>
-                    )}
+                    {data.relCombo === "i-am-blocking" &&
+                      data.userToVerifiedUserContact && (
+                        <>
+                          <RelationCombinationUserIsBlockingExposed
+                            contact={data.userToVerifiedUserContact}
+                          />
+                        </>
+                      )}
+                    {data.relCombo === "has-me-blocked" &&
+                      data.userToVerifiedUserContact && (
+                        <>
+                          <RelationCombinationUserIsBlockedExposed
+                            contact={data.userToVerifiedUserContact}
+                          />
+                        </>
+                      )}
+                    {data.relCombo === "blocking-blocked" &&
+                      data.userToVerifiedUserContact && (
+                        <>
+                          <RelationCombinationBlockingBlockedExposed
+                            contact={data.userToVerifiedUserContact}
+                          />
+                        </>
+                      )}
                   </>
                 )}
               </>

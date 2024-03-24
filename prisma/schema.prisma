@@ -77,6 +77,7 @@ model Question {
   name                 String
   createdAt            DateTime     @default(now())
   updatedAt            DateTime     @updatedAt
+
   @@unique([kind, name])
 
   userId               String?      @unique
@@ -100,6 +101,7 @@ model UserQuestion {
   user                 User         @relation(fields: [userId], references: [id])
   questionId           String
   question             Question     @relation(fields: [questionId], references: [id])
+
   @@unique([userId, questionId])
 
   userQuestionFriends  UserQuestionFriend[]
@@ -123,6 +125,7 @@ model UserQuestionFriend {
   userQuestion         UserQuestion @relation(fields: [userQuestionId], references: [id])
   contactId            String
   contact              Contact      @relation(fields: [contactId], references: [id])
+
   @@unique([userQuestionId, contactId])
 }
 
@@ -134,9 +137,10 @@ model Answer {
   updatedAt            DateTime     @updatedAt
 
   userQuestionId       String       @unique
-  userQuestion         UserQuestion @relation(fields: [userQuestionId], references: [id])
+  userQuestion         UserQuestion @relation(fields: [userQuestionId], references: [id], onDelete: Cascade) // added
   userId               String
   user                 User         @relation(fields: [userId], references: [id])
+  
   @@unique([userQuestionId, userId]) // added
 }
 
