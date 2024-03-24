@@ -79,7 +79,7 @@ export function NativeIrlAnswerForm({
   return (
     <>
       <fetcher.Form
-        action="/create-native-answer"
+        action="/create-native-irl-answer"
         method="post"
         className="flex flex-col items-center"
       >

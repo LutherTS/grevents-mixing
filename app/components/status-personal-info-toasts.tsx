@@ -53,6 +53,11 @@ export function StatusPersonalInfoStandardizedToasts({
           Native criteria added
         </ToastForm>
       )}
+      {statusPersonalInfo === "NATIVECRITERIAIRLADDED" && (
+        <ToastForm action="/reset-user-status-personal-info">
+          Native irl criteria added
+        </ToastForm>
+      )}
     </>
   );
 }

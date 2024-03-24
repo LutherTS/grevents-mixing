@@ -1,6 +1,14 @@
 import { Prisma } from "@prisma/client";
 
 import { DEFAULT_QUESTIONS_ORDER_BY } from "./questions";
+import {
+  isNative,
+  isNativeIrl,
+  isPseudoNative,
+  isPseudoNativeIrl,
+  isSharedToContactCustom,
+  noneIsPinnedByFriend,
+} from "./userquestions";
 
 export type UnionAnswerType =
   | Prisma.AnswerGetPayload<{
@@ -60,79 +68,6 @@ export const PINNED_BY_USER_ANSWERS_ORDER_BY = [
 
 export const DEFAULT_ANSWERS_LIMIT = 32;
 export const PINNED_BY_USER_ANSWERS_LIMIT = 16;
-
-// would eventually be shifted to ./userquestions.ts
-export const isNative = {
-  state: "LIVE",
-  question: {
-    kind: "NATIVE",
-    state: "LIVE",
-  },
-} satisfies Prisma.UserQuestionWhereInput;
-
-// would eventually be shifted to ./userquestions.ts
-export const isPseudoNative = {
-  kind: "PSEUDONATIVE",
-  state: "LIVE",
-  question: {
-    kind: "PSEUDO",
-    state: "LIVE",
-  },
-} satisfies Prisma.UserQuestionWhereInput;
-
-// would eventually be shifted to ./userquestions.ts
-export const isNativeIrl = {
-  state: "LIVE",
-  question: {
-    kind: "NATIVEIRL",
-    state: "LIVE",
-  },
-} satisfies Prisma.UserQuestionWhereInput;
-
-// would eventually be shifted to ./userquestions.ts
-export const isPseudoNativeIrl = {
-  kind: "PSEUDONATIVEIRL",
-  state: "LIVE",
-  question: {
-    kind: "PSEUDO",
-    state: "LIVE",
-  },
-} satisfies Prisma.UserQuestionWhereInput;
-
-// would eventually be shifted to ./userquestions.ts
-export const isSharedToContactCustom = (
-  contactId: string
-): Prisma.UserQuestionWhereInput => {
-  return {
-    state: "LIVE",
-    question: {
-      kind: "CUSTOM",
-      state: "LIVE",
-    },
-    userQuestionFriends: {
-      some: {
-        contactId,
-        isSharedToFriend: true,
-        state: "LIVE",
-      },
-    },
-  };
-};
-
-// would eventually be shifted to ./userquestions.ts
-export const noneIsPinnedByFriend = (
-  contactId: string
-): Prisma.UserQuestionWhereInput => {
-  return {
-    userQuestionFriends: {
-      none: {
-        contactId,
-        isPinnedByFriend: true,
-        state: "LIVE",
-      },
-    },
-  };
-};
 
 export const selectUserPinnedAnswers = {
   userQuestion: {
@@ -606,8 +541,6 @@ export function whereEmailAddressByUserId(id: string): Prisma.AnswerWhereInput {
     state: "LIVE",
   };
 }
-
-// Profile subfunctions
 
 // currently the same as whereUserPinnedAnswersByUserId with OR [isNative, isPseudoNative, isSharedToContactCustom], with noneIsPinnedByFriend(contactId)
 export function whereUserPinnedNotIrlAnswersByUserIdExposed(

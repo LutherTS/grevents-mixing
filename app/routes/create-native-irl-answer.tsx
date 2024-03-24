@@ -5,7 +5,7 @@ import {
   upsertNativeUserQuestionAndAnswerByUserIdQuestionIdAndValue,
 } from "~/librairies/changes/userquestions";
 import { updateUserStatusPersonalInfoById } from "~/librairies/changes/users";
-import { countUserNativeNotIrlAnswersByUserId } from "~/librairies/data/answers";
+import { countUserNativeIrlAnswersByUserId } from "~/librairies/data/answers";
 import { findQuestionById } from "~/librairies/data/questions";
 import {
   findDeletablePreExistingUserQuestionAnswerAtUserIdAndQuestionId,
@@ -24,17 +24,17 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 
   const form = await request.formData();
-  const nativeNotIrlQuestionId = form.get("nativenotirlquestion");
-  const nativeNotIrlAnswerValue = form.get("nativenotirlanswer");
+  const nativeIrlQuestionId = form.get("nativeirlquestion");
+  const nativeIrlAnswerValue = form.get("nativeirlanswer");
 
   if (
-    typeof nativeNotIrlQuestionId !== "string" ||
-    typeof nativeNotIrlAnswerValue !== "string"
+    typeof nativeIrlQuestionId !== "string" ||
+    typeof nativeIrlAnswerValue !== "string"
   ) {
     return null;
   }
 
-  const question = await findQuestionById(nativeNotIrlQuestionId);
+  const question = await findQuestionById(nativeIrlQuestionId);
 
   if (!question) {
     return null;
@@ -45,8 +45,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     question.id
   );
 
-  const userNativeNotIrlAnswersCount =
-    await countUserNativeNotIrlAnswersByUserId(verifiedUser.id);
+  const userNativeNotIrlAnswersCount = await countUserNativeIrlAnswersByUserId(
+    verifiedUser.id
+  );
 
   if (userNativeNotIrlAnswersCount >= DEFAULT_ANSWERS_LIMIT) {
     return null;
@@ -80,16 +81,17 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
   // And now that I know for sure any incorrect userQuestion at userId and questionId is deleted if it existed, that's when I can create or update the new userQuestion and answer I initially intended to simply create.
 
+  // Function works whether it's Irl or not. Needs renaming.
   await upsertNativeUserQuestionAndAnswerByUserIdQuestionIdAndValue(
     verifiedUser.id,
     question.id,
-    nativeNotIrlAnswerValue
+    nativeIrlAnswerValue
   );
 
   if (
     userQuestion &&
     userQuestion.kind === "NONE" &&
-    userQuestion.question.kind === "NATIVE" &&
+    userQuestion.question.kind === "NATIVEIRL" &&
     userQuestion.state === "LIVE" &&
     userQuestion.answer?.state === "LIVE"
   ) {
@@ -100,7 +102,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   } else {
     await updateUserStatusPersonalInfoById(
       verifiedUser.id,
-      "NATIVECRITERIANOTIRLADDED"
+      "NATIVECRITERIAIRLADDED"
     );
   }
 

@@ -335,8 +335,6 @@ export async function findEmailAddressAnswerByUserId(userId: string) {
   });
 }
 
-// Profile functions
-
 export async function findUserPinnedNotIrlAnswersByUserIdExposed(
   userId: string,
   contactId: string

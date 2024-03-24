@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 
-export function createNativeNotIrlUserQuestionAndAnswer(
+export function createNativeUserQuestionAndAnswer(
   userId: string,
   questionId: string,
   value: string
@@ -18,7 +18,7 @@ export function createNativeNotIrlUserQuestionAndAnswer(
     },
   };
 }
-export function updateNativeNotIrlUserQuestionAndAnswer(
+export function updateNativeUserQuestionAndAnswer(
   userId: string,
   questionId: string,
   value: string

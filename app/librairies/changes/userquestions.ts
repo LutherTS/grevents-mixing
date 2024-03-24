@@ -1,8 +1,8 @@
 import { prisma } from "~/utilities/server/db.server";
 import { whereUserQuestionAtUserIdAndQuestionId } from "../subdata/userquestions";
 import {
-  createNativeNotIrlUserQuestionAndAnswer,
-  updateNativeNotIrlUserQuestionAndAnswer,
+  createNativeUserQuestionAndAnswer,
+  updateNativeUserQuestionAndAnswer,
 } from "../subchanges/userquestions";
 
 export async function deleteUserQuestionAtUserIdAndQuestionId(
@@ -16,22 +16,14 @@ export async function deleteUserQuestionAtUserIdAndQuestionId(
   });
 }
 
-export async function upsertNativeNotIrlUserQuestionAndAnswerByUserIdQuestionIdAndValue(
+export async function upsertNativeUserQuestionAndAnswerByUserIdQuestionIdAndValue(
   userId: string,
   questionId: string,
   value: string
 ) {
   const where = whereUserQuestionAtUserIdAndQuestionId(userId, questionId);
-  const create = createNativeNotIrlUserQuestionAndAnswer(
-    userId,
-    questionId,
-    value
-  );
-  const update = updateNativeNotIrlUserQuestionAndAnswer(
-    userId,
-    questionId,
-    value
-  );
+  const create = createNativeUserQuestionAndAnswer(userId, questionId, value);
+  const update = updateNativeUserQuestionAndAnswer(userId, questionId, value);
 
   return await prisma.userQuestion.upsert({
     where,
