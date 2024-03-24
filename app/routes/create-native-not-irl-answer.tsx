@@ -90,25 +90,17 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     userQuestion &&
     userQuestion.kind === "NONE" &&
     userQuestion.question.kind === "NATIVE" &&
-    (userQuestion.state === "DELETED" ||
-      userQuestion.answer?.state === "DELETED")
-  ) {
-    await updateUserStatusPersonalInfoById(
-      verifiedUser.id,
-      "NATIVECRITERIANOTIRLADDED"
-    );
-  }
-
-  if (
-    userQuestion &&
-    userQuestion.kind === "NONE" &&
-    userQuestion.question.kind === "NATIVE" &&
     userQuestion.state === "LIVE" &&
     userQuestion.answer?.state === "LIVE"
   ) {
     await updateUserStatusPersonalInfoById(
       verifiedUser.id,
       "STANDARDIZEDANSWERUPDATED"
+    );
+  } else {
+    await updateUserStatusPersonalInfoById(
+      verifiedUser.id,
+      "NATIVECRITERIANOTIRLADDED"
     );
   }
 

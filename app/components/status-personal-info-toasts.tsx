@@ -48,6 +48,11 @@ export function StatusPersonalInfoStandardizedToasts({
           Answer deleted
         </ToastForm>
       )}
+      {statusPersonalInfo === "NATIVECRITERIANOTIRLADDED" && (
+        <ToastForm action="/reset-user-status-personal-info">
+          Native criteria added
+        </ToastForm>
+      )}
     </>
   );
 }
