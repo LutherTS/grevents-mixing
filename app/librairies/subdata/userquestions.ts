@@ -33,6 +33,9 @@ export function whereUserQuestionByUserIdAndQuestionId(
       state: "LIVE",
     },
     OR: [{ state: "LIVE" }, { state: "HIDDEN" }],
+    answer: {
+      state: "LIVE",
+    },
   };
 }
 
@@ -44,6 +47,36 @@ export function whereUserQuestionAtUserIdAndQuestionId(
     userId_questionId: {
       userId,
       questionId,
+    },
+  };
+}
+
+export function whereDeletableUserQuestionByUserIdAndQuestionId(
+  userId: string,
+  questionId: string
+): Prisma.UserQuestionWhereUniqueInput {
+  return {
+    userId_questionId: {
+      userId,
+      questionId,
+    },
+    NOT: [{ state: "LIVE" }, { state: "HIDDEN" }],
+  };
+}
+
+export function whereDeletableUserQuestionAnswerByUserIdAndQuestionId(
+  userId: string,
+  questionId: string
+): Prisma.UserQuestionWhereUniqueInput {
+  return {
+    userId_questionId: {
+      userId,
+      questionId,
+    },
+    answer: {
+      NOT: {
+        state: "LIVE",
+      },
     },
   };
 }
