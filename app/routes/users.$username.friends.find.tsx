@@ -70,6 +70,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null;
   }
 
+  if (otherUser.id === verifiedUser.id) {
+    return null;
+  }
+
   const [otherUserToVerifiedUserContact, verifiedUserToOtherUserContact] =
     await Promise.all([
       upsertContactThroughFindByOtherUserIdAndVerifiedUserId(
@@ -93,7 +97,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     ),
   ]);
 
-  return redirect(`/users/${otherUser.username}/dashboard`);
+  return redirect(`/users/${otherUser.username}/profile`);
 };
 
 export default function FindContactsPage() {
