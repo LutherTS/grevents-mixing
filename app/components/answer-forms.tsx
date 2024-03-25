@@ -188,7 +188,7 @@ export function PseudonativeNotIrlAnswerForm({
   return (
     <>
       <fetcher.Form
-        action="/create-pseudonative-answer"
+        action="/create-pseudonative-not-irl-answer"
         method="post"
         className="flex flex-col items-center"
       >
@@ -237,7 +237,7 @@ export function PseudonativeIrlAnswerForm({
   return (
     <>
       <fetcher.Form
-        action="/create-pseudonative-answer"
+        action="/create-pseudonative-irl-answer"
         method="post"
         className="flex flex-col items-center"
       >

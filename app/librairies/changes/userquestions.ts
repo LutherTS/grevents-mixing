@@ -1,8 +1,8 @@
 import { prisma } from "~/utilities/server/db.server";
 import { whereUserQuestionAtUserIdAndQuestionId } from "../subdata/userquestions";
 import {
-  createNativeUserQuestionAndAnswer,
-  updateNativeUserQuestionAndAnswer,
+  createUserQuestionAndAnswer,
+  updateUserQuestionAndAnswer,
 } from "../subchanges/userquestions";
 
 export async function deleteUserQuestionAtUserIdAndQuestionId(
@@ -16,14 +16,16 @@ export async function deleteUserQuestionAtUserIdAndQuestionId(
   });
 }
 
-export async function upsertNativeUserQuestionAndAnswerByUserIdQuestionIdAndValue(
+// Now also working for pseudonative, and will (probably) work with custom too.
+export async function upsertUserQuestionAndAnswerByUserIdQuestionIdValueAndKind(
   userId: string,
   questionId: string,
-  value: string
+  value: string,
+  kind?: string
 ) {
   const where = whereUserQuestionAtUserIdAndQuestionId(userId, questionId);
-  const create = createNativeUserQuestionAndAnswer(userId, questionId, value);
-  const update = updateNativeUserQuestionAndAnswer(userId, questionId, value);
+  const create = createUserQuestionAndAnswer(userId, questionId, value, kind);
+  const update = updateUserQuestionAndAnswer(userId, questionId, value, kind);
 
   return await prisma.userQuestion.upsert({
     where,

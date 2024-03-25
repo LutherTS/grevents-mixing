@@ -4,6 +4,7 @@ import {
   ARBITRARY_QUESTIONS_LIMIT,
   selectUnansweredNativeQuestions,
   whereUnansweredNativeQuestionsByUserIdAndKind,
+  wherePseudoQuestionByName,
 } from "../subdata/questions";
 
 const orderBy = DEFAULT_QUESTIONS_ORDER_BY;
@@ -43,6 +44,16 @@ export async function findUnansweredNativeIrlQuestionsByUserId(userId: string) {
 export async function findQuestionById(id: string) {
   const select = { id: true };
   const where = { id };
+
+  return await prisma.question.findUnique({
+    select,
+    where,
+  });
+}
+
+export async function findPseudoQuestionByName(name: string) {
+  const select = { id: true };
+  const where = wherePseudoQuestionByName(name);
 
   return await prisma.question.findUnique({
     select,

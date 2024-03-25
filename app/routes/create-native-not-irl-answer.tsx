@@ -2,7 +2,7 @@ import type { ActionFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import {
   deleteUserQuestionAtUserIdAndQuestionId,
-  upsertNativeUserQuestionAndAnswerByUserIdQuestionIdAndValue,
+  upsertUserQuestionAndAnswerByUserIdQuestionIdValueAndKind,
 } from "~/librairies/changes/userquestions";
 import { updateUserStatusPersonalInfoById } from "~/librairies/changes/users";
 import { countUserNativeNotIrlAnswersByUserId } from "~/librairies/data/answers";
@@ -80,7 +80,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
   // And now that I know for sure any incorrect userQuestion at userId and questionId is deleted if it existed, that's when I can create or update the new userQuestion and answer I initially intended to simply create.
 
-  await upsertNativeUserQuestionAndAnswerByUserIdQuestionIdAndValue(
+  await upsertUserQuestionAndAnswerByUserIdQuestionIdValueAndKind(
     verifiedUser.id,
     question.id,
     nativeNotIrlAnswerValue
