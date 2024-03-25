@@ -99,6 +99,11 @@ export function StatusPersonalInfoCustomizedToasts({
           Pseudonative irl criteria added
         </ToastForm>
       )}
+      {statusPersonalInfo === "CUSTOMCRITERIAADDED" && (
+        <ToastForm action="/reset-user-status-personal-info">
+          Custom criteria added
+        </ToastForm>
+      )}
     </>
   );
 }
@@ -118,6 +123,11 @@ export function StatusPersonalInfoCustomizedUserCriteriaToasts({
       {statusPersonalInfo === "USERQUESTIONFRIENDUNSHARED" && (
         <ToastForm action="/reset-user-status-personal-info">
           Criteria unshared from friend
+        </ToastForm>
+      )}
+      {statusPersonalInfo === "CUSTOMANSWERUPDATED" && (
+        <ToastForm action="/reset-user-status-personal-info">
+          Answer updated
         </ToastForm>
       )}
     </>

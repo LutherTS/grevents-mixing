@@ -54,10 +54,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     );
   }
 
-  if (
-    answer.userQuestion.question.kind === "PSEUDO" ||
-    answer.userQuestion.question.kind === "CUSTOM"
-  ) {
+  if (answer.userQuestion.question.kind === "PSEUDO") {
     if (answerValue !== "") {
       await updateAnswerValueStatusPersonalInfoByIdAndUserId(
         answerId,
@@ -75,6 +72,28 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     }
 
     return redirect(`/users/${answer.user.username}/personal-info/customized`);
+  }
+
+  if (answer.userQuestion.question.kind === "CUSTOM") {
+    if (answerValue !== "") {
+      await updateAnswerValueStatusPersonalInfoByIdAndUserId(
+        answerId,
+        verifiedUser.id,
+        answerValue,
+        "CUSTOMANSWERUPDATED"
+      );
+      return null;
+    }
+    if (answerValue === "") {
+      await updateAnswerStateDeletedStatusPersonalInfoByIdAndUserId(
+        answerId,
+        verifiedUser.id,
+        "CUSTOMIZEDANSWERDELETED"
+      );
+      return redirect(
+        `/users/${answer.user.username}/personal-info/customized`
+      );
+    }
   }
 };
 

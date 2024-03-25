@@ -58,6 +58,8 @@ model Contact {
   original             Contact?     @relation("MirrorContactId")
   // Since this is cyclic, it is to be understood as: 
   // Other is my mirror, but when I'm its mirror other is my original.
+  // (To understand why it doesn't behave like successor/predecessor :)
+  // (https://www.prisma.io/docs/orm/prisma-schema/data-model/relations/self-relations)
 
   userFirstId          String    
   userFirst            User         @relation("UserFirst", fields: [userFirstId], references: [id])
@@ -80,7 +82,7 @@ model Question {
 
   @@unique([kind, name])
 
-  userId               String?      // corrected (removed @unique)
+  userId               String?      
   user                 User?        @relation(fields: [userId], references: [id])
 
   userQuestions        UserQuestion[]
@@ -108,8 +110,6 @@ model UserQuestion {
 
   answer               Answer?
 }
-// There's some cascade I'm going to need to work there.
-// https://www.prisma.io/docs/orm/prisma-schema/data-model/relations/referential-actions
 
 model UserQuestionFriend {
   id                   String       @id @default(uuid())
@@ -137,11 +137,11 @@ model Answer {
   updatedAt            DateTime     @updatedAt
 
   userQuestionId       String       @unique
-  userQuestion         UserQuestion @relation(fields: [userQuestionId], references: [id], onDelete: Cascade) // added
+  userQuestion         UserQuestion @relation(fields: [userQuestionId], references: [id], onDelete: Cascade)
   userId               String
   user                 User         @relation(fields: [userId], references: [id])
 
-  @@unique([userQuestionId, userId]) // added
+  @@unique([userQuestionId, userId])
 }
 
 // unused
@@ -182,6 +182,7 @@ model Answer {
 //   STANDARDIZEDANSWERDELETED
 //   CUSTOMIZEDANSWERUPDATED
 //   CUSTOMIZEDANSWERDELETED
+//   CUSTOMANSWERUPDATED
 //   NATIVECRITERIANOTIRLADDED
 //   NATIVECRITERIAIRLADDED
 //   PSEUDONATIVECRITERIANOTIRLADDED
