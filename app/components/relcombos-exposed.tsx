@@ -112,7 +112,6 @@ export function RelationCombinationUserNoneExposed({
   );
 }
 
-// Because contact will be shared via hidden input, like a bind.
 function ProfileForm({
   contact,
   action,
@@ -135,6 +134,7 @@ function ProfileForm({
         method="post"
         className={specifiedClasses ? specifiedClasses : "mt-2"}
       >
+        <input type="hidden" name="contactid" value={contact.id} />
         <LinkButton disabled={fetcher.state !== "idle"}>{children}</LinkButton>
       </fetcher.Form>
     </>
