@@ -42,3 +42,15 @@ export function wherePseudoQuestionByName(
     state: "LIVE",
   };
 }
+
+export function whereCustomQuestionByName(
+  name: string
+): Prisma.QuestionWhereUniqueInput {
+  return {
+    kind_name: {
+      kind: "CUSTOM",
+      name,
+    },
+    state: "LIVE",
+  };
+}
