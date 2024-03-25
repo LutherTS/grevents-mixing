@@ -62,3 +62,9 @@ export function whereSignInUser(
 export function whereVerifiedUser(id: string): Prisma.UserWhereUniqueInput {
   return { id, OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }] };
 }
+
+export function whereUserByFriendCode(
+  friendCode: string
+): Prisma.UserWhereUniqueInput {
+  return { friendCode, OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }] };
+}
