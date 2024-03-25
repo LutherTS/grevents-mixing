@@ -63,6 +63,7 @@ export async function upsertContactThroughFindByVerifiedUserIdAndOtherUserId(
       kind: "NONE",
       statusOtherProfile: "HASFIRSTACCESSEDTHROUGHFIND",
       // perhaps something to work on here for notifications
+      latestfoundAt: new Date(),
     },
     update: {
       statusOtherProfile: "HASREACCESSEDTHROUGHFIND",
@@ -71,6 +72,7 @@ export async function upsertContactThroughFindByVerifiedUserIdAndOtherUserId(
       // Actually I'll notify the user in notifications,
       // so that if too many unknown users find their profile
       // they'll know and could be prompted to change their friend code.
+      latestfoundAt: new Date(),
     },
   });
 }

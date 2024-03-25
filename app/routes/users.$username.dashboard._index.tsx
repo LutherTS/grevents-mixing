@@ -13,6 +13,7 @@ import {
   countSentIrlToContactsByUserId,
   countSentFriendFromContactsByUserId,
   countSentIrlFromContactsByUserId,
+  countHasAccessedFromContactsByUserId,
 } from "~/librairies/data/contacts";
 import { findUserByUsername } from "~/librairies/data/users";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
@@ -45,18 +46,22 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     sentIrlToContactsCount,
     sentFriendFromContactsCount,
     sentIrlFromContactsCount,
+    hasAccessedFromContactsCount,
   ] = await Promise.all([
     countSentFriendToContactsByUserId(user.id),
     countSentIrlToContactsByUserId(user.id),
     countSentFriendFromContactsByUserId(user.id),
     countSentIrlFromContactsByUserId(user.id),
+    countHasAccessedFromContactsByUserId(user.id),
   ]);
 
   const sentToContactsCount =
     sentFriendToContactsCount + sentIrlToContactsCount;
 
   const sentFromContactsCount =
-    sentFriendFromContactsCount + sentIrlFromContactsCount;
+    sentFriendFromContactsCount +
+    sentIrlFromContactsCount +
+    hasAccessedFromContactsCount;
 
   return json({
     verifiedUser,

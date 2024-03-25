@@ -52,6 +52,7 @@ model Contact {
   friendAt             DateTime?
   irlAt                DateTime?
   blockedAt            DateTime?
+  latestfoundAt        DateTime?
 
   mirrorId             String?      @unique
   mirror               Contact?     @relation("MirrorContactId", fields: [mirrorId], references: [id])

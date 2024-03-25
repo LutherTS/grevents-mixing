@@ -9,6 +9,7 @@ import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import {
+  findHasAccessedFromContactsByUserId,
   findSentFriendFromContactsByUserId,
   findSentIrlFromContactsByUserId,
 } from "~/librairies/data/contacts";
@@ -38,16 +39,19 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     throw redirect(`/users/${verifiedUser.username}/dashboard`);
   }
 
-  const [sentFriendFromContacts, sentIrlFromContacts] = await Promise.all([
-    findSentFriendFromContactsByUserId(user.id),
-    findSentIrlFromContactsByUserId(user.id),
-  ]);
+  const [sentFriendFromContacts, sentIrlFromContacts, hasAccessedFromContacts] =
+    await Promise.all([
+      findSentFriendFromContactsByUserId(user.id),
+      findSentIrlFromContactsByUserId(user.id),
+      findHasAccessedFromContactsByUserId(user.id),
+    ]);
 
   return json({
     verifiedUser,
     user,
     sentFriendFromContacts,
     sentIrlFromContacts,
+    hasAccessedFromContacts,
   });
 };
 
@@ -76,6 +80,19 @@ export default function NotificationsPage() {
           label="Irl upgrade requests received"
           notLabel="You have not received any irl upgrade requests."
         />
+        {data.hasAccessedFromContacts.length > 0 && (
+          <div className="py-2">
+            <ManyContacts
+              contacts={data.hasAccessedFromContacts}
+              contactComponentRequired="OneContact"
+              label="Users who found your profile through your friend code"
+            />
+            <p className="mt-2 text-orange-500">
+              If you don't know one of the above users, feel free to block them
+              and do consider generating a new friend code.
+            </p>
+          </div>
+        )}
       </div>
 
       <PageLink href={`../requests`}>To requests</PageLink>

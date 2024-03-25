@@ -25,7 +25,7 @@ export function ManyContacts({
   }>;
   contactComponentRequired: string;
   label: string;
-  notLabel: string;
+  notLabel?: string;
 }) {
   return (
     <>
@@ -63,7 +63,7 @@ export function ManyContacts({
             )}
           </>
         )}
-        {contacts.length === 0 && (
+        {contacts.length === 0 && notLabel && (
           <>
             <p className="mt-2">{notLabel}</p>
           </>
