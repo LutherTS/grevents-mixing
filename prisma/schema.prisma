@@ -52,6 +52,7 @@ model Contact {
   friendAt             DateTime?
   irlAt                DateTime?
   blockedAt            DateTime?
+  latestfoundAt        DateTime?
 
   mirrorId             String?      @unique
   mirror               Contact?     @relation("MirrorContactId", fields: [mirrorId], references: [id])
@@ -239,9 +240,11 @@ model Answer {
 // enum ContactStatusOtherProfile {
 //   NONE
 //   FIRSTACCESSEDTHROUGHFIND
-//   REACCESSTHROUGHFIND
+//   REACCESSEDTHROUGHFIND
 //   USERQUESTIONFRIENDPINNED
 //   USERQUESTIONFRIENDUNPINNED
+//   HASFIRSTACCESSEDTHROUGHFIND
+//   HASREACCESSEDTHROUGHFIND
 // }
 
 // enum QuestionState {

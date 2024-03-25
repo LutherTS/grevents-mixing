@@ -27,6 +27,42 @@ export function StatusOtherProfileToasts({
           Friend criteria unpinned by you
         </ContactToastForm>
       )}
+      {contact.statusOtherProfile === "FIRSTACCESSEDTHROUGHFIND" && (
+        <ContactToastForm
+          contact={contact}
+          action="/reset-contact-status-other-profile"
+        >
+          {contact.userFirst.appWideName}&apos;s profile found
+        </ContactToastForm>
+      )}
+      {contact.statusOtherProfile === "REACCESSEDTHROUGHFIND" && (
+        <ContactToastForm
+          contact={contact}
+          action="/reset-contact-status-other-profile"
+        >
+          {contact.userFirst.appWideName}&apos;s profile found once more
+        </ContactToastForm>
+      )}
+      {contact.mirror &&
+        contact.statusOtherProfile === "HASFIRSTACCESSEDTHROUGHFIND" && (
+          <ContactToastForm
+            contact={contact}
+            action="/reset-contact-status-other-profile"
+            specifiedClasses="text-orange-500 disabled:text-gray-500"
+          >
+            {contact.userFirst.username} has found your profile
+          </ContactToastForm>
+        )}
+      {contact.mirror &&
+        contact.statusOtherProfile === "HASREACCESSEDTHROUGHFIND" && (
+          <ContactToastForm
+            contact={contact}
+            action="/reset-contact-status-other-profile"
+            specifiedClasses="text-orange-500 disabled:text-gray-500"
+          >
+            {contact.userFirst.username} has found your profile once more
+          </ContactToastForm>
+        )}
     </>
   );
 }

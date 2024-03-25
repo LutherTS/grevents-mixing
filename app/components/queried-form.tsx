@@ -2,13 +2,18 @@ import { Prisma } from "@prisma/client";
 import { useFetcher } from "@remix-run/react";
 
 import { selectContacts } from "~/librairies/subdata/contacts";
+import { relationCombinations } from "~/utilities/contacts";
 
 export function QueriedForm({
   contact,
+  userLast,
+  relCombo,
 }: {
   contact: Prisma.ContactGetPayload<{
     select: typeof selectContacts;
   }>;
+  userLast?: string;
+  relCombo?: string;
 }) {
   const fetcher = useFetcher();
 
@@ -25,7 +30,11 @@ export function QueriedForm({
               type="text"
               id="user-last"
               name="userlast"
-              placeholder="userlast"
+              placeholder={
+                userLast && relCombo && relationCombinations.includes(relCombo)
+                  ? userLast
+                  : "userlast"
+              }
             />
           </div>
           {contact && (
@@ -42,7 +51,7 @@ export function QueriedForm({
                 type="text"
                 id="rel-combo"
                 name="relcombo"
-                placeholder="relcombo"
+                placeholder={relCombo ? relCombo : "relcombo"}
               />
               {/* Currently necessary to send the full form via Enter */}
               <button type="submit" className="hidden">

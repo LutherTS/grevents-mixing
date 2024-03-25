@@ -9,8 +9,8 @@ import { selectContacts } from "~/librairies/subdata/contacts";
 import { LinkButton } from "./link-button";
 import { PageLink } from "./page-link";
 
-// contact. c'est user
-// contact.mirror c'est verifiedUser
+// contact. is user
+// contact.mirror is verifiedUser
 
 export function RelationCombinationUserNoneExposed({
   contact,

@@ -261,3 +261,25 @@ export function whereContactByIdAndUserLastId(
     userLastId,
   };
 }
+
+export function whereHasAccessedFromContactsByUserId(
+  userLastId: string
+): Prisma.ContactWhereInput {
+  return {
+    state: "LIVE",
+    mirror: {
+      state: "LIVE",
+      userLastId,
+      OR: [
+        { statusOtherProfile: "HASFIRSTACCESSEDTHROUGHFIND" },
+        { statusOtherProfile: "HASREACCESSEDTHROUGHFIND" },
+      ],
+    },
+    userFirst: {
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
+    },
+    userLast: {
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
+    },
+  };
+}
