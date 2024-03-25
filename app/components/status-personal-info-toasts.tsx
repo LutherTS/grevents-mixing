@@ -89,6 +89,16 @@ export function StatusPersonalInfoCustomizedToasts({
           Answer deleted
         </ToastForm>
       )}
+      {statusPersonalInfo === "PSEUDONATIVECRITERIANOTIRLADDED" && (
+        <ToastForm action="/reset-user-status-personal-info">
+          Pseudonative criteria added
+        </ToastForm>
+      )}
+      {statusPersonalInfo === "PSEUDONATIVECRITERIAIRLADDED" && (
+        <ToastForm action="/reset-user-status-personal-info">
+          Pseudonative irl criteria added
+        </ToastForm>
+      )}
     </>
   );
 }
