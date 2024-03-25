@@ -10,6 +10,9 @@ import {
   whereUserWhoHaveMeBlockedByUserId,
   whereUserWhoIAmBlockingByUserId,
   whereContactByUserFirstIdAndUserLastUsername,
+  whereContactByUserFirstIdAndUserLastId,
+  whereContactByIdAndUserFirstId,
+  whereContactByIdAndUserLastId,
 } from "../subdata/contacts";
 
 const orderBy = DEFAULT_CONTACTS_ORDER_BY;
@@ -17,7 +20,7 @@ const orderBy = DEFAULT_CONTACTS_ORDER_BY;
 const take = ARBITRARY_CONTACTS_LIMIT;
 
 export async function findSentFriendToContactsByUserId(userId: string) {
-  const select = selectContacts;
+  const select = selectContacts; // this could simply become the default select at this point, given the reliance on a many "select type" elsewhere
   const where = whereSentToContactsByUserIdAndProcessRelationship(
     userId,
     "SENTFRIEND"
@@ -212,6 +215,45 @@ export async function findContactByUserFirstIdAndUserLastUsername(
   );
 
   return await prisma.contact.findFirst({
+    select,
+    where,
+  });
+}
+
+export async function findContactByUserFirstIdAndUserLastId(
+  userFirstId: string,
+  userLastId: string
+) {
+  const select = selectContacts;
+  const where = whereContactByUserFirstIdAndUserLastId(userFirstId, userLastId);
+
+  return await prisma.contact.findFirst({
+    select,
+    where,
+  });
+}
+
+export async function findContactByIdAndUserFirstId(
+  id: string,
+  userFirstId: string
+) {
+  const select = selectContacts;
+  const where = whereContactByIdAndUserFirstId(id, userFirstId);
+
+  return await prisma.contact.findUnique({
+    select,
+    where,
+  });
+}
+
+export async function findContactByIdAndUserLastId(
+  id: string,
+  userLastId: string
+) {
+  const select = selectContacts;
+  const where = whereContactByIdAndUserLastId(id, userLastId);
+
+  return await prisma.contact.findUnique({
     select,
     where,
   });

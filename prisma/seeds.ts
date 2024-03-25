@@ -278,6 +278,66 @@ async function seed() {
     },
   });
 
+  // Ursula / BlueCrow
+
+  const blueCrow = await db.user.create({
+    data: {
+      username: "BlueCrow",
+      email: "u@u.com",
+      hashedPassword:
+        "$2a$12$ZFCN7rFeEgmVOYQ6M31mgehpGV1m8NiQ/CWGx3/qKTkJ4xOqWxhs.", // BlueCrow
+      appWideName: "Ursula",
+      friendCode: "U5cTyPbetxvk",
+      state: "LIVE",
+      // state: "DEACTIVATED",
+    },
+  });
+
+  // Victoria / LaVictoire
+
+  const laVictoire = await db.user.create({
+    data: {
+      username: "LaVictoire",
+      email: "v@v.com",
+      hashedPassword:
+        "$2a$12$QulFtzyqoOve.o6WMyLwCuzP6aUIfjksEPveRajJpcvcf.ojlGOgK", // LaVictoire
+      appWideName: "Victoria",
+      friendCode: "NL98sQFWGRx5",
+      state: "LIVE",
+      // state: "DEACTIVATED",
+    },
+  });
+
+  // Wilda / oftheWild
+
+  const ofTheWild = await db.user.create({
+    data: {
+      username: "oftheWild",
+      email: "w@w.com",
+      hashedPassword:
+        "$2a$12$Y6eTEC/CBKoaZ7ryJDR6PuqxOaES6EZA.GjY8zjxsUb6XUYqo0die", // oftheWild
+      appWideName: "Wilda",
+      friendCode: "FWPbdZV6A9sN",
+      state: "LIVE",
+      // state: "DEACTIVATED",
+    },
+  });
+
+  // Xenobia / ResRevealed
+
+  const resRevealed = await db.user.create({
+    data: {
+      username: "ResRevealed",
+      email: "x@x.com",
+      hashedPassword:
+        "$2a$12$v2MeRBz0ncCEBS3WMMDb.emMdjgL2Ep0bptqNRr.tsCiqcfowHsmG", // ResRevealed
+      appWideName: "Xenobia",
+      friendCode: "nFAQpjCq2z7P",
+      state: "LIVE",
+      // state: "DEACTIVATED",
+    },
+  });
+
   console.log(`Users seeds complete.`);
 
   console.log(`Seeding contacts...`);
@@ -1142,6 +1202,270 @@ async function seed() {
     }),
   ]);
 
+  // “me” and Ursula / relation combination “none”
+  // “me” processRelationship "ANNULFRIEND" to Ursula
+
+  const lePapierToBlueCrow = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: blueCrow.id,
+        },
+      },
+      state: "LIVE",
+      kind: "NONE",
+      processRelationship: "ANNULFRIEND",
+    },
+  });
+
+  const blueCrowToLePapier = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: blueCrow.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      state: "LIVE",
+      kind: "NONE",
+    },
+  });
+
+  await Promise.all([
+    await db.contact.update({
+      where: {
+        id: lePapierToBlueCrow.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: blueCrowToLePapier.id,
+          },
+        },
+        annulFriendAt: new Date(),
+      },
+    }),
+    await db.contact.update({
+      where: {
+        id: blueCrowToLePapier.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: lePapierToBlueCrow.id,
+          },
+        },
+      },
+    }),
+  ]);
+
+  // “me” and Victoria / relation combination “none”
+  // Victoria processRelationship "ANNULFRIEND" to “me”
+
+  const lePapierToLaVictoire = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: laVictoire.id,
+        },
+      },
+      state: "LIVE",
+      kind: "NONE",
+    },
+  });
+
+  const laVictoireToLePapier = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: laVictoire.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      state: "LIVE",
+      kind: "NONE",
+      processRelationship: "ANNULFRIEND",
+    },
+  });
+
+  await Promise.all([
+    await db.contact.update({
+      where: {
+        id: lePapierToLaVictoire.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: laVictoireToLePapier.id,
+          },
+        },
+      },
+    }),
+    await db.contact.update({
+      where: {
+        id: laVictoireToLePapier.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: lePapierToLaVictoire.id,
+          },
+        },
+        annulFriendAt: new Date(),
+      },
+    }),
+  ]);
+
+  // “me” and Wilda / relation combination “friend”
+  // “me” processRelationship "ANNULIRL" to Wilda
+
+  const lePapierToOfTheWild = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: ofTheWild.id,
+        },
+      },
+      state: "LIVE",
+      kind: "FRIEND",
+      processRelationship: "ANNULIRL",
+    },
+  });
+
+  const ofTheWildToLePapier = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: ofTheWild.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      state: "LIVE",
+      kind: "FRIEND",
+    },
+  });
+
+  await Promise.all([
+    await db.contact.update({
+      where: {
+        id: lePapierToOfTheWild.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: ofTheWildToLePapier.id,
+          },
+        },
+        annulIrlAt: new Date(),
+      },
+    }),
+    await db.contact.update({
+      where: {
+        id: ofTheWildToLePapier.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: lePapierToOfTheWild.id,
+          },
+        },
+      },
+    }),
+  ]);
+
+  // “me” and Xenobia / relation combination “friend”
+  // Xenobia processRelationship "ANNULIRL" to “me”
+
+  const lePapierToResRevealed = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: resRevealed.id,
+        },
+      },
+      state: "LIVE",
+      kind: "FRIEND",
+    },
+  });
+
+  const resRevealedToLePapier = await db.contact.create({
+    data: {
+      userFirst: {
+        connect: {
+          id: resRevealed.id,
+        },
+      },
+      userLast: {
+        connect: {
+          id: lePapier.id,
+        },
+      },
+      state: "LIVE",
+      kind: "FRIEND",
+      processRelationship: "ANNULIRL",
+    },
+  });
+
+  await Promise.all([
+    await db.contact.update({
+      where: {
+        id: lePapierToResRevealed.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: resRevealedToLePapier.id,
+          },
+        },
+      },
+    }),
+    await db.contact.update({
+      where: {
+        id: resRevealedToLePapier.id,
+      },
+      data: {
+        mirror: {
+          connect: {
+            id: lePapierToResRevealed.id,
+          },
+        },
+        annulIrlAt: new Date(),
+      },
+    }),
+  ]);
+
   console.log(`Contacts seeds complete.`);
 
   console.log(`Seeding questions...`);
@@ -1935,7 +2259,7 @@ async function seed() {
     },
   });
 
-  // whoDidThatToYou, First name
+  // WhoDidThatToYou, First name
   // native / pinned
 
   const whoDidThatToYouFirstName = await db.userQuestion.create({
@@ -1956,7 +2280,7 @@ async function seed() {
     },
   });
 
-  // whoDidThatToYou, Last name
+  // WhoDidThatToYou, Last name
   // native / irl
 
   const whoDidThatToYouLastName = await db.userQuestion.create({
@@ -1975,7 +2299,7 @@ async function seed() {
     },
   });
 
-  // rG, First name
+  // RG, First name
   // native / pinned
 
   const rGFirstName = await db.userQuestion.create({
@@ -1996,7 +2320,7 @@ async function seed() {
     },
   });
 
-  // rG, Last name
+  // RG, Last name
   // native / irl
 
   const rGLastName = await db.userQuestion.create({
@@ -2015,7 +2339,7 @@ async function seed() {
     },
   });
 
-  // truePrince, First name
+  // TruePrince, First name
   // native / pinned
 
   const truePrinceFirstName = await db.userQuestion.create({
@@ -2036,7 +2360,7 @@ async function seed() {
     },
   });
 
-  // truePrince, Last name
+  // TruePrince, Last name
   // native / irl
 
   const truePrinceLastName = await db.userQuestion.create({
@@ -2055,7 +2379,7 @@ async function seed() {
     },
   });
 
-  // theTitan, First name
+  // TheTitan, First name
   // native / pinned
 
   const theTitanFirstName = await db.userQuestion.create({
@@ -2076,7 +2400,7 @@ async function seed() {
     },
   });
 
-  // theTitan, Last name
+  // TheTitan, Last name
   // native / irl
 
   const theTitanLastName = await db.userQuestion.create({
@@ -2085,6 +2409,166 @@ async function seed() {
       user: {
         connect: {
           id: theTitan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // BlueCrow, First name
+  // native / pinned
+
+  const blueCrowFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: blueCrow.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // BlueCrow, Last name
+  // native / irl
+
+  const blueCrowLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: blueCrow.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // LaVictoire, First name
+  // native / pinned
+
+  const laVictoireFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: laVictoire.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // LaVictoire, Last name
+  // native / irl
+
+  const laVictoireLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: laVictoire.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // oftheWild, First name
+  // native / pinned
+
+  const ofTheWildFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: ofTheWild.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // oftheWild, Last name
+  // native / irl
+
+  const ofTheWildLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: ofTheWild.id,
+        },
+      },
+      question: {
+        connect: {
+          id: lastName.id,
+        },
+      },
+    },
+  });
+
+  // ResRevealed, First name
+  // native / pinned
+
+  const resRevealedFirstName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      isPinned: true,
+      pinnedAt: new Date(),
+      user: {
+        connect: {
+          id: resRevealed.id,
+        },
+      },
+      question: {
+        connect: {
+          id: firstName.id,
+        },
+      },
+    },
+  });
+
+  // ResRevealed, Last name
+  // native / irl
+
+  const resRevealedLastName = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: resRevealed.id,
         },
       },
       question: {
@@ -2753,6 +3237,82 @@ async function seed() {
       user: {
         connect: {
           id: theTitan.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // WhoDidThatToYou, Email address
+  // native
+
+  const blueCrowEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: blueCrow.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // LaVictoire, Email address
+  // native
+
+  const laVictoireEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: laVictoire.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // oftheWild, Email address
+  // native
+
+  const ofTheWildEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: ofTheWild.id,
+        },
+      },
+      question: {
+        connect: {
+          id: emailAddress.id,
+        },
+      },
+    },
+  });
+
+  // ResRevealed, Email address
+  // native
+
+  const resRevealedEmailAddress = await db.userQuestion.create({
+    data: {
+      state: "LIVE",
+      user: {
+        connect: {
+          id: resRevealed.id,
         },
       },
       question: {
@@ -3580,6 +4140,166 @@ async function seed() {
     },
   });
 
+  // BlueCrow, First name
+  // native / pinned
+
+  const blueCrowFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Ursula",
+      userQuestion: {
+        connect: {
+          id: blueCrowFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: blueCrow.id,
+        },
+      },
+    },
+  });
+
+  // BlueCrow, Last name
+  // native / irl
+
+  const blueCrowLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Black",
+      userQuestion: {
+        connect: {
+          id: blueCrowLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: blueCrow.id,
+        },
+      },
+    },
+  });
+
+  // LaVictoire, First name
+  // native / pinned
+
+  const laVictoireFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Victoria",
+      userQuestion: {
+        connect: {
+          id: laVictoireFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: laVictoire.id,
+        },
+      },
+    },
+  });
+
+  // LaVictoire, Last name
+  // native / irl
+
+  const laVictoireLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Spice",
+      userQuestion: {
+        connect: {
+          id: laVictoireLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: laVictoire.id,
+        },
+      },
+    },
+  });
+
+  // oftheWild, First name
+  // native / pinned
+
+  const ofTheWildFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Wilda",
+      userQuestion: {
+        connect: {
+          id: ofTheWildFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: ofTheWild.id,
+        },
+      },
+    },
+  });
+
+  // oftheWild, Last name
+  // native / irl
+
+  const ofTheWildLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Wilderness",
+      userQuestion: {
+        connect: {
+          id: ofTheWildLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: ofTheWild.id,
+        },
+      },
+    },
+  });
+
+  // ResRevealed, First name
+  // native / pinned
+
+  const resRevealedFirstNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Xenobia",
+      userQuestion: {
+        connect: {
+          id: resRevealedFirstName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: resRevealed.id,
+        },
+      },
+    },
+  });
+
+  // ResRevealed, Last name
+  // native / irl
+
+  const resRevealedLastNameAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: "Desistoria",
+      userQuestion: {
+        connect: {
+          id: resRevealedLastName.id,
+        },
+      },
+      user: {
+        connect: {
+          id: resRevealed.id,
+        },
+      },
+    },
+  });
+
   // LePapier, Email address
   // native
 
@@ -4260,6 +4980,86 @@ async function seed() {
       user: {
         connect: {
           id: theTitan.id,
+        },
+      },
+    },
+  });
+
+  // BlueCrow, Email address
+  // native
+
+  const blueCrowEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: blueCrow.email,
+      userQuestion: {
+        connect: {
+          id: blueCrowEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: blueCrow.id,
+        },
+      },
+    },
+  });
+
+  // LaVictoire, Email address
+  // native
+
+  const laVictoireEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: laVictoire.email,
+      userQuestion: {
+        connect: {
+          id: laVictoireEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: laVictoire.id,
+        },
+      },
+    },
+  });
+
+  // oftheWild, Email address
+  // native
+
+  const ofTheWildEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: ofTheWild.email,
+      userQuestion: {
+        connect: {
+          id: ofTheWildEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: ofTheWild.id,
+        },
+      },
+    },
+  });
+
+  // ResRevealed, Email address
+  // native
+
+  const resRevealedEmailAddressAnswer = await db.answer.create({
+    data: {
+      state: "LIVE",
+      value: resRevealed.email,
+      userQuestion: {
+        connect: {
+          id: resRevealedEmailAddress.id,
+        },
+      },
+      user: {
+        connect: {
+          id: resRevealed.id,
         },
       },
     },

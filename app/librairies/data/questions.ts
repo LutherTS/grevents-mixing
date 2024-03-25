@@ -4,6 +4,8 @@ import {
   ARBITRARY_QUESTIONS_LIMIT,
   selectUnansweredNativeQuestions,
   whereUnansweredNativeQuestionsByUserIdAndKind,
+  wherePseudoQuestionByName,
+  whereCustomQuestionByName,
 } from "../subdata/questions";
 
 const orderBy = DEFAULT_QUESTIONS_ORDER_BY;
@@ -36,5 +38,36 @@ export async function findUnansweredNativeIrlQuestionsByUserId(userId: string) {
     where,
     orderBy,
     take,
+  });
+}
+
+// Because select and where have one entry, I'm not making subdatas for this.
+export async function findQuestionById(id: string) {
+  const select = { id: true };
+  const where = { id };
+
+  return await prisma.question.findUnique({
+    select,
+    where,
+  });
+}
+
+export async function findPseudoQuestionByName(name: string) {
+  const select = { id: true };
+  const where = wherePseudoQuestionByName(name);
+
+  return await prisma.question.findUnique({
+    select,
+    where,
+  });
+}
+
+export async function findCustomQuestionByName(name: string) {
+  const select = { id: true };
+  const where = whereCustomQuestionByName(name);
+
+  return await prisma.question.findUnique({
+    select,
+    where,
   });
 }

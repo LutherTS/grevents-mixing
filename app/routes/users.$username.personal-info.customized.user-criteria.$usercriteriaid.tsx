@@ -4,8 +4,12 @@ import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
+import { ManyContacts } from "~/components/many-contacts";
+import { ManyUserQuestionFriendsShared } from "~/components/many-userquestionfriends";
+import { OneCriteria } from "~/components/one-criteria";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
+import { StatusPersonalInfoCustomizedUserCriteriaToasts } from "~/components/status-personal-info-toasts";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import { findAnswerByUserQuestionIDAndUserID } from "~/librairies/data/answers";
 import { findUserFriendsNotToUserQuestionByUserQuestionIdAndUserId } from "~/librairies/data/contacts";
@@ -74,6 +78,9 @@ export default function UserCriteriaPage() {
 
   return (
     <>
+      <StatusPersonalInfoCustomizedUserCriteriaToasts
+        statusPersonalInfo={data.verifiedUser.statusPersonalInfo}
+      />
       <H1>
         Welcome to {data.user.appWideName}&apos;s &quot;
         {data.userQuestionAnswer.userQuestion.question.name}&quot; User
@@ -83,6 +90,24 @@ export default function UserCriteriaPage() {
         href={`/users/${data.verifiedUser.username}/dashboard`}
       />
       {data.verifiedUser && <SignOutForm />}
+
+      <div className="space-y-4 my-4">
+        <OneCriteria
+          answer={data.userQuestionAnswer}
+          selectContext="UserCriteria"
+          answerComponentRequired="OneAnswerModify"
+        />
+        <ManyContacts
+          contacts={data.userFriendsNotToUserQuestion}
+          answer={data.userQuestionAnswer}
+          contactComponentRequired="OneContactAddable"
+          label="Find your list of friend(s) to share to below"
+          notLabel="No remaining friends yet."
+        />
+        <ManyUserQuestionFriendsShared
+          userQuestionFriends={data.userQuestionFriends}
+        />
+      </div>
 
       <PageLink href={`../..`}>To Customized criteria</PageLink>
       <PageLink href={`../../..`}>To Personal Info</PageLink>

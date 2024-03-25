@@ -24,6 +24,13 @@ import {
   whereUserUnpinnedSharedToContactCustomAnswersQueried,
   selectAnswerId,
   whereEmailAddressByUserId,
+  whereUserPinnedNotIrlAnswersByUserIdExposed,
+  whereUserPinnedNotAndIrlAnswersByUserIdExposed,
+  whereUserUnpinnedSharedToContactCustomAnswersExposed,
+  whereUserUnpinnedNativeAnswersByUserIdAndQuestionKindExposed,
+  whereUserUnpinnedPseudonativeAnswersByUserIdAndUserQuestionKindExposed,
+  whereAnswerByIdAndUserId,
+  whereAnswerByIdAndContactId,
 } from "../subdata/answers";
 
 const orderBy = DEFAULT_ANSWERS_ORDER_BY;
@@ -277,8 +284,8 @@ export async function findUserPinnedNotIrlAnswersByUserIdQueried(
   return await prisma.answer.findMany({
     select,
     where,
-    orderBy,
-    take,
+    orderBy: PINNED_BY_USER_ANSWERS_ORDER_BY,
+    take: PINNED_BY_USER_ANSWERS_LIMIT,
   });
 }
 
@@ -295,8 +302,8 @@ export async function findUserPinnedNotAndIrlAnswersByUserIdQueried(
   return await prisma.answer.findMany({
     select,
     where,
-    orderBy,
-    take,
+    orderBy: PINNED_BY_USER_ANSWERS_ORDER_BY,
+    take: PINNED_BY_USER_ANSWERS_LIMIT,
   });
 }
 
@@ -323,6 +330,158 @@ export async function findEmailAddressAnswerByUserId(userId: string) {
   const where = whereEmailAddressByUserId(userId);
 
   return await prisma.answer.findFirst({
+    select,
+    where,
+  });
+}
+
+export async function findUserPinnedNotIrlAnswersByUserIdExposed(
+  userId: string,
+  contactId: string
+) {
+  const select = selectAnswers;
+  const where = whereUserPinnedNotIrlAnswersByUserIdExposed(userId, contactId);
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy: PINNED_BY_USER_ANSWERS_ORDER_BY,
+    take: PINNED_BY_USER_ANSWERS_LIMIT,
+  });
+}
+
+export async function findUserPinnedNotAndIrlAnswersByUserIdExposed(
+  userId: string,
+  contactId: string
+) {
+  const select = selectAnswers;
+  const where = whereUserPinnedNotAndIrlAnswersByUserIdExposed(
+    userId,
+    contactId
+  );
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy: PINNED_BY_USER_ANSWERS_ORDER_BY,
+    take: PINNED_BY_USER_ANSWERS_LIMIT,
+  });
+}
+
+export async function findUserUnpinnedNativeNotIrlAnswersByUserIdExposed(
+  id: string,
+  contactId: string
+) {
+  const select = selectAnswers;
+  const where = whereUserUnpinnedNativeAnswersByUserIdAndQuestionKindExposed(
+    id,
+    "NATIVE",
+    contactId
+  );
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy,
+    take,
+  });
+}
+
+export async function findUserUnpinnedPseudonativeNotIrlAnswersByUserIdExposed(
+  id: string,
+  contactId: string
+) {
+  const select = selectAnswers;
+  const where =
+    whereUserUnpinnedPseudonativeAnswersByUserIdAndUserQuestionKindExposed(
+      id,
+      "PSEUDONATIVE",
+      contactId
+    );
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy,
+    take,
+  });
+}
+
+export async function findUserUnpinnedNativeIrlAnswersByUserIdExposed(
+  id: string,
+  contactId: string
+) {
+  const select = selectAnswers;
+  const where = whereUserUnpinnedNativeAnswersByUserIdAndQuestionKindExposed(
+    id,
+    "NATIVEIRL",
+    contactId
+  );
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy,
+    take,
+  });
+}
+
+export async function findUserUnpinnedPseudonativeIrlAnswersByUserIdExposed(
+  id: string,
+  contactId: string
+) {
+  const select = selectAnswers;
+  const where =
+    whereUserUnpinnedPseudonativeAnswersByUserIdAndUserQuestionKindExposed(
+      id,
+      "PSEUDONATIVEIRL",
+      contactId
+    );
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy,
+    take,
+  });
+}
+
+export async function findUserUnpinnedSharedToContactCustomAnswersExposed(
+  userId: string,
+  contactId: string
+) {
+  const select = selectAnswers;
+  const where = whereUserUnpinnedSharedToContactCustomAnswersExposed(
+    userId,
+    contactId
+  );
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy,
+    take,
+  });
+}
+
+export async function findAnswerByIdAndUserId(id: string, userId: string) {
+  const select = selectAnswers;
+  const where = whereAnswerByIdAndUserId(id, userId);
+
+  return await prisma.answer.findUnique({
+    select,
+    where,
+  });
+}
+
+export async function findAnswerByIdAndContactId(
+  id: string,
+  contactId: string
+) {
+  const select = selectAnswers;
+  const where = whereAnswerByIdAndContactId(id, contactId);
+
+  return await prisma.answer.findUnique({
     select,
     where,
   });

@@ -4,12 +4,12 @@ import bcrypt from "bcryptjs";
 
 import { updateUserPasswordById } from "~/librairies/changes/users";
 import { findPasswordUserById } from "~/librairies/data/users";
-import { getVerifiedUserId, kickOut } from "~/utilities/server/session.server";
+import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const verifiedUserId = await getVerifiedUserId(request);
+  const verifiedUser = await getVerifiedUser(request);
 
-  if (!verifiedUserId) {
+  if (!verifiedUser) {
     throw await kickOut(request);
   }
 
@@ -30,7 +30,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null;
   }
 
-  const passwordUser = await findPasswordUserById(verifiedUserId);
+  const passwordUser = await findPasswordUserById(verifiedUser.id);
 
   if (!passwordUser) {
     return null;
@@ -47,10 +47,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const newHashedPassword = await bcrypt.hash(newPassword, 10);
 
-  const verifiedUser = await updateUserPasswordById(
-    verifiedUserId,
-    newHashedPassword
-  );
+  await updateUserPasswordById(verifiedUser.id, newHashedPassword);
 
   return redirect(`/users/${verifiedUser.username}/dashboard`);
 };

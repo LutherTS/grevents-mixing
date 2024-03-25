@@ -48,19 +48,23 @@ export default function PreviewsPage() {
       />
       {data.verifiedUser && <SignOutForm />}
 
-      <PageLink href={`none`}>To &quot;none&quot; preview</PageLink>
-      <PageLink href={`friend`}>To &quot;friend&quot; preview</PageLink>
-      <PageLink href={`irl`}>To &quot;irl&quot; preview</PageLink>
-      <PageLink href={`i-am-blocking`}>
-        To &quot;i-am-blocking&quot; preview
-      </PageLink>
-      <PageLink href={`has-me-blocked`}>
-        To &quot;has-me-blocked&quot; preview
-      </PageLink>
-      <PageLink href={`blocking-blocked`}>
-        To &quot;blocking-blocked&quot; preview
-      </PageLink>
-      <PageLink href={`queried`}>To queried previews</PageLink>
+      <div className="space-y-4 my-4">
+        <div>
+          <PageLink href={`none`}>To &quot;none&quot; preview</PageLink>
+          <PageLink href={`friend`}>To &quot;friend&quot; preview</PageLink>
+          <PageLink href={`irl`}>To &quot;irl&quot; preview</PageLink>
+          <PageLink href={`i-am-blocking`}>
+            To &quot;i-am-blocking&quot; preview
+          </PageLink>
+          <PageLink href={`has-me-blocked`}>
+            To &quot;has-me-blocked&quot; preview
+          </PageLink>
+          <PageLink href={`blocking-blocked`}>
+            To &quot;blocking-blocked&quot; preview
+          </PageLink>
+          <PageLink href={`queried`}>To queried previews</PageLink>
+        </div>
+      </div>
       <PageLink href={`../friends/find`}>Search for contacts</PageLink>
     </>
   );

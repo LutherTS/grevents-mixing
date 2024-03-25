@@ -2,11 +2,19 @@ import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
+import {
+  NativeIrlAnswerForm,
+  NativeNotIrlAnswerForm,
+} from "~/components/answer-forms";
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
+import {
+  countUserNativeIrlAnswersByUserId,
+  countUserNativeNotIrlAnswersByUserId,
+} from "~/librairies/data/answers";
 import {
   findUnansweredNativeIrlQuestionsByUserId,
   findUnansweredNativeNotIrlQuestionsByUserId,
@@ -37,17 +45,25 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     throw redirect(`/users/${verifiedUser.username}/dashboard`);
   }
 
-  const [unansweredNativeNotIrlQuestions, unansweredNativeIrlQuestions] =
-    await Promise.all([
-      findUnansweredNativeNotIrlQuestionsByUserId(user.id),
-      findUnansweredNativeIrlQuestionsByUserId(user.id),
-    ]);
+  const [
+    unansweredNativeNotIrlQuestions,
+    unansweredNativeIrlQuestions,
+    userNativeNotIrlAnswersCount,
+    userNativeIrlAnswersCount,
+  ] = await Promise.all([
+    findUnansweredNativeNotIrlQuestionsByUserId(user.id),
+    findUnansweredNativeIrlQuestionsByUserId(user.id),
+    countUserNativeNotIrlAnswersByUserId(user.id),
+    countUserNativeIrlAnswersByUserId(user.id),
+  ]);
 
   return json({
     verifiedUser,
     user,
     unansweredNativeNotIrlQuestions,
     unansweredNativeIrlQuestions,
+    userNativeNotIrlAnswersCount,
+    userNativeIrlAnswersCount,
   });
 };
 
@@ -64,6 +80,17 @@ export default function AddCriteriaStandardizedPage() {
         href={`/users/${data.verifiedUser.username}/dashboard`}
       />
       {data.verifiedUser && <SignOutForm />}
+
+      <div className="space-y-4 my-4">
+        <NativeNotIrlAnswerForm
+          answerCount={data.userNativeNotIrlAnswersCount}
+          nativeQuestions={data.unansweredNativeNotIrlQuestions}
+        />
+        <NativeIrlAnswerForm
+          answerCount={data.userNativeIrlAnswersCount}
+          nativeQuestions={data.unansweredNativeIrlQuestions}
+        />
+      </div>
 
       <PageLink href={`..`}>Cancel</PageLink>
     </>

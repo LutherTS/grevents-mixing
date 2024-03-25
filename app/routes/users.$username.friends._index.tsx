@@ -61,11 +61,13 @@ export default function FriendsPage() {
       <div className="space-y-4 my-4">
         <ManyContacts
           contacts={data.userNotIrlFriends}
+          contactComponentRequired="OneContact"
           label="Friends (not upgraded to irl)"
           notLabel="You do not have any not irl friends."
         />
         <ManyContacts
           contacts={data.userIrlFriends}
+          contactComponentRequired="OneContact"
           label="Upgraded to irl"
           notLabel="You do not have any irl friends."
         />

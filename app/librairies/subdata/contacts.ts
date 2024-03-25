@@ -42,6 +42,7 @@ export const selectContacts = {
   blocking: true,
   id: true,
   processRelationship: true,
+  statusOtherProfile: true,
   userFirst: {
     select: {
       id: true,
@@ -56,6 +57,7 @@ export const selectContacts = {
       blocking: true,
       id: true,
       processRelationship: true,
+      statusOtherProfile: true,
       userFirst: {
         select: {
           id: true,
@@ -217,5 +219,45 @@ export function whereContactByUserFirstIdAndUserLastUsername(
       username,
       OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
     },
+  };
+}
+
+export function whereContactByUserFirstIdAndUserLastId(
+  userFirstId: string,
+  userLastId: string
+): Prisma.ContactWhereInput {
+  return {
+    userFirstId,
+    userLastId,
+    state: "LIVE",
+    mirror: {
+      state: "LIVE",
+    },
+    userFirst: {
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
+    },
+    userLast: {
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
+    },
+  };
+}
+
+export function whereContactByIdAndUserFirstId(
+  id: string,
+  userFirstId: string
+): Prisma.ContactWhereUniqueInput {
+  return {
+    id,
+    userFirstId,
+  };
+}
+
+export function whereContactByIdAndUserLastId(
+  id: string,
+  userLastId: string
+): Prisma.ContactWhereUniqueInput {
+  return {
+    id,
+    userLastId,
   };
 }

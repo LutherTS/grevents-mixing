@@ -154,3 +154,21 @@ export async function updateUserPasswordById(
     data,
   });
 }
+
+// if statusPersonalInfo is undefined, resetUserStatusPersonalInfoById
+export async function updateUserStatusPersonalInfoById(
+  id: string,
+  statusPersonalInfo?: string
+) {
+  const where: Prisma.UserWhereUniqueInput = { id };
+
+  let data: Prisma.UserUpdateInput = { statusPersonalInfo: "NONE" };
+  if (statusPersonalInfo) {
+    data = { statusPersonalInfo };
+  }
+
+  return await prisma.user.update({
+    where,
+    data,
+  });
+}

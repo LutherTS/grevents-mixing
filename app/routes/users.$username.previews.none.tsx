@@ -5,6 +5,7 @@ import invariant from "tiny-invariant";
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
+import { RelationCombinationNonePreviewed } from "~/components/relcombos-previewed";
 import { SignOutForm } from "~/components/sign-out-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import { findUserByUsername } from "~/librairies/data/users";
@@ -47,6 +48,10 @@ export default function NonePreviewPage() {
         href={`/users/${data.verifiedUser.username}/dashboard`}
       />
       {data.verifiedUser && <SignOutForm />}
+
+      <div className="space-y-4 my-4">
+        <RelationCombinationNonePreviewed />
+      </div>
 
       <PageLink href={`..`}>To Previews</PageLink>
     </>

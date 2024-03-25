@@ -30,3 +30,27 @@ export function whereUnansweredNativeQuestionsByUserIdAndKind(
     },
   };
 }
+
+export function wherePseudoQuestionByName(
+  name: string
+): Prisma.QuestionWhereUniqueInput {
+  return {
+    kind_name: {
+      kind: "PSEUDO",
+      name,
+    },
+    state: "LIVE",
+  };
+}
+
+export function whereCustomQuestionByName(
+  name: string
+): Prisma.QuestionWhereUniqueInput {
+  return {
+    kind_name: {
+      kind: "CUSTOM",
+      name,
+    },
+    state: "LIVE",
+  };
+}

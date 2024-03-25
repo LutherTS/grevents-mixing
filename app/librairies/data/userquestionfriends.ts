@@ -1,7 +1,13 @@
 import { prisma } from "~/utilities/server/db.server";
 import {
   DEFAULT_USERQUESTIONFRIENDS_ORDER_BY,
+  PINNED_BY_FRIEND_ANSWERS_LIMIT,
+  PINNED_BY_FRIEND_ANSWERS_ORDER_BY,
   selectUserQuestionFriends,
+  selectUserQuestionFriendsAnswers,
+  whereByIdAndContactUserFirstId,
+  whereByIdAndContactUserLastId,
+  wherePinnedByFriend,
   whereUserQuestionFriendsByUserQuestionId,
 } from "../subdata/userquestionfriends";
 import { ARBITRARY_CONTACTS_LIMIT } from "../subdata/contacts";
@@ -21,5 +27,57 @@ export async function findUserQuestionFriendsByUserQuestionId(
     where,
     orderBy,
     take,
+  });
+}
+
+export async function findUserQuestionFriendsAnswersPinnedByFriend(
+  userId: string,
+  contactId: string
+) {
+  const select = selectUserQuestionFriendsAnswers;
+  const where = wherePinnedByFriend(userId, contactId);
+
+  return await prisma.userQuestionFriend.findMany({
+    select,
+    where,
+    orderBy: PINNED_BY_FRIEND_ANSWERS_ORDER_BY,
+    take: PINNED_BY_FRIEND_ANSWERS_LIMIT,
+  });
+}
+
+export async function countUserQuestionFriendsAnswersPinnedByFriend(
+  userId: string,
+  contactId: string
+) {
+  const where = wherePinnedByFriend(userId, contactId);
+
+  return await prisma.userQuestionFriend.count({
+    where,
+  });
+}
+
+export async function findUserQuestionFriendByIdAndContactUserFirstId(
+  id: string,
+  userFirstId: string
+) {
+  const select = selectUserQuestionFriendsAnswers;
+  const where = whereByIdAndContactUserFirstId(id, userFirstId);
+
+  return await prisma.userQuestionFriend.findUnique({
+    select,
+    where,
+  });
+}
+
+export async function findUserQuestionFriendByIdAndContactUserLastId(
+  id: string,
+  userLastId: string
+) {
+  const select = selectUserQuestionFriendsAnswers;
+  const where = whereByIdAndContactUserLastId(id, userLastId);
+
+  return await prisma.userQuestionFriend.findUnique({
+    select,
+    where,
   });
 }

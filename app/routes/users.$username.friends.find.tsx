@@ -1,8 +1,14 @@
-import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  json,
+  redirect,
+} from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
+import { FindForm } from "~/components/find-form";
 import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
@@ -36,6 +42,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   return json({ verifiedUser, user });
 };
 
+export const action = async ({ request }: ActionFunctionArgs) => {};
+
 export default function FindContactsPage() {
   const data = useLoaderData<typeof loader>();
   console.log(data);
@@ -47,6 +55,10 @@ export default function FindContactsPage() {
         href={`/users/${data.verifiedUser.username}/dashboard`}
       />
       {data.verifiedUser && <SignOutForm />}
+
+      <div className="space-y-4 my-4">
+        <FindForm user={data.verifiedUser} />
+      </div>
 
       <PageLink href={`..`}>See friends</PageLink>
       <PageLink href={`../../previews`}>See previews</PageLink>

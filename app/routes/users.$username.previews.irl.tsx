@@ -4,7 +4,9 @@ import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
+import { ManyCriteria } from "~/components/many-criteria";
 import { PageLink } from "~/components/page-link";
+import { RelationCombinationIrlPreviewed } from "~/components/relcombos-previewed";
 import { SignOutForm } from "~/components/sign-out-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import {
@@ -76,6 +78,20 @@ export default function IrlPreviewPage() {
         href={`/users/${data.verifiedUser.username}/dashboard`}
       />
       {data.verifiedUser && <SignOutForm />}
+
+      <div className="space-y-4 my-4">
+        <RelationCombinationIrlPreviewed
+          pinnedNotAndIrlAnswers={data.userPinnedNotAndIrlAnswers}
+          unpinnedNativeNotIrlAnswers={data.userUnpinnedNativeNotIrlAnswers}
+          unpinnedPseudonativeNotIrlAnswers={
+            data.userUnpinnedPseudonativeNotIrlAnswers
+          }
+          unpinnedNativeIrlAnswers={data.userUnpinnedNativeIrlAnswers}
+          unpinnedPseudonativeIrlAnswers={
+            data.userUnpinnedPseudonativeIrlAnswers
+          }
+        />
+      </div>
 
       <PageLink href={`..`}>To Previews</PageLink>
     </>
