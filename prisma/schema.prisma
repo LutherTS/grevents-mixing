@@ -80,7 +80,7 @@ model Question {
 
   @@unique([kind, name])
 
-  userId               String?      @unique
+  userId               String?      // corrected (removed @unique)
   user                 User?        @relation(fields: [userId], references: [id])
 
   userQuestions        UserQuestion[]
@@ -140,7 +140,7 @@ model Answer {
   userQuestion         UserQuestion @relation(fields: [userQuestionId], references: [id], onDelete: Cascade) // added
   userId               String
   user                 User         @relation(fields: [userId], references: [id])
-  
+
   @@unique([userQuestionId, userId]) // added
 }
 

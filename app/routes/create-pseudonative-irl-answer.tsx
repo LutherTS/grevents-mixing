@@ -6,7 +6,7 @@ import {
   upsertUserQuestionAndAnswerByUserIdQuestionIdValueAndKind,
 } from "~/librairies/changes/userquestions";
 import { updateUserStatusPersonalInfoById } from "~/librairies/changes/users";
-import { countUserPseudonativeNotIrlAnswersByUserId } from "~/librairies/data/answers";
+import { countUserPseudonativeIrlAnswersByUserId } from "~/librairies/data/answers";
 import { findPseudoQuestionByName } from "~/librairies/data/questions";
 import {
   findDeletablePreExistingUserQuestionAnswerAtUserIdAndQuestionId,
@@ -25,31 +25,29 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 
   const form = await request.formData();
-  const pseudonativeNotIrlQuestionName = form.get("pseudonativenotirlquestion");
-  const pseudonativeNotIrlAnswerValue = form.get("pseudonativenotirlanswer");
+  const pseudonativeIrlQuestionName = form.get("pseudonativeirlquestion");
+  const pseudonativeIrlAnswerValue = form.get("pseudonativeirlanswer");
 
   if (
-    typeof pseudonativeNotIrlQuestionName !== "string" ||
-    typeof pseudonativeNotIrlAnswerValue !== "string"
+    typeof pseudonativeIrlQuestionName !== "string" ||
+    typeof pseudonativeIrlAnswerValue !== "string"
   ) {
     return null;
   }
 
-  const question = await findPseudoQuestionByName(
-    pseudonativeNotIrlQuestionName
-  );
+  const question = await findPseudoQuestionByName(pseudonativeIrlQuestionName);
 
   if (!question) {
     await createCustomizedQuestionUserQuestionAnswerByNameValueUserIdAndKind(
-      pseudonativeNotIrlQuestionName,
-      pseudonativeNotIrlAnswerValue,
+      pseudonativeIrlQuestionName,
+      pseudonativeIrlAnswerValue,
       verifiedUser.id,
-      "PSEUDONATIVE"
+      "PSEUDONATIVEIRL"
     );
 
     await updateUserStatusPersonalInfoById(
       verifiedUser.id,
-      "PSEUDONATIVECRITERIANOTIRLADDED"
+      "PSEUDONATIVECRITERIAIRLADDED"
     );
 
     return redirect(`/users/${verifiedUser.username}/personal-info/customized`);
@@ -62,7 +60,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   if (
     userQuestion &&
-    userQuestion.kind === "PSEUDONATIVEIRL" &&
+    userQuestion.kind === "PSEUDONATIVE" &&
     userQuestion.question.kind === "PSEUDO" &&
     userQuestion.state === "LIVE" &&
     userQuestion.answer?.state === "LIVE"
@@ -70,10 +68,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null;
   }
 
-  const userPseudonativeNotIrlAnswersCount =
-    await countUserPseudonativeNotIrlAnswersByUserId(verifiedUser.id);
+  const userPseudonativeIrlAnswersCount =
+    await countUserPseudonativeIrlAnswersByUserId(verifiedUser.id);
 
-  if (userPseudonativeNotIrlAnswersCount >= DEFAULT_ANSWERS_LIMIT) {
+  if (userPseudonativeIrlAnswersCount >= DEFAULT_ANSWERS_LIMIT) {
     return null;
   }
 
@@ -108,13 +106,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   await upsertUserQuestionAndAnswerByUserIdQuestionIdValueAndKind(
     verifiedUser.id,
     question.id,
-    pseudonativeNotIrlAnswerValue,
-    "PSEUDONATIVE"
+    pseudonativeIrlAnswerValue,
+    "PSEUDONATIVEIRL"
   );
 
   if (
     userQuestion &&
-    userQuestion.kind === "PSEUDONATIVE" &&
+    userQuestion.kind === "PSEUDONATIVEIRL" &&
     userQuestion.question.kind === "PSEUDO" &&
     userQuestion.state === "LIVE" &&
     userQuestion.answer?.state === "LIVE"
@@ -126,7 +124,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   } else {
     await updateUserStatusPersonalInfoById(
       verifiedUser.id,
-      "PSEUDONATIVECRITERIANOTIRLADDED"
+      "PSEUDONATIVECRITERIAIRLADDED"
     );
   }
 
