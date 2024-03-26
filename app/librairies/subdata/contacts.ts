@@ -283,3 +283,15 @@ export function whereHasAccessedFromContactsByUserId(
     },
   };
 }
+
+export function whereUniqueContactByUserFirstIdAndUserLastId(
+  userFirstId: string,
+  userLastId: string
+): Prisma.ContactWhereUniqueInput {
+  return {
+    userFirstId_userLastId: {
+      userFirstId,
+      userLastId,
+    },
+  };
+}
