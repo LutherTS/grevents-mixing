@@ -235,6 +235,8 @@ model Answer {
 //   NOWUNBLOCKING
 //   NOWBLOCKED
 //   NOWUNBLOCKED
+//   NOWBLOCKINGBACK
+//   NOWBLOCKEDBACK
 // }
 
 // enum ContactStatusOtherProfile {
