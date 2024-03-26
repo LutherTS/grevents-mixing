@@ -43,6 +43,7 @@ export const selectContacts = {
   id: true,
   processRelationship: true,
   statusOtherProfile: true,
+  statusRelationship: true,
   userFirst: {
     select: {
       id: true,
@@ -58,6 +59,7 @@ export const selectContacts = {
       id: true,
       processRelationship: true,
       statusOtherProfile: true,
+      statusRelationship: true,
       userFirst: {
         select: {
           id: true,
@@ -280,6 +282,18 @@ export function whereHasAccessedFromContactsByUserId(
     },
     userLast: {
       OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
+    },
+  };
+}
+
+export function whereUniqueContactByUserFirstIdAndUserLastId(
+  userFirstId: string,
+  userLastId: string
+): Prisma.ContactWhereUniqueInput {
+  return {
+    userFirstId_userLastId: {
+      userFirstId,
+      userLastId,
     },
   };
 }

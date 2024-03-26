@@ -43,26 +43,24 @@ export function StatusOtherProfileToasts({
           {contact.userFirst.appWideName}&apos;s profile found once more
         </ContactToastForm>
       )}
-      {contact.mirror &&
-        contact.statusOtherProfile === "HASFIRSTACCESSEDTHROUGHFIND" && (
-          <ContactToastForm
-            contact={contact}
-            action="/reset-contact-status-other-profile"
-            specifiedClasses="text-orange-500 disabled:text-gray-500"
-          >
-            {contact.userFirst.username} has found your profile
-          </ContactToastForm>
-        )}
-      {contact.mirror &&
-        contact.statusOtherProfile === "HASREACCESSEDTHROUGHFIND" && (
-          <ContactToastForm
-            contact={contact}
-            action="/reset-contact-status-other-profile"
-            specifiedClasses="text-orange-500 disabled:text-gray-500"
-          >
-            {contact.userFirst.username} has found your profile once more
-          </ContactToastForm>
-        )}
+      {contact.statusOtherProfile === "HASFIRSTACCESSEDTHROUGHFIND" && (
+        <ContactToastForm
+          contact={contact}
+          action="/reset-contact-status-other-profile"
+          specifiedClasses="text-orange-500 disabled:text-gray-500"
+        >
+          {contact.userFirst.username} has found your profile
+        </ContactToastForm>
+      )}
+      {contact.statusOtherProfile === "HASREACCESSEDTHROUGHFIND" && (
+        <ContactToastForm
+          contact={contact}
+          action="/reset-contact-status-other-profile"
+          specifiedClasses="text-orange-500 disabled:text-gray-500"
+        >
+          {contact.userFirst.username} has found your profile once more
+        </ContactToastForm>
+      )}
     </>
   );
 }

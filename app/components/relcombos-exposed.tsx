@@ -28,13 +28,14 @@ export function RelationCombinationUserNoneExposed({
             <AnnulFriendForm contact={contact} />
           </>
         )}
-        {contact.mirror?.processRelationship === "ANNULFRIEND" && (
-          <>
-            <p className="mt-2 text-gray-500 line-through">
-              Send friend request
-            </p>
-          </>
-        )}
+        {contact.mirror?.processRelationship === "ANNULFRIEND" &&
+          contact.processRelationship !== "SENTFRIEND" && (
+            <>
+              <p className="mt-2 text-gray-500 line-through">
+                Send friend request
+              </p>
+            </>
+          )}
         {contact.processRelationship === "SENTFRIEND" && (
           <>
             <p className="mt-2">
@@ -69,16 +70,17 @@ export function RelationCombinationUserNoneExposed({
             </p>
           </>
         )}
-        {contact.mirror?.processRelationship === "ANNULFRIEND" && (
-          <>
-            <p className="mt-2 text-red-500">
-              As a consequence of you annulling your friend request sent to{" "}
-              {contact.userFirst.appWideName}, to prevent mass requesting you
-              cannot send {contact.userFirst.appWideName} another friend request
-              at this time.
-            </p>
-          </>
-        )}
+        {contact.mirror?.processRelationship === "ANNULFRIEND" &&
+          contact.processRelationship !== "SENTFRIEND" && (
+            <>
+              <p className="mt-2 text-red-500">
+                As a consequence of you annulling your friend request sent to{" "}
+                {contact.userFirst.appWideName}, to prevent mass requesting you
+                cannot send {contact.userFirst.appWideName} another friend
+                request at this time.
+              </p>
+            </>
+          )}
         {contact.processRelationship === "SENTFRIEND" && (
           <>
             <p className="mt-2 text-orange-500">
@@ -98,21 +100,21 @@ export function RelationCombinationUserNoneExposed({
             </PageLink>
           </>
         )}
-        {contact.processRelationship === "ANNULFRIEND" && (
-          <>
-            <p className="mt-2 text-neutral-500">
-              (Just letting you know that {contact.userFirst.appWideName} has
-              annulled a friend request, so you&apos;re the only one between the
-              two of you who can initiate a friend request at this time.)
-            </p>
-          </>
-        )}
+        {contact.processRelationship === "ANNULFRIEND" &&
+          contact.mirror?.processRelationship !== "SENTFRIEND" && (
+            <>
+              <p className="mt-2 text-neutral-500">
+                (Just letting you know that {contact.userFirst.appWideName} has
+                annulled a friend request, so you&apos;re the only one between
+                the two of you who can initiate a friend request at this time.)
+              </p>
+            </>
+          )}
       </div>
     </>
   );
 }
 
-// Because contact will be shared via hidden input, like a bind.
 function ProfileForm({
   contact,
   action,
@@ -135,6 +137,7 @@ function ProfileForm({
         method="post"
         className={specifiedClasses ? specifiedClasses : "mt-2"}
       >
+        <input type="hidden" name="contactid" value={contact.id} />
         <LinkButton disabled={fetcher.state !== "idle"}>{children}</LinkButton>
       </fetcher.Form>
     </>
@@ -320,13 +323,14 @@ export function RelationCombinationUserFriendExposed({
             <AnnulIrlForm contact={contact} />
           </>
         )}
-        {contact.mirror?.processRelationship === "ANNULIRL" && (
-          <>
-            <p className="mt-2 text-gray-500 line-through">
-              Upgrade friendship to irl
-            </p>
-          </>
-        )}
+        {contact.mirror?.processRelationship === "ANNULIRL" &&
+          contact.processRelationship !== "SENTIRL" && (
+            <>
+              <p className="mt-2 text-gray-500 line-through">
+                Upgrade friendship to irl
+              </p>
+            </>
+          )}
         {contact.processRelationship === "SENTIRL" && (
           <>
             <p className="mt-2">
@@ -361,16 +365,17 @@ export function RelationCombinationUserFriendExposed({
             </p>
           </>
         )}
-        {contact.mirror?.processRelationship === "ANNULIRL" && (
-          <>
-            <p className="mt-2 text-red-500">
-              As a consequence of you annulling your irl upgrade request sent to{" "}
-              {contact.userFirst.appWideName}, to prevent mass requesting you
-              cannot send {contact.userFirst.appWideName} another irl upgrade
-              request at this time.
-            </p>
-          </>
-        )}
+        {contact.mirror?.processRelationship === "ANNULIRL" &&
+          contact.processRelationship !== "SENTIRL" && (
+            <>
+              <p className="mt-2 text-red-500">
+                As a consequence of you annulling your irl upgrade request sent
+                to {contact.userFirst.appWideName}, to prevent mass requesting
+                you cannot send {contact.userFirst.appWideName} another irl
+                upgrade request at this time.
+              </p>
+            </>
+          )}
         {contact.processRelationship === "SENTIRL" && (
           <>
             <p className="mt-2 text-orange-500">
@@ -393,16 +398,17 @@ export function RelationCombinationUserFriendExposed({
             </PageLink>
           </>
         )}
-        {contact.processRelationship === "ANNULIRL" && (
-          <>
-            <p className="mt-2 text-neutral-500">
-              (Just letting you know that {contact.userFirst.appWideName} has
-              annulled an irl upgrade request, so you&apos;re the only one
-              between the two of you who can initiate an irl upgrade request at
-              this time.)
-            </p>
-          </>
-        )}
+        {contact.processRelationship === "ANNULIRL" &&
+          contact.mirror?.processRelationship !== "SENTIRL" && (
+            <>
+              <p className="mt-2 text-neutral-500">
+                (Just letting you know that {contact.userFirst.appWideName} has
+                annulled an irl upgrade request, so you&apos;re the only one
+                between the two of you who can initiate an irl upgrade request
+                at this time.)
+              </p>
+            </>
+          )}
       </div>
     </>
   );
@@ -661,7 +667,7 @@ function BlockBackForm({
 
   return (
     <>
-      <ProfileForm contact={contact} action="/block">
+      <ProfileForm contact={contact} action="/block-back">
         Block back
       </ProfileForm>
     </>

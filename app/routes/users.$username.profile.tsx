@@ -15,6 +15,7 @@ import {
 } from "~/components/relcombos-exposed";
 import { SignOutForm } from "~/components/sign-out-form";
 import { StatusOtherProfileToasts } from "~/components/status-other-profile-toasts";
+import { StatusRelationshipToasts } from "~/components/status-relationship-toasts";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import {
   findUserPinnedNotAndIrlAnswersByUserIdExposed,
@@ -247,6 +248,9 @@ export default function ProfilePage() {
     <>
       {data.userToVerifiedUserContact && (
         <StatusOtherProfileToasts contact={data.userToVerifiedUserContact} />
+      )}
+      {data.userToVerifiedUserContact && (
+        <StatusRelationshipToasts contact={data.userToVerifiedUserContact} />
       )}
       {typeof data.userQuestionFriendsAnswersPinnedByFriendCount === "number" &&
         data.userQuestionFriendsAnswersPinnedByFriendCount >=
