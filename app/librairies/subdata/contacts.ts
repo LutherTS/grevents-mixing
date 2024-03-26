@@ -43,6 +43,7 @@ export const selectContacts = {
   id: true,
   processRelationship: true,
   statusOtherProfile: true,
+  statusRelationship: true,
   userFirst: {
     select: {
       id: true,
@@ -58,6 +59,7 @@ export const selectContacts = {
       id: true,
       processRelationship: true,
       statusOtherProfile: true,
+      statusRelationship: true,
       userFirst: {
         select: {
           id: true,

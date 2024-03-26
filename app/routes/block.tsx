@@ -32,9 +32,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const relCombo = defineContactRelCombo(contact);
 
   if (
-    (relCombo === "none" &&
-      contact.mirror.processRelationship !== "SENTFRIEND") ||
-    relCombo === "i-am-blocking"
+    relCombo === "none" &&
+    contact.mirror.processRelationship !== "SENTFRIEND"
   ) {
     await updateBlockByContactId(contact.id);
   }

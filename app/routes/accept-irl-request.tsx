@@ -1,6 +1,6 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import { updateAcceptFriendRequestByContactId } from "~/librairies/changes/contacts";
+import { updateAcceptIrlRequestByContactId } from "~/librairies/changes/contacts";
 
 import { findContactByIdAndUserLastId } from "~/librairies/data/contacts";
 import { defineContactRelCombo } from "~/utilities/contacts";
@@ -36,7 +36,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     contact.mirror.processRelationship === "NONE" &&
     contact.processRelationship === "SENTIRL"
   ) {
-    await updateAcceptFriendRequestByContactId(contact.id);
+    await updateAcceptIrlRequestByContactId(contact.id);
   }
 
   return null;

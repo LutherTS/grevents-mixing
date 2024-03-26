@@ -20,6 +20,28 @@ export async function updateContactStatusOtherProfileById(
   });
 }
 
+// if statusRelationship is undefined, resetMirrorContactStatusRelationshipById
+export async function updateMirrorContactStatusRelationshipById(
+  id: string,
+  statusRelationship?: string
+) {
+  const where: Prisma.ContactWhereUniqueInput = { id };
+
+  let data: Prisma.ContactUpdateInput = {
+    mirror: { update: { statusRelationship: "NONE" } },
+  };
+  if (statusRelationship) {
+    data = {
+      mirror: { update: { statusRelationship } },
+    };
+  }
+
+  return await prisma.contact.update({
+    where,
+    data,
+  });
+}
+
 export async function upsertContactThroughFindByOtherUserIdAndVerifiedUserId(
   otherUserId: string,
   verifiedUserId: string
@@ -92,7 +114,9 @@ export async function updateSendFriendRequestByContactId(id: string) {
   return await prisma.contact.update({
     where,
     data: {
+      processRelationship: "NONE",
       statusRelationship: "RECEIVEFRIEND",
+      annulFriendAt: null,
       mirror: {
         update: {
           processRelationship: "SENTFRIEND",
@@ -118,6 +142,28 @@ export async function updateBlockByContactId(id: string) {
         update: {
           blocking: true,
           statusRelationship: "NOWBLOCKING",
+          kind: "NONE",
+          processRelationship: "NONE",
+        },
+      },
+    },
+  });
+}
+
+export async function updateBlockBackByContactId(id: string) {
+  const where: Prisma.ContactWhereUniqueInput = { id };
+
+  return await prisma.contact.update({
+    where,
+    data: {
+      blockedAt: new Date(),
+      statusRelationship: "NOWBLOCKEDBACK",
+      kind: "NONE",
+      processRelationship: "NONE",
+      mirror: {
+        update: {
+          blocking: true,
+          statusRelationship: "NOWBLOCKINGBACK",
           kind: "NONE",
           processRelationship: "NONE",
         },
@@ -192,7 +238,9 @@ export async function updateSendIrlRequestByContactId(id: string) {
   return await prisma.contact.update({
     where,
     data: {
+      processRelationship: "NONE",
       statusRelationship: "RECEIVEIRL",
+      annulIrlAt: null,
       mirror: {
         update: {
           processRelationship: "SENTIRL",

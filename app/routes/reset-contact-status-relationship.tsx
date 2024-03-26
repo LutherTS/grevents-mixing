@@ -1,9 +1,8 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import { updateDeclineIrlRequestByContactId } from "~/librairies/changes/contacts";
 
+import { updateMirrorContactStatusRelationshipById } from "~/librairies/changes/contacts";
 import { findContactByIdAndUserLastId } from "~/librairies/data/contacts";
-import { defineContactRelCombo } from "~/utilities/contacts";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -29,15 +28,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null;
   }
 
-  const relCombo = defineContactRelCombo(contact);
-
-  if (
-    relCombo === "friend" &&
-    contact.mirror.processRelationship === "NONE" &&
-    contact.processRelationship === "SENTIRL"
-  ) {
-    await updateDeclineIrlRequestByContactId(contact.id);
-  }
+  await updateMirrorContactStatusRelationshipById(contact.id);
 
   return null;
 };

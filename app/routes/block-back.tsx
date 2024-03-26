@@ -1,6 +1,6 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import { updateDeclineIrlRequestByContactId } from "~/librairies/changes/contacts";
+import { updateBlockBackByContactId } from "~/librairies/changes/contacts";
 
 import { findContactByIdAndUserLastId } from "~/librairies/data/contacts";
 import { defineContactRelCombo } from "~/utilities/contacts";
@@ -31,12 +31,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const relCombo = defineContactRelCombo(contact);
 
-  if (
-    relCombo === "friend" &&
-    contact.mirror.processRelationship === "NONE" &&
-    contact.processRelationship === "SENTIRL"
-  ) {
-    await updateDeclineIrlRequestByContactId(contact.id);
+  if (relCombo === "i-am-blocking") {
+    await updateBlockBackByContactId(contact.id);
   }
 
   return null;
