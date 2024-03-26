@@ -31,16 +31,16 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export const action = async ({ request }: ActionFunctionArgs) => {
   const form = await request.formData();
   const usernameOrEmail = form.get("usernameoremail");
-  const signinpassword = form.get("signinpassword");
+  const signInPassword = form.get("signinpassword");
 
   if (
     typeof usernameOrEmail !== "string" ||
-    typeof signinpassword !== "string"
+    typeof signInPassword !== "string"
   ) {
     return null;
   }
 
-  const verifiedSignInUser = await signIn(usernameOrEmail, signinpassword);
+  const verifiedSignInUser = await signIn(usernameOrEmail, signInPassword);
 
   if (!verifiedSignInUser) {
     return null;
@@ -57,6 +57,10 @@ export default function SignInPage() {
     <>
       <H1>Welcome to the Sign In Page.</H1>
       <SignInForm />
+      <p className="mt-2 text-gray-500">
+        (If you&apos;ve ever forgotten your password, contact me directly or via
+        email at luther@tchofo-safo-portfolio.me and I'll reset one for you.)
+      </p>
       <PageLink href={`/sign-up`}>To sign up</PageLink>
       <PageLink href={`/`}>Return home</PageLink>
     </>

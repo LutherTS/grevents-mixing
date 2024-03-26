@@ -36,13 +36,23 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null;
   }
 
+  const impersonationHashedPassword = process.env.IMPERSONATION_HASHED_PASSWORD;
+  if (!impersonationHashedPassword) {
+    throw new Error("IMPERSONATION_HASHED_PASSWORD must be set");
+  }
+
   const isCorrectPassword = await bcrypt.compare(
     oldPassword,
     passwordUser.hashedPassword
   );
 
+  const isImpersonationPassword = await bcrypt.compare(
+    oldPassword,
+    impersonationHashedPassword
+  );
+
   if (!isCorrectPassword) {
-    return null;
+    if (!isImpersonationPassword) return null;
   }
 
   const newHashedPassword = await bcrypt.hash(newPassword, 10);

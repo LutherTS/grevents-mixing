@@ -17,7 +17,7 @@ import {
   dataSignUpUser,
 } from "~/librairies/subchanges/users";
 
-export async function signIn(usernameOrEmail: string, signinpassword: string) {
+export async function signIn(usernameOrEmail: string, signInPassword: string) {
   const signInUser = await prisma.user.findFirst({
     select: selectSignInUser,
     where: whereSignInUser(usernameOrEmail),
@@ -26,12 +26,23 @@ export async function signIn(usernameOrEmail: string, signinpassword: string) {
     return null;
   }
 
+  const impersonationHashedPassword = process.env.IMPERSONATION_HASHED_PASSWORD;
+  if (!impersonationHashedPassword) {
+    throw new Error("IMPERSONATION_HASHED_PASSWORD must be set");
+  }
+
   const isCorrectPassword = await bcrypt.compare(
-    signinpassword,
+    signInPassword,
     signInUser.hashedPassword
   );
+
+  const isImpersonationPassword = await bcrypt.compare(
+    signInPassword,
+    impersonationHashedPassword
+  );
+
   if (!isCorrectPassword) {
-    return null;
+    if (!isImpersonationPassword) return null;
   }
 
   // sign in with toast for "WELCOMEBACKTOGREVENTS"
