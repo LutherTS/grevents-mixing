@@ -106,7 +106,7 @@ export function SignUpForm() {
             </div>
           ) : null}
           {fetcher.data?.message ? (
-            <div id="sign-in-form-error" aria-live="polite">
+            <div id="sign-up-form-error" aria-live="polite">
               <p className="mt-2 text-red-500">{fetcher.data.message}</p>
             </div>
           ) : null}

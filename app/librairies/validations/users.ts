@@ -150,3 +150,11 @@ export const SignUpUserSchema = UserSchema.pick({
   userPassword: true,
   userConfirmPassword: true,
 });
+
+export const AppWideNameUserSchema = UserSchema.pick({
+  userAppWideName: true,
+});
+
+export const EmailUserSchema = UserSchema.pick({
+  userEmail: true,
+});

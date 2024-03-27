@@ -1,7 +1,8 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
-import { redirect } from "@remix-run/node";
-import { updateUserAppWideNameById } from "~/librairies/changes/users";
+import { json, redirect } from "@remix-run/node";
 
+import { updateUserAppWideNameById } from "~/librairies/changes/users";
+import { AppWideNameUserSchema } from "~/librairies/validations/users";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -14,11 +15,22 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const form = await request.formData();
   const appWideName = form.get("appwidename");
 
-  if (typeof appWideName !== "string") {
-    return null;
+  const validatedFields = AppWideNameUserSchema.safeParse({
+    userAppWideName: appWideName,
+  });
+
+  if (!validatedFields.success) {
+    return json(
+      {
+        errors: validatedFields.error.flatten().fieldErrors,
+      },
+      { status: 400 }
+    );
   }
 
-  await updateUserAppWideNameById(verifiedUser.id, appWideName);
+  const { userAppWideName } = validatedFields.data;
+
+  await updateUserAppWideNameById(verifiedUser.id, userAppWideName);
 
   return redirect(`/users/${verifiedUser.username}/dashboard`);
 };

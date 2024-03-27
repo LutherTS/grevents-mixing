@@ -1,7 +1,14 @@
 import { useFetcher } from "@remix-run/react";
+import { JsonifyObject } from "type-fest/source/jsonify";
+
+type AppWideNameUserByHand = JsonifyObject<{
+  errors?: {
+    userAppWideName?: string[];
+  };
+}>;
 
 export function AppWideNameForm({ appWideName }: { appWideName: string }) {
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<AppWideNameUserByHand>();
 
   return (
     <>
@@ -21,6 +28,15 @@ export function AppWideNameForm({ appWideName }: { appWideName: string }) {
           placeholder={appWideName}
           disabled={fetcher.state !== "idle"}
         />
+        {fetcher.data?.errors?.userAppWideName ? (
+          <div id="app-wide-name-error" aria-live="polite">
+            {fetcher.data.errors.userAppWideName.map((error) => (
+              <p className="mt-2 text-red-500 font-light" key={error}>
+                {error}
+              </p>
+            ))}
+          </div>
+        ) : null}
       </fetcher.Form>
     </>
   );
