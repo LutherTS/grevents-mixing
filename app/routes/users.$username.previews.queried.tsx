@@ -36,6 +36,10 @@ import { selectAnswers } from "~/librairies/subdata/answers";
 import { selectContacts } from "~/librairies/subdata/contacts";
 import { selectUser, selectVerifiedUser } from "~/librairies/subdata/users";
 import {
+  QueriedOneUserSchema,
+  QueriedTwoUserSchema,
+} from "~/librairies/validations/users";
+import {
   decideContactRelCombo,
   defineContactRelCombo,
   relationCombinations,
@@ -206,19 +210,41 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const userLast = form.get("userlast");
   const relCombo = form.get("relcombo");
 
-  if (typeof userLast !== "string") {
-    return null;
+  const validatedFieldsOne = QueriedOneUserSchema.safeParse({
+    userOtherUsername: userLast,
+  });
+
+  if (!validatedFieldsOne.success) {
+    return json(
+      {
+        errors: validatedFieldsOne.error.flatten().fieldErrors,
+      },
+      { status: 400 }
+    );
   }
+
+  const { userOtherUsername } = validatedFieldsOne.data;
 
   if (relCombo === null || relCombo === "") {
-    throw redirect(`?userlast=${userLast}`);
+    throw redirect(`?userlast=${userOtherUsername}`);
   }
 
-  if (typeof relCombo !== "string") {
-    return null;
+  const validatedFieldsTwo = QueriedTwoUserSchema.safeParse({
+    contactRelCombo: relCombo,
+  });
+
+  if (!validatedFieldsTwo.success) {
+    return json(
+      {
+        errors: validatedFieldsTwo.error.flatten().fieldErrors,
+      },
+      { status: 400 }
+    );
   }
 
-  throw redirect(`?userlast=${userLast}&relcombo=${relCombo}`);
+  const { contactRelCombo } = validatedFieldsTwo.data;
+
+  throw redirect(`?userlast=${userOtherUsername}&relcombo=${contactRelCombo}`);
 };
 
 export default function QueriedPreviewPage() {

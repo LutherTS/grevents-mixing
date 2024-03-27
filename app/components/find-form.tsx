@@ -1,7 +1,15 @@
 import { Prisma } from "@prisma/client";
 import { useFetcher } from "@remix-run/react";
+import { JsonifyObject } from "type-fest/source/jsonify";
 
 import { selectVerifiedUser } from "~/librairies/subdata/users";
+
+type FriendCodeUserByHand = JsonifyObject<{
+  errors?: {
+    userOtherFriendCode?: string[];
+  };
+  message?: string;
+}>;
 
 export function FindForm({
   user,
@@ -10,7 +18,7 @@ export function FindForm({
     select: typeof selectVerifiedUser;
   }>;
 }) {
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<FriendCodeUserByHand>();
 
   return (
     <>
@@ -26,6 +34,20 @@ export function FindForm({
           placeholder="Enter a user's friend code"
           disabled={fetcher.state !== "idle" || user.state === "DEACTIVATED"}
         />
+        {fetcher.data?.errors?.userOtherFriendCode ? (
+          <div id="friend-code-error" aria-live="polite">
+            {fetcher.data.errors.userOtherFriendCode.map((error) => (
+              <p className="mt-2 text-red-500 font-light" key={error}>
+                {error}
+              </p>
+            ))}
+          </div>
+        ) : null}
+        {fetcher.data?.message ? (
+          <div id="friend-code-form-error" aria-live="polite">
+            <p className="mt-2 text-red-500">{fetcher.data.message}</p>
+          </div>
+        ) : null}
         {user.state === "DEACTIVATED" && (
           <p className="mt-2 text-red-500">
             You can&apos;t use the find feature while your profile is

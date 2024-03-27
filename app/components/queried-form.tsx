@@ -1,8 +1,16 @@
 import { Prisma } from "@prisma/client";
 import { useFetcher } from "@remix-run/react";
+import { JsonifyObject } from "type-fest/source/jsonify";
 
 import { selectContacts } from "~/librairies/subdata/contacts";
 import { relationCombinations } from "~/utilities/contacts";
+
+type QueriedUserByHand = JsonifyObject<{
+  errors?: {
+    userOtherUsername?: string[];
+    contactRelCombo?: string[];
+  };
+}>;
 
 export function QueriedForm({
   contact,
@@ -15,7 +23,7 @@ export function QueriedForm({
   userLast?: string;
   relCombo?: string;
 }) {
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<QueriedUserByHand>();
 
   return (
     <>
@@ -36,6 +44,15 @@ export function QueriedForm({
                   : "userlast"
               }
             />
+            {fetcher.data?.errors?.userOtherUsername ? (
+              <div id="user-last-error" aria-live="polite">
+                {fetcher.data.errors.userOtherUsername.map((error) => (
+                  <p className="mt-2 text-red-500 font-light" key={error}>
+                    {error}
+                  </p>
+                ))}
+              </div>
+            ) : null}
           </div>
           {contact && (
             <div>
@@ -53,6 +70,15 @@ export function QueriedForm({
                 name="relcombo"
                 placeholder={relCombo ? relCombo : "relcombo"}
               />
+              {fetcher.data?.errors?.contactRelCombo ? (
+                <div id="rel-combo-error" aria-live="polite">
+                  {fetcher.data.errors.contactRelCombo.map((error) => (
+                    <p className="mt-2 text-red-500 font-light" key={error}>
+                      {error}
+                    </p>
+                  ))}
+                </div>
+              ) : null}
               {/* Currently necessary to send the full form via Enter */}
               <button type="submit" className="hidden">
                 Submit
