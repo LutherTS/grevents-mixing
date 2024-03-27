@@ -1,9 +1,10 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
-import { redirect } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import bcrypt from "bcryptjs";
 
 import { updateUserPasswordById } from "~/librairies/changes/users";
 import { findPasswordUserById } from "~/librairies/data/users";
+import { PasswordUserSchema } from "~/librairies/validations/users";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -18,22 +19,44 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const newPassword = form.get("newpassword");
   const confirmNewPassword = form.get("confirmnewpassword");
 
-  if (
-    typeof oldPassword !== "string" ||
-    typeof newPassword !== "string" ||
-    typeof confirmNewPassword !== "string"
-  ) {
-    return null;
+  const validatedFields = PasswordUserSchema.safeParse({
+    userSignInPassword: oldPassword,
+    userPassword: newPassword,
+    userConfirmPassword: confirmNewPassword,
+  });
+
+  if (!validatedFields.success) {
+    return json(
+      {
+        errors: validatedFields.error.flatten().fieldErrors,
+        message: "Missing Fields. Failed to Modify Password.",
+      },
+      { status: 400 }
+    );
   }
 
-  if (newPassword !== confirmNewPassword) {
-    return null;
+  const { userSignInPassword, userPassword, userConfirmPassword } =
+    validatedFields.data;
+
+  if (userPassword !== userConfirmPassword) {
+    return json(
+      {
+        message:
+          "Input Error: Password and password confirmation do not match.",
+      },
+      { status: 400 }
+    );
   }
 
   const passwordUser = await findPasswordUserById(verifiedUser.id);
 
   if (!passwordUser) {
-    return null;
+    return json(
+      {
+        message: "Database Error: Could not find needed user data.",
+      },
+      { status: 400 }
+    );
   }
 
   const impersonationHashedPassword = process.env.IMPERSONATION_HASHED_PASSWORD;
@@ -42,20 +65,27 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 
   const isCorrectPassword = await bcrypt.compare(
-    oldPassword,
+    userSignInPassword,
     passwordUser.hashedPassword
   );
 
   const isImpersonationPassword = await bcrypt.compare(
-    oldPassword,
+    userSignInPassword,
     impersonationHashedPassword
   );
 
   if (!isCorrectPassword) {
-    if (!isImpersonationPassword) return null;
+    if (!isImpersonationPassword)
+      return json(
+        {
+          message:
+            "Database Error: Old password does not match existing user data.",
+        },
+        { status: 400 }
+      );
   }
 
-  const newHashedPassword = await bcrypt.hash(newPassword, 10);
+  const newHashedPassword = await bcrypt.hash(userPassword, 10);
 
   await updateUserPasswordById(verifiedUser.id, newHashedPassword);
 

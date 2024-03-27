@@ -1,8 +1,19 @@
 import { useFetcher } from "@remix-run/react";
+import { JsonifyObject } from "type-fest/source/jsonify";
+
 import { FormButton } from "./form-button";
 
+type PasswordUserByHand = JsonifyObject<{
+  errors?: {
+    userSignInPassword?: string[];
+    userPassword?: string[];
+    userConfirmPassword?: string[];
+  };
+  message: string;
+}>;
+
 export function PasswordForm() {
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<PasswordUserByHand>();
 
   return (
     <>
@@ -19,6 +30,15 @@ export function PasswordForm() {
             id="old-password"
             name="oldpassword"
           />
+          {fetcher.data?.errors?.userSignInPassword ? (
+            <div id="old-password-error" aria-live="polite">
+              {fetcher.data.errors.userSignInPassword.map((error) => (
+                <p className="mt-2 text-red-500 font-light" key={error}>
+                  {error}
+                </p>
+              ))}
+            </div>
+          ) : null}
           <label htmlFor="new-password">
             <p className="mt-2">New password *</p>
           </label>
@@ -28,6 +48,15 @@ export function PasswordForm() {
             id="new-password"
             name="newpassword"
           />
+          {fetcher.data?.errors?.userPassword ? (
+            <div id="new-password-error" aria-live="polite">
+              {fetcher.data.errors.userPassword.map((error) => (
+                <p className="mt-2 text-red-500 font-light" key={error}>
+                  {error}
+                </p>
+              ))}
+            </div>
+          ) : null}
           <label htmlFor="confirm-new-password">
             <p className="mt-2">Confirm new password *</p>
           </label>
@@ -37,6 +66,20 @@ export function PasswordForm() {
             id="confirm-new-password"
             name="confirmnewpassword"
           />
+          {fetcher.data?.errors?.userConfirmPassword ? (
+            <div id="confirm-password-error" aria-live="polite">
+              {fetcher.data.errors.userConfirmPassword.map((error) => (
+                <p className="mt-2 text-red-500 font-light" key={error}>
+                  {error}
+                </p>
+              ))}
+            </div>
+          ) : null}
+          {fetcher.data?.message ? (
+            <div id="sign-up-form-error" aria-live="polite">
+              <p className="mt-2 text-red-500">{fetcher.data.message}</p>
+            </div>
+          ) : null}
           <FormButton>Modify password</FormButton>
         </fieldset>
       </fetcher.Form>

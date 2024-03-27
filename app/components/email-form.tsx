@@ -5,7 +5,7 @@ type EmailUserByHand = JsonifyObject<{
   errors?: {
     userEmail?: string[];
   };
-  message: string;
+  message?: string;
 }>;
 
 export function EmailForm({ email }: { email: string }) {
