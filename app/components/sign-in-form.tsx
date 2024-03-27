@@ -1,12 +1,19 @@
-import { useActionData, useFetcher } from "@remix-run/react";
+import { useFetcher } from "@remix-run/react";
+import { JsonifyObject } from "type-fest/source/jsonify";
 
 import { FormButton } from "./form-button";
 import { SignInput } from "./sign-input";
-import { action } from "~/routes/sign-in";
+
+type SignInUserByHand = JsonifyObject<{
+  errors?: {
+    userUsernameOrEmail?: string[];
+    userSignInPassword?: string[];
+  };
+  message: string;
+}>;
 
 export function SignInForm() {
-  const fetcher = useFetcher();
-  const actionData = useActionData<typeof action>();
+  const fetcher = useFetcher<SignInUserByHand>();
 
   return (
     <>
@@ -20,10 +27,10 @@ export function SignInForm() {
             name="usernameoremail"
             placeholder="Enter your username or your email"
           />
-          {actionData?.errors?.userUsernameOrEmail ? (
+          {fetcher.data?.errors?.userUsernameOrEmail ? (
             <div id="username-or-email-error" aria-live="polite">
-              {actionData.errors.userUsernameOrEmail.map((error) => (
-                <p className="mt-2 text-red-500" key={error}>
+              {fetcher.data.errors.userUsernameOrEmail.map((error) => (
+                <p className="mt-2 text-red-500 font-light" key={error}>
                   {error}
                 </p>
               ))}
@@ -38,18 +45,18 @@ export function SignInForm() {
             placeholder="Enter your password"
             specifiedType="password"
           />
-          {actionData?.errors?.userPassword ? (
+          {fetcher.data?.errors?.userSignInPassword ? (
             <div id="password-error" aria-live="polite">
-              {actionData.errors.userPassword.map((error) => (
-                <p className="mt-2 text-red-500" key={error}>
+              {fetcher.data.errors.userSignInPassword.map((error) => (
+                <p className="mt-2 text-red-500 font-light" key={error}>
                   {error}
                 </p>
               ))}
             </div>
           ) : null}
-          {actionData?.message ? (
+          {fetcher.data?.message ? (
             <div id="sign-in-form-error" aria-live="polite">
-              <p className="mt-2 text-red-500">{actionData.message}</p>
+              <p className="mt-2 text-red-500">{fetcher.data.message}</p>
             </div>
           ) : null}
           <FormButton>Sign in</FormButton>

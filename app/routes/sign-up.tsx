@@ -1,6 +1,7 @@
 import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
+  json,
   redirect,
 } from "@remix-run/node";
 
@@ -8,6 +9,7 @@ import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
 import { SignUpForm } from "~/components/sign-up-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
+import { SignUpUserSchema } from "~/librairies/validations/users";
 import {
   createVerifiedUserSession,
   getVerifiedUser,
@@ -36,26 +38,42 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const signUpPassword = form.get("signuppassword");
   const confirmPassword = form.get("confirmpassword");
 
-  if (
-    typeof username !== "string" ||
-    typeof appWideName !== "string" ||
-    typeof email !== "string" ||
-    typeof signUpPassword !== "string" ||
-    typeof confirmPassword !== "string"
-  ) {
-    return null;
+  const validatedFields = SignUpUserSchema.safeParse({
+    userUsername: username,
+    userAppWideName: appWideName,
+    userEmail: email,
+    userPassword: signUpPassword,
+    userConfirmPassword: confirmPassword,
+  });
+
+  if (!validatedFields.success) {
+    return json({
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Missing Fields. Failed to Sign Up User.",
+    });
   }
 
+  const {
+    userUsername,
+    userAppWideName,
+    userEmail,
+    userPassword,
+    userConfirmPassword,
+  } = validatedFields.data;
+
   const verifiedSignUpUser = await signUp(
-    username,
-    appWideName,
-    email,
-    signUpPassword,
-    confirmPassword
+    userUsername,
+    userAppWideName,
+    userEmail,
+    userPassword,
+    userConfirmPassword
   );
 
   if (!verifiedSignUpUser) {
-    return null;
+    return json({
+      message: "Internal Error. Please contact me at the email address below.",
+      // This should never happen, but we never know.
+    });
   }
 
   return createVerifiedUserSession(

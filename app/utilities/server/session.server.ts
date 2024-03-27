@@ -1,4 +1,4 @@
-import { createCookieSessionStorage, redirect } from "@remix-run/node";
+import { createCookieSessionStorage, json, redirect } from "@remix-run/node";
 import bcrypt from "bcryptjs";
 import uid from "uid2";
 
@@ -165,7 +165,9 @@ export async function signUp(
   confirmPassword: string
 ) {
   if (signUpPassword !== confirmPassword) {
-    return null;
+    json({
+      message: "Input Error: Password and confirm password do not match.",
+    });
   }
 
   const hashedPassword = await bcrypt.hash(signUpPassword, 10);

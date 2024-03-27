@@ -107,6 +107,16 @@ const UserSchema = z.object({
       message:
         "Your username or email could not be more than 50 characters long.",
     }),
+  userSignInPassword: z
+    .string({
+      invalid_type_error: "Please type a password.",
+    })
+    .min(1, {
+      message: "Your password has to be at least 1 character long.",
+    })
+    .max(200, {
+      message: "Your password cannot be more than 200 characters long.",
+    }),
   userConfirmPassword: z
     .string({
       invalid_type_error: "Please type a password.",
@@ -126,7 +136,15 @@ const UserSchema = z.object({
     }),
 });
 
-export const SignInUser = UserSchema.pick({
+export const SignInUserSchema = UserSchema.pick({
   userUsernameOrEmail: true,
+  userSignInPassword: true,
+});
+
+export const SignUpUserSchema = UserSchema.pick({
+  userUsername: true,
+  userAppWideName: true,
+  userEmail: true,
   userPassword: true,
+  userConfirmPassword: true,
 });

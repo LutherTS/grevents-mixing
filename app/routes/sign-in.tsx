@@ -1,6 +1,7 @@
 import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
+  json,
   redirect,
 } from "@remix-run/node";
 
@@ -8,7 +9,7 @@ import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
 import { SignInForm } from "~/components/sign-in-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
-import { SignInUser } from "~/librairies/validations/users";
+import { SignInUserSchema } from "~/librairies/validations/users";
 import {
   createVerifiedUserSession,
   getVerifiedUser,
@@ -34,37 +35,29 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const usernameOrEmail = form.get("usernameoremail");
   const signInPassword = form.get("signinpassword");
 
-  // if (
-  //   typeof usernameOrEmail !== "string" ||
-  //   typeof signInPassword !== "string"
-  // ) {
-  //   return null;
-  // }
-
-  //
-
-  const validatedFields = SignInUser.safeParse({
+  const validatedFields = SignInUserSchema.safeParse({
     userUsernameOrEmail: usernameOrEmail,
-    userPassword: signInPassword,
+    userSignInPassword: signInPassword,
   });
 
   if (!validatedFields.success) {
-    return {
+    return json({
       errors: validatedFields.error.flatten().fieldErrors,
       message: "Missing Fields. Failed to Sign In User.",
-    };
+    });
   }
 
-  const { userUsernameOrEmail, userPassword } = validatedFields.data;
+  const { userUsernameOrEmail, userSignInPassword } = validatedFields.data;
 
-  //
-
-  // const verifiedSignInUser = await signIn(usernameOrEmail, signInPassword);
-
-  const verifiedSignInUser = await signIn(userUsernameOrEmail, userPassword);
+  const verifiedSignInUser = await signIn(
+    userUsernameOrEmail,
+    userSignInPassword
+  );
 
   if (!verifiedSignInUser) {
-    return null;
+    return json({
+      message: "Database Error: Sign in failed. Please check your credentials.",
+    });
   }
 
   return createVerifiedUserSession(
