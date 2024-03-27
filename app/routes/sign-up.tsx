@@ -69,6 +69,10 @@ export default function SignUpPage() {
     <>
       <H1>Welcome to the Sign Up Page.</H1>
       <SignUpForm />
+      <p className="mt-2 text-gray-500">
+        (If you&apos;re having trouble creating an account, contact me directly
+        or via email at luther@tchofo-safo-portfolio.me and I'll assist you.)
+      </p>
       <PageLink href={`/sign-in`}>To sign in</PageLink>
       <PageLink href={`/`}>Return home</PageLink>
     </>

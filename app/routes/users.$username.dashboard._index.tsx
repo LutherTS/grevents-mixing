@@ -115,6 +115,12 @@ export default function DashboardPage() {
           >
             My notifications
           </PageLink>
+          <p className="mt-2 underline text-fuchsia-200 hover:text-fuchsia-100 dark:text-fuchsia-800 dark:hover:text-fuchsia-900">
+            My groups
+          </p>
+          <p className="mt-2 underline text-fuchsia-200 hover:text-fuchsia-100 dark:text-fuchsia-800 dark:hover:text-fuchsia-900">
+            My events
+          </p>
         </div>
       </div>
 

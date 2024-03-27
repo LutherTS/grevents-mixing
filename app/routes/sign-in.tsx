@@ -8,6 +8,7 @@ import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
 import { SignInForm } from "~/components/sign-in-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
+import { SignInUser } from "~/librairies/validations/users";
 import {
   createVerifiedUserSession,
   getVerifiedUser,
@@ -33,14 +34,34 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const usernameOrEmail = form.get("usernameoremail");
   const signInPassword = form.get("signinpassword");
 
-  if (
-    typeof usernameOrEmail !== "string" ||
-    typeof signInPassword !== "string"
-  ) {
-    return null;
+  // if (
+  //   typeof usernameOrEmail !== "string" ||
+  //   typeof signInPassword !== "string"
+  // ) {
+  //   return null;
+  // }
+
+  //
+
+  const validatedFields = SignInUser.safeParse({
+    userUsernameOrEmail: usernameOrEmail,
+    userPassword: signInPassword,
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Missing Fields. Failed to Sign In User.",
+    };
   }
 
-  const verifiedSignInUser = await signIn(usernameOrEmail, signInPassword);
+  const { userUsernameOrEmail, userPassword } = validatedFields.data;
+
+  //
+
+  // const verifiedSignInUser = await signIn(usernameOrEmail, signInPassword);
+
+  const verifiedSignInUser = await signIn(userUsernameOrEmail, userPassword);
 
   if (!verifiedSignInUser) {
     return null;

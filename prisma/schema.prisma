@@ -150,8 +150,8 @@ model Answer {
 // enum UserState {
 //   NONE
 //   LIVE
-//   DELETED
 //   DEACTIVATED
+//   DELETED
 // }
 
 // enum UserStatusTitle {
@@ -166,7 +166,6 @@ model Answer {
 //   PASSWORDUPDATED
 //   APPWIDENAMEUPDATED
 //   FRIENDCODEUPDATED
-//   TEMPORARYPASSWORDCHANGED
 //   NOWDEACTIVATED
 //   NOWREACTIVATED
 //   REDIRECTEDTODASHBOARD
