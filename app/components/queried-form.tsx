@@ -1,29 +1,33 @@
 import { Prisma } from "@prisma/client";
 import { useFetcher } from "@remix-run/react";
-import { JsonifyObject } from "type-fest/source/jsonify";
+// import { JsonifyObject } from "type-fest/source/jsonify";
 
 import { selectContacts } from "~/librairies/subdata/contacts";
 import { relationCombinations } from "~/utilities/contacts";
 
-type QueriedUserByHand = JsonifyObject<{
-  errors?: {
-    userOtherUsername?: string[];
-    contactRelCombo?: string[];
-  };
-}>;
+// type QueriedUserByHand = JsonifyObject<{
+//   errors?: {
+//     userOtherUsername?: string[];
+//     contactRelCombo?: string[];
+//   };
+// }>;
 
 export function QueriedForm({
   contact,
   userLast,
   relCombo,
 }: {
-  contact: Prisma.ContactGetPayload<{
-    select: typeof selectContacts;
-  }>;
+  contact:
+    | Prisma.ContactGetPayload<{
+        select: typeof selectContacts;
+      }>
+    | null
+    | undefined;
   userLast?: string;
   relCombo?: string;
 }) {
-  const fetcher = useFetcher<QueriedUserByHand>();
+  const fetcher = useFetcher();
+  // <QueriedUserByHand>
 
   return (
     <>
@@ -44,7 +48,7 @@ export function QueriedForm({
                   : "userlast"
               }
             />
-            {fetcher.data?.errors?.userOtherUsername ? (
+            {/* {fetcher.data?.errors?.userOtherUsername ? (
               <div id="user-last-error" aria-live="polite">
                 {fetcher.data.errors.userOtherUsername.map((error) => (
                   <p className="mt-2 text-red-500 font-light" key={error}>
@@ -52,7 +56,14 @@ export function QueriedForm({
                   </p>
                 ))}
               </div>
-            ) : null}
+            ) : null} */}
+            {/* {contact === null ? (
+              <div id="user-last-error" aria-live="polite">
+                <p className="mt-2 text-red-500 font-light">
+                  You aren&apos;t acquainted with any such other user.
+                </p>
+              </div>
+            ) : null} */}
           </div>
           {contact && (
             <div>
@@ -70,7 +81,7 @@ export function QueriedForm({
                 name="relcombo"
                 placeholder={relCombo ? relCombo : "relcombo"}
               />
-              {fetcher.data?.errors?.contactRelCombo ? (
+              {/* {fetcher.data?.errors?.contactRelCombo ? (
                 <div id="rel-combo-error" aria-live="polite">
                   {fetcher.data.errors.contactRelCombo.map((error) => (
                     <p className="mt-2 text-red-500 font-light" key={error}>
@@ -78,7 +89,7 @@ export function QueriedForm({
                     </p>
                   ))}
                 </div>
-              ) : null}
+              ) : null} */}
               {/* Currently necessary to send the full form via Enter */}
               <button type="submit" className="hidden">
                 Submit

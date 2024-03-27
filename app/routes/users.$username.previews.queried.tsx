@@ -82,6 +82,8 @@ type QueriedPreviewLoaderByHand = {
   }>[];
 };
 
+// This is going to be weird, very weird...
+// But all zod validations will have to be made from the loader.
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   invariant(params.username, "Expected params.username");
 
@@ -109,8 +111,19 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const userLast = url.searchParams.get("userlast") || "";
   let relCombo = url.searchParams.get("relcombo") || "";
 
+  if (userLast === "" && relCombo === "") {
+    return json({
+      verifiedUser,
+      user,
+    });
+  }
+
   const userToQueriedContact =
     await findContactByUserFirstIdAndUserLastUsername(user.id, userLast);
+
+  if (!userToQueriedContact) {
+    // throw redirect(`/users/${verifiedUser.username}/previews/queried`);
+  }
 
   if (userToQueriedContact && relCombo === "") {
     relCombo = decideContactRelCombo(userToQueriedContact, relCombo);
@@ -199,6 +212,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   }
 };
 
+// Objectively speaking, the form, the action, are nothing more than intermediaries for what can be done through the URL. So since there is no controlling what people can write in the URL, there is no controlling what they should write on the form.
+// The control then, should be done on what is obtained by the URL.
 export const action = async ({ request }: ActionFunctionArgs) => {
   const verifiedUser = await getVerifiedUser(request);
 
@@ -210,41 +225,49 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const userLast = form.get("userlast");
   const relCombo = form.get("relcombo");
 
-  const validatedFieldsOne = QueriedOneUserSchema.safeParse({
-    userOtherUsername: userLast,
-  });
-
-  if (!validatedFieldsOne.success) {
-    return json(
-      {
-        errors: validatedFieldsOne.error.flatten().fieldErrors,
-      },
-      { status: 400 }
-    );
+  if (typeof userLast !== "string") {
+    return null;
   }
 
-  const { userOtherUsername } = validatedFieldsOne.data;
+  // const validatedFieldsOne = QueriedOneUserSchema.safeParse({
+  //   userOtherUsername: userLast,
+  // });
+
+  // if (!validatedFieldsOne.success) {
+  //   return json(
+  //     {
+  //       errors: validatedFieldsOne.error.flatten().fieldErrors,
+  //     },
+  //     { status: 400 }
+  //   );
+  // }
+
+  // const { userOtherUsername } = validatedFieldsOne.data;
 
   if (relCombo === null || relCombo === "") {
-    throw redirect(`?userlast=${userOtherUsername}`);
+    throw redirect(`?userlast=${userLast}`);
   }
 
-  const validatedFieldsTwo = QueriedTwoUserSchema.safeParse({
-    contactRelCombo: relCombo,
-  });
-
-  if (!validatedFieldsTwo.success) {
-    return json(
-      {
-        errors: validatedFieldsTwo.error.flatten().fieldErrors,
-      },
-      { status: 400 }
-    );
+  if (typeof relCombo !== "string") {
+    return null;
   }
 
-  const { contactRelCombo } = validatedFieldsTwo.data;
+  // const validatedFieldsTwo = QueriedTwoUserSchema.safeParse({
+  //   contactRelCombo: relCombo,
+  // });
 
-  throw redirect(`?userlast=${userOtherUsername}&relcombo=${contactRelCombo}`);
+  // if (!validatedFieldsTwo.success) {
+  //   return json(
+  //     {
+  //       errors: validatedFieldsTwo.error.flatten().fieldErrors,
+  //     },
+  //     { status: 400 }
+  //   );
+  // }
+
+  // const { contactRelCombo } = validatedFieldsTwo.data;
+
+  throw redirect(`?userlast=${userLast}&relcombo=${relCombo}`);
 };
 
 export default function QueriedPreviewPage() {
