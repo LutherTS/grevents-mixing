@@ -129,7 +129,7 @@ const UserSchema = z.object({
       message:
         "Your password confirmation cannot be more than 200 characters long.",
     }),
-  otherUserFriendCode: z
+  userOtherFriendCode: z
     .string({
       invalid_type_error: "Please type a friend code.",
     })
