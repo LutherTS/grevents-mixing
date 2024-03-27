@@ -44,3 +44,18 @@ const AnswerSchema = z.object({
       message: "Your answer cannot be longer than 200 characters.",
     }),
 });
+
+export const CreateStandardizedAnswerSchema = AnswerSchema.pick({
+  questionId: true,
+  answerInitialValue: true,
+});
+
+export const CreateCustomizedAnswerSchema = AnswerSchema.pick({
+  questionInitialName: true,
+  answerInitialValue: true,
+});
+
+export const ModifyAnswerSchema = AnswerSchema.pick({
+  answerId: true,
+  answerModifiedValue: true,
+});

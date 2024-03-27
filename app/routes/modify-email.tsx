@@ -43,7 +43,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       {
         message: `Database Error: Email "${userEmail}" has already been registered by another user.`,
       },
-      { status: 400 }
+      { status: 403 }
     );
   }
 
@@ -57,7 +57,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         message:
           "Database Error: Could not find previous email address answer.",
       },
-      { status: 400 }
+      { status: 404 }
     );
   }
 

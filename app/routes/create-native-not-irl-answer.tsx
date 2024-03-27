@@ -1,5 +1,6 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
-import { redirect } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+
 import {
   deleteUserQuestionAtUserIdAndQuestionId,
   upsertUserQuestionAndAnswerByUserIdQuestionIdValueAndKind,
@@ -13,7 +14,7 @@ import {
   findPreExistingUserQuestionByUserIdAndQuestionId,
 } from "~/librairies/data/userquestions";
 import { DEFAULT_ANSWERS_LIMIT } from "~/librairies/subdata/answers";
-
+import { CreateStandardizedAnswerSchema } from "~/librairies/validations/answers";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -27,17 +28,32 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const nativeNotIrlQuestionId = form.get("nativenotirlquestion");
   const nativeNotIrlAnswerValue = form.get("nativenotirlanswer");
 
-  if (
-    typeof nativeNotIrlQuestionId !== "string" ||
-    typeof nativeNotIrlAnswerValue !== "string"
-  ) {
-    return null;
+  const validatedFields = CreateStandardizedAnswerSchema.safeParse({
+    questionId: nativeNotIrlQuestionId,
+    answerInitialValue: nativeNotIrlAnswerValue,
+  });
+
+  if (!validatedFields.success) {
+    return json(
+      {
+        errors: validatedFields.error.flatten().fieldErrors,
+        message: "Missing Fields. Failed to Create Native Answer.",
+      },
+      { status: 400 }
+    );
   }
 
-  const question = await findQuestionById(nativeNotIrlQuestionId);
+  const { questionId, answerInitialValue } = validatedFields.data;
+
+  const question = await findQuestionById(questionId);
 
   if (!question) {
-    return null;
+    return json(
+      {
+        message: "Database Error: Could not find selected question.",
+      },
+      { status: 404 }
+    );
   }
 
   const userQuestion = await findPreExistingUserQuestionByUserIdAndQuestionId(
@@ -49,7 +65,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     await countUserNativeNotIrlAnswersByUserId(verifiedUser.id);
 
   if (userNativeNotIrlAnswersCount >= DEFAULT_ANSWERS_LIMIT) {
-    return null;
+    return json(
+      {
+        message: `Database Error: Limit number of answers reached for this type of criteria (${DEFAULT_ANSWERS_LIMIT}).`,
+      },
+      { status: 403 }
+    );
   }
 
   // This is all the BS I have to do because Prisma currently does not support "delete if exists"
@@ -83,7 +104,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   await upsertUserQuestionAndAnswerByUserIdQuestionIdValueAndKind(
     verifiedUser.id,
     question.id,
-    nativeNotIrlAnswerValue
+    answerInitialValue
   );
 
   if (

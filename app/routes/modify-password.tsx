@@ -55,7 +55,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       {
         message: "Database Error: Could not find needed user data.",
       },
-      { status: 400 }
+      { status: 404 }
     );
   }
 
@@ -81,7 +81,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
           message:
             "Database Error: Old password does not match existing user data.",
         },
-        { status: 400 }
+        { status: 403 }
       );
   }
 

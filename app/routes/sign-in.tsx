@@ -63,7 +63,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         message:
           "Database Error: Sign in failed. Please check your credentials.",
       },
-      { status: 400 }
+      { status: 401 }
     );
   }
 

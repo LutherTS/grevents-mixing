@@ -1,5 +1,5 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
-import { redirect } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { createCustomizedQuestionUserQuestionAnswerByNameValueUserIdAndKind } from "~/librairies/changes/questions";
 import {
   deleteUserQuestionAtUserIdAndQuestionId,
@@ -14,6 +14,7 @@ import {
   findPreExistingUserQuestionByUserIdAndQuestionId,
 } from "~/librairies/data/userquestions";
 import { DEFAULT_ANSWERS_LIMIT } from "~/librairies/subdata/answers";
+import { CreateCustomizedAnswerSchema } from "~/librairies/validations/answers";
 
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
@@ -28,19 +29,29 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const customQuestionName = form.get("customquestion");
   const customAnswerValue = form.get("customanswer");
 
-  if (
-    typeof customQuestionName !== "string" ||
-    typeof customAnswerValue !== "string"
-  ) {
-    return null;
+  const validatedFields = CreateCustomizedAnswerSchema.safeParse({
+    questionInitialName: customQuestionName,
+    answerInitialValue: customAnswerValue,
+  });
+
+  if (!validatedFields.success) {
+    return json(
+      {
+        errors: validatedFields.error.flatten().fieldErrors,
+        message: "Missing Fields. Failed to Create Custom Answer.",
+      },
+      { status: 400 }
+    );
   }
 
-  const question = await findCustomQuestionByName(customQuestionName);
+  const { questionInitialName, answerInitialValue } = validatedFields.data;
+
+  const question = await findCustomQuestionByName(questionInitialName);
 
   if (!question) {
     await createCustomizedQuestionUserQuestionAnswerByNameValueUserIdAndKind(
-      customQuestionName,
-      customAnswerValue,
+      questionInitialName,
+      answerInitialValue,
       verifiedUser.id
     );
 
@@ -62,7 +73,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   );
 
   if (userCustomAnswersCount >= DEFAULT_ANSWERS_LIMIT) {
-    return null;
+    return json(
+      {
+        message: `Database Error: Limit number of answers reached for this type of criteria (${DEFAULT_ANSWERS_LIMIT}).`,
+      },
+      { status: 403 }
+    );
   }
 
   // This is all the BS I have to do because Prisma currently does not support "delete if exists"
@@ -96,7 +112,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   await upsertUserQuestionAndAnswerByUserIdQuestionIdValueAndKind(
     verifiedUser.id,
     question.id,
-    customAnswerValue
+    answerInitialValue
   );
 
   if (

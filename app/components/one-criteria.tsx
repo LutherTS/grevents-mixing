@@ -1,5 +1,8 @@
 import clsx from "clsx";
 import { useFetcher } from "@remix-run/react";
+import { useEffect, useRef } from "react";
+import { Prisma } from "@prisma/client";
+import { JsonifyObject } from "type-fest/source/jsonify";
 
 import { PageLinkDivless } from "./page-link";
 import {
@@ -9,9 +12,6 @@ import {
 } from "~/librairies/subdata/answers";
 import { PINNED_BY_FRIEND_ANSWERS_LIMIT } from "~/librairies/subdata/userquestionfriends";
 import { selectContacts } from "~/librairies/subdata/contacts";
-import { Prisma } from "@prisma/client";
-
-////////
 
 export type SelectContext =
   | "PersonalInfo"
@@ -27,8 +27,6 @@ export type AnswerComponentRequired =
   | "OneAnswerPinnablePseudoable"
   | "OneAnswerModify"
   | "OneAnswerPinnableByFriend";
-
-// FINAL TOP LEVEL COMPONENTS EXPORTED HERE
 
 export function OneCriteria({
   answer,
@@ -358,17 +356,37 @@ export function OneAnswerModify({
   );
 }
 
+type ModifyAnswerByHand = JsonifyObject<{
+  errors?: {
+    answerId?: string[];
+    answerModifiedValue?: string[];
+  };
+  message?: string;
+}>;
+
 function OneAnswerModifyForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<ModifyAnswerByHand>();
+
+  const resetRef = useRef<HTMLFormElement>(null);
+  // const focusRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (fetcher.state !== "submitting") {
+      resetRef.current?.reset();
+      // focusRef.current?.focus();
+    }
+  }, [fetcher.state === "submitting"]);
+  // https://www.youtube.com/watch?v=bMLej7bg5Zo
+  // https://sergiodxa.com/tutorials/reset-a-form-on-success-in-remix
 
   return (
     <>
-      <fetcher.Form action="/modify-answer" method="post">
+      <fetcher.Form ref={resetRef} action="/modify-answer" method="post">
         <label className="sr-only" htmlFor={answer.id}>
           Modify answer &quot;{answer.value}&quot;
         </label>
         <input type="hidden" name="answerid" value={answer.id} />
         <input
+          // ref={focusRef}
           className="w-[32ch] max-w-[50ch] truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:!text-white disabled:placeholder:!text-gray-400 sm:w-[40ch]"
           type="text"
           id={answer.id}
@@ -380,6 +398,20 @@ function OneAnswerModifyForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
               answer.userQuestion.question.name === "Email address")
           }
         />
+        {fetcher.data?.errors?.answerModifiedValue ? (
+          <div id={`${answer.id}-error`} aria-live="polite">
+            {fetcher.data.errors.answerModifiedValue.map((error) => (
+              <p className="mt-2 text-red-500 font-light" key={error}>
+                {error}
+              </p>
+            ))}
+          </div>
+        ) : null}
+        {fetcher.data?.message ? (
+          <div id={`${answer.id}-form-error`} aria-live="polite">
+            <p className="mt-2 text-red-500">{fetcher.data.message}</p>
+          </div>
+        ) : null}
         {/* Currently necessary to send the full form via Enter */}
         <button type="submit" className="hidden">
           Submit
