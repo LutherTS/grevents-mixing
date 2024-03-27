@@ -66,7 +66,7 @@ const UserSchema = z.object({
     .string({
       invalid_type_error: "Please type an e-mail.",
     })
-    .email({ message: "Your e-mail needs to be a valid e-mail format" })
+    .email({ message: "Your e-mail needs to be a valid e-mail format." })
     .min(1, {
       message: "Your e-mail needs to be at least 1 character long.",
     })
@@ -119,13 +119,15 @@ const UserSchema = z.object({
     }),
   userConfirmPassword: z
     .string({
-      invalid_type_error: "Please type a password.",
+      invalid_type_error: "Please type a password confirmation.",
     })
     .min(1, {
-      message: "Your password needs to be at least 1 character long.",
+      message:
+        "Your password confirmation needs to be at least 1 character long.",
     })
     .max(200, {
-      message: "Your password cannot be more than 200 characters long.",
+      message:
+        "Your password confirmation cannot be more than 200 characters long.",
     }),
   otherUserFriendCode: z
     .string({

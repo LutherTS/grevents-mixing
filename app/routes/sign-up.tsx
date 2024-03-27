@@ -9,7 +9,9 @@ import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
 import { SignUpForm } from "~/components/sign-up-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
+import { findUserByUsername } from "~/librairies/data/users";
 import { SignUpUserSchema } from "~/librairies/validations/users";
+import { prisma } from "~/utilities/server/db.server";
 import {
   createVerifiedUserSession,
   getVerifiedUser,
@@ -47,10 +49,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   });
 
   if (!validatedFields.success) {
-    return json({
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: "Missing Fields. Failed to Sign Up User.",
-    });
+    return json(
+      {
+        errors: validatedFields.error.flatten().fieldErrors,
+        message: "Missing Fields. Failed to Sign Up User.",
+      },
+      { status: 400 }
+    );
   }
 
   const {
@@ -61,19 +66,60 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     userConfirmPassword,
   } = validatedFields.data;
 
+  if (userPassword !== userConfirmPassword) {
+    return json(
+      {
+        message:
+          "Input Error: Password and password confirmation do not match.",
+      },
+      { status: 400 }
+    );
+  }
+
+  const preExistingUserByUsername = await prisma.user.findUnique({
+    select: { id: true },
+    where: { username: userUsername },
+  });
+
+  if (preExistingUserByUsername) {
+    return json(
+      {
+        message: `Database Error: Username "${userUsername}" has already been registered by another user.`,
+      },
+      { status: 400 }
+    );
+  }
+
+  const preExistingUserByEmail = await prisma.user.findUnique({
+    select: { id: true },
+    where: { email: userEmail },
+  });
+
+  if (preExistingUserByEmail) {
+    return json(
+      {
+        message: `Database Error: Email "${userEmail}" has already been registered by another user.`,
+      },
+      { status: 400 }
+    );
+  }
+
   const verifiedSignUpUser = await signUp(
     userUsername,
     userAppWideName,
     userEmail,
-    userPassword,
-    userConfirmPassword
+    userPassword
   );
 
   if (!verifiedSignUpUser) {
-    return json({
-      message: "Internal Error. Please contact me at the email address below.",
-      // This should never happen, but we never know.
-    });
+    return json(
+      {
+        message:
+          "Internal Error. Please contact me at the email address below.",
+        // This should never happen, but we never know.
+      },
+      { status: 400 }
+    );
   }
 
   return createVerifiedUserSession(

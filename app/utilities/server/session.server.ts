@@ -16,6 +16,7 @@ import {
   dataResetUserStatutes,
   dataSignUpUser,
 } from "~/librairies/subchanges/users";
+import { findUserByUsername } from "~/librairies/data/users";
 
 export async function signIn(usernameOrEmail: string, signInPassword: string) {
   const signInUser = await prisma.user.findFirst({
@@ -161,15 +162,8 @@ export async function signUp(
   username: string,
   appWideName: string,
   email: string,
-  signUpPassword: string,
-  confirmPassword: string
+  signUpPassword: string
 ) {
-  if (signUpPassword !== confirmPassword) {
-    json({
-      message: "Input Error: Password and confirm password do not match.",
-    });
-  }
-
   const hashedPassword = await bcrypt.hash(signUpPassword, 10);
   const friendCode = uid(12);
 

@@ -41,10 +41,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   });
 
   if (!validatedFields.success) {
-    return json({
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: "Missing Fields. Failed to Sign In User.",
-    });
+    return json(
+      {
+        errors: validatedFields.error.flatten().fieldErrors,
+        message: "Missing Fields. Failed to Sign In User.",
+      },
+      { status: 400 }
+    );
   }
 
   const { userUsernameOrEmail, userSignInPassword } = validatedFields.data;
@@ -55,9 +58,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   );
 
   if (!verifiedSignInUser) {
-    return json({
-      message: "Database Error: Sign in failed. Please check your credentials.",
-    });
+    return json(
+      {
+        message:
+          "Database Error: Sign in failed. Please check your credentials.",
+      },
+      { status: 400 }
+    );
   }
 
   return createVerifiedUserSession(
