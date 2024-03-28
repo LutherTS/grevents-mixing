@@ -122,6 +122,7 @@ export default function NotificationsPage() {
       </div>
 
       <PageLink href={`../requests`}>To requests</PageLink>
+      <PageLink href={`../dashboard`}>To dashboard</PageLink>
     </>
   );
 }

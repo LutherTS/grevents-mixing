@@ -439,6 +439,50 @@ export default function ProfilePage() {
           </>
         )}
       </div>
+      {data.verifiedUser.id === data.user.id && (
+        <>
+          <PageLink href={`../../${data.verifiedUser.username}/previews`}>
+            To previews
+          </PageLink>
+          <PageLink href={`../../${data.verifiedUser.username}/friends/find`}>
+            Search for contacts
+          </PageLink>
+        </>
+      )}
+      {data.relCombo === "none" && data.userToVerifiedUserContact && (
+        <>
+          <PageLink href={`../../${data.verifiedUser.username}/profile`}>
+            To your profile
+          </PageLink>
+          <PageLink href={`../../${data.verifiedUser.username}/friends/find`}>
+            Search for contacts
+          </PageLink>
+        </>
+      )}
+      {(data.relCombo === "friend" || data.relCombo === "irl") &&
+        data.userToVerifiedUserContact && (
+          <>
+            <PageLink href={`../../${data.verifiedUser.username}/profile`}>
+              To your profile
+            </PageLink>
+            <PageLink href={`../../${data.verifiedUser.username}/friends`}>
+              To your friends
+            </PageLink>
+          </>
+        )}
+      {(data.relCombo === "i-am-blocking" ||
+        data.relCombo === "has-me-blocked" ||
+        data.relCombo === "blocking-blocked") &&
+        data.userToVerifiedUserContact && (
+          <>
+            <PageLink href={`../../${data.verifiedUser.username}/profile`}>
+              To your profile
+            </PageLink>
+            <PageLink href={`../../${data.verifiedUser.username}/blocks`}>
+              To your blocks
+            </PageLink>
+          </>
+        )}
     </>
   );
 }

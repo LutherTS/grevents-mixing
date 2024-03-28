@@ -498,8 +498,8 @@ export default function QueriedPreviewPage() {
         </>
       </div>
 
-      <PageLink href={`..`}>To Previews</PageLink>
-      <PageLink href={`../../profile`}>To Your Profile</PageLink>
+      <PageLink href={`..`}>To previews</PageLink>
+      <PageLink href={`../../profile`}>To your profile</PageLink>
     </>
   );
 }

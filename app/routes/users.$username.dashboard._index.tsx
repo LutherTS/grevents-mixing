@@ -120,6 +120,7 @@ export default function DashboardPage() {
         </div>
         <div>
           <PageLink href={`../personal-info`}>More personal info</PageLink>
+          <PageLink href={`../profile`}>My profile</PageLink>
           <PageLink href={`../friends`}>My friends</PageLink>
           <PageLink
             href={`../requests`}

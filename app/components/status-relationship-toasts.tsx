@@ -164,7 +164,7 @@ export function StatusRelationshipToasts({
           <ContactToastForm
             contact={contact}
             action="/reset-contact-status-relationship"
-            specifiedClasses="text-black disabled:text-gray-500"
+            specifiedClasses="text-black dark:text-white disabled:text-gray-500"
           >
             You&apos;ve just blocked back {contact.userFirst.appWideName}
           </ContactToastForm>
@@ -174,7 +174,7 @@ export function StatusRelationshipToasts({
           <ContactToastForm
             contact={contact}
             action="/reset-contact-status-relationship"
-            specifiedClasses="text-black disabled:text-gray-500"
+            specifiedClasses="text-black dark:text-white disabled:text-gray-500"
           >
             You&apos;ve just been blocked back by{" "}
             {contact.userFirst.appWideName}

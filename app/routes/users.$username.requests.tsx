@@ -100,6 +100,7 @@ export default function RequestsPage() {
       </div>
 
       <PageLink href={`../notifications`}>To notifications</PageLink>
+      <PageLink href={`../dashboard`}>To dashboard</PageLink>
     </>
   );
 }

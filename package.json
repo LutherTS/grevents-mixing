@@ -1,5 +1,8 @@
 {
   "name": "grevents-mixing",
+  "prisma": {
+    "seed": "node prisma/deployed-seeds.js"
+  },
   "private": true,
   "sideEffects": false,
   "type": "module",

@@ -55,15 +55,15 @@ export function OneCriteria({
           <OneAnswer answer={answer} />
         )}
         {answerComponentRequired === "OneAnswerPinnable" &&
-          pinnedAnswersCount && (
+          typeof pinnedAnswersCount === "number" && (
             <OneAnswerPinnable
               answer={answer}
               pinnedAnswersCount={pinnedAnswersCount}
             />
           )}
         {answerComponentRequired === "OneAnswerPinnablePseudoable" &&
-          pinnedAnswersCount &&
-          otherPseudonativeAnswersCount && (
+          typeof pinnedAnswersCount === "number" &&
+          typeof otherPseudonativeAnswersCount === "number" && (
             <OneAnswerPinnablePseudoable
               answer={answer}
               pinnedAnswersCount={pinnedAnswersCount}

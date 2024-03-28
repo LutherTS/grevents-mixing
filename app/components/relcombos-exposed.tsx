@@ -58,59 +58,57 @@ export function RelationCombinationUserNoneExposed({
           </>
         )}
       </div>
-      <div>
-        {contact.mirror?.processRelationship === "SENTFRIEND" && (
-          <>
-            <p className="mt-2 text-orange-500">
-              Friend request sent and pending. However, do take into
-              consideration that canceling your friend request to{" "}
-              {contact.userFirst.appWideName} will prevent you from sending{" "}
-              {contact.userFirst.appWideName} another friend request at this
-              time.
+
+      {contact.mirror?.processRelationship === "SENTFRIEND" && (
+        <div>
+          <p className="mt-2 text-orange-500">
+            Friend request sent and pending. However, do take into consideration
+            that canceling your friend request to{" "}
+            {contact.userFirst.appWideName} will prevent you from sending{" "}
+            {contact.userFirst.appWideName} another friend request at this time.
+          </p>
+        </div>
+      )}
+      {contact.mirror?.processRelationship === "ANNULFRIEND" &&
+        contact.processRelationship !== "SENTFRIEND" && (
+          <div>
+            <p className="mt-2 text-red-500">
+              As a consequence of you annulling your friend request sent to{" "}
+              {contact.userFirst.appWideName}, to prevent mass requesting you
+              cannot send {contact.userFirst.appWideName} another friend request
+              at this time.
             </p>
-          </>
+          </div>
         )}
-        {contact.mirror?.processRelationship === "ANNULFRIEND" &&
-          contact.processRelationship !== "SENTFRIEND" && (
-            <>
-              <p className="mt-2 text-red-500">
-                As a consequence of you annulling your friend request sent to{" "}
-                {contact.userFirst.appWideName}, to prevent mass requesting you
-                cannot send {contact.userFirst.appWideName} another friend
-                request at this time.
-              </p>
-            </>
-          )}
-        {contact.processRelationship === "SENTFRIEND" && (
-          <>
-            <p className="mt-2 text-orange-500">
-              {contact.userFirst.appWideName} has sent you a friend request. By
-              accepting this request, {contact.userFirst.appWideName} will have
-              access to all of your native criteria, present and future, and you
-              will have access to all the native criteria of{" "}
-              {contact.userFirst.appWideName}, present and future all the same.
-              Irl native criteria, however, will require upgrading your
-              friendship for shared access between the two of you.
+      {contact.processRelationship === "SENTFRIEND" && (
+        <div>
+          <p className="mt-2 text-orange-500">
+            {contact.userFirst.appWideName} has sent you a friend request. By
+            accepting this request, {contact.userFirst.appWideName} will have
+            access to all of your native criteria, present and future, and you
+            will have access to all the native criteria of{" "}
+            {contact.userFirst.appWideName}, present and future all the same.
+            Irl native criteria, however, will require upgrading your friendship
+            for shared access between the two of you.
+          </p>
+          <PageLink
+            href={`/users/${contact.mirror?.userFirst.username}/previews/queried?userlast=${contact.userFirst.username}&relcombo=friend`}
+          >
+            Preview the criteria you&apos;ll give access to{" "}
+            {contact.userFirst.appWideName}
+          </PageLink>
+        </div>
+      )}
+      {contact.processRelationship === "ANNULFRIEND" &&
+        contact.mirror?.processRelationship !== "SENTFRIEND" && (
+          <div>
+            <p className="mt-2 text-neutral-500">
+              (Just letting you know that {contact.userFirst.appWideName} has
+              annulled a friend request, so you&apos;re the only one between the
+              two of you who can initiate a friend request at this time.)
             </p>
-            <PageLink
-              href={`/users/${contact.mirror?.userFirst.username}/previews/queried?userlast=${contact.userFirst.username}&relcombo=friend`}
-            >
-              Preview the criteria you&apos;ll give access to{" "}
-              {contact.userFirst.appWideName}
-            </PageLink>
-          </>
+          </div>
         )}
-        {contact.processRelationship === "ANNULFRIEND" &&
-          contact.mirror?.processRelationship !== "SENTFRIEND" && (
-            <>
-              <p className="mt-2 text-neutral-500">
-                (Just letting you know that {contact.userFirst.appWideName} has
-                annulled a friend request, so you&apos;re the only one between
-                the two of you who can initiate a friend request at this time.)
-              </p>
-            </>
-          )}
-      </div>
     </>
   );
 }
@@ -353,63 +351,62 @@ export function RelationCombinationUserFriendExposed({
           </>
         )}
       </div>
-      <div>
-        {contact.mirror?.processRelationship === "SENTIRL" && (
-          <>
-            <p className="mt-2 text-orange-500">
-              Irl upgrade request sent and pending. However, do take into
-              consideration that canceling your irl upgrade request to{" "}
-              {contact.userFirst.appWideName} will prevent you from sending{" "}
-              {contact.userFirst.appWideName} another irl upgrade request at
-              this time.
+
+      {contact.mirror?.processRelationship === "SENTIRL" && (
+        <div>
+          <p className="mt-2 text-orange-500">
+            Irl upgrade request sent and pending. However, do take into
+            consideration that canceling your irl upgrade request to{" "}
+            {contact.userFirst.appWideName} will prevent you from sending{" "}
+            {contact.userFirst.appWideName} another irl upgrade request at this
+            time.
+          </p>
+        </div>
+      )}
+      {contact.mirror?.processRelationship === "ANNULIRL" &&
+        contact.processRelationship !== "SENTIRL" && (
+          <div>
+            <p className="mt-2 text-red-500">
+              As a consequence of you annulling your irl upgrade request sent to{" "}
+              {contact.userFirst.appWideName}, to prevent mass requesting you
+              cannot send {contact.userFirst.appWideName} another irl upgrade
+              request at this time.
             </p>
-          </>
+          </div>
         )}
-        {contact.mirror?.processRelationship === "ANNULIRL" &&
-          contact.processRelationship !== "SENTIRL" && (
-            <>
-              <p className="mt-2 text-red-500">
-                As a consequence of you annulling your irl upgrade request sent
-                to {contact.userFirst.appWideName}, to prevent mass requesting
-                you cannot send {contact.userFirst.appWideName} another irl
-                upgrade request at this time.
-              </p>
-            </>
-          )}
-        {contact.processRelationship === "SENTIRL" && (
-          <>
-            <p className="mt-2 text-orange-500">
-              {contact.userFirst.appWideName} has sent you an irl upgrade
-              request. By accepting this request,{" "}
-              {contact.userFirst.appWideName} will have additional access to all
-              of your irl native criteria (such as Last name and Address),
-              present and future, and you will have access to all the irl native
-              criteria of {contact.userFirst.appWideName}, present and future
-              all the same. Once this friendship is upgraded, you can downgrade
-              this friendship from irl with a click at your own discretion
-              without requiring the consent of {contact.userFirst.appWideName},
-              so accepting this irl upgrade request is easily reversible.
+      {contact.processRelationship === "SENTIRL" && (
+        <div>
+          <p className="mt-2 text-orange-500">
+            {contact.userFirst.appWideName} has sent you an irl upgrade request.
+            By accepting this request, {contact.userFirst.appWideName} will have
+            additional access to all of your irl native criteria (such as Last
+            name and Address), present and future, and you will have access to
+            all the irl native criteria of {contact.userFirst.appWideName},
+            present and future all the same. Once this friendship is upgraded,
+            you can downgrade this friendship from irl with a click at your own
+            discretion without requiring the consent of{" "}
+            {contact.userFirst.appWideName}, so accepting this irl upgrade
+            request is easily reversible.
+          </p>
+          <PageLink
+            href={`/users/${contact.mirror?.userFirst.username}/previews/queried?userlast=${contact.userFirst.username}&relcombo=irl`}
+          >
+            Preview the criteria you&apos;ll give access to{" "}
+            {contact.userFirst.appWideName}
+          </PageLink>
+        </div>
+      )}
+      {contact.processRelationship === "ANNULIRL" &&
+        contact.mirror?.processRelationship !== "SENTIRL" && (
+          <div>
+            <p className="mt-2 text-neutral-500">
+              (Just letting you know that {contact.userFirst.appWideName} has
+              annulled an irl upgrade request, so you&apos;re the only one
+              between the two of you who can initiate an irl upgrade request at
+              this time.)
             </p>
-            <PageLink
-              href={`/users/${contact.mirror?.userFirst.username}/previews/queried?userlast=${contact.userFirst.username}&relcombo=irl`}
-            >
-              Preview the criteria you&apos;ll give access to{" "}
-              {contact.userFirst.appWideName}
-            </PageLink>
-          </>
+          </div>
         )}
-        {contact.processRelationship === "ANNULIRL" &&
-          contact.mirror?.processRelationship !== "SENTIRL" && (
-            <>
-              <p className="mt-2 text-neutral-500">
-                (Just letting you know that {contact.userFirst.appWideName} has
-                annulled an irl upgrade request, so you&apos;re the only one
-                between the two of you who can initiate an irl upgrade request
-                at this time.)
-              </p>
-            </>
-          )}
-      </div>
     </>
   );
 }
