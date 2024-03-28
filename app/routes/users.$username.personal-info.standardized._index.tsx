@@ -96,7 +96,6 @@ export function ErrorBoundary() {
 
 export default function PersonalInfoStandardizedPage() {
   const data = useLoaderData<typeof loader>();
-  console.log(data);
 
   return (
     <>

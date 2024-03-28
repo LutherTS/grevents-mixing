@@ -87,7 +87,6 @@ export function ErrorBoundary() {
 
 export default function FriendPreviewPage() {
   const data = useLoaderData<typeof loader>();
-  console.log(data);
 
   return (
     <>

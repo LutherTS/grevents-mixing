@@ -64,7 +64,6 @@ export function ErrorBoundary() {
 
 export default function PreviewsPage() {
   const data = useLoaderData<typeof loader>();
-  console.log(data);
 
   return (
     <>

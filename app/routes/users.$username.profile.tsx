@@ -269,7 +269,6 @@ export function ErrorBoundary() {
 
 export default function ProfilePage() {
   const data: ProfileLoaderByHand = useLoaderData();
-  console.log(data);
 
   return (
     <>

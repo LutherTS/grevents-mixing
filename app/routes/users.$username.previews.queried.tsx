@@ -309,7 +309,6 @@ export function ErrorBoundary() {
 
 export default function QueriedPreviewPage() {
   const data: QueriedPreviewLoaderByHand = useLoaderData();
-  console.log(data);
 
   return (
     <>

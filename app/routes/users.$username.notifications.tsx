@@ -83,7 +83,6 @@ export function ErrorBoundary() {
 
 export default function NotificationsPage() {
   const data = useLoaderData<typeof loader>();
-  console.log(data);
 
   return (
     <>

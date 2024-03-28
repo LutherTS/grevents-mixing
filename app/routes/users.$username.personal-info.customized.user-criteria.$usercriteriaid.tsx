@@ -100,7 +100,6 @@ export function ErrorBoundary() {
 
 export default function UserCriteriaPage() {
   const data = useLoaderData<typeof loader>();
-  console.log(data);
 
   return (
     <>

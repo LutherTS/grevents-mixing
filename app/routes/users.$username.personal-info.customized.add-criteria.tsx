@@ -90,7 +90,6 @@ export function ErrorBoundary() {
 
 export default function AddCriteriaCustomizedPage() {
   const data = useLoaderData<typeof loader>();
-  console.log(data);
 
   return (
     <>

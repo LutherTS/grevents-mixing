@@ -151,7 +151,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function FindContactsPage() {
   const data = useLoaderData<typeof loader>();
-  console.log(data);
 
   return (
     <>

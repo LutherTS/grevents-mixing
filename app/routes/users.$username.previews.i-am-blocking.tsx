@@ -65,7 +65,6 @@ export function ErrorBoundary() {
 
 export default function IAmBlockingPreviewPage() {
   const data = useLoaderData<typeof loader>();
-  console.log(data);
 
   return (
     <>
