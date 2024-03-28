@@ -11,10 +11,6 @@ import {
 import { Prisma } from "@prisma/client";
 import { selectContacts } from "~/librairies/subdata/contacts";
 
-////////
-
-// FINAL TOP LEVEL COMPONENTS EXPORTED HERE
-
 export function ManyCriteria({
   answers,
   selectContext,

@@ -1,7 +1,15 @@
 import { useFetcher } from "@remix-run/react";
+import { JsonifyObject } from "type-fest/source/jsonify";
+
+type EmailUserByHand = JsonifyObject<{
+  errors?: {
+    userEmail?: string[];
+  };
+  message?: string;
+}>;
 
 export function EmailForm({ email }: { email: string }) {
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<EmailUserByHand>();
 
   return (
     <>
@@ -17,6 +25,20 @@ export function EmailForm({ email }: { email: string }) {
           placeholder={email}
           disabled={fetcher.state !== "idle"}
         />
+        {fetcher.data?.errors?.userEmail ? (
+          <div id="email-error" aria-live="polite">
+            {fetcher.data.errors.userEmail.map((error) => (
+              <p className="mt-2 text-red-500 font-light" key={error}>
+                {error}
+              </p>
+            ))}
+          </div>
+        ) : null}
+        {fetcher.data?.message ? (
+          <div id="email-form-error" aria-live="polite">
+            <p className="mt-2 text-red-500">{fetcher.data.message}</p>
+          </div>
+        ) : null}
       </fetcher.Form>
     </>
   );

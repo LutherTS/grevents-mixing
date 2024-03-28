@@ -85,7 +85,7 @@ export default function NotificationsPage() {
             <ManyContacts
               contacts={data.hasAccessedFromContacts}
               contactComponentRequired="OneContact"
-              label="Users who found your profile through your friend code"
+              label="Users who've found your profile through your friend code"
             />
             <p className="mt-2 text-orange-500">
               If you don't know one of the above users, feel free to block them

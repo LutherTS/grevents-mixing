@@ -22,6 +22,7 @@ import {
   findUserByFriendcode,
   findUserByUsername,
 } from "~/librairies/data/users";
+import { FriendCodeUserSchema } from "~/librairies/validations/users";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
@@ -60,18 +61,40 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const form = await request.formData();
   const friendCode = form.get("friendcode");
 
-  if (typeof friendCode !== "string") {
-    return null;
+  const validatedFields = FriendCodeUserSchema.safeParse({
+    userOtherFriendCode: friendCode,
+  });
+
+  if (!validatedFields.success) {
+    return json(
+      {
+        errors: validatedFields.error.flatten().fieldErrors,
+      },
+      { status: 400 }
+    );
   }
 
-  const otherUser = await findUserByFriendcode(friendCode);
+  const { userOtherFriendCode } = validatedFields.data;
+
+  const otherUser = await findUserByFriendcode(userOtherFriendCode);
 
   if (!otherUser) {
-    return null;
+    return json(
+      {
+        message:
+          "Database Error: No user with this friend code could be found.",
+      },
+      { status: 404 }
+    );
   }
 
   if (otherUser.id === verifiedUser.id) {
-    return null;
+    return json(
+      {
+        message: "Database Error: This is your own friend code.",
+      },
+      { status: 400 }
+    );
   }
 
   const [otherUserToVerifiedUserContact, verifiedUserToOtherUserContact] =

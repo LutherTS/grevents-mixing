@@ -1,5 +1,6 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
-import { redirect } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+
 import { createCustomizedQuestionUserQuestionAnswerByNameValueUserIdAndKind } from "~/librairies/changes/questions";
 import {
   deleteUserQuestionAtUserIdAndQuestionId,
@@ -14,7 +15,7 @@ import {
   findPreExistingUserQuestionByUserIdAndQuestionId,
 } from "~/librairies/data/userquestions";
 import { DEFAULT_ANSWERS_LIMIT } from "~/librairies/subdata/answers";
-
+import { CreateCustomizedAnswerSchema } from "~/librairies/validations/answers";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -28,21 +29,29 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const pseudonativeNotIrlQuestionName = form.get("pseudonativenotirlquestion");
   const pseudonativeNotIrlAnswerValue = form.get("pseudonativenotirlanswer");
 
-  if (
-    typeof pseudonativeNotIrlQuestionName !== "string" ||
-    typeof pseudonativeNotIrlAnswerValue !== "string"
-  ) {
-    return null;
+  const validatedFields = CreateCustomizedAnswerSchema.safeParse({
+    questionInitialName: pseudonativeNotIrlQuestionName,
+    answerInitialValue: pseudonativeNotIrlAnswerValue,
+  });
+
+  if (!validatedFields.success) {
+    return json(
+      {
+        errors: validatedFields.error.flatten().fieldErrors,
+        message: "Missing Fields. Failed to Create Pseudonative Answer.",
+      },
+      { status: 400 }
+    );
   }
 
-  const question = await findPseudoQuestionByName(
-    pseudonativeNotIrlQuestionName
-  );
+  const { questionInitialName, answerInitialValue } = validatedFields.data;
+
+  const question = await findPseudoQuestionByName(questionInitialName);
 
   if (!question) {
     await createCustomizedQuestionUserQuestionAnswerByNameValueUserIdAndKind(
-      pseudonativeNotIrlQuestionName,
-      pseudonativeNotIrlAnswerValue,
+      questionInitialName,
+      answerInitialValue,
       verifiedUser.id,
       "PSEUDONATIVE"
     );
@@ -67,14 +76,24 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     userQuestion.state === "LIVE" &&
     userQuestion.answer?.state === "LIVE"
   ) {
-    return null;
+    return json(
+      {
+        message: `Database Error: You've already answered this question as a pseudonative irl criteria`,
+      },
+      { status: 403 }
+    );
   }
 
   const userPseudonativeNotIrlAnswersCount =
     await countUserPseudonativeNotIrlAnswersByUserId(verifiedUser.id);
 
   if (userPseudonativeNotIrlAnswersCount >= DEFAULT_ANSWERS_LIMIT) {
-    return null;
+    return json(
+      {
+        message: `Database Error: Limit number of answers reached for this type of criteria (${DEFAULT_ANSWERS_LIMIT}).`,
+      },
+      { status: 403 }
+    );
   }
 
   // This is all the BS I have to do because Prisma currently does not support "delete if exists"
@@ -108,7 +127,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   await upsertUserQuestionAndAnswerByUserIdQuestionIdValueAndKind(
     verifiedUser.id,
     question.id,
-    pseudonativeNotIrlAnswerValue,
+    answerInitialValue,
     "PSEUDONATIVE"
   );
 

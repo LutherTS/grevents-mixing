@@ -88,11 +88,11 @@ export default function DashboardPage() {
       {data.verifiedUser && <SignOutForm />}
 
       <div className="my-4 space-y-2">
-        <div className="">
+        <div>
           <PageLink href={`modify`}>App-wide name *</PageLink>
           <p className="mt-2">{data.user.appWideName}</p>
         </div>
-        <div className="">
+        <div>
           <PageLink href={`../personal-info`}>More personal info</PageLink>
           <PageLink href={`../friends`}>My friends</PageLink>
           <PageLink
@@ -115,6 +115,14 @@ export default function DashboardPage() {
           >
             My notifications
           </PageLink>
+        </div>
+        <div className="py-2">
+          <p className="mt-2 underline text-fuchsia-200 hover:text-fuchsia-100 dark:text-fuchsia-800 dark:hover:text-fuchsia-900">
+            My groups
+          </p>
+          <p className="mt-2 underline text-fuchsia-200 hover:text-fuchsia-100 dark:text-fuchsia-800 dark:hover:text-fuchsia-900">
+            My events
+          </p>
         </div>
       </div>
 

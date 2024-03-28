@@ -21,9 +21,8 @@ model User {
   hashedPassword       String
   appWideName          String
   friendCode           String       @unique
-  hasTemporaryPassword Boolean      @default(false)
   createdAt            DateTime     @default(now())
-  updatedAt            DateTime     @updatedAt
+  updatedAt            DateTime     @updatedAt @default(now())
 
   contactFirsts        Contact[] @relation("UserFirst")
   contactLasts         Contact[] @relation("UserLast")
@@ -44,7 +43,7 @@ model Contact {
   statusRelationship   String       @default("NONE")
   blocking             Boolean      @default(false)
   createdAt            DateTime     @default(now())
-  updatedAt            DateTime     @updatedAt
+  updatedAt            DateTime     @updatedAt @default(now())
   sentFriendAt         DateTime?
   sentIrlAt            DateTime?
   annulFriendAt        DateTime?
@@ -79,7 +78,7 @@ model Question {
   kind                 String       @default("NONE")
   name                 String
   createdAt            DateTime     @default(now())
-  updatedAt            DateTime     @updatedAt
+  updatedAt            DateTime     @updatedAt @default(now())
 
   @@unique([kind, name])
 
@@ -95,7 +94,7 @@ model UserQuestion {
   kind                 String       @default("NONE")
   isPinned             Boolean      @default(false)
   createdAt            DateTime     @default(now())
-  updatedAt            DateTime     @updatedAt
+  updatedAt            DateTime     @updatedAt @default(now())
   pinnedAt             DateTime?
   upToIrlAt            DateTime?
   downFromIrlAt        DateTime?
@@ -118,7 +117,7 @@ model UserQuestionFriend {
   isSharedToFriend     Boolean      @default(false)
   isPinnedByFriend     Boolean      @default(false)
   createdAt            DateTime     @default(now())
-  updatedAt            DateTime     @updatedAt
+  updatedAt            DateTime     @updatedAt @default(now())
   sharedToFriendAt     DateTime?
   pinnedByFriendAt     DateTime?
 
@@ -135,7 +134,7 @@ model Answer {
   state                String       @default("NONE")
   value                String
   createdAt            DateTime     @default(now())
-  updatedAt            DateTime     @updatedAt
+  updatedAt            DateTime     @updatedAt @default(now())
 
   userQuestionId       String       @unique
   userQuestion         UserQuestion @relation(fields: [userQuestionId], references: [id], onDelete: Cascade)
@@ -151,8 +150,8 @@ model Answer {
 // enum UserState {
 //   NONE
 //   LIVE
-//   DELETED
 //   DEACTIVATED
+//   DELETED
 // }
 
 // enum UserStatusTitle {
@@ -167,7 +166,6 @@ model Answer {
 //   PASSWORDUPDATED
 //   APPWIDENAMEUPDATED
 //   FRIENDCODEUPDATED
-//   TEMPORARYPASSWORDCHANGED
 //   NOWDEACTIVATED
 //   NOWREACTIVATED
 //   REDIRECTEDTODASHBOARD
