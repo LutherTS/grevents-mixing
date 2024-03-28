@@ -159,7 +159,8 @@ const UserSchema = z.object({
       message: "A username needs to be slug-friendly.",
     }),
   contactRelCombo: z.enum(CONTACT_RELCOMBO, {
-    invalid_type_error: "This is not a valid relation combination.",
+    errorMap: () => ({ message: "This is not a valid relation combination." }),
+    // https://github.com/colinhacks/zod/issues/580
   }),
 });
 
