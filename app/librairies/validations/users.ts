@@ -145,23 +145,6 @@ const UserSchema = z.object({
     .length(12, {
       message: "A friend code is exactly 12 characters long.",
     }),
-  userOtherUsername: z
-    .string({
-      invalid_type_error: "Please type a username.",
-    })
-    .min(1, {
-      message: "A username needs to be at least 1 character long.",
-    })
-    .max(50, {
-      message: "A username cannot be more than 50 characters long.",
-    })
-    .regex(/^[A-Za-z0-9]+(?:[-_][A-Za-z0-9]+)*$/gm, {
-      message: "A username needs to be slug-friendly.",
-    }),
-  contactRelCombo: z.enum(CONTACT_RELCOMBO, {
-    errorMap: () => ({ message: "This is not a valid relation combination." }),
-    // https://github.com/colinhacks/zod/issues/580
-  }),
 });
 
 export const SignInUserSchema = UserSchema.pick({
@@ -193,12 +176,4 @@ export const PasswordUserSchema = UserSchema.pick({
 
 export const FriendCodeUserSchema = UserSchema.pick({
   userOtherFriendCode: true,
-});
-
-export const QueriedOneUserSchema = UserSchema.pick({
-  userOtherUsername: true,
-});
-
-export const QueriedTwoUserSchema = UserSchema.pick({
-  contactRelCombo: true,
 });

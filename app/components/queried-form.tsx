@@ -1,16 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { useFetcher } from "@remix-run/react";
-// import { JsonifyObject } from "type-fest/source/jsonify";
 
 import { selectContacts } from "~/librairies/subdata/contacts";
-import { relationCombinations } from "~/utilities/contacts";
-
-// type QueriedUserByHand = JsonifyObject<{
-//   errors?: {
-//     userOtherUsername?: string[];
-//     contactRelCombo?: string[];
-//   };
-// }>;
 
 export function QueriedForm({
   contact,
@@ -19,21 +10,15 @@ export function QueriedForm({
   userLastMessage,
   relComboMessage,
 }: {
-  contact:
-    | Prisma.ContactGetPayload<{
-        select: typeof selectContacts;
-      }>
-    | null
-    | undefined;
+  contact?: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
   userLast?: string;
   relCombo?: string;
   userLastMessage?: string;
   relComboMessage?: string;
 }) {
   const fetcher = useFetcher();
-  // <QueriedUserByHand>
-  // console.log(fetcher.data);
-  // console.log(fetcher.formData);
 
   return (
     <>
@@ -53,12 +38,7 @@ export function QueriedForm({
               type="text"
               id="user-last"
               name="userlast"
-              placeholder={
-                userLast
-                  ? // && relCombo && relationCombinations.includes(relCombo)
-                    userLast
-                  : "userlast"
-              }
+              placeholder={userLast ? userLast : "userlast"}
             />
             {userLastMessage ? (
               <div id="user-last-error" aria-live="polite">
@@ -90,15 +70,6 @@ export function QueriedForm({
                   <p className="mt-4 text-red-500">{relComboMessage}</p>
                 </div>
               ) : null}
-              {/* {fetcher.data?.errors?.contactRelCombo ? (
-                <div id="rel-combo-error" aria-live="polite">
-                  {fetcher.data.errors.contactRelCombo.map((error) => (
-                    <p className="mt-2 text-red-500 font-light" key={error}>
-                      {error}
-                    </p>
-                  ))}
-                </div>
-              ) : null} */}
               {/* Currently necessary to send the full form via Enter */}
               <button type="submit" className="hidden">
                 Submit

@@ -37,8 +37,7 @@ const AnswerSchema = z.object({
     }),
   answerModifiedValue: z
     .string({
-      // no custom validation needed, because it always ends up as a string
-      // const answerValue = form.get("answervalue") || "";
+      invalid_type_error: "Please type an answer or an empty response.",
     })
     .max(200, {
       message: "Your answer cannot be longer than 200 characters.",

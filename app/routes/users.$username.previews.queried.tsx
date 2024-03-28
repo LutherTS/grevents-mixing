@@ -36,10 +36,6 @@ import { selectAnswers } from "~/librairies/subdata/answers";
 import { selectContacts } from "~/librairies/subdata/contacts";
 import { selectUser, selectVerifiedUser } from "~/librairies/subdata/users";
 import {
-  QueriedOneUserSchema,
-  QueriedTwoUserSchema,
-} from "~/librairies/validations/users";
-import {
   decideContactRelCombo,
   defineContactRelCombo,
   relationCombinations,
@@ -84,8 +80,8 @@ type QueriedPreviewLoaderByHand = {
   relComboMessage?: string;
 };
 
-// This is going to be weird, very weird...
-// But all zod validations will have to be made from the loader.
+// This is going to be weird, or rather unexpected...
+// But all validations will have to be made from the loader.
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   invariant(params.username, "Expected params.username");
 
@@ -132,8 +128,6 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     );
   }
 
-  // ...Les validations zod sont donc belles et bien inutiles à partir du moment où l'état est tiré de l'URL. Mais je peux néanmoins garder leur logique pour afficher des messages.
-
   const userToQueriedContact =
     await findContactByUserFirstIdAndUserLastUsername(user.id, userLast);
 
@@ -143,7 +137,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
         verifiedUser,
         user,
         userLast,
-        userLastMessage: "You are not acquainted with any such user.",
+        userLastMessage:
+          "You are not acquainted with any such user. (Usernames only.)",
       },
       { status: 404 }
     );
@@ -157,7 +152,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
         userToQueriedContact,
         userLast,
         relCombo,
-        relComboMessage: "This is not a valid relation combination. See above.",
+        relComboMessage:
+          "This is not a valid relation combination. (See above.)",
       },
       { status: 400 }
     );
@@ -263,24 +259,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const userLast = form.get("userlast") || "";
   const relCombo = form.get("relcombo");
 
-  if (userLast == "") {
+  if (typeof userLast !== "string" || (userLast == "" && !relCombo)) {
     throw redirect(`.`);
   }
-
-  // const validatedFieldsOne = QueriedOneUserSchema.safeParse({
-  //   userOtherUsername: userLast,
-  // });
-
-  // if (!validatedFieldsOne.success) {
-  //   return json(
-  //     {
-  //       errors: validatedFieldsOne.error.flatten().fieldErrors,
-  //     },
-  //     { status: 400 }
-  //   );
-  // }
-
-  // const { userOtherUsername } = validatedFieldsOne.data;
 
   if (relCombo === null || relCombo === "") {
     throw redirect(`?userlast=${userLast}`);
@@ -288,23 +269,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   if (typeof relCombo !== "string") {
     throw redirect(`.`);
-    // as a just in case
   }
-
-  // const validatedFieldsTwo = QueriedTwoUserSchema.safeParse({
-  //   contactRelCombo: relCombo,
-  // });
-
-  // if (!validatedFieldsTwo.success) {
-  //   return json(
-  //     {
-  //       errors: validatedFieldsTwo.error.flatten().fieldErrors,
-  //     },
-  //     { status: 400 }
-  //   );
-  // }
-
-  // const { contactRelCombo } = validatedFieldsTwo.data;
 
   throw redirect(`?userlast=${userLast}&relcombo=${relCombo}`);
 };
@@ -414,9 +379,6 @@ export default function QueriedPreviewPage() {
                               <>would be</>
                             )}{" "}
                             seeing yours.
-                          </p>
-                          <p className="mt-2 text-gray-500">
-                            &quot;{data.relCombo}&quot;
                           </p>
                         </>
                       )}
