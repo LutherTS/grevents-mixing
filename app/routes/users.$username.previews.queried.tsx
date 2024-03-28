@@ -259,7 +259,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const userLast = form.get("userlast") || "";
   const relCombo = form.get("relcombo");
 
-  if (typeof userLast !== "string" || (userLast == "" && !relCombo)) {
+  const url = new URL(request.url);
+  // const userLastSearchParam = url.searchParams.get("userlast") || "";
+  const relComboSearchParam = url.searchParams.get("relcombo") || "";
+
+  if (
+    typeof userLast !== "string" ||
+    (userLast == "" && !relCombo && relComboSearchParam === "")
+  ) {
     throw redirect(`.`);
   }
 
