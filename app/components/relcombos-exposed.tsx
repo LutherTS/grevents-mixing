@@ -283,8 +283,8 @@ export function RelationCombinationUserFriendExposed({
         answers={pinnedNotIrlAnswersExposed}
         selectContext="Profile"
         answerComponentRequired="OneAnswerPinnableByFriend"
-        label="Find their pinned for friend criteria below"
-        notLabel="No pinned criteria yet."
+        label="Find their (remaining) pinned for friend criteria below"
+        notLabel="No (remaining) pinned criteria yet."
         contact={contact}
         answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
       />
@@ -292,7 +292,7 @@ export function RelationCombinationUserFriendExposed({
         answers={unpinnedNativeNotIrlAnswersExposed}
         answerComponentRequired="OneAnswerPinnableByFriend"
         label="Find their (other) native criteria below"
-        notLabel="No native criteria yet."
+        notLabel="No (other) native criteria yet."
         contact={contact}
         answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
       />
@@ -300,7 +300,7 @@ export function RelationCombinationUserFriendExposed({
         answers={unpinnedPseudonativeNotIrlAnswersExposed}
         answerComponentRequired="OneAnswerPinnableByFriend"
         label="Find their (other) pseudonative criteria below"
-        notLabel="No pseudonative criteria yet."
+        notLabel="No (other) pseudonative criteria yet."
         contact={contact}
         answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
       />
@@ -560,8 +560,8 @@ export function RelationCombinationUserIrlExposed({
         answers={pinnedNotAndIrlAnswersExposed}
         selectContext="Profile"
         answerComponentRequired="OneAnswerPinnableByFriend"
-        label="Find their pinned for irl criteria below"
-        notLabel="No pinned criteria yet."
+        label="Find their (remaining) pinned for irl criteria below"
+        notLabel="No (remaining) pinned criteria yet."
         contact={contact}
         answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
       />
@@ -569,7 +569,7 @@ export function RelationCombinationUserIrlExposed({
         answers={unpinnedNativeNotIrlAnswersExposed}
         answerComponentRequired="OneAnswerPinnableByFriend"
         label="Find their (other) native criteria below"
-        notLabel="No native criteria yet."
+        notLabel="No (other) native criteria yet."
         contact={contact}
         answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
       />
@@ -577,7 +577,7 @@ export function RelationCombinationUserIrlExposed({
         answers={unpinnedPseudonativeNotIrlAnswersExposed}
         answerComponentRequired="OneAnswerPinnableByFriend"
         label="Find their (other) pseudonative criteria below"
-        notLabel="No pseudonative criteria yet."
+        notLabel="No (other) pseudonative criteria yet."
         contact={contact}
         answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
       />
@@ -585,7 +585,7 @@ export function RelationCombinationUserIrlExposed({
         answers={unpinnedNativeIrlAnswersExposed}
         answerComponentRequired="OneAnswerPinnableByFriend"
         label="Find their (other) native irl criteria below"
-        notLabel="No native irl criteria yet."
+        notLabel="No (other) native irl criteria yet."
         contact={contact}
         answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
       />
@@ -593,7 +593,7 @@ export function RelationCombinationUserIrlExposed({
         answers={unpinnedPseudonativeIrlAnswersExposed}
         answerComponentRequired="OneAnswerPinnableByFriend"
         label="Find their (other) pseudonative irl criteria below"
-        notLabel="No pseudonative irl criteria yet."
+        notLabel="No (other) pseudonative irl criteria yet."
         contact={contact}
         answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
       />

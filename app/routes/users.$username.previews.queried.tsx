@@ -446,7 +446,7 @@ export default function QueriedPreviewPage() {
               answers={data.userUnpinnedNativeNotIrlAnswers}
               answerComponentRequired="OneAnswer"
               label="Find their (other) native criteria below"
-              notLabel="No native criteria yet."
+              notLabel="No (other) native criteria yet."
             />
           )}
           {data.userUnpinnedPseudonativeNotIrlAnswers && (
@@ -454,7 +454,7 @@ export default function QueriedPreviewPage() {
               answers={data.userUnpinnedPseudonativeNotIrlAnswers}
               answerComponentRequired="OneAnswer"
               label="Find their (other) pseudonative criteria below"
-              notLabel="No pseudonative criteria yet."
+              notLabel="No (other) pseudonative criteria yet."
             />
           )}
           {data.userUnpinnedNativeIrlAnswers && (
@@ -462,7 +462,7 @@ export default function QueriedPreviewPage() {
               answers={data.userUnpinnedNativeIrlAnswers}
               answerComponentRequired="OneAnswer"
               label="Find their (other) native irl criteria below"
-              notLabel="No native irl criteria yet."
+              notLabel="No (other) native irl criteria yet."
             />
           )}
           {data.userUnpinnedPseudonativeIrlAnswers && (
@@ -470,7 +470,7 @@ export default function QueriedPreviewPage() {
               answers={data.userUnpinnedPseudonativeIrlAnswers}
               answerComponentRequired="OneAnswer"
               label="Find their (other) pseudonative irl criteria below"
-              notLabel="No pseudonative irl criteria yet."
+              notLabel="No (other) pseudonative irl criteria yet."
             />
           )}
           {data.userUnpinnedSharedToContactCustomAnswers &&
@@ -480,7 +480,7 @@ export default function QueriedPreviewPage() {
                 selectContext="QueriedPreview"
                 answerComponentRequired="OneAnswer"
                 label="See their (other) custom answers shared to you below"
-                notLabel="No custom criteria yet."
+                notLabel="No (other) custom criteria yet."
               />
             )}
           {data.user && data.userLast && data.relCombo === "i-am-blocking" && (

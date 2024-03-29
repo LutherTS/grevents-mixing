@@ -75,6 +75,7 @@ export const selectPrexistingUserQuestion = {
     select: {
       kind: true,
       state: true,
+      name: true,
     },
   },
   answer: {

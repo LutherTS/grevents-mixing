@@ -66,7 +66,7 @@ export const PINNED_BY_USER_ANSWERS_ORDER_BY = [
   },
 ] satisfies Prisma.AnswerOrderByWithRelationInput[];
 
-export const DEFAULT_ANSWERS_LIMIT = 32;
+export const DEFAULT_ANSWERS_LIMIT = 64;
 export const PINNED_BY_USER_ANSWERS_LIMIT = 16;
 
 export const selectUserPinnedAnswers = {

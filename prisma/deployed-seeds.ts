@@ -25,20 +25,20 @@ async function seed() {
     },
   });
 
-  // Work number / native
+  // Birthday / native
 
-  const workNumber = await db.question.upsert({
+  const birthday = await db.question.upsert({
     where: {
       kind_name: {
         kind: "NATIVE",
-        name: "Work number",
+        name: "Birthday",
       },
     },
     update: {
       state: "LIVE",
     },
     create: {
-      name: "Work number",
+      name: "Birthday",
       state: "LIVE",
       kind: "NATIVE",
     },
@@ -101,6 +101,25 @@ async function seed() {
     },
   });
 
+  // Birthdate / native / irl
+
+  const birthdate = await db.question.upsert({
+    where: {
+      kind_name: {
+        kind: "NATIVEIRL",
+        name: "Birthdate",
+      },
+    },
+    update: {
+      state: "LIVE",
+    },
+    create: {
+      name: "Birthdate",
+      state: "LIVE",
+      kind: "NATIVEIRL",
+    },
+  });
+
   // Phone number / native / irl
 
   const phoneNumber = await db.question.upsert({
@@ -134,25 +153,6 @@ async function seed() {
     },
     create: {
       name: "Address",
-      state: "LIVE",
-      kind: "NATIVEIRL",
-    },
-  });
-
-  // Other address / native / irl
-
-  const otherAddress = await db.question.upsert({
-    where: {
-      kind_name: {
-        kind: "NATIVEIRL",
-        name: "Other address",
-      },
-    },
-    update: {
-      state: "LIVE",
-    },
-    create: {
-      name: "Other address",
       state: "LIVE",
       kind: "NATIVEIRL",
     },
