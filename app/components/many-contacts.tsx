@@ -7,9 +7,6 @@ import { OneContact, OneContactAddable } from "./one-contact";
 import { LinkButtonOnClick } from "./link-button";
 import { selectUserCustomAnswer } from "~/librairies/subdata/answers";
 
-// For UserQuestionFriends, contacts will also be from a different payload, then I can do if contacts is from Contact, then, if contacts is from UserQuestionFriends, then.
-// So it's going to be in the typing, and then as a return condition. I'll find the way.
-// Edit: Given the unreliableness of Union Types, I'm gonna have to make many-userquestionfriends.tsx and one-userquestionfriends.tsx components.
 export function ManyContacts({
   contacts,
   answer,

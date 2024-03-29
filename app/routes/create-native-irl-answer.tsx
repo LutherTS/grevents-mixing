@@ -1,5 +1,6 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
+
 import {
   deleteUserQuestionAtUserIdAndQuestionId,
   upsertUserQuestionAndAnswerByUserIdQuestionIdValueAndKind,
@@ -14,7 +15,6 @@ import {
 } from "~/librairies/data/userquestions";
 import { DEFAULT_ANSWERS_LIMIT } from "~/librairies/subdata/answers";
 import { CreateStandardizedAnswerSchema } from "~/librairies/validations/answers";
-
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -102,7 +102,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
   // And now that I know for sure any incorrect userQuestion at userId and questionId is deleted if it existed, that's when I can create or update the new userQuestion and answer I initially intended to simply create.
 
-  // Function works whether it's Irl or not. Needs renaming.
   await upsertUserQuestionAndAnswerByUserIdQuestionIdValueAndKind(
     verifiedUser.id,
     question.id,

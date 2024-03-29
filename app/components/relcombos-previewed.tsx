@@ -2,7 +2,6 @@ import { Prisma } from "@prisma/client";
 
 import { selectUser } from "~/librairies/subdata/users";
 import { selectAnswers } from "~/librairies/subdata/answers";
-import { LinkButtonMockup } from "./link-button";
 import { ManyCriteria } from "./many-criteria";
 
 export function RelationCombinationNonePreviewed() {
@@ -42,13 +41,13 @@ export function RelationCombinationFriendPreviewed({
         answers={unpinnedNativeNotIrlAnswers}
         answerComponentRequired="OneAnswer"
         label="Find their (other) native criteria below"
-        notLabel="No native criteria yet."
+        notLabel="No (other) native criteria yet."
       />
       <ManyCriteria
         answers={unpinnedPseudonativeNotIrlAnswers}
         answerComponentRequired="OneAnswer"
         label="Find their (other) pseudonative criteria below"
-        notLabel="No native irl criteria yet."
+        notLabel="No (other) native irl criteria yet."
       />
     </>
   );
@@ -89,25 +88,25 @@ export function RelationCombinationIrlPreviewed({
         answers={unpinnedNativeNotIrlAnswers}
         answerComponentRequired="OneAnswer"
         label="Find their (other) native criteria below"
-        notLabel="No native criteria yet."
+        notLabel="No (other) native criteria yet."
       />
       <ManyCriteria
         answers={unpinnedPseudonativeNotIrlAnswers}
         answerComponentRequired="OneAnswer"
         label="Find their (other) pseudonative criteria below"
-        notLabel="No native irl criteria yet."
+        notLabel="No (other) pseudonative criteria yet."
       />
       <ManyCriteria
         answers={unpinnedNativeIrlAnswers}
         answerComponentRequired="OneAnswer"
         label="Find their (other) native irl criteria below"
-        notLabel="No native criteria yet."
+        notLabel="No (other) native irl criteria yet."
       />
       <ManyCriteria
         answers={unpinnedPseudonativeIrlAnswers}
         answerComponentRequired="OneAnswer"
         label="Find their (other) pseudonative irl criteria below"
-        notLabel="No native irl criteria yet."
+        notLabel="No (other) pseudonative irl criteria yet."
       />
     </>
   );

@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+
 import { ContactToastForm } from "./toast-form";
 import { selectContacts } from "~/librairies/subdata/contacts";
 
@@ -47,7 +48,7 @@ export function StatusOtherProfileToasts({
         <ContactToastForm
           contact={contact}
           action="/reset-contact-status-other-profile"
-          specifiedClasses="text-orange-500 disabled:text-gray-500"
+          specifiedClasses="text-orange-500 disabled:!text-gray-500"
         >
           {contact.userFirst.username} has found your profile
         </ContactToastForm>
@@ -56,7 +57,7 @@ export function StatusOtherProfileToasts({
         <ContactToastForm
           contact={contact}
           action="/reset-contact-status-other-profile"
-          specifiedClasses="text-orange-500 disabled:text-gray-500"
+          specifiedClasses="text-orange-500 disabled:!text-gray-500"
         >
           {contact.userFirst.username} has found your profile once more
         </ContactToastForm>

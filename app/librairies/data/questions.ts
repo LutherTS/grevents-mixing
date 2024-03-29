@@ -41,7 +41,6 @@ export async function findUnansweredNativeIrlQuestionsByUserId(userId: string) {
   });
 }
 
-// Because select and where have one entry, I'm not making subdatas for this.
 export async function findQuestionById(id: string) {
   const select = { id: true };
   const where = { id };

@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 const db = new PrismaClient();
 
 async function seed() {
-  console.log(`Beginning seeds...`);
+  console.log(`Beginning initial seeds...`);
 
   console.log(`Seeding users...`);
 

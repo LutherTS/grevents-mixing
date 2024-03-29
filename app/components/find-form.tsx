@@ -44,7 +44,7 @@ export function FindForm({
           </div>
         ) : null}
         {fetcher.data?.message ? (
-          <div id="friend-code-form-error" aria-live="polite">
+          <div id="find-form-error" aria-live="polite">
             <p className="mt-2 text-red-500">{fetcher.data.message}</p>
           </div>
         ) : null}

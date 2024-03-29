@@ -1,9 +1,9 @@
 import { Prisma } from "@prisma/client";
+import { useFetcher } from "@remix-run/react";
 
 import { selectContacts } from "~/librairies/subdata/contacts";
 import { PageLinkDivless } from "./page-link";
 import { selectUserCustomAnswer } from "~/librairies/subdata/answers";
-import { useFetcher } from "@remix-run/react";
 
 export function OneContact({
   contact,
@@ -79,7 +79,6 @@ export function OneContactAddable({
   );
 }
 
-// Because contact and answer will be shared via hidden inputs, like binds.
 export function ButtonShareUserQuestionFriendForm({
   contact,
   answer,
@@ -104,7 +103,7 @@ export function ButtonShareUserQuestionFriendForm({
         <input type="hidden" name="answerid" value={answer.id} />
         <button
           disabled={fetcher.state !== "idle"}
-          className="h-4 w-4 rounded-full bg-cyan-500 hover:bg-cyan-300 disabled:!bg-gray-500 disabled:hover:bg-gray-500 dark:hover:bg-cyan-700"
+          className="h-4 w-4 rounded-full bg-cyan-500 hover:bg-cyan-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-cyan-700"
         />
       </fetcher.Form>
     </>

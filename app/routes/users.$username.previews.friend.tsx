@@ -1,10 +1,10 @@
 import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
-import { ManyCriteria } from "~/components/many-criteria";
+import { LinkButtonOnClick } from "~/components/link-button";
 import { PageLink } from "~/components/page-link";
 import { RelationCombinationFriendPreviewed } from "~/components/relcombos-previewed";
 import { SignOutForm } from "~/components/sign-out-form";
@@ -59,9 +59,33 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   });
 };
 
+export function ErrorBoundary() {
+  const navigate = useNavigate();
+
+  function handlePreviousNavigation() {
+    navigate(-1);
+  }
+
+  return (
+    <>
+      <div className="space-y-4 my-4">
+        <p className="mt-2">Could not find requested user.</p>
+      </div>
+      <PageLink href={`/`}>Return home</PageLink>
+      <p className="mt-2">
+        <LinkButtonOnClick
+          handleClick={handlePreviousNavigation}
+          disabled={false}
+        >
+          Or go back to the previous page
+        </LinkButtonOnClick>
+      </p>
+    </>
+  );
+}
+
 export default function FriendPreviewPage() {
   const data = useLoaderData<typeof loader>();
-  console.log(data);
 
   return (
     <>

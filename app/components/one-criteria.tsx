@@ -55,15 +55,15 @@ export function OneCriteria({
           <OneAnswer answer={answer} />
         )}
         {answerComponentRequired === "OneAnswerPinnable" &&
-          pinnedAnswersCount && (
+          typeof pinnedAnswersCount === "number" && (
             <OneAnswerPinnable
               answer={answer}
               pinnedAnswersCount={pinnedAnswersCount}
             />
           )}
         {answerComponentRequired === "OneAnswerPinnablePseudoable" &&
-          pinnedAnswersCount &&
-          otherPseudonativeAnswersCount && (
+          typeof pinnedAnswersCount === "number" &&
+          typeof otherPseudonativeAnswersCount === "number" && (
             <OneAnswerPinnablePseudoable
               answer={answer}
               pinnedAnswersCount={pinnedAnswersCount}
@@ -151,7 +151,8 @@ export function OneQuestion({
                 {answer.userQuestion.question.name}
               </span>{" "}
               / custom{" "}
-              {answer.userQuestion._count.userQuestionFriends &&
+              {typeof answer.userQuestion._count.userQuestionFriends ===
+                "number" &&
               answer.userQuestion._count.userQuestionFriends >= 1 ? (
                 <>/ shared ({answer.userQuestion._count.userQuestionFriends})</>
               ) : (
@@ -175,6 +176,7 @@ export function OneQuestion({
         {/* basically the only unused use case is: link, UserQuestionFriends not counted */}
         {answer.userQuestion.question.kind === "CUSTOM" &&
           answer.userQuestion.kind === "NONE" &&
+          answer.userQuestion._count &&
           selectContext === "PersonalInfoCustomized" && (
             <PageLinkDivless
               href={`/users/${answer.user.username}/personal-info/customized/user-criteria/${answer.userQuestion.id}`}
@@ -185,7 +187,8 @@ export function OneQuestion({
                   {answer.userQuestion.question.name}
                 </span>{" "}
                 / custom{" "}
-                {answer.userQuestion._count &&
+                {typeof answer.userQuestion._count.userQuestionFriends ===
+                  "number" &&
                 answer.userQuestion._count.userQuestionFriends >= 1 ? (
                   <>
                     / shared ({answer.userQuestion._count.userQuestionFriends})
@@ -325,7 +328,7 @@ function ButtonPseudoableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
         <button
           disabled={fetcher.state !== "idle"}
           className={clsx(
-            "h-4 w-4 rounded-full bg-yellow-500 disabled:!bg-gray-500 disabled:hover:bg-gray-500",
+            "h-4 w-4 rounded-full bg-yellow-500 disabled:!bg-gray-500 disabled:hover:!bg-gray-500",
             {
               "hover:bg-emerald-300 dark:hover:bg-emerald-700":
                 answer.userQuestion.question.kind === "PSEUDO" &&
@@ -437,7 +440,7 @@ function ButtonHiddableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
             <button
               disabled={fetcher.state !== "idle"}
               className={clsx(
-                "h-4 w-4 rounded-full disabled:!bg-gray-400 disabled:hover:bg-gray-400 dark:disabled:!bg-gray-600 dark:disabled:hover:bg-gray-600",
+                "h-4 w-4 rounded-full disabled:!bg-gray-400 disabled:hover:!bg-gray-400 dark:disabled:!bg-gray-600 dark:disabled:hover:!bg-gray-600",
                 {
                   "bg-cyan-500 hover:bg-pink-300 dark:hover:bg-pink-700":
                     answer.userQuestion.state === "LIVE",
@@ -497,7 +500,7 @@ function ButtonPinnableByFriendForm({
         <input type="hidden" name="contactid" value={contact.id} />
         <button
           disabled={fetcher.state !== "idle"}
-          className="h-4 w-4 rounded-full bg-cyan-500 hover:bg-cyan-300 disabled:!bg-gray-500 disabled:hover:bg-gray-500 dark:hover:bg-cyan-700"
+          className="h-4 w-4 rounded-full bg-cyan-500 hover:bg-cyan-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-cyan-700"
         />
       </fetcher.Form>
     </>

@@ -1,4 +1,4 @@
-import { createCookieSessionStorage, json, redirect } from "@remix-run/node";
+import { createCookieSessionStorage, redirect } from "@remix-run/node";
 import bcrypt from "bcryptjs";
 import uid from "uid2";
 
@@ -16,7 +16,6 @@ import {
   dataResetUserStatutes,
   dataSignUpUser,
 } from "~/librairies/subchanges/users";
-import { findUserByUsername } from "~/librairies/data/users";
 
 export async function signIn(usernameOrEmail: string, signInPassword: string) {
   const signInUser = await prisma.user.findFirst({
@@ -186,18 +185,3 @@ export async function signUp(
 
   return signUpUser;
 }
-
-/*
-export async function requireUserId(
-  request: Request,
-  redirectTo: string = new URL(request.url).pathname
-) {
-  const session = await getVerifiedUserSession(request);
-  const userId = session.get("verifiedUserId");
-  if (!userId || typeof userId !== "string") {
-    const searchParams = new URLSearchParams([["redirectTo", redirectTo]]);
-    throw redirect(`/login?${searchParams}`);
-  }
-  return userId;
-}
-*/

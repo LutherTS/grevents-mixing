@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { useFetcher } from "@remix-run/react";
+
 import { selectContacts } from "~/librairies/subdata/contacts";
 
 export function ToastForm({
@@ -21,7 +22,7 @@ export function ToastForm({
           className={
             specifiedClasses
               ? specifiedClasses
-              : "text-green-500 disabled:text-gray-500"
+              : "text-green-500 disabled:!text-gray-500"
           }
         >
           {children}
@@ -55,7 +56,7 @@ export function ContactToastForm({
           className={
             specifiedClasses
               ? specifiedClasses
-              : "text-green-500 disabled:text-gray-500"
+              : "text-green-500 disabled:!text-gray-500"
           }
         >
           {children}

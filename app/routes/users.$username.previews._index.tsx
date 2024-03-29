@@ -1,9 +1,10 @@
 import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
+import { LinkButtonOnClick } from "~/components/link-button";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
@@ -36,9 +37,33 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   return json({ verifiedUser, user });
 };
 
+export function ErrorBoundary() {
+  const navigate = useNavigate();
+
+  function handlePreviousNavigation() {
+    navigate(-1);
+  }
+
+  return (
+    <>
+      <div className="space-y-4 my-4">
+        <p className="mt-2">Could not find requested user.</p>
+      </div>
+      <PageLink href={`/`}>Return home</PageLink>
+      <p className="mt-2">
+        <LinkButtonOnClick
+          handleClick={handlePreviousNavigation}
+          disabled={false}
+        >
+          Or go back to the previous page
+        </LinkButtonOnClick>
+      </p>
+    </>
+  );
+}
+
 export default function PreviewsPage() {
   const data = useLoaderData<typeof loader>();
-  console.log(data);
 
   return (
     <>
@@ -65,6 +90,8 @@ export default function PreviewsPage() {
           <PageLink href={`queried`}>To queried previews</PageLink>
         </div>
       </div>
+
+      <PageLink href={`../profile`}>To your profile</PageLink>
       <PageLink href={`../friends/find`}>Search for contacts</PageLink>
     </>
   );

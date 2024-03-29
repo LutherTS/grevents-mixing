@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
 import { AppWideNameForm } from "~/components/app-wide-name-form";
@@ -8,6 +8,7 @@ import { DeactivateReactivateForms } from "~/components/deactivate-forms";
 import { EmailForm } from "~/components/email-form";
 import { FriendCodeForm } from "~/components/friend-code-form";
 import { H1 } from "~/components/h1";
+import { LinkButtonOnClick } from "~/components/link-button";
 import { PageLink } from "~/components/page-link";
 import { PasswordForm } from "~/components/password-form";
 import { SignOutForm } from "~/components/sign-out-form";
@@ -41,9 +42,33 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   return json({ verifiedUser, user });
 };
 
+export function ErrorBoundary() {
+  const navigate = useNavigate();
+
+  function handlePreviousNavigation() {
+    navigate(-1);
+  }
+
+  return (
+    <>
+      <div className="space-y-4 my-4">
+        <p className="mt-2">Could not find requested user.</p>
+      </div>
+      <PageLink href={`/`}>Return home</PageLink>
+      <p className="mt-2">
+        <LinkButtonOnClick
+          handleClick={handlePreviousNavigation}
+          disabled={false}
+        >
+          Or go back to the previous page
+        </LinkButtonOnClick>
+      </p>
+    </>
+  );
+}
+
 export default function DashboardModifyPage() {
   const data = useLoaderData<typeof loader>();
-  console.log(data);
 
   return (
     <>
@@ -52,6 +77,7 @@ export default function DashboardModifyPage() {
         href={`/users/${data.verifiedUser.username}/dashboard`}
       />
       {data.verifiedUser && <SignOutForm />}
+
       <div className="my-4">
         <AppWideNameForm appWideName={data.verifiedUser.appWideName} />
         <EmailForm email={data.verifiedUser.email} />
@@ -59,6 +85,7 @@ export default function DashboardModifyPage() {
         <DeactivateReactivateForms state={data.verifiedUser.state} />
         <PasswordForm />
       </div>
+
       <PageLink href={`..`}>Cancel</PageLink>
     </>
   );

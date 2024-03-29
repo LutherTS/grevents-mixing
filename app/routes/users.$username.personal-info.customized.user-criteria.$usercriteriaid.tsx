@@ -1,9 +1,10 @@
 import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
+import { LinkButtonOnClick } from "~/components/link-button";
 import { ManyContacts } from "~/components/many-contacts";
 import { ManyUserQuestionFriendsShared } from "~/components/many-userquestionfriends";
 import { OneCriteria } from "~/components/one-criteria";
@@ -72,9 +73,33 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   });
 };
 
+export function ErrorBoundary() {
+  const navigate = useNavigate();
+
+  function handlePreviousNavigation() {
+    navigate(-1);
+  }
+
+  return (
+    <>
+      <div className="space-y-4 my-4">
+        <p className="mt-2">Could not find requested user or answer.</p>
+      </div>
+      <PageLink href={`/`}>Return home</PageLink>
+      <p className="mt-2">
+        <LinkButtonOnClick
+          handleClick={handlePreviousNavigation}
+          disabled={false}
+        >
+          Or go back to the previous page
+        </LinkButtonOnClick>
+      </p>
+    </>
+  );
+}
+
 export default function UserCriteriaPage() {
   const data = useLoaderData<typeof loader>();
-  console.log(data);
 
   return (
     <>

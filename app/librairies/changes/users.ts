@@ -39,7 +39,6 @@ export async function updateUserStatusDashboardById(
   });
 }
 
-// select needed to return the username
 export async function updateUserAppWideNameById(
   id: string,
   appWideName: string
@@ -58,7 +57,6 @@ export async function updateUserAppWideNameById(
   });
 }
 
-// select needed to return the username
 export async function updateUserEmailByIdAndAnswerId(
   id: string,
   email: string,
@@ -88,7 +86,6 @@ export async function updateUserEmailByIdAndAnswerId(
   });
 }
 
-// select needed to return the username
 export async function updateUserFriendCodeById(id: string, friendCode: string) {
   const select = selectVerifiedUser;
   const where: Prisma.UserWhereUniqueInput = { id };
@@ -136,7 +133,6 @@ export async function updateReactivateUserById(id: string) {
   });
 }
 
-// select needed to return the username
 export async function updateUserPasswordById(
   id: string,
   hashedPassword: string

@@ -5,11 +5,12 @@ import {
   json,
   redirect,
 } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
+import { LinkButtonOnClick } from "~/components/link-button";
 import { ManyCriteria } from "~/components/many-criteria";
 import { PageLink } from "~/components/page-link";
 import { QueriedForm } from "~/components/queried-form";
@@ -43,7 +44,6 @@ import {
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 type QueriedPreviewLoaderByHand = {
-  // because TypeScript Union Types are once again failing.
   verifiedUser: Prisma.UserGetPayload<{
     select: typeof selectVerifiedUser;
   }>;
@@ -281,9 +281,33 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   throw redirect(`?userlast=${userLast}&relcombo=${relCombo}`);
 };
 
+export function ErrorBoundary() {
+  const navigate = useNavigate();
+
+  function handlePreviousNavigation() {
+    navigate(-1);
+  }
+
+  return (
+    <>
+      <div className="space-y-4 my-4">
+        <p className="mt-2">Could not find requested user.</p>
+      </div>
+      <PageLink href={`/`}>Return home</PageLink>
+      <p className="mt-2">
+        <LinkButtonOnClick
+          handleClick={handlePreviousNavigation}
+          disabled={false}
+        >
+          Or go back to the previous page
+        </LinkButtonOnClick>
+      </p>
+    </>
+  );
+}
+
 export default function QueriedPreviewPage() {
   const data: QueriedPreviewLoaderByHand = useLoaderData();
-  console.log(data);
 
   return (
     <>
@@ -394,7 +418,6 @@ export default function QueriedPreviewPage() {
                 </div>
               </>
             )}
-          {/* TypeScript desperately needs to get an upgrade. */}
           {data.user && data.userLast && data.relCombo === "none" && (
             <RelationCombinationNonePreviewed />
           )}
@@ -421,7 +444,7 @@ export default function QueriedPreviewPage() {
               answers={data.userUnpinnedNativeNotIrlAnswers}
               answerComponentRequired="OneAnswer"
               label="Find their (other) native criteria below"
-              notLabel="No native criteria yet."
+              notLabel="No (other) native criteria yet."
             />
           )}
           {data.userUnpinnedPseudonativeNotIrlAnswers && (
@@ -429,7 +452,7 @@ export default function QueriedPreviewPage() {
               answers={data.userUnpinnedPseudonativeNotIrlAnswers}
               answerComponentRequired="OneAnswer"
               label="Find their (other) pseudonative criteria below"
-              notLabel="No pseudonative criteria yet."
+              notLabel="No (other) pseudonative criteria yet."
             />
           )}
           {data.userUnpinnedNativeIrlAnswers && (
@@ -437,7 +460,7 @@ export default function QueriedPreviewPage() {
               answers={data.userUnpinnedNativeIrlAnswers}
               answerComponentRequired="OneAnswer"
               label="Find their (other) native irl criteria below"
-              notLabel="No native irl criteria yet."
+              notLabel="No (other) native irl criteria yet."
             />
           )}
           {data.userUnpinnedPseudonativeIrlAnswers && (
@@ -445,7 +468,7 @@ export default function QueriedPreviewPage() {
               answers={data.userUnpinnedPseudonativeIrlAnswers}
               answerComponentRequired="OneAnswer"
               label="Find their (other) pseudonative irl criteria below"
-              notLabel="No pseudonative irl criteria yet."
+              notLabel="No (other) pseudonative irl criteria yet."
             />
           )}
           {data.userUnpinnedSharedToContactCustomAnswers &&
@@ -455,7 +478,7 @@ export default function QueriedPreviewPage() {
                 selectContext="QueriedPreview"
                 answerComponentRequired="OneAnswer"
                 label="See their (other) custom answers shared to you below"
-                notLabel="No custom criteria yet."
+                notLabel="No (other) custom criteria yet."
               />
             )}
           {data.user && data.userLast && data.relCombo === "i-am-blocking" && (
@@ -472,8 +495,8 @@ export default function QueriedPreviewPage() {
         </>
       </div>
 
-      <PageLink href={`..`}>To Previews</PageLink>
-      <PageLink href={`../../profile`}>To Your Profile</PageLink>
+      <PageLink href={`..`}>To previews</PageLink>
+      <PageLink href={`../../profile`}>To your profile</PageLink>
     </>
   );
 }

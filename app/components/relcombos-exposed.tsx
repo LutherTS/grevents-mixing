@@ -58,59 +58,57 @@ export function RelationCombinationUserNoneExposed({
           </>
         )}
       </div>
-      <div>
-        {contact.mirror?.processRelationship === "SENTFRIEND" && (
-          <>
-            <p className="mt-2 text-orange-500">
-              Friend request sent and pending. However, do take into
-              consideration that canceling your friend request to{" "}
-              {contact.userFirst.appWideName} will prevent you from sending{" "}
-              {contact.userFirst.appWideName} another friend request at this
-              time.
+
+      {contact.mirror?.processRelationship === "SENTFRIEND" && (
+        <div>
+          <p className="mt-2 text-orange-500">
+            Friend request sent and pending. However, do take into consideration
+            that canceling your friend request to{" "}
+            {contact.userFirst.appWideName} will prevent you from sending{" "}
+            {contact.userFirst.appWideName} another friend request at this time.
+          </p>
+        </div>
+      )}
+      {contact.mirror?.processRelationship === "ANNULFRIEND" &&
+        contact.processRelationship !== "SENTFRIEND" && (
+          <div>
+            <p className="mt-2 text-red-500">
+              As a consequence of you annulling your friend request sent to{" "}
+              {contact.userFirst.appWideName}, to prevent mass requesting you
+              cannot send {contact.userFirst.appWideName} another friend request
+              at this time.
             </p>
-          </>
+          </div>
         )}
-        {contact.mirror?.processRelationship === "ANNULFRIEND" &&
-          contact.processRelationship !== "SENTFRIEND" && (
-            <>
-              <p className="mt-2 text-red-500">
-                As a consequence of you annulling your friend request sent to{" "}
-                {contact.userFirst.appWideName}, to prevent mass requesting you
-                cannot send {contact.userFirst.appWideName} another friend
-                request at this time.
-              </p>
-            </>
-          )}
-        {contact.processRelationship === "SENTFRIEND" && (
-          <>
-            <p className="mt-2 text-orange-500">
-              {contact.userFirst.appWideName} has sent you a friend request. By
-              accepting this request, {contact.userFirst.appWideName} will have
-              access to all of your native criteria, present and future, and you
-              will have access to all the native criteria of{" "}
-              {contact.userFirst.appWideName}, present and future all the same.
-              Irl native criteria, however, will require upgrading your
-              friendship for shared access between the two of you.
+      {contact.processRelationship === "SENTFRIEND" && (
+        <div>
+          <p className="mt-2 text-orange-500">
+            {contact.userFirst.appWideName} has sent you a friend request. By
+            accepting this request, {contact.userFirst.appWideName} will have
+            access to all of your native criteria, present and future, and you
+            will have access to all the native criteria of{" "}
+            {contact.userFirst.appWideName}, present and future all the same.
+            Irl native criteria, however, will require upgrading your friendship
+            for shared access between the two of you.
+          </p>
+          <PageLink
+            href={`/users/${contact.mirror?.userFirst.username}/previews/queried?userlast=${contact.userFirst.username}&relcombo=friend`}
+          >
+            Preview the criteria you&apos;ll give access to{" "}
+            {contact.userFirst.appWideName}
+          </PageLink>
+        </div>
+      )}
+      {contact.processRelationship === "ANNULFRIEND" &&
+        contact.mirror?.processRelationship !== "SENTFRIEND" && (
+          <div>
+            <p className="mt-2 text-neutral-500">
+              (Just letting you know that {contact.userFirst.appWideName} has
+              annulled a friend request, so you&apos;re the only one between the
+              two of you who can initiate a friend request at this time.)
             </p>
-            <PageLink
-              href={`/users/${contact.mirror?.userFirst.username}/previews/queried?userlast=${contact.userFirst.username}&relcombo=friend`}
-            >
-              Preview the criteria you&apos;ll give access to{" "}
-              {contact.userFirst.appWideName}
-            </PageLink>
-          </>
+          </div>
         )}
-        {contact.processRelationship === "ANNULFRIEND" &&
-          contact.mirror?.processRelationship !== "SENTFRIEND" && (
-            <>
-              <p className="mt-2 text-neutral-500">
-                (Just letting you know that {contact.userFirst.appWideName} has
-                annulled a friend request, so you&apos;re the only one between
-                the two of you who can initiate a friend request at this time.)
-              </p>
-            </>
-          )}
-      </div>
     </>
   );
 }
@@ -151,8 +149,6 @@ function SendFriendForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm contact={contact} action="/send-friend-request">
@@ -169,8 +165,6 @@ function BlockForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm contact={contact} action="/block">
@@ -187,8 +181,6 @@ function AnnulFriendForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm contact={contact} action="/annul-friend-request">
@@ -205,8 +197,6 @@ function AcceptFriendForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm
@@ -227,8 +217,6 @@ function DeclineFriendForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm
@@ -285,8 +273,8 @@ export function RelationCombinationUserFriendExposed({
         answers={pinnedNotIrlAnswersExposed}
         selectContext="Profile"
         answerComponentRequired="OneAnswerPinnableByFriend"
-        label="Find their pinned for friend criteria below"
-        notLabel="No pinned criteria yet."
+        label="Find their (remaining) pinned for friend criteria below"
+        notLabel="No (remaining) pinned criteria yet."
         contact={contact}
         answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
       />
@@ -294,7 +282,7 @@ export function RelationCombinationUserFriendExposed({
         answers={unpinnedNativeNotIrlAnswersExposed}
         answerComponentRequired="OneAnswerPinnableByFriend"
         label="Find their (other) native criteria below"
-        notLabel="No native criteria yet."
+        notLabel="No (other) native criteria yet."
         contact={contact}
         answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
       />
@@ -302,7 +290,7 @@ export function RelationCombinationUserFriendExposed({
         answers={unpinnedPseudonativeNotIrlAnswersExposed}
         answerComponentRequired="OneAnswerPinnableByFriend"
         label="Find their (other) pseudonative criteria below"
-        notLabel="No pseudonative criteria yet."
+        notLabel="No (other) pseudonative criteria yet."
         contact={contact}
         answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
       />
@@ -353,63 +341,62 @@ export function RelationCombinationUserFriendExposed({
           </>
         )}
       </div>
-      <div>
-        {contact.mirror?.processRelationship === "SENTIRL" && (
-          <>
-            <p className="mt-2 text-orange-500">
-              Irl upgrade request sent and pending. However, do take into
-              consideration that canceling your irl upgrade request to{" "}
-              {contact.userFirst.appWideName} will prevent you from sending{" "}
-              {contact.userFirst.appWideName} another irl upgrade request at
-              this time.
+
+      {contact.mirror?.processRelationship === "SENTIRL" && (
+        <div>
+          <p className="mt-2 text-orange-500">
+            Irl upgrade request sent and pending. However, do take into
+            consideration that canceling your irl upgrade request to{" "}
+            {contact.userFirst.appWideName} will prevent you from sending{" "}
+            {contact.userFirst.appWideName} another irl upgrade request at this
+            time.
+          </p>
+        </div>
+      )}
+      {contact.mirror?.processRelationship === "ANNULIRL" &&
+        contact.processRelationship !== "SENTIRL" && (
+          <div>
+            <p className="mt-2 text-red-500">
+              As a consequence of you annulling your irl upgrade request sent to{" "}
+              {contact.userFirst.appWideName}, to prevent mass requesting you
+              cannot send {contact.userFirst.appWideName} another irl upgrade
+              request at this time.
             </p>
-          </>
+          </div>
         )}
-        {contact.mirror?.processRelationship === "ANNULIRL" &&
-          contact.processRelationship !== "SENTIRL" && (
-            <>
-              <p className="mt-2 text-red-500">
-                As a consequence of you annulling your irl upgrade request sent
-                to {contact.userFirst.appWideName}, to prevent mass requesting
-                you cannot send {contact.userFirst.appWideName} another irl
-                upgrade request at this time.
-              </p>
-            </>
-          )}
-        {contact.processRelationship === "SENTIRL" && (
-          <>
-            <p className="mt-2 text-orange-500">
-              {contact.userFirst.appWideName} has sent you an irl upgrade
-              request. By accepting this request,{" "}
-              {contact.userFirst.appWideName} will have additional access to all
-              of your irl native criteria (such as Last name and Address),
-              present and future, and you will have access to all the irl native
-              criteria of {contact.userFirst.appWideName}, present and future
-              all the same. Once this friendship is upgraded, you can downgrade
-              this friendship from irl with a click at your own discretion
-              without requiring the consent of {contact.userFirst.appWideName},
-              so accepting this irl upgrade request is easily reversible.
+      {contact.processRelationship === "SENTIRL" && (
+        <div>
+          <p className="mt-2 text-orange-500">
+            {contact.userFirst.appWideName} has sent you an irl upgrade request.
+            By accepting this request, {contact.userFirst.appWideName} will have
+            additional access to all of your irl native criteria (such as Last
+            name and Address), present and future, and you will have access to
+            all the irl native criteria of {contact.userFirst.appWideName},
+            present and future all the same. Once this friendship is upgraded,
+            you can downgrade this friendship from irl with a click at your own
+            discretion without requiring the consent of{" "}
+            {contact.userFirst.appWideName}, so accepting this irl upgrade
+            request is easily reversible.
+          </p>
+          <PageLink
+            href={`/users/${contact.mirror?.userFirst.username}/previews/queried?userlast=${contact.userFirst.username}&relcombo=irl`}
+          >
+            Preview the criteria you&apos;ll give access to{" "}
+            {contact.userFirst.appWideName}
+          </PageLink>
+        </div>
+      )}
+      {contact.processRelationship === "ANNULIRL" &&
+        contact.mirror?.processRelationship !== "SENTIRL" && (
+          <div>
+            <p className="mt-2 text-neutral-500">
+              (Just letting you know that {contact.userFirst.appWideName} has
+              annulled an irl upgrade request, so you&apos;re the only one
+              between the two of you who can initiate an irl upgrade request at
+              this time.)
             </p>
-            <PageLink
-              href={`/users/${contact.mirror?.userFirst.username}/previews/queried?userlast=${contact.userFirst.username}&relcombo=irl`}
-            >
-              Preview the criteria you&apos;ll give access to{" "}
-              {contact.userFirst.appWideName}
-            </PageLink>
-          </>
+          </div>
         )}
-        {contact.processRelationship === "ANNULIRL" &&
-          contact.mirror?.processRelationship !== "SENTIRL" && (
-            <>
-              <p className="mt-2 text-neutral-500">
-                (Just letting you know that {contact.userFirst.appWideName} has
-                annulled an irl upgrade request, so you&apos;re the only one
-                between the two of you who can initiate an irl upgrade request
-                at this time.)
-              </p>
-            </>
-          )}
-      </div>
     </>
   );
 }
@@ -421,8 +408,6 @@ function UpgradeToIrlForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm contact={contact} action="/send-irl-request">
@@ -439,8 +424,6 @@ function UnfriendForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm contact={contact} action="/unfriend">
@@ -457,8 +440,6 @@ function AnnulIrlForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm contact={contact} action="/annul-irl-request">
@@ -475,8 +456,6 @@ function AcceptIrlForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm
@@ -497,8 +476,6 @@ function DeclineIrlForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm
@@ -563,8 +540,8 @@ export function RelationCombinationUserIrlExposed({
         answers={pinnedNotAndIrlAnswersExposed}
         selectContext="Profile"
         answerComponentRequired="OneAnswerPinnableByFriend"
-        label="Find their pinned for irl criteria below"
-        notLabel="No pinned criteria yet."
+        label="Find their (remaining) pinned for irl criteria below"
+        notLabel="No (remaining) pinned criteria yet."
         contact={contact}
         answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
       />
@@ -572,7 +549,7 @@ export function RelationCombinationUserIrlExposed({
         answers={unpinnedNativeNotIrlAnswersExposed}
         answerComponentRequired="OneAnswerPinnableByFriend"
         label="Find their (other) native criteria below"
-        notLabel="No native criteria yet."
+        notLabel="No (other) native criteria yet."
         contact={contact}
         answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
       />
@@ -580,7 +557,7 @@ export function RelationCombinationUserIrlExposed({
         answers={unpinnedPseudonativeNotIrlAnswersExposed}
         answerComponentRequired="OneAnswerPinnableByFriend"
         label="Find their (other) pseudonative criteria below"
-        notLabel="No pseudonative criteria yet."
+        notLabel="No (other) pseudonative criteria yet."
         contact={contact}
         answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
       />
@@ -588,7 +565,7 @@ export function RelationCombinationUserIrlExposed({
         answers={unpinnedNativeIrlAnswersExposed}
         answerComponentRequired="OneAnswerPinnableByFriend"
         label="Find their (other) native irl criteria below"
-        notLabel="No native irl criteria yet."
+        notLabel="No (other) native irl criteria yet."
         contact={contact}
         answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
       />
@@ -596,7 +573,7 @@ export function RelationCombinationUserIrlExposed({
         answers={unpinnedPseudonativeIrlAnswersExposed}
         answerComponentRequired="OneAnswerPinnableByFriend"
         label="Find their (other) pseudonative irl criteria below"
-        notLabel="No pseudonative irl criteria yet."
+        notLabel="No (other) pseudonative irl criteria yet."
         contact={contact}
         answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
       />
@@ -626,8 +603,6 @@ function DowngradeFriendshipFromIrlForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm contact={contact} action="/downgrade-from-irl">
@@ -663,8 +638,6 @@ function BlockBackForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm contact={contact} action="/block-back">
@@ -700,8 +673,6 @@ function UnblockForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm contact={contact} action="/unblock">
@@ -739,8 +710,6 @@ function UnblockIfThatsOKWithYouForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm contact={contact} action="/unblock">

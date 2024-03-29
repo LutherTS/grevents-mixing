@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+
 import { prisma } from "~/utilities/server/db.server";
 import { whereUniqueContactByUserFirstIdAndUserLastId } from "../subdata/contacts";
 

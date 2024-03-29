@@ -16,7 +16,6 @@ export async function deleteUserQuestionAtUserIdAndQuestionId(
   });
 }
 
-// Now also working for pseudonative, and will (probably) work with custom too.
 export async function upsertUserQuestionAndAnswerByUserIdQuestionIdValueAndKind(
   userId: string,
   questionId: string,

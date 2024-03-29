@@ -1,8 +1,9 @@
 import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
 import { H1 } from "~/components/h1";
+import { LinkButtonOnClick } from "~/components/link-button";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
 import { StatusDashboardToasts } from "~/components/status-dashboard-toasts";
@@ -69,14 +70,38 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     sentToContactsCount,
     sentFromContactsCount,
   });
-  // But I still don't know what this is used for yet.
 };
+
+// For now I'm going to put this on every users.$username child route, but eventually it will be in its own layout to be done only once.
+export function ErrorBoundary() {
+  const navigate = useNavigate();
+
+  function handlePreviousNavigation() {
+    navigate(-1);
+  }
+
+  return (
+    <>
+      <div className="space-y-4 my-4">
+        <p className="mt-2">Could not find requested user.</p>
+      </div>
+      <PageLink href={`/`}>Return home</PageLink>
+      <p className="mt-2">
+        <LinkButtonOnClick
+          handleClick={handlePreviousNavigation}
+          disabled={false}
+        >
+          Or go back to the previous page
+        </LinkButtonOnClick>
+      </p>
+    </>
+  );
+}
 
 export default function DashboardPage() {
   const data = useLoaderData<typeof loader>();
-  console.log(data);
   // If I don't want to use "data." everywhere, I can always destructure from useLoaderData.
-  // If there's loader and action data, I can also then call data loaderData and action data actionData.
+  // If there's loader and action data, I can also then call data (loader data) loaderData and action data actionData.
 
   return (
     <>
@@ -94,6 +119,7 @@ export default function DashboardPage() {
         </div>
         <div>
           <PageLink href={`../personal-info`}>More personal info</PageLink>
+          <PageLink href={`../profile`}>My profile</PageLink>
           <PageLink href={`../friends`}>My friends</PageLink>
           <PageLink
             href={`../requests`}

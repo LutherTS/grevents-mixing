@@ -22,7 +22,7 @@ export function whereUnansweredNativeQuestionsByUserIdAndKind(
     userQuestions: {
       none: {
         userId,
-        state: "LIVE",
+        OR: [{ state: "LIVE" }, { state: "HIDDEN" }],
         answer: {
           state: "LIVE",
         },

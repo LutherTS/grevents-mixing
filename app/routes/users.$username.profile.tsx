@@ -1,10 +1,12 @@
 import { Prisma } from "@prisma/client";
 import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
+import { LinkButtonOnClick } from "~/components/link-button";
+import { PageLink } from "~/components/page-link";
 import {
   RelationCombinationBlockingBlockedExposed,
   RelationCombinationUserFriendExposed,
@@ -43,7 +45,6 @@ import { defineContactRelCombo } from "~/utilities/contacts";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 type ProfileLoaderByHand = {
-  // because TypeScript Union Types are once again failing.
   verifiedUser: Prisma.UserGetPayload<{
     select: typeof selectVerifiedUser;
   }>;
@@ -240,9 +241,33 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   }
 };
 
+export function ErrorBoundary() {
+  const navigate = useNavigate();
+
+  function handlePreviousNavigation() {
+    navigate(-1);
+  }
+
+  return (
+    <>
+      <div className="space-y-4 my-4">
+        <p className="mt-2">Could not find requested user.</p>
+      </div>
+      <PageLink href={`/`}>Return home</PageLink>
+      <p className="mt-2">
+        <LinkButtonOnClick
+          handleClick={handlePreviousNavigation}
+          disabled={false}
+        >
+          Or go back to the previous page
+        </LinkButtonOnClick>
+      </p>
+    </>
+  );
+}
+
 export default function ProfilePage() {
   const data: ProfileLoaderByHand = useLoaderData();
-  console.log(data);
 
   return (
     <>
@@ -412,6 +437,51 @@ export default function ProfilePage() {
           </>
         )}
       </div>
+
+      {data.verifiedUser.id === data.user.id && (
+        <>
+          <PageLink href={`../../${data.verifiedUser.username}/previews`}>
+            To previews
+          </PageLink>
+          <PageLink href={`../../${data.verifiedUser.username}/friends/find`}>
+            Search for contacts
+          </PageLink>
+        </>
+      )}
+      {data.relCombo === "none" && data.userToVerifiedUserContact && (
+        <>
+          <PageLink href={`../../${data.verifiedUser.username}/profile`}>
+            To your profile
+          </PageLink>
+          <PageLink href={`../../${data.verifiedUser.username}/friends/find`}>
+            Search for contacts
+          </PageLink>
+        </>
+      )}
+      {(data.relCombo === "friend" || data.relCombo === "irl") &&
+        data.userToVerifiedUserContact && (
+          <>
+            <PageLink href={`../../${data.verifiedUser.username}/profile`}>
+              To your profile
+            </PageLink>
+            <PageLink href={`../../${data.verifiedUser.username}/friends`}>
+              To your friends
+            </PageLink>
+          </>
+        )}
+      {(data.relCombo === "i-am-blocking" ||
+        data.relCombo === "has-me-blocked" ||
+        data.relCombo === "blocking-blocked") &&
+        data.userToVerifiedUserContact && (
+          <>
+            <PageLink href={`../../${data.verifiedUser.username}/profile`}>
+              To your profile
+            </PageLink>
+            <PageLink href={`../../${data.verifiedUser.username}/blocks`}>
+              To your blocks
+            </PageLink>
+          </>
+        )}
     </>
   );
 }

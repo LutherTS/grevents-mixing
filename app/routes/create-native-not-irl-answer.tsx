@@ -101,6 +101,20 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
   // And now that I know for sure any incorrect userQuestion at userId and questionId is deleted if it existed, that's when I can create or update the new userQuestion and answer I initially intended to simply create.
 
+  if (
+    userQuestion &&
+    userQuestion.kind === "NONE" &&
+    userQuestion.question.kind === "NATIVE" &&
+    userQuestion.question.name === "Email address"
+  ) {
+    return json(
+      {
+        message: `Database Error: Email address answer can not be modified through this action.`,
+      },
+      { status: 403 }
+    );
+  }
+
   await upsertUserQuestionAndAnswerByUserIdQuestionIdValueAndKind(
     verifiedUser.id,
     question.id,
