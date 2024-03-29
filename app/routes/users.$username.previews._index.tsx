@@ -90,6 +90,7 @@ export default function PreviewsPage() {
           <PageLink href={`queried`}>To queried previews</PageLink>
         </div>
       </div>
+
       <PageLink href={`../profile`}>To your profile</PageLink>
       <PageLink href={`../friends/find`}>Search for contacts</PageLink>
     </>

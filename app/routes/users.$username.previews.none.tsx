@@ -84,5 +84,5 @@ export default function NonePreviewPage() {
 }
 
 /* Previews pages 
-Eventually all these previews pages will be a single page with tabs. Since at this time, except for what is shown, it is the exact same code.
+Eventually all these previews pages will be a single page with tabs. Since at this time, except for what is rendered, it is the exact same code.
 */

@@ -44,7 +44,6 @@ import {
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 type QueriedPreviewLoaderByHand = {
-  // because TypeScript Union Types are once again failing.
   verifiedUser: Prisma.UserGetPayload<{
     select: typeof selectVerifiedUser;
   }>;
@@ -419,7 +418,6 @@ export default function QueriedPreviewPage() {
                 </div>
               </>
             )}
-          {/* TypeScript desperately needs to get an upgrade. */}
           {data.user && data.userLast && data.relCombo === "none" && (
             <RelationCombinationNonePreviewed />
           )}

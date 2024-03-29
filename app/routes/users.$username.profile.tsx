@@ -45,7 +45,6 @@ import { defineContactRelCombo } from "~/utilities/contacts";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 type ProfileLoaderByHand = {
-  // because TypeScript Union Types are once again failing.
   verifiedUser: Prisma.UserGetPayload<{
     select: typeof selectVerifiedUser;
   }>;
@@ -438,6 +437,7 @@ export default function ProfilePage() {
           </>
         )}
       </div>
+
       {data.verifiedUser.id === data.user.id && (
         <>
           <PageLink href={`../../${data.verifiedUser.username}/previews`}>

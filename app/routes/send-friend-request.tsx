@@ -1,7 +1,7 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import { updateSendFriendRequestByContactId } from "~/librairies/changes/contacts";
 
+import { updateSendFriendRequestByContactId } from "~/librairies/changes/contacts";
 import { findContactByIdAndUserLastId } from "~/librairies/data/contacts";
 import { defineContactRelCombo } from "~/utilities/contacts";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";

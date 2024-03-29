@@ -9,7 +9,6 @@ import { H1 } from "~/components/h1";
 import { PageLink } from "~/components/page-link";
 import { SignUpForm } from "~/components/sign-up-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
-import { findUserByUsername } from "~/librairies/data/users";
 import { SignUpUserSchema } from "~/librairies/validations/users";
 import { prisma } from "~/utilities/server/db.server";
 import {

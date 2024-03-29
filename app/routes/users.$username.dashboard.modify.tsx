@@ -77,6 +77,7 @@ export default function DashboardModifyPage() {
         href={`/users/${data.verifiedUser.username}/dashboard`}
       />
       {data.verifiedUser && <SignOutForm />}
+
       <div className="my-4">
         <AppWideNameForm appWideName={data.verifiedUser.appWideName} />
         <EmailForm email={data.verifiedUser.email} />
@@ -84,6 +85,7 @@ export default function DashboardModifyPage() {
         <DeactivateReactivateForms state={data.verifiedUser.state} />
         <PasswordForm />
       </div>
+
       <PageLink href={`..`}>Cancel</PageLink>
     </>
   );

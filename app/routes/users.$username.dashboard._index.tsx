@@ -101,7 +101,7 @@ export function ErrorBoundary() {
 export default function DashboardPage() {
   const data = useLoaderData<typeof loader>();
   // If I don't want to use "data." everywhere, I can always destructure from useLoaderData.
-  // If there's loader and action data, I can also then call data loaderData and action data actionData.
+  // If there's loader and action data, I can also then call data (loader data) loaderData and action data actionData.
 
   return (
     <>
