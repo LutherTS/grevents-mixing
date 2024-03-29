@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+
 import { ContactToastForm } from "./toast-form";
 import { selectContacts } from "~/librairies/subdata/contacts";
 
@@ -52,7 +53,7 @@ export function StatusRelationshipToasts({
           <ContactToastForm
             contact={contact}
             action="/reset-contact-status-relationship"
-            specifiedClasses="text-orange-500 disabled:text-gray-500"
+            specifiedClasses="text-orange-500 disabled:!text-gray-500"
           >
             You&apos;ve just annulled your friend request to{" "}
             {contact.userFirst.appWideName}
@@ -62,7 +63,7 @@ export function StatusRelationshipToasts({
         <ContactToastForm
           contact={contact}
           action="/reset-contact-status-relationship"
-          specifiedClasses="text-orange-500 disabled:text-gray-500"
+          specifiedClasses="text-orange-500 disabled:!text-gray-500"
         >
           You&apos;ve just annulled your irl upgrade request to{" "}
           {contact.userFirst.appWideName}
@@ -108,7 +109,7 @@ export function StatusRelationshipToasts({
           <ContactToastForm
             contact={contact}
             action="/reset-contact-status-relationship"
-            specifiedClasses="text-orange-500 disabled:text-gray-500"
+            specifiedClasses="text-orange-500 disabled:!text-gray-500"
           >
             You are no longer friends with {contact.userFirst.appWideName}
           </ContactToastForm>
@@ -118,7 +119,7 @@ export function StatusRelationshipToasts({
           <ContactToastForm
             contact={contact}
             action="/reset-contact-status-relationship"
-            specifiedClasses="text-orange-500 disabled:text-gray-500"
+            specifiedClasses="text-orange-500 disabled:!text-gray-500"
           >
             You are no longer irl friends with {contact.userFirst.appWideName}
           </ContactToastForm>
@@ -145,7 +146,7 @@ export function StatusRelationshipToasts({
         <ContactToastForm
           contact={contact}
           action="/reset-contact-status-relationship"
-          specifiedClasses="text-red-500 disabled:text-gray-500"
+          specifiedClasses="text-red-500 disabled:!text-gray-500"
         >
           You&apos;ve just been blocked by {contact.userFirst.appWideName}
         </ContactToastForm>
@@ -164,7 +165,7 @@ export function StatusRelationshipToasts({
           <ContactToastForm
             contact={contact}
             action="/reset-contact-status-relationship"
-            specifiedClasses="text-black dark:text-white disabled:text-gray-500"
+            specifiedClasses="text-black dark:text-white disabled:!text-gray-500"
           >
             You&apos;ve just blocked back {contact.userFirst.appWideName}
           </ContactToastForm>
@@ -174,7 +175,7 @@ export function StatusRelationshipToasts({
           <ContactToastForm
             contact={contact}
             action="/reset-contact-status-relationship"
-            specifiedClasses="text-black dark:text-white disabled:text-gray-500"
+            specifiedClasses="text-black dark:text-white disabled:!text-gray-500"
           >
             You&apos;ve just been blocked back by{" "}
             {contact.userFirst.appWideName}
@@ -183,23 +184,3 @@ export function StatusRelationshipToasts({
     </>
   );
 }
-
-// enum ContactStatusRelationship {
-//   NONE
-//   SENTFRIEND
-//   SENTIRL
-//   RECEIVEFRIEND
-//   RECEIVEIRL
-//   ANNULFRIEND
-//   ANNULIRL
-//   REFUSEDFRIEND
-//   REFUSEDIRL
-//   NOWFRIENDS
-//   NOWIRLS
-//   NOLONGERFRIENDS
-//   NOLONGERIRLS
-//   NOWBLOCKING
-//   NOWUNBLOCKING
-//   NOWBLOCKED
-//   NOWUNBLOCKED
-// }

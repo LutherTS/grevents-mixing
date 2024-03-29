@@ -149,8 +149,6 @@ function SendFriendForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm contact={contact} action="/send-friend-request">
@@ -167,8 +165,6 @@ function BlockForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm contact={contact} action="/block">
@@ -185,8 +181,6 @@ function AnnulFriendForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm contact={contact} action="/annul-friend-request">
@@ -203,8 +197,6 @@ function AcceptFriendForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm
@@ -225,8 +217,6 @@ function DeclineFriendForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm
@@ -418,8 +408,6 @@ function UpgradeToIrlForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm contact={contact} action="/send-irl-request">
@@ -436,8 +424,6 @@ function UnfriendForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm contact={contact} action="/unfriend">
@@ -454,8 +440,6 @@ function AnnulIrlForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm contact={contact} action="/annul-irl-request">
@@ -472,8 +456,6 @@ function AcceptIrlForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm
@@ -494,8 +476,6 @@ function DeclineIrlForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm
@@ -623,8 +603,6 @@ function DowngradeFriendshipFromIrlForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm contact={contact} action="/downgrade-from-irl">
@@ -660,8 +638,6 @@ function BlockBackForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm contact={contact} action="/block-back">
@@ -697,8 +673,6 @@ function UnblockForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm contact={contact} action="/unblock">
@@ -736,8 +710,6 @@ function UnblockIfThatsOKWithYouForm({
     select: typeof selectContacts;
   }>;
 }) {
-  const fetcher = useFetcher();
-
   return (
     <>
       <ProfileForm contact={contact} action="/unblock">

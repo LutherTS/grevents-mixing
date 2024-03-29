@@ -2,7 +2,6 @@ import { Prisma } from "@prisma/client";
 
 import { selectUser } from "~/librairies/subdata/users";
 import { selectAnswers } from "~/librairies/subdata/answers";
-import { LinkButtonMockup } from "./link-button";
 import { ManyCriteria } from "./many-criteria";
 
 export function RelationCombinationNonePreviewed() {

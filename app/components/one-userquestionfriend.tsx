@@ -1,11 +1,11 @@
 import { Prisma } from "@prisma/client";
+import { useFetcher } from "@remix-run/react";
 
 import {
   selectUserQuestionFriends,
   selectUserQuestionFriendsAnswers,
 } from "~/librairies/subdata/userquestionfriends";
 import { PageLinkDivless } from "./page-link";
-import { useFetcher } from "@remix-run/react";
 
 export function OneUserQuestionFriendRemovable({
   userQuestionFriend,
@@ -44,7 +44,6 @@ export function OneUserQuestionFriendRemovable({
   );
 }
 
-// Because userQuestionFriend will be shared via hidden input, like a bind.
 export function ButtonCancelShareUserQuestionFriendForm({
   userQuestionFriend,
 }: {
@@ -68,7 +67,7 @@ export function ButtonCancelShareUserQuestionFriendForm({
         />
         <button
           disabled={fetcher.state !== "idle"}
-          className="h-4 w-4 rounded-full bg-pink-500 hover:bg-pink-300 disabled:!bg-gray-500 disabled:hover:bg-gray-500 dark:hover:bg-pink-700"
+          className="h-4 w-4 rounded-full bg-pink-500 hover:bg-pink-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-pink-700"
         />
       </fetcher.Form>
     </>
@@ -144,7 +143,6 @@ export function OneUserQuestionFriendUnpinnable({
   );
 }
 
-// Because userQuestionFriend will be shared via hidden input, like a bind.
 function ButtonUnpinnableByFriendForm({
   userQuestionFriend,
 }: {
@@ -168,7 +166,7 @@ function ButtonUnpinnableByFriendForm({
         />
         <button
           disabled={fetcher.state !== "idle"}
-          className="h-4 w-4 rounded-full bg-pink-500 hover:bg-pink-300 disabled:!bg-gray-500 disabled:hover:bg-gray-500 dark:hover:bg-pink-700"
+          className="h-4 w-4 rounded-full bg-pink-500 hover:bg-pink-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-pink-700"
         />
       </fetcher.Form>
     </>

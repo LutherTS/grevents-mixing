@@ -76,7 +76,7 @@ export function PasswordForm() {
             </div>
           ) : null}
           {fetcher.data?.message ? (
-            <div id="sign-up-form-error" aria-live="polite">
+            <div id="password-form-error" aria-live="polite">
               <p className="mt-2 text-red-500">{fetcher.data.message}</p>
             </div>
           ) : null}

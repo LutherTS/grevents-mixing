@@ -25,7 +25,6 @@ export function NativeNotIrlAnswerForm({
   const fetcher = useFetcher<CreateStardardizedAnswerByHand>();
   const isLimitReached = answerCount >= DEFAULT_ANSWERS_LIMIT;
 
-  // fieldset disabled
   return (
     <>
       <fetcher.Form
@@ -53,7 +52,6 @@ export function NativeNotIrlAnswerForm({
               Select then answer a native question below
             </p>
           </label>
-          {/* NativeQuestionSelect, nativeQuestions, id, name, option */}
           <NativeQuestionSelect
             nativeQuestions={nativeQuestions}
             id="native-not-irl-question"
@@ -69,7 +67,6 @@ export function NativeNotIrlAnswerForm({
               ))}
             </div>
           ) : null}
-          {/* AnswerInput, id, name, placeholder */}
           <AnswerInput
             id="native-not-irl-answer"
             name="nativenotirlanswer"
@@ -107,7 +104,6 @@ export function NativeIrlAnswerForm({
   const fetcher = useFetcher<CreateStardardizedAnswerByHand>();
   const isLimitReached = answerCount >= DEFAULT_ANSWERS_LIMIT;
 
-  // fieldset disabled
   return (
     <>
       <fetcher.Form
@@ -135,7 +131,6 @@ export function NativeIrlAnswerForm({
               Select then answer a native irl question below
             </p>
           </label>
-          {/* NativeQuestionSelect, nativeQuestions, id, name, option */}
           <NativeQuestionSelect
             nativeQuestions={nativeQuestions}
             id="native-irl-question"
@@ -151,7 +146,6 @@ export function NativeIrlAnswerForm({
               ))}
             </div>
           ) : null}
-          {/* AnswerInput, id, name, placeholder */}
           <AnswerInput
             id="native-irl-answer"
             name="nativeirlanswer"

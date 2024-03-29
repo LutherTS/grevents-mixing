@@ -1,4 +1,5 @@
 import { useFetcher } from "@remix-run/react";
+
 import { LinkButton } from "./link-button";
 
 export function FriendCodeForm() {

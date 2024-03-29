@@ -10,7 +10,7 @@ export function StatusDashboardToasts({
       {statusDashboard === "REDIRECTEDTODASHBOARD" && (
         <ToastForm
           action="/reset-user-status-dashboard"
-          specifiedClasses="text-black-500 disabled:text-gray-500"
+          specifiedClasses="text-black-500 disabled:!text-gray-500"
         >
           You&apos;ve been redirected to your dashboard.
         </ToastForm>

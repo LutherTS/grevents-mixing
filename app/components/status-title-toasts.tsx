@@ -6,7 +6,7 @@ export function StatusTitleToasts({ statusTitle }: { statusTitle: string }) {
       {statusTitle === "WELCOMETOGREVENTS" && (
         <ToastForm
           action="/reset-user-status-title"
-          specifiedClasses="text-yellow-500 disabled:text-gray-500"
+          specifiedClasses="text-yellow-500 disabled:!text-gray-500"
         >
           Welcome to Grevents
         </ToastForm>
@@ -14,7 +14,7 @@ export function StatusTitleToasts({ statusTitle }: { statusTitle: string }) {
       {statusTitle === "WELCOMEBACKTOGREVENTS" && (
         <ToastForm
           action="/reset-user-status-title"
-          specifiedClasses="text-yellow-500 disabled:text-gray-500"
+          specifiedClasses="text-yellow-500 disabled:!text-gray-500"
         >
           Welcome back to Grevents
         </ToastForm>
