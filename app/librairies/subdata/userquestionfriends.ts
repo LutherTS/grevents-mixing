@@ -73,8 +73,6 @@ export function whereUserQuestionFriendsByUserQuestionId(
   };
 }
 
-// Profile subfunctions
-
 // this is a repurpose, a rewiring, from selectAnswers
 export const selectUserQuestionFriendsAnswers = {
   id: true,

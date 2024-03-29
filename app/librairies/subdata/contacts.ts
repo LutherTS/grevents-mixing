@@ -227,10 +227,12 @@ export function whereContactByUserFirstIdAndUserLastUsername(
 export function whereContactByUserFirstIdAndUserLastId(
   userFirstId: string,
   userLastId: string
-): Prisma.ContactWhereInput {
+): Prisma.ContactWhereUniqueInput {
   return {
-    userFirstId,
-    userLastId,
+    userFirstId_userLastId: {
+      userFirstId,
+      userLastId,
+    },
     state: "LIVE",
     mirror: {
       state: "LIVE",

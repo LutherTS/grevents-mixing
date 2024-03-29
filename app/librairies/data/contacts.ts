@@ -21,7 +21,7 @@ const orderBy = DEFAULT_CONTACTS_ORDER_BY;
 const take = ARBITRARY_CONTACTS_LIMIT;
 
 export async function findSentFriendToContactsByUserId(userId: string) {
-  const select = selectContacts; // this could simply become the default select at this point, given the reliance on a many "select type" elsewhere
+  const select = selectContacts; // this could simply become the default select at this point, given its ubiquitousness and reliance
   const where = whereSentToContactsByUserIdAndProcessRelationship(
     userId,
     "SENTFRIEND"
@@ -139,7 +139,6 @@ export async function countSentIrlFromContactsByUserId(userId: string) {
 export async function findUserNotIrlFriendsByUserId(userId: string) {
   const select = selectContacts;
   const where = whereUserFriendsByUserIdAndKind(userId, "FRIEND");
-  // const orderBy = defaultContactsOrderBy();
 
   return await prisma.contact.findMany({
     select,
@@ -228,7 +227,7 @@ export async function findContactByUserFirstIdAndUserLastId(
   const select = selectContacts;
   const where = whereContactByUserFirstIdAndUserLastId(userFirstId, userLastId);
 
-  return await prisma.contact.findFirst({
+  return await prisma.contact.findUnique({
     select,
     where,
   });
