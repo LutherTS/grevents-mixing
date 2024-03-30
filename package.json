@@ -11,7 +11,8 @@
     "dev": "remix dev --manual",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/index.js",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@epic-web/remember": "^1.0.2",
@@ -33,6 +34,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.4",
     "@remix-run/dev": "^2.8.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/lodash": "^4.17.0",
