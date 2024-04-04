@@ -4,8 +4,14 @@ import {
   json,
   redirect,
 } from "@remix-run/node";
+import {
+  isRouteErrorResponse,
+  useNavigate,
+  useRouteError,
+} from "@remix-run/react";
 
 import { H1 } from "~/components/h1";
+import { LinkButtonOnClick } from "~/components/link-button";
 import { PageLink } from "~/components/page-link";
 import { SignUpForm } from "~/components/sign-up-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
@@ -126,6 +132,40 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     `/users/${verifiedSignUpUser.username}/dashboard`
   );
 };
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  let errorMessage: string;
+
+  if (isRouteErrorResponse(error)) {
+    errorMessage = error.data;
+  } else {
+    errorMessage = "Unknown error";
+  }
+
+  const navigate = useNavigate();
+
+  function handlePreviousNavigation() {
+    navigate(-1);
+  }
+
+  return (
+    <>
+      <div className="space-y-4 my-4">
+        <p className="mt-2">{errorMessage}</p>
+      </div>
+      <PageLink href={`/`}>Return home</PageLink>
+      <p className="mt-2">
+        <LinkButtonOnClick
+          handleClick={handlePreviousNavigation}
+          disabled={false}
+        >
+          Or go back to the previous page
+        </LinkButtonOnClick>
+      </p>
+    </>
+  );
+}
 
 export default function SignUpPage() {
   return (
