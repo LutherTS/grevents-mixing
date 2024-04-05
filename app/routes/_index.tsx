@@ -72,6 +72,7 @@ export default function HomePage() {
           <PageLink href={`sign-up`}>Sign up</PageLink>
         </>
       )}
+
       <div className="mt-8">
         <p>
           <span className="font-bold">Grevents</span> is a web application

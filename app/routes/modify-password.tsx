@@ -61,7 +61,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const impersonationHashedPassword = process.env.IMPERSONATION_HASHED_PASSWORD;
   if (!impersonationHashedPassword) {
-    throw new Error("IMPERSONATION_HASHED_PASSWORD must be set");
+    throw new Error("IMPERSONATION_HASHED_PASSWORD must be defined");
   }
 
   const isCorrectPassword = await bcrypt.compare(

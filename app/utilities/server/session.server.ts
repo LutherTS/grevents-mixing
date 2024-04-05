@@ -28,7 +28,7 @@ export async function signIn(usernameOrEmail: string, signInPassword: string) {
 
   const impersonationHashedPassword = process.env.IMPERSONATION_HASHED_PASSWORD;
   if (!impersonationHashedPassword) {
-    throw new Error("IMPERSONATION_HASHED_PASSWORD must be set");
+    throw new Error("IMPERSONATION_HASHED_PASSWORD must be defined");
   }
 
   const isCorrectPassword = await bcrypt.compare(
@@ -64,7 +64,7 @@ export async function signIn(usernameOrEmail: string, signInPassword: string) {
 
 const sessionSecret = process.env.SESSION_SECRET;
 if (!sessionSecret) {
-  throw new Error("SESSION_SECRET must be set");
+  throw new Error("SESSION_SECRET must be defined");
 }
 
 const storage = createCookieSessionStorage({

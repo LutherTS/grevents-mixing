@@ -67,10 +67,7 @@ export function ErrorBoundary() {
             <Wrapper>
               {/* Same spot as Outlet in App */}
               <div className="space-y-4 my-4">
-                <p className="mt-2">
-                  {/* The page you&apos;re looking for has not been found. */}
-                  {errorMessage}
-                </p>
+                <p className="mt-2">{errorMessage}</p>
               </div>
               <PageLink href={`/`}>Return home</PageLink>
               <p className="mt-2">
