@@ -1,5 +1,10 @@
 import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
-import { useLoaderData, useNavigate } from "@remix-run/react";
+import {
+  isRouteErrorResponse,
+  useLoaderData,
+  useNavigate,
+  useRouteError,
+} from "@remix-run/react";
 import invariant from "tiny-invariant";
 
 import {
@@ -69,6 +74,15 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 };
 
 export function ErrorBoundary() {
+  const error = useRouteError();
+  let errorMessage: string;
+
+  if (isRouteErrorResponse(error)) {
+    errorMessage = error.data;
+  } else {
+    errorMessage = "Unknown error";
+  }
+
   const navigate = useNavigate();
 
   function handlePreviousNavigation() {
@@ -78,7 +92,7 @@ export function ErrorBoundary() {
   return (
     <>
       <div className="space-y-4 my-4">
-        <p className="mt-2">Could not find requested user.</p>
+        <p className="mt-2">{errorMessage}</p>
       </div>
       <PageLink href={`/`}>Return home</PageLink>
       <p className="mt-2">

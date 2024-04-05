@@ -6,7 +6,9 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  isRouteErrorResponse,
   useNavigate,
+  useRouteError,
 } from "@remix-run/react";
 
 import stylesheet from "~/tailwind.css";
@@ -32,7 +34,19 @@ export const meta: MetaFunction = () => {
 };
 
 // At this point in development, I'm limiting error handling to 404 cases. Anything else, though currently caught in a common error boundary, will eventually be handled at a later time.
+// Currently working on it for deployment debugging purposes.
 export function ErrorBoundary() {
+  const error = useRouteError();
+  let errorMessage: string;
+
+  if (isRouteErrorResponse(error) && error.status === 404) {
+    errorMessage = "The page you're looking for has not been found.";
+  } else if (isRouteErrorResponse(error)) {
+    errorMessage = error.data;
+  } else {
+    errorMessage = "Unknown error";
+  }
+
   const navigate = useNavigate();
 
   function handlePreviousNavigation() {
@@ -53,9 +67,7 @@ export function ErrorBoundary() {
             <Wrapper>
               {/* Same spot as Outlet in App */}
               <div className="space-y-4 my-4">
-                <p className="mt-2">
-                  The page you&apos;re looking for has not been found.
-                </p>
+                <p className="mt-2">{errorMessage}</p>
               </div>
               <PageLink href={`/`}>Return home</PageLink>
               <p className="mt-2">
