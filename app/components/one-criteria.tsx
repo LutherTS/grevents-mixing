@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import { useFetcher } from "@remix-run/react";
-import { useEffect, useRef } from "react";
 import { Prisma } from "@prisma/client";
 import { JsonifyObject } from "type-fest/source/jsonify";
+// import { useEffect, useRef } from "react";
 
 import { PageLinkDivless } from "./page-link";
 import {
@@ -215,7 +215,19 @@ export function OneAnswer({ answer }: { answer: GlobalAnswerTypeByHand }) {
               : "mt-2"
           }
         >
-          {answer.value}
+          {/* Email address, the only possible HIDDEN userQuestion so far, cannot start with https:// since it's has to abide to the email format. There is therefore no overlap. */}
+          {RegExp("^https://").test(answer.value) ? (
+            <>
+              <PageLinkDivless
+                href={answer.value}
+                specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+              >
+                {answer.value}
+              </PageLinkDivless>
+            </>
+          ) : (
+            <>{answer.value}</>
+          )}
         </p>
       </div>
     </>
@@ -248,7 +260,18 @@ export function OneAnswerPinnable({
               : "text-inherit"
           }
         >
-          {answer.value}
+          {RegExp("^https://").test(answer.value) ? (
+            <>
+              <PageLinkDivless
+                href={answer.value}
+                specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+              >
+                {answer.value}
+              </PageLinkDivless>
+            </>
+          ) : (
+            <>{answer.value}</>
+          )}
         </p>
       </div>
     </>
@@ -304,7 +327,20 @@ export function OneAnswerPinnablePseudoable({
           answer.userQuestion.isPinned === true && (
             <ButtonPinnableForm answer={answer} />
           )}
-        <p>{answer.value}</p>
+        <p>
+          {RegExp("^https://").test(answer.value) ? (
+            <>
+              <PageLinkDivless
+                href={answer.value}
+                specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+              >
+                {answer.value}
+              </PageLinkDivless>
+            </>
+          ) : (
+            <>{answer.value}</>
+          )}
+        </p>
         {/* If both are max out, you'll have to delete an "otherPseudonativeAnswer" to re-access pseudo-answer. */}
         {otherPseudonativeAnswersCount < DEFAULT_ANSWERS_LIMIT && (
           <ButtonPseudoableForm answer={answer} />
@@ -477,7 +513,20 @@ export function OneAnswerPinnableByFriend({
         {answersPinnedbyFriendAnswersCount < PINNED_BY_FRIEND_ANSWERS_LIMIT && (
           <ButtonPinnableByFriendForm answer={answer} contact={contact} />
         )}
-        <p>{answer.value}</p>
+        <p>
+          {RegExp("^https://").test(answer.value) ? (
+            <>
+              <PageLinkDivless
+                href={answer.value}
+                specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+              >
+                {answer.value}
+              </PageLinkDivless>
+            </>
+          ) : (
+            <>{answer.value}</>
+          )}
+        </p>
       </div>
     </>
   );
