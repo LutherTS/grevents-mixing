@@ -42,7 +42,7 @@ export function ManyCriteria({
           <>
             {answers.length <= 4 ? (
               <>
-                <ol>
+                <ol className="space-y-4 mt-4">
                   {answers.map((answer) => {
                     return (
                       <li key={answer.id}>
@@ -123,7 +123,7 @@ function ManyPaginatedCriteria({
   return (
     <>
       {
-        <ol>
+        <ol className="space-y-4 mt-4">
           {chunkedAnswers[position].map((answer) => {
             return (
               <li key={answer.id}>
@@ -143,7 +143,7 @@ function ManyPaginatedCriteria({
           })}
         </ol>
       }
-      <p className="mt-2">
+      <p className="mt-4">
         <LinkButtonOnClick
           handleClick={handlePreviousPosition}
           disabled={position === 0}
