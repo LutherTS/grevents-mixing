@@ -157,10 +157,10 @@ export default function DashboardPage() {
           </PageLink>
         </div>
         <div className="py-2">
-          <p className="mt-2 underline text-fuchsia-200 hover:text-fuchsia-100 dark:text-fuchsia-800 dark:hover:text-fuchsia-900">
+          <p className="mt-2 underline text-fuchsia-200 dark:text-fuchsia-800">
             My groups
           </p>
-          <p className="mt-2 underline text-fuchsia-200 hover:text-fuchsia-100 dark:text-fuchsia-800 dark:hover:text-fuchsia-900">
+          <p className="mt-2 underline text-fuchsia-200 dark:text-fuchsia-800 ">
             My events
           </p>
         </div>
