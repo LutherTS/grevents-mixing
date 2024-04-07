@@ -160,7 +160,7 @@ export default function DashboardPage() {
           <p className="mt-2 underline text-fuchsia-200 dark:text-fuchsia-800">
             My groups
           </p>
-          <p className="mt-2 underline text-fuchsia-200 dark:text-fuchsia-800 ">
+          <p className="mt-2 underline text-fuchsia-200 dark:text-fuchsia-800">
             My events
           </p>
         </div>
