@@ -99,7 +99,7 @@ export default function PersonalInfoPage() {
         <ManyCriteria
           answers={data.userPinnedAnswers}
           selectContext="PersonalInfo"
-          answerComponentRequired="OneAnswer"
+          answerComponentRequired="OneAnswerRePinnable"
           label="Find your pinned criteria below"
           notLabel="No pinned criteria yet."
         />

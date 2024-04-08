@@ -23,6 +23,7 @@ export type SelectContext =
 
 export type AnswerComponentRequired =
   | "OneAnswer"
+  | "OneAnswerRePinnable"
   | "OneAnswerPinnable"
   | "OneAnswerPinnablePseudoable"
   | "OneAnswerModify"
@@ -53,6 +54,9 @@ export function OneCriteria({
         <OneQuestion answer={answer} selectContext={selectContext} />
         {answerComponentRequired === "OneAnswer" && (
           <OneAnswer answer={answer} />
+        )}
+        {answerComponentRequired === "OneAnswerRePinnable" && (
+          <OneAnswerRePinnable answer={answer} />
         )}
         {answerComponentRequired === "OneAnswerPinnable" &&
           typeof pinnedAnswersCount === "number" && (
@@ -205,6 +209,40 @@ export function OneQuestion({
 }
 
 export function OneAnswer({ answer }: { answer: GlobalAnswerTypeByHand }) {
+  return (
+    <>
+      <div>
+        <p
+          className={
+            answer.userQuestion.state === "HIDDEN"
+              ? "mt-2 text-gray-500"
+              : "mt-2"
+          }
+        >
+          {/* Email address, the only possible HIDDEN userQuestion so far, cannot start with https:// since it's has to abide to the email format. There is therefore no overlap. */}
+          {RegExp("^https://").test(answer.value) ? (
+            <>
+              <PageLinkDivless
+                href={answer.value}
+                specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+              >
+                {answer.value}
+              </PageLinkDivless>
+            </>
+          ) : (
+            <>{answer.value}</>
+          )}
+        </p>
+      </div>
+    </>
+  );
+}
+
+export function OneAnswerRePinnable({
+  answer,
+}: {
+  answer: GlobalAnswerTypeByHand;
+}) {
   return (
     <>
       <div>
