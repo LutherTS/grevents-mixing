@@ -17,6 +17,11 @@ export function StatusPersonalInfoToasts({
           Criteria unpinned
         </ToastForm>
       )}
+      {statusPersonalInfo === "CRITERIAREPINNED" && (
+        <ToastForm action="/reset-user-status-personal-info">
+          Criteria repinned
+        </ToastForm>
+      )}
     </>
   );
 }

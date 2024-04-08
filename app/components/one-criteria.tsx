@@ -245,15 +245,13 @@ export function OneAnswerRePinnable({
 }) {
   return (
     <>
-      <div>
+      <div className="mt-2 flex justify-center">
+        <ButtonRePinnableForm answer={answer} />
         <p
           className={
-            answer.userQuestion.state === "HIDDEN"
-              ? "mt-2 text-gray-500"
-              : "mt-2"
+            answer.userQuestion.state === "HIDDEN" ? "text-gray-500" : ""
           }
         >
-          {/* Email address, the only possible HIDDEN userQuestion so far, cannot start with https:// since it's has to abide to the email format. There is therefore no overlap. */}
           {RegExp("^https://").test(answer.value) ? (
             <>
               <PageLinkDivless
@@ -268,6 +266,26 @@ export function OneAnswerRePinnable({
           )}
         </p>
       </div>
+    </>
+  );
+}
+
+function ButtonRePinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form
+        action="/re-pin-answer"
+        method="post"
+        className="me-2 flex items-center"
+      >
+        <input type="hidden" name="answerid" value={answer.id} />
+        <button
+          disabled={fetcher.state !== "idle"}
+          className="h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500 bg-indigo-500 hover:bg-indigo-300 dark:hover:bg-indigo-700"
+        />
+      </fetcher.Form>
     </>
   );
 }

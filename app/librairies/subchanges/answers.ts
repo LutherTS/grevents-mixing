@@ -65,6 +65,22 @@ export function dataUnpinAnswerUserQuestion(): Prisma.AnswerUpdateInput {
   };
 }
 
+export function dataRePinAnswerUserQuestion(): Prisma.AnswerUpdateInput {
+  return {
+    userQuestion: {
+      update: {
+        isPinned: true,
+        pinnedAt: new Date(),
+      },
+    },
+    user: {
+      update: {
+        statusPersonalInfo: "CRITERIAREPINNED",
+      },
+    },
+  };
+}
+
 export function dataPseudoIrlAnswerUserQuestion(): Prisma.AnswerUpdateInput {
   return {
     userQuestion: {
