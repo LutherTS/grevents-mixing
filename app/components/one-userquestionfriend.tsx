@@ -137,6 +137,9 @@ export function OneUserQuestionFriendUnpinnable({
             userQuestionFriend={userQuestionFriend}
           />
           <p>{userQuestionFriend.userQuestion.answer?.value}</p>
+          <ButtonRePinnableByFriendForm
+            userQuestionFriend={userQuestionFriend}
+          />
         </div>
       </div>
     </>
@@ -167,6 +170,36 @@ function ButtonUnpinnableByFriendForm({
         <button
           disabled={fetcher.state !== "idle"}
           className="h-4 w-4 rounded-full bg-pink-500 hover:bg-pink-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-pink-700"
+        />
+      </fetcher.Form>
+    </>
+  );
+}
+
+function ButtonRePinnableByFriendForm({
+  userQuestionFriend,
+}: {
+  userQuestionFriend: Prisma.UserQuestionFriendGetPayload<{
+    select: typeof selectUserQuestionFriendsAnswers;
+  }>;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form
+        action="/re-pin-user-question-friend"
+        method="post"
+        className="ms-2 flex items-center"
+      >
+        <input
+          type="hidden"
+          name="userquestionfriendid"
+          value={userQuestionFriend.id}
+        />
+        <button
+          disabled={fetcher.state !== "idle"}
+          className="h-4 w-4 rounded-full bg-indigo-500 hover:bg-indigo-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-indigo-700"
         />
       </fetcher.Form>
     </>

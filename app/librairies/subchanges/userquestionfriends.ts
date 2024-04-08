@@ -27,3 +27,15 @@ export function dataUpdateUserQuestionFriendCancelPinnedByFriend(): Prisma.UserQ
     },
   };
 }
+
+export function dataUpdateUserQuestionFriendRePinnedByFriend(): Prisma.UserQuestionFriendUpdateInput {
+  return {
+    isPinnedByFriend: true,
+    pinnedByFriendAt: new Date(),
+    contact: {
+      update: {
+        statusOtherProfile: "USERQUESTIONFRIENDREPINNED",
+      },
+    },
+  };
+}
