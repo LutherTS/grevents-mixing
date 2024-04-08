@@ -169,7 +169,7 @@ function ButtonUnpinnableByFriendForm({
         />
         <button
           disabled={fetcher.state !== "idle"}
-          className="h-4 w-4 rounded-full bg-pink-500 hover:bg-pink-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-pink-700"
+          className="h-4 w-4 rounded-full bg-cyan-500 hover:bg-pink-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-pink-700"
         />
       </fetcher.Form>
     </>

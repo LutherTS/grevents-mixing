@@ -29,12 +29,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null;
   }
 
-  const userPinnedAnswersCount = await countUserPinnedAnswersByUserId(
-    verifiedUser.id
-  );
-  if (userPinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT) {
-    await rePinAnswerUserQuestionByIdAndUserId(answer.id, verifiedUser.id);
-  }
+  await rePinAnswerUserQuestionByIdAndUserId(answer.id, verifiedUser.id);
 
   return redirect(`/users/${answer.user.username}/personal-info`);
 };

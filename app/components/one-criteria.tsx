@@ -246,7 +246,7 @@ export function OneAnswerRePinnable({
   return (
     <>
       <div className="mt-2 flex justify-center">
-        <ButtonRePinnableForm answer={answer} />
+        <ButtonPinnableForm answer={answer} />
         <p
           className={
             answer.userQuestion.state === "HIDDEN" ? "text-gray-500" : ""
@@ -265,6 +265,7 @@ export function OneAnswerRePinnable({
             <>{answer.value}</>
           )}
         </p>
+        <ButtonRePinnableForm answer={answer} />
       </div>
     </>
   );
@@ -278,7 +279,7 @@ function ButtonRePinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
       <fetcher.Form
         action="/re-pin-answer"
         method="post"
-        className="me-2 flex items-center"
+        className="ms-2 flex items-center"
       >
         <input type="hidden" name="answerid" value={answer.id} />
         <button
@@ -610,7 +611,7 @@ function ButtonPinnableByFriendForm({
         <input type="hidden" name="contactid" value={contact.id} />
         <button
           disabled={fetcher.state !== "idle"}
-          className="h-4 w-4 rounded-full bg-cyan-500 hover:bg-cyan-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-cyan-700"
+          className="h-4 w-4 rounded-full bg-pink-500 hover:bg-cyan-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-cyan-700"
         />
       </fetcher.Form>
     </>
