@@ -75,6 +75,7 @@ export const selectUserPinnedAnswers = {
       isPinned: true,
       kind: true,
       id: true,
+      state: true,
       question: {
         select: {
           name: true,

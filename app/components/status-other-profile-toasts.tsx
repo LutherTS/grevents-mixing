@@ -28,6 +28,14 @@ export function StatusOtherProfileToasts({
           Friend criteria unpinned by you
         </ContactToastForm>
       )}
+      {contact.statusOtherProfile === "USERQUESTIONFRIENDREPINNED" && (
+        <ContactToastForm
+          contact={contact}
+          action="/reset-contact-status-other-profile"
+        >
+          Friend criteria repinned by you
+        </ContactToastForm>
+      )}
       {contact.statusOtherProfile === "FIRSTACCESSEDTHROUGHFIND" && (
         <ContactToastForm
           contact={contact}

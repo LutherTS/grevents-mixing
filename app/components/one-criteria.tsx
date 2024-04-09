@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import { useFetcher } from "@remix-run/react";
-import { useEffect, useRef } from "react";
 import { Prisma } from "@prisma/client";
 import { JsonifyObject } from "type-fest/source/jsonify";
+// import { useEffect, useRef } from "react";
 
 import { PageLinkDivless } from "./page-link";
 import {
@@ -23,6 +23,7 @@ export type SelectContext =
 
 export type AnswerComponentRequired =
   | "OneAnswer"
+  | "OneAnswerRePinnable"
   | "OneAnswerPinnable"
   | "OneAnswerPinnablePseudoable"
   | "OneAnswerModify"
@@ -53,6 +54,9 @@ export function OneCriteria({
         <OneQuestion answer={answer} selectContext={selectContext} />
         {answerComponentRequired === "OneAnswer" && (
           <OneAnswer answer={answer} />
+        )}
+        {answerComponentRequired === "OneAnswerRePinnable" && (
+          <OneAnswerRePinnable answer={answer} />
         )}
         {answerComponentRequired === "OneAnswerPinnable" &&
           typeof pinnedAnswersCount === "number" && (
@@ -211,13 +215,81 @@ export function OneAnswer({ answer }: { answer: GlobalAnswerTypeByHand }) {
         <p
           className={
             answer.userQuestion.state === "HIDDEN"
-              ? "mt-2 text-gray-500"
-              : "mt-2"
+              ? "mt-2 text-gray-300 dark:text-gray-700"
+              : "mt-2 text-inherit"
           }
         >
-          {answer.value}
+          {/* Email address, the only possible HIDDEN userQuestion so far, cannot start with https:// since it's has to abide to the email format. There is therefore no overlap. */}
+          {RegExp("^https://").test(answer.value) ? (
+            <>
+              <PageLinkDivless
+                href={answer.value}
+                specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+              >
+                {answer.value}
+              </PageLinkDivless>
+            </>
+          ) : (
+            <>{answer.value}</>
+          )}
         </p>
       </div>
+    </>
+  );
+}
+
+export function OneAnswerRePinnable({
+  answer,
+}: {
+  answer: GlobalAnswerTypeByHand;
+}) {
+  console.log(answer);
+  return (
+    <>
+      <div className="mt-2 flex justify-center">
+        <ButtonPinnableForm answer={answer} />
+        <p
+          className={
+            answer.userQuestion.state === "HIDDEN"
+              ? "text-gray-300 dark:text-gray-700"
+              : "text-inherit"
+          }
+        >
+          {RegExp("^https://").test(answer.value) ? (
+            <>
+              <PageLinkDivless
+                href={answer.value}
+                specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+              >
+                {answer.value}
+              </PageLinkDivless>
+            </>
+          ) : (
+            <>{answer.value}</>
+          )}
+        </p>
+        <ButtonRePinnableForm answer={answer} />
+      </div>
+    </>
+  );
+}
+
+function ButtonRePinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form
+        action="/re-pin-answer"
+        method="post"
+        className="ms-2 flex items-center"
+      >
+        <input type="hidden" name="answerid" value={answer.id} />
+        <button
+          disabled={fetcher.state !== "idle"}
+          className="h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500 bg-indigo-500 hover:bg-indigo-300 dark:hover:bg-indigo-700"
+        />
+      </fetcher.Form>
     </>
   );
 }
@@ -248,7 +320,18 @@ export function OneAnswerPinnable({
               : "text-inherit"
           }
         >
-          {answer.value}
+          {RegExp("^https://").test(answer.value) ? (
+            <>
+              <PageLinkDivless
+                href={answer.value}
+                specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+              >
+                {answer.value}
+              </PageLinkDivless>
+            </>
+          ) : (
+            <>{answer.value}</>
+          )}
         </p>
       </div>
     </>
@@ -304,7 +387,20 @@ export function OneAnswerPinnablePseudoable({
           answer.userQuestion.isPinned === true && (
             <ButtonPinnableForm answer={answer} />
           )}
-        <p>{answer.value}</p>
+        <p>
+          {RegExp("^https://").test(answer.value) ? (
+            <>
+              <PageLinkDivless
+                href={answer.value}
+                specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+              >
+                {answer.value}
+              </PageLinkDivless>
+            </>
+          ) : (
+            <>{answer.value}</>
+          )}
+        </p>
         {/* If both are max out, you'll have to delete an "otherPseudonativeAnswer" to re-access pseudo-answer. */}
         {otherPseudonativeAnswersCount < DEFAULT_ANSWERS_LIMIT && (
           <ButtonPseudoableForm answer={answer} />
@@ -477,7 +573,20 @@ export function OneAnswerPinnableByFriend({
         {answersPinnedbyFriendAnswersCount < PINNED_BY_FRIEND_ANSWERS_LIMIT && (
           <ButtonPinnableByFriendForm answer={answer} contact={contact} />
         )}
-        <p>{answer.value}</p>
+        <p>
+          {RegExp("^https://").test(answer.value) ? (
+            <>
+              <PageLinkDivless
+                href={answer.value}
+                specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+              >
+                {answer.value}
+              </PageLinkDivless>
+            </>
+          ) : (
+            <>{answer.value}</>
+          )}
+        </p>
       </div>
     </>
   );
@@ -505,7 +614,7 @@ function ButtonPinnableByFriendForm({
         <input type="hidden" name="contactid" value={contact.id} />
         <button
           disabled={fetcher.state !== "idle"}
-          className="h-4 w-4 rounded-full bg-cyan-500 hover:bg-cyan-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-cyan-700"
+          className="h-4 w-4 rounded-full bg-pink-500 hover:bg-cyan-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-cyan-700"
         />
       </fetcher.Form>
     </>

@@ -8,6 +8,7 @@ import {
   dataPinAnswerUserQuestion,
   dataPseudoIrlAnswerUserQuestion,
   dataPseudoNotIrlAnswerUserQuestion,
+  dataRePinAnswerUserQuestion,
   dataRevealAnswerUserQuestion,
   dataUnpinAnswerUserQuestion,
   dataUpdateAnswerStateDeletedStatusPersonalInfo,
@@ -35,6 +36,19 @@ export async function unpinAnswerUserQuestionByIdAndUserId(
 ) {
   const where = whereAnswerByIdAndUserId(id, userId);
   const data = dataUnpinAnswerUserQuestion();
+
+  return await prisma.answer.update({
+    where,
+    data,
+  });
+}
+
+export async function rePinAnswerUserQuestionByIdAndUserId(
+  id: string,
+  userId: string
+) {
+  const where = whereAnswerByIdAndUserId(id, userId);
+  const data = dataRePinAnswerUserQuestion();
 
   return await prisma.answer.update({
     where,
