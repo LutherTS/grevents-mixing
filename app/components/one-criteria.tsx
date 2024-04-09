@@ -243,6 +243,7 @@ export function OneAnswerRePinnable({
 }: {
   answer: GlobalAnswerTypeByHand;
 }) {
+  console.log(answer);
   return (
     <>
       <div className="mt-2 flex justify-center">
