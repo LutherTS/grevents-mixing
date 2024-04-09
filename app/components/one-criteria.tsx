@@ -216,7 +216,7 @@ export function OneAnswer({ answer }: { answer: GlobalAnswerTypeByHand }) {
           className={
             answer.userQuestion.state === "HIDDEN"
               ? "mt-2 text-gray-300 dark:text-gray-700"
-              : "mt-2"
+              : "mt-2 text-inherit"
           }
         >
           {/* Email address, the only possible HIDDEN userQuestion so far, cannot start with https:// since it's has to abide to the email format. There is therefore no overlap. */}
@@ -250,7 +250,9 @@ export function OneAnswerRePinnable({
         <ButtonPinnableForm answer={answer} />
         <p
           className={
-            answer.userQuestion.state === "HIDDEN" ? "text-gray-500" : ""
+            answer.userQuestion.state === "HIDDEN"
+              ? "text-gray-300 dark:text-gray-700"
+              : "text-inherit"
           }
         >
           {RegExp("^https://").test(answer.value) ? (
