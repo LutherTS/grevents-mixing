@@ -91,7 +91,7 @@ export function OneUserQuestionFriendUnpinnable({
                 <span className="font-semibold">
                   {userQuestionFriend.userQuestion.question.name}
                 </span>{" "}
-                / native
+                {/* / native */}
               </span>
             )}
           {userQuestionFriend.userQuestion.question.kind === "NATIVEIRL" &&
@@ -100,7 +100,7 @@ export function OneUserQuestionFriendUnpinnable({
                 <span className="font-semibold">
                   {userQuestionFriend.userQuestion.question.name}
                 </span>{" "}
-                / native irl
+                {/* / native irl */}
               </span>
             )}
           {userQuestionFriend.userQuestion.question.kind === "PSEUDO" &&
@@ -109,7 +109,7 @@ export function OneUserQuestionFriendUnpinnable({
                 <span className="font-semibold">
                   {userQuestionFriend.userQuestion.question.name}
                 </span>{" "}
-                / pseudonative
+                {/* / pseudonative */}
               </span>
             )}
           {userQuestionFriend.userQuestion.question.kind === "PSEUDO" &&
@@ -118,7 +118,7 @@ export function OneUserQuestionFriendUnpinnable({
                 <span className="font-semibold">
                   {userQuestionFriend.userQuestion.question.name}
                 </span>{" "}
-                / pseudonative irl
+                {/* / pseudonative irl */}
               </span>
             )}
           {/* no link, UserQuestionFriends not counted */}
@@ -128,7 +128,7 @@ export function OneUserQuestionFriendUnpinnable({
                 <span className="font-semibold">
                   {userQuestionFriend.userQuestion.question.name}
                 </span>{" "}
-                / custom / shared to you
+                {/* / custom  */}/ shared to you
               </span>
             )}
         </p>

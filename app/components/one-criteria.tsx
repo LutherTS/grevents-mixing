@@ -113,7 +113,7 @@ export function OneQuestion({
               <span className="font-semibold">
                 {answer.userQuestion.question.name}
               </span>{" "}
-              / native
+              {/* / native */}
             </span>
           )}
         {answer.userQuestion.question.kind === "NATIVEIRL" &&
@@ -122,7 +122,7 @@ export function OneQuestion({
               <span className="font-semibold">
                 {answer.userQuestion.question.name}
               </span>{" "}
-              / native irl
+              {/* / native irl */}
             </span>
           )}
         {answer.userQuestion.question.kind === "PSEUDO" &&
@@ -131,7 +131,7 @@ export function OneQuestion({
               <span className="font-semibold">
                 {answer.userQuestion.question.name}
               </span>{" "}
-              / pseudonative
+              {/* / pseudonative */}
             </span>
           )}
         {answer.userQuestion.question.kind === "PSEUDO" &&
@@ -140,7 +140,7 @@ export function OneQuestion({
               <span className="font-semibold">
                 {answer.userQuestion.question.name}
               </span>{" "}
-              / pseudonative irl
+              {/* / pseudonative irl */}
             </span>
           )}
         {/* no link, UserQuestionFriends counted */}
@@ -154,7 +154,7 @@ export function OneQuestion({
               <span className="font-semibold">
                 {answer.userQuestion.question.name}
               </span>{" "}
-              / custom{" "}
+              {/* / custom{" "} */}
               {typeof answer.userQuestion._count.userQuestionFriends ===
                 "number" &&
               answer.userQuestion._count.userQuestionFriends >= 1 ? (
@@ -173,7 +173,7 @@ export function OneQuestion({
               <span className="font-semibold">
                 {answer.userQuestion.question.name}
               </span>{" "}
-              / custom / shared to you
+              {/* / custom  */}/ shared to you
             </span>
           )}
         {/* link, UserQuestionFriends counted */}
@@ -190,7 +190,7 @@ export function OneQuestion({
                 <span className="font-semibold">
                   {answer.userQuestion.question.name}
                 </span>{" "}
-                / custom{" "}
+                {/* / custom{" "} */}
                 {typeof answer.userQuestion._count.userQuestionFriends ===
                   "number" &&
                 answer.userQuestion._count.userQuestionFriends >= 1 ? (
