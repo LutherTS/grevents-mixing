@@ -7,5 +7,3 @@ export function Main({ children }: { children: React.ReactNode }) {
     </>
   );
 }
-// #d6dbdc // #D6DBDC
-// #080c14 // #080C14
