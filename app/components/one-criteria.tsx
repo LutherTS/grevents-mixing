@@ -24,6 +24,7 @@ export type SelectContext =
 
 export type AnswerComponentRequired =
   | "OneAnswer"
+  | "OneAnswerRePinnableForSelf"
   | "OneAnswerRePinnable"
   | "OneAnswerPinnable"
   | "OneAnswerPinnablePseudoable"
@@ -55,6 +56,9 @@ export function OneCriteria({
         <OneQuestion answer={answer} selectContext={selectContext} />
         {answerComponentRequired === "OneAnswer" && (
           <OneAnswer answer={answer} />
+        )}
+        {answerComponentRequired === "OneAnswerRePinnableForSelf" && (
+          <OneAnswerRePinnableForSelf answer={answer} />
         )}
         {answerComponentRequired === "OneAnswerRePinnable" && (
           <OneAnswerRePinnable answer={answer} />

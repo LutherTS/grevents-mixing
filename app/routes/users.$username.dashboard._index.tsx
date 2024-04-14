@@ -167,7 +167,7 @@ export default function DashboardPage() {
             <ManyCriteria
               answers={data.userPinnedForSelfAnswers}
               selectContext="Dashboard"
-              answerComponentRequired="OneAnswer"
+              answerComponentRequired="OneAnswerRePinnableForSelf"
               label="Find your pinned for myself criteria below"
             />
           </div>
