@@ -103,7 +103,7 @@ model UserQuestion {
   createdAt            DateTime     @default(now())
   updatedAt            DateTime     @updatedAt @default(now())
   pinnedAt             DateTime?
-  pinnedForSelfAt      DateTime? // NEw
+  pinnedForSelfAt      DateTime? // NEW
   upToIrlAt            DateTime?
   downFromIrlAt        DateTime?
 
