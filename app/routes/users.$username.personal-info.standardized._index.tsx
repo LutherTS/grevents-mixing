@@ -19,11 +19,15 @@ import {
   countUserNativeIrlAnswersByUserId,
   countUserNativeNotIrlAnswersByUserId,
   countUserPinnedAnswersByUserId,
+  countUserPinnedForSelfAnswersByUserId,
   findUserNativeIrlAnswersByUserId,
   findUserNativeNotIrlAnswersByUserId,
 } from "~/librairies/data/answers";
 import { findUserByUsername } from "~/librairies/data/users";
-import { PINNED_BY_USER_ANSWERS_LIMIT } from "~/librairies/subdata/answers";
+import {
+  PINNED_BY_USER_ANSWERS_LIMIT,
+  PINNED_FOR_SELF_ANSWERS_LIMIT,
+} from "~/librairies/subdata/answers";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
@@ -50,12 +54,14 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   }
 
   const [
-    userPinnedAnswerCount,
+    userPinnedForSelfAnswersCount,
+    userPinnedAnswersCount,
     userNativeNotIrlAnswers,
     userNativeNotIrlAnswersCount,
     userNativeIrlAnswers,
     userNativeIrlAnswersCount,
   ] = await Promise.all([
+    countUserPinnedForSelfAnswersByUserId(user.id),
     countUserPinnedAnswersByUserId(user.id),
     findUserNativeNotIrlAnswersByUserId(user.id),
     countUserNativeNotIrlAnswersByUserId(user.id),
@@ -66,7 +72,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   return json({
     verifiedUser,
     user,
-    userPinnedAnswerCount,
+    userPinnedForSelfAnswersCount,
+    userPinnedAnswersCount,
     userNativeNotIrlAnswers,
     userNativeNotIrlAnswersCount,
     userNativeIrlAnswers,
@@ -116,10 +123,16 @@ export default function PersonalInfoStandardizedPage() {
       <StatusPersonalInfoStandardizedToasts
         statusPersonalInfo={data.verifiedUser.statusPersonalInfo}
       />
-      {data.userPinnedAnswerCount >= PINNED_BY_USER_ANSWERS_LIMIT && (
+      {data.userPinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT && (
         <p className="mb-2 cursor-default text-orange-500">
           You cannot pin more than {PINNED_BY_USER_ANSWERS_LIMIT} of your own
           criteria.
+        </p>
+      )}
+      {data.userPinnedForSelfAnswersCount >= PINNED_FOR_SELF_ANSWERS_LIMIT && (
+        <p className="mb-2 cursor-default text-orange-500">
+          You cannot pin for self more than {PINNED_FOR_SELF_ANSWERS_LIMIT} of
+          your own criteria.
         </p>
       )}
       <H1>
@@ -133,14 +146,14 @@ export default function PersonalInfoStandardizedPage() {
       <div className="space-y-4 my-4">
         <ManyCriteria
           answers={data.userNativeNotIrlAnswers}
-          pinnedAnswersCount={data.userPinnedAnswerCount}
+          pinnedAnswersCount={data.userPinnedAnswersCount}
           answerComponentRequired="OneAnswerPinnable"
           label="Find your native criteria below"
           notLabel="No native criteria yet."
         />
         <ManyCriteria
           answers={data.userNativeIrlAnswers}
-          pinnedAnswersCount={data.userPinnedAnswerCount}
+          pinnedAnswersCount={data.userPinnedAnswersCount}
           answerComponentRequired="OneAnswerPinnable"
           label="Find your native irl criteria below"
           notLabel="No native irl criteria yet."

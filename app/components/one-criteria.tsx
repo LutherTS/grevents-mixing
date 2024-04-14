@@ -279,6 +279,8 @@ export function OneAnswerRePinnableForSelf({
   );
 }
 
+// -sky-
+// -rose-
 function ButtonPinnableForSelfForm({
   answer,
 }: {
@@ -289,7 +291,7 @@ function ButtonPinnableForSelfForm({
   return (
     <>
       <fetcher.Form
-        action="/pin-answer"
+        action="/pin-answer-for-self"
         method="post"
         className="me-2 flex items-center"
       >
@@ -299,10 +301,10 @@ function ButtonPinnableForSelfForm({
           className={clsx(
             "h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500",
             {
-              "bg-cyan-500 hover:bg-pink-300 dark:hover:bg-pink-700":
-                answer.userQuestion.isPinned === true,
-              "bg-pink-500 hover:bg-cyan-300 dark:hover:bg-cyan-700":
-                answer.userQuestion.isPinned === false,
+              "bg-sky-500 hover:bg-rose-300 dark:hover:bg-rose-700":
+                answer.userQuestion.isPinnedForSelf === true,
+              "bg-rose-500 hover:bg-sky-300 dark:hover:bg-sky-700":
+                answer.userQuestion.isPinnedForSelf === false,
             }
           )}
         />

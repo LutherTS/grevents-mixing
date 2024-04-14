@@ -27,7 +27,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   await rePinForSelfAnswerUserQuestionByIdAndUserId(answer.id, verifiedUser.id);
 
-  return redirect(`/users/${answer.user.username}/dashboard`);
+  return null;
 };
 
 export const loader = async () => redirect("/");

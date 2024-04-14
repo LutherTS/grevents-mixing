@@ -411,6 +411,7 @@ export const selectAnswers = {
       kind: true,
       state: true,
       isPinned: true,
+      isPinnedForSelf: true,
       question: {
         select: {
           name: true,

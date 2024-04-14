@@ -27,7 +27,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   await rePinAnswerUserQuestionByIdAndUserId(answer.id, verifiedUser.id);
 
-  return redirect(`/users/${answer.user.username}/personal-info`);
+  return null;
 };
 
 export const loader = async () => redirect("/");

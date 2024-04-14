@@ -53,6 +53,14 @@ export async function findUserPinnedForSelfAnswersByUserId(id: string) {
   });
 }
 
+export async function countUserPinnedForSelfAnswersByUserId(id: string) {
+  const where = whereUserPinnedForSelfAnswersByUserId(id);
+
+  return await prisma.answer.count({
+    where,
+  });
+}
+
 export async function findUserPinnedAnswersByUserId(id: string) {
   const select = selectUserPinnedAnswers;
   const where = whereUserPinnedAnswersByUserId(id);

@@ -168,7 +168,7 @@ export default function DashboardPage() {
               answers={data.userPinnedForSelfAnswers}
               selectContext="Dashboard"
               answerComponentRequired="OneAnswerRePinnableForSelf"
-              label="Find your pinned for myself criteria below"
+              label="Find your pinned for self criteria below"
             />
           </div>
         )}
