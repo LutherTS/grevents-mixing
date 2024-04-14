@@ -31,11 +31,27 @@ import {
   whereUserUnpinnedPseudonativeAnswersByUserIdAndUserQuestionKindExposed,
   whereAnswerByIdAndUserId,
   whereAnswerByIdAndContactId,
+  selectUserPinnedForSelfAnswers,
+  whereUserPinnedForSelfAnswersByUserId,
+  PINNED_FOR_SELF_ANSWERS_ORDER_BY,
+  PINNED_FOR_SELF_ANSWERS_LIMIT,
 } from "../subdata/answers";
 
 const orderBy = DEFAULT_ANSWERS_ORDER_BY;
 
 const take = DEFAULT_ANSWERS_LIMIT;
+
+export async function findUserPinnedForSelfAnswersByUserId(id: string) {
+  const select = selectUserPinnedForSelfAnswers;
+  const where = whereUserPinnedForSelfAnswersByUserId(id);
+
+  return await prisma.answer.findMany({
+    select,
+    where,
+    orderBy: PINNED_FOR_SELF_ANSWERS_ORDER_BY,
+    take: PINNED_FOR_SELF_ANSWERS_LIMIT,
+  });
+}
 
 export async function findUserPinnedAnswersByUserId(id: string) {
   const select = selectUserPinnedAnswers;

@@ -9,11 +9,13 @@ import invariant from "tiny-invariant";
 
 import { H1 } from "~/components/h1";
 import { LinkButtonOnClick } from "~/components/link-button";
+import { ManyCriteria } from "~/components/many-criteria";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
 import { StatusDashboardToasts } from "~/components/status-dashboard-toasts";
 import { StatusTitleToasts } from "~/components/status-title-toasts";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
+import { findUserPinnedForSelfAnswersByUserId } from "~/librairies/data/answers";
 import {
   countSentFriendToContactsByUserId,
   countSentIrlToContactsByUserId,
@@ -53,12 +55,14 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     sentFriendFromContactsCount,
     sentIrlFromContactsCount,
     hasAccessedFromContactsCount,
+    userPinnedForSelfAnswers, // NEW
   ] = await Promise.all([
     countSentFriendToContactsByUserId(user.id),
     countSentIrlToContactsByUserId(user.id),
     countSentFriendFromContactsByUserId(user.id),
     countSentIrlFromContactsByUserId(user.id),
     countHasAccessedFromContactsByUserId(user.id),
+    findUserPinnedForSelfAnswersByUserId(user.id), // NEW
   ]);
 
   const sentToContactsCount =
@@ -74,6 +78,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     user,
     sentToContactsCount,
     sentFromContactsCount,
+    userPinnedForSelfAnswers, // NEW
   });
 };
 
@@ -114,6 +119,7 @@ export function ErrorBoundary() {
 
 export default function DashboardPage() {
   const data = useLoaderData<typeof loader>();
+  console.log(data);
   // If I don't want to use "data." everywhere, I can always destructure from useLoaderData.
   // If there's loader and action data, I can also then call data (loader data) loaderData and action data actionData.
 
@@ -156,6 +162,16 @@ export default function DashboardPage() {
             My notifications
           </PageLink>
         </div>
+        {data.userPinnedForSelfAnswers.length > 0 && (
+          <div className="py-2">
+            <ManyCriteria
+              answers={data.userPinnedForSelfAnswers}
+              selectContext="Dashboard"
+              answerComponentRequired="OneAnswer"
+              label="Find your pinned for myself criteria below"
+            />
+          </div>
+        )}
         <div className="py-2">
           <p className="mt-2 underline text-fuchsia-200 dark:text-fuchsia-800">
             My groups

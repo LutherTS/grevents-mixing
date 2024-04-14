@@ -14,6 +14,7 @@ import { PINNED_BY_FRIEND_ANSWERS_LIMIT } from "~/librairies/subdata/userquestio
 import { selectContacts } from "~/librairies/subdata/contacts";
 
 export type SelectContext =
+  | "Dashboard"
   | "PersonalInfo"
   | "PersonalInfoCustomized"
   | "UserCriteria"
@@ -102,7 +103,7 @@ export function OneQuestion({
   // a type by hand is the only viable solution at this time
   // given variable depth and a variable number of arguments
   // https://dev.to/lucianbc/union-type-merging-in-typescript-9al
-  selectContext?: string;
+  selectContext?: SelectContext;
 }) {
   return (
     <>
@@ -147,7 +148,8 @@ export function OneQuestion({
         {answer.userQuestion.question.kind === "CUSTOM" &&
           answer.userQuestion.kind === "NONE" &&
           answer.userQuestion._count &&
-          (selectContext === "PersonalInfo" ||
+          (selectContext === "Dashboard" ||
+            selectContext === "PersonalInfo" ||
             selectContext === "UserCriteria" ||
             selectContext === "ModifyCriteriaCustomized") && (
             <span className="text-lime-500">
@@ -234,6 +236,97 @@ export function OneAnswer({ answer }: { answer: GlobalAnswerTypeByHand }) {
           )}
         </p>
       </div>
+    </>
+  );
+}
+
+export function OneAnswerRePinnableForSelf({
+  answer,
+}: {
+  answer: GlobalAnswerTypeByHand;
+}) {
+  return (
+    <>
+      <div className="mt-2 flex justify-center">
+        <ButtonPinnableForSelfForm answer={answer} />
+        <p
+          className={
+            answer.userQuestion.state === "HIDDEN"
+              ? "text-gray-300 dark:text-gray-700"
+              : "text-inherit"
+          }
+        >
+          {RegExp("^https://").test(answer.value) ? (
+            <>
+              <PageLinkDivless
+                href={answer.value}
+                specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+              >
+                {answer.value}
+              </PageLinkDivless>
+            </>
+          ) : (
+            <>{answer.value}</>
+          )}
+        </p>
+        <ButtonRePinnableForSelfForm answer={answer} />
+      </div>
+    </>
+  );
+}
+
+function ButtonPinnableForSelfForm({
+  answer,
+}: {
+  answer: GlobalAnswerTypeByHand;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form
+        action="/pin-answer"
+        method="post"
+        className="me-2 flex items-center"
+      >
+        <input type="hidden" name="answerid" value={answer.id} />
+        <button
+          disabled={fetcher.state !== "idle"}
+          className={clsx(
+            "h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500",
+            {
+              "bg-cyan-500 hover:bg-pink-300 dark:hover:bg-pink-700":
+                answer.userQuestion.isPinned === true,
+              "bg-pink-500 hover:bg-cyan-300 dark:hover:bg-cyan-700":
+                answer.userQuestion.isPinned === false,
+            }
+          )}
+        />
+      </fetcher.Form>
+    </>
+  );
+}
+
+function ButtonRePinnableForSelfForm({
+  answer,
+}: {
+  answer: GlobalAnswerTypeByHand;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form
+        action="/re-pin-answer"
+        method="post"
+        className="ms-2 flex items-center"
+      >
+        <input type="hidden" name="answerid" value={answer.id} />
+        <button
+          disabled={fetcher.state !== "idle"}
+          className="h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500 bg-indigo-500 hover:bg-indigo-300 dark:hover:bg-indigo-700"
+        />
+      </fetcher.Form>
     </>
   );
 }
