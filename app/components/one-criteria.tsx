@@ -9,6 +9,7 @@ import {
   GlobalAnswerTypeByHand,
   PINNED_BY_USER_ANSWERS_LIMIT,
   DEFAULT_ANSWERS_LIMIT,
+  PINNED_FOR_SELF_ANSWERS_LIMIT,
 } from "~/librairies/subdata/answers";
 import { PINNED_BY_FRIEND_ANSWERS_LIMIT } from "~/librairies/subdata/userquestionfriends";
 import { selectContacts } from "~/librairies/subdata/contacts";
@@ -34,6 +35,7 @@ export type AnswerComponentRequired =
 export function OneCriteria({
   answer,
   selectContext,
+  pinnedAnswersForSelfCount,
   pinnedAnswersCount,
   otherPseudonativeAnswersCount,
   answerComponentRequired,
@@ -42,6 +44,7 @@ export function OneCriteria({
 }: {
   answer: GlobalAnswerTypeByHand;
   selectContext?: SelectContext;
+  pinnedAnswersForSelfCount?: number;
   pinnedAnswersCount?: number;
   otherPseudonativeAnswersCount?: number;
   answerComponentRequired: AnswerComponentRequired;
@@ -64,17 +67,21 @@ export function OneCriteria({
           <OneAnswerRePinnable answer={answer} />
         )}
         {answerComponentRequired === "OneAnswerPinnable" &&
+          typeof pinnedAnswersForSelfCount === "number" &&
           typeof pinnedAnswersCount === "number" && (
             <OneAnswerPinnable
               answer={answer}
+              pinnedAnswersForSelfCount={pinnedAnswersForSelfCount}
               pinnedAnswersCount={pinnedAnswersCount}
             />
           )}
         {answerComponentRequired === "OneAnswerPinnablePseudoable" &&
+          typeof pinnedAnswersForSelfCount === "number" &&
           typeof pinnedAnswersCount === "number" &&
           typeof otherPseudonativeAnswersCount === "number" && (
             <OneAnswerPinnablePseudoable
               answer={answer}
+              pinnedAnswersForSelfCount={pinnedAnswersForSelfCount}
               pinnedAnswersCount={pinnedAnswersCount}
               otherPseudonativeAnswersCount={otherPseudonativeAnswersCount}
             />
@@ -279,8 +286,6 @@ export function OneAnswerRePinnableForSelf({
   );
 }
 
-// -sky-
-// -rose-
 function ButtonPinnableForSelfForm({
   answer,
 }: {
@@ -394,14 +399,25 @@ function ButtonRePinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
 
 export function OneAnswerPinnable({
   answer,
+  pinnedAnswersForSelfCount,
   pinnedAnswersCount,
 }: {
   answer: GlobalAnswerTypeByHand;
+  pinnedAnswersForSelfCount: number;
   pinnedAnswersCount: number;
 }) {
   return (
     <>
       <div className="mt-2 flex justify-center">
+        {/* If you're still allowed to pin for self */}
+        {pinnedAnswersForSelfCount < PINNED_FOR_SELF_ANSWERS_LIMIT && (
+          <ButtonPinnableForSelfForm answer={answer} />
+        )}
+        {/* If you're only allowed to unpin for self */}
+        {pinnedAnswersForSelfCount >= PINNED_FOR_SELF_ANSWERS_LIMIT &&
+          answer.userQuestion.isPinnedForSelf === true && (
+            <ButtonPinnableForSelfForm answer={answer} />
+          )}
         {/* If you're still allowed to pin */}
         {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
           <ButtonPinnableForm answer={answer} />
@@ -466,16 +482,29 @@ function ButtonPinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
 
 export function OneAnswerPinnablePseudoable({
   answer,
+  pinnedAnswersForSelfCount,
   pinnedAnswersCount,
   otherPseudonativeAnswersCount,
 }: {
   answer: GlobalAnswerTypeByHand;
+  pinnedAnswersForSelfCount: number;
   pinnedAnswersCount: number;
   otherPseudonativeAnswersCount: number;
 }) {
   return (
     <>
       <div className="mt-2 flex justify-center">
+        {/* If you're still allowed to pin for self */}
+        {pinnedAnswersForSelfCount < PINNED_FOR_SELF_ANSWERS_LIMIT && (
+          <ButtonPinnableForSelfForm answer={answer} />
+        )}
+        {/* If you're only allowed to unpin for self */}
+        {pinnedAnswersForSelfCount >= PINNED_FOR_SELF_ANSWERS_LIMIT &&
+          answer.userQuestion.isPinnedForSelf === true && (
+            <ButtonPinnableForSelfForm answer={answer} />
+          )}
+        {/* If you're still allowed to pin */}
+
         {/* If you're still allowed to pin */}
         {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
           <ButtonPinnableForm answer={answer} />

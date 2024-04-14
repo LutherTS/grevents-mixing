@@ -144,6 +144,7 @@ export const selectUserPinnedAnswers = {
   userQuestion: {
     select: {
       isPinned: true,
+      isPinnedForSelf: true, // for UnionAnswerType
       kind: true,
       id: true,
       state: true,
@@ -201,6 +202,7 @@ export const selectUserNativeAnswers = {
   userQuestion: {
     select: {
       isPinned: true,
+      isPinnedForSelf: true,
       kind: true,
       id: true,
       state: true,
@@ -256,6 +258,7 @@ export const selectUserPseudonativeAnswers = {
         },
       },
       isPinned: true,
+      isPinnedForSelf: true,
       kind: true,
       id: true,
     },
@@ -299,6 +302,7 @@ export const selectUserCustomAnswers = {
   userQuestion: {
     select: {
       isPinned: true,
+      isPinnedForSelf: true,
       id: true,
       kind: true, // keeping for should be "NONE"
       question: {

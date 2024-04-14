@@ -163,6 +163,7 @@ export default function PersonalInfoCustomizedPage() {
       <div className="space-y-4 my-4">
         <ManyCriteria
           answers={data.userPseudonativeNotIrlAnswers}
+          pinnedAnswersForSelfCount={data.userPinnedForSelfAnswersCount}
           pinnedAnswersCount={data.userPinnedAnswersCount}
           otherPseudonativeAnswersCount={data.userPseudonativeIrlAnswersCount}
           answerComponentRequired="OneAnswerPinnablePseudoable"
@@ -171,6 +172,7 @@ export default function PersonalInfoCustomizedPage() {
         />
         <ManyCriteria
           answers={data.userPseudonativeIrlAnswers}
+          pinnedAnswersForSelfCount={data.userPinnedForSelfAnswersCount}
           pinnedAnswersCount={data.userPinnedAnswersCount}
           otherPseudonativeAnswersCount={
             data.userPseudonativeNotIrlAnswersCount
@@ -182,6 +184,7 @@ export default function PersonalInfoCustomizedPage() {
         <ManyCriteria
           answers={data.userCustomAnswers}
           selectContext="PersonalInfoCustomized"
+          pinnedAnswersForSelfCount={data.userPinnedForSelfAnswersCount}
           pinnedAnswersCount={data.userPinnedAnswersCount}
           answerComponentRequired="OneAnswerPinnable"
           label="Find your custom criteria below"

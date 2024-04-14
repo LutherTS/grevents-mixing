@@ -146,6 +146,7 @@ export default function PersonalInfoStandardizedPage() {
       <div className="space-y-4 my-4">
         <ManyCriteria
           answers={data.userNativeNotIrlAnswers}
+          pinnedAnswersForSelfCount={data.userPinnedForSelfAnswersCount}
           pinnedAnswersCount={data.userPinnedAnswersCount}
           answerComponentRequired="OneAnswerPinnable"
           label="Find your native criteria below"
@@ -153,6 +154,7 @@ export default function PersonalInfoStandardizedPage() {
         />
         <ManyCriteria
           answers={data.userNativeIrlAnswers}
+          pinnedAnswersForSelfCount={data.userPinnedForSelfAnswersCount}
           pinnedAnswersCount={data.userPinnedAnswersCount}
           answerComponentRequired="OneAnswerPinnable"
           label="Find your native irl criteria below"
