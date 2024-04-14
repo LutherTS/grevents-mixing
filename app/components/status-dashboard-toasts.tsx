@@ -45,6 +45,21 @@ export function StatusDashboardToasts({
           You&apos;ve reactivated your profile
         </ToastForm>
       )}
+      {statusDashboard === "CRITERIAPINNEDFORSELF" && (
+        <ToastForm action="/reset-user-status-dashboard">
+          Criteria pinned for self
+        </ToastForm>
+      )}
+      {statusDashboard === "CRITERIAUNPINNEDFORSELF" && (
+        <ToastForm action="/reset-user-status-dashboard">
+          Criteria unpinned for self
+        </ToastForm>
+      )}
+      {statusDashboard === "CRITERIAREPINNEDFORSELF" && (
+        <ToastForm action="/reset-user-status-dashboard">
+          Criteria repinned for self
+        </ToastForm>
+      )}
     </>
   );
 }

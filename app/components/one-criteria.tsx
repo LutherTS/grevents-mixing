@@ -321,7 +321,7 @@ function ButtonRePinnableForSelfForm({
   return (
     <>
       <fetcher.Form
-        action="/re-pin-answer"
+        action="/re-pin-answer-for-self"
         method="post"
         className="ms-2 flex items-center"
       >

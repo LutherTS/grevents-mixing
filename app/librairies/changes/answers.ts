@@ -6,16 +6,58 @@ import {
 import {
   dataHideAnswerUserQuestion,
   dataPinAnswerUserQuestion,
+  dataPinForSelfAnswerUserQuestion,
   dataPseudoIrlAnswerUserQuestion,
   dataPseudoNotIrlAnswerUserQuestion,
   dataRePinAnswerUserQuestion,
+  dataRePinForSelfAnswerUserQuestion,
   dataRevealAnswerUserQuestion,
   dataUnpinAnswerUserQuestion,
+  dataUnpinForSelfAnswerUserQuestion,
   dataUpdateAnswerStateDeletedStatusPersonalInfo,
   dataUpdateAnswerValueStatusPersonalInfo,
   dataUpsertAnswerUserQuestionFriendPinnedByFriend,
   dataUpsertAnswerUserQuestionFriendSharedToFriend,
 } from "../subchanges/answers";
+
+export async function pinForSelfAnswerUserQuestionByIdAndUserId(
+  id: string,
+  userId: string
+) {
+  const where = whereAnswerByIdAndUserId(id, userId);
+  const data = dataPinForSelfAnswerUserQuestion();
+
+  return await prisma.answer.update({
+    where,
+    data,
+  });
+}
+
+export async function unpinForSelfAnswerUserQuestionByIdAndUserId(
+  id: string,
+  userId: string
+) {
+  const where = whereAnswerByIdAndUserId(id, userId);
+  const data = dataUnpinForSelfAnswerUserQuestion();
+
+  return await prisma.answer.update({
+    where,
+    data,
+  });
+}
+
+export async function rePinForSelfAnswerUserQuestionByIdAndUserId(
+  id: string,
+  userId: string
+) {
+  const where = whereAnswerByIdAndUserId(id, userId);
+  const data = dataRePinForSelfAnswerUserQuestion();
+
+  return await prisma.answer.update({
+    where,
+    data,
+  });
+}
 
 export async function pinAnswerUserQuestionByIdAndUserId(
   id: string,
