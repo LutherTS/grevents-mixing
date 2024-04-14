@@ -617,7 +617,7 @@ function OneAnswerModifyForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
         <input type="hidden" name="answerid" value={answer.id} />
         <input
           // // ref={focusRef}
-          className="w-[32ch] max-w-[50ch] truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:!text-white disabled:placeholder:!text-gray-400 sm:w-[40ch]"
+          className="w-[32ch] max-w-[50ch] placeholder:truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:!text-white disabled:placeholder:!text-gray-400 sm:w-[40ch]"
           type="text"
           id={answer.id}
           name="answervalue"
