@@ -50,7 +50,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     );
   }
 
-  return redirect(`/users/${answer.user.username}/personal-info`);
+  return redirect(`/users/${answer.user.username}/dashboard`);
 };
 
 export const loader = async () => redirect("/");
