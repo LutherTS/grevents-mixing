@@ -212,45 +212,46 @@ export default function DashboardPage() {
             />
           </div>
         )}
-        {data.userPinnedFriend && (
-          <div className="py-2">
-            <p className="font-semibold text-zinc-700 dark:text-zinc-300">
-              <PageLinkDivless
-                href={`/users/${data.userPinnedFriend.userFirst.username}/profile`}
-                specifiedClasses="font-semibold text-blue-500 hover:text-blue-400 dark:hover:text-blue-600"
-              >
-                {data.userPinnedFriend.userFirst.appWideName}
-              </PageLinkDivless>{" "}
-              /{" "}
-              <span className="text-zinc-600 dark:text-zinc-400">
-                {data.userPinnedFriend.userFirst.username}
-              </span>{" "}
-              is your pinned friend
-            </p>
-            {data.relCombo === "friend" &&
-              data.userPinnedFriendAnswersPinnedByFriend && (
-                <ManyUserQuestionFriendsPinned
-                  pathname={data.pathname}
-                  userQuestionFriendsAnswers={
-                    data.userPinnedFriendAnswersPinnedByFriend
-                  }
-                  label="Find their pinned by you for friend criteria below"
-                  notLabel="No pinned by you criteria yet."
-                />
-              )}
-            {data.relCombo === "irl" &&
-              data.userPinnedFriendAnswersPinnedByFriend && (
-                <ManyUserQuestionFriendsPinned
-                  pathname={data.pathname}
-                  userQuestionFriendsAnswers={
-                    data.userPinnedFriendAnswersPinnedByFriend
-                  }
-                  label="Find their pinned by you for irl criteria below"
-                  notLabel="No pinned by you criteria yet."
-                />
-              )}
-          </div>
-        )}
+        {data.userPinnedFriend &&
+          (data.relCombo === "friend" || data.relCombo === "irl") && (
+            <div className="py-2">
+              <p className="font-semibold text-zinc-700 dark:text-zinc-300">
+                <PageLinkDivless
+                  href={`/users/${data.userPinnedFriend.userFirst.username}/profile`}
+                  specifiedClasses="font-semibold text-blue-500 hover:text-blue-400 dark:hover:text-blue-600"
+                >
+                  {data.userPinnedFriend.userFirst.appWideName}
+                </PageLinkDivless>{" "}
+                /{" "}
+                <span className="text-zinc-600 dark:text-zinc-400">
+                  {data.userPinnedFriend.userFirst.username}
+                </span>{" "}
+                is your pinned friend
+              </p>
+              {data.relCombo === "friend" &&
+                data.userPinnedFriendAnswersPinnedByFriend && (
+                  <ManyUserQuestionFriendsPinned
+                    pathname={data.pathname}
+                    userQuestionFriendsAnswers={
+                      data.userPinnedFriendAnswersPinnedByFriend
+                    }
+                    label="Find their pinned by you for friend criteria below"
+                    notLabel="No pinned by you criteria yet."
+                  />
+                )}
+              {data.relCombo === "irl" &&
+                data.userPinnedFriendAnswersPinnedByFriend && (
+                  <ManyUserQuestionFriendsPinned
+                    pathname={data.pathname}
+                    userQuestionFriendsAnswers={
+                      data.userPinnedFriendAnswersPinnedByFriend
+                    }
+                    label="Find their pinned by you for irl criteria below"
+                    notLabel="No pinned by you criteria yet."
+                  />
+                )}
+            </div>
+          )}
         <div className="py-2">
           <p className="mt-2 underline text-fuchsia-200 dark:text-fuchsia-800">
             My groups
