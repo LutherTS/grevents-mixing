@@ -24,8 +24,8 @@ model User {
   createdAt            DateTime     @default(now())
   updatedAt            DateTime     @updatedAt @default(now())
 
-  pinnedFriendId       String?      @unique // STILL NEW
-  pinnedFriend         Contact?     @relation("PinnedFriend", fields: [pinnedFriendId], references: [id]) // STILL NEW
+  pinnedFriendId       String?      @unique
+  pinnedFriend         Contact?     @relation("PinnedFriend", fields: [pinnedFriendId], references: [id])
 
   contactFirsts        Contact[]    @relation("UserFirst")
   contactLasts         Contact[]    @relation("UserLast")
@@ -73,7 +73,7 @@ model Contact {
 
   @@unique([userFirstId, userLastId])
 
-  pinnedByFriend       User?        @relation("PinnedFriend") // STILL NEW
+  pinnedByFriend       User?        @relation("PinnedFriend")
 
   userQuestionFriends  UserQuestionFriend[]
 }
