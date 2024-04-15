@@ -232,11 +232,11 @@ export function OneAnswer({ answer }: { answer: GlobalAnswerTypeByHand }) {
               : "mt-2 text-inherit"
           }
         >
-          {/* Email address, the only possible HIDDEN userQuestion so far, cannot start with https:// since it's has to abide to the email format. There is therefore no overlap. */}
-          {RegExp("^https://").test(answer.value) ? (
+          {/* Adding a source is currently only available on customized criteria. */}
+          {answer.source ? (
             <>
               <PageLinkDivless
-                href={answer.value}
+                href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
               >
                 {answer.value}
@@ -267,10 +267,11 @@ export function OneAnswerRePinnableForSelf({
               : "text-inherit"
           }
         >
-          {RegExp("^https://").test(answer.value) ? (
+          {/* Adding a source is currently only available on customized criteria. */}
+          {answer.source ? (
             <>
               <PageLinkDivless
-                href={answer.value}
+                href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
               >
                 {answer.value}
@@ -358,10 +359,11 @@ export function OneAnswerRePinnable({
               : "text-inherit"
           }
         >
-          {RegExp("^https://").test(answer.value) ? (
+          {/* Adding a source is currently only available on customized criteria. */}
+          {answer.source ? (
             <>
               <PageLinkDivless
-                href={answer.value}
+                href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
               >
                 {answer.value}
@@ -434,10 +436,11 @@ export function OneAnswerPinnable({
               : "text-inherit"
           }
         >
-          {RegExp("^https://").test(answer.value) ? (
+          {/* Adding a source is currently only available on customized criteria. */}
+          {answer.source ? (
             <>
               <PageLinkDivless
-                href={answer.value}
+                href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
               >
                 {answer.value}
@@ -515,10 +518,11 @@ export function OneAnswerPinnablePseudoable({
             <ButtonPinnableForm answer={answer} />
           )}
         <p>
-          {RegExp("^https://").test(answer.value) ? (
+          {/* Adding a source is currently only available on customized criteria. */}
+          {answer.source ? (
             <>
               <PageLinkDivless
-                href={answer.value}
+                href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
               >
                 {answer.value}
@@ -701,10 +705,11 @@ export function OneAnswerPinnableByFriend({
           <ButtonPinnableByFriendForm answer={answer} contact={contact} />
         )}
         <p>
-          {RegExp("^https://").test(answer.value) ? (
+          {/* Adding a source is currently only available on customized criteria. */}
+          {answer.source ? (
             <>
               <PageLinkDivless
-                href={answer.value}
+                href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
               >
                 {answer.value}

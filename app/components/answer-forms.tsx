@@ -213,16 +213,18 @@ export function AnswerInput({
   id,
   name,
   placeholder,
+  specifiedType,
 }: {
   id: string;
   name: string;
   placeholder: string;
+  specifiedType?: string;
 }) {
   return (
     <>
       <input
         className="mt-4 w-[32ch] max-w-[50ch] placeholder:truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:!text-white disabled:placeholder:!text-gray-400 sm:w-[40ch]"
-        type="text"
+        type={specifiedType ? specifiedType : "text"}
         id={id}
         name={name}
         placeholder={placeholder}
@@ -235,6 +237,7 @@ type CreateCustomizedAnswerByHand = JsonifyObject<{
   errors?: {
     questionInitialName?: string[];
     answerInitialValue?: string[];
+    answerSource?: string[];
   };
   message: string;
 }>;
@@ -271,9 +274,6 @@ export function PseudonativeNotIrlAnswerForm({
               Create then answer a pseudonative question below
             </p>
           </label>
-          <label htmlFor="pseudonative-not-irl-answer" className="sr-only">
-            Answer a pseudonative question below
-          </label>
           <AnswerInput
             id="pseudonative-not-irl-question"
             name="pseudonativenotirlquestion"
@@ -288,6 +288,9 @@ export function PseudonativeNotIrlAnswerForm({
               ))}
             </div>
           ) : null}
+          <label htmlFor="pseudonative-not-irl-answer" className="sr-only">
+            Answer a pseudonative question below
+          </label>
           <AnswerInput
             id="pseudonative-not-irl-answer"
             name="pseudonativenotirlanswer"
@@ -296,6 +299,25 @@ export function PseudonativeNotIrlAnswerForm({
           {fetcher.data?.errors?.answerInitialValue ? (
             <div id="pseudonative-not-irl-answer-error" aria-live="polite">
               {fetcher.data.errors.answerInitialValue.map((error) => (
+                <p className="mt-2 text-red-500 font-light" key={error}>
+                  {error}
+                </p>
+              ))}
+            </div>
+          ) : null}
+          <label htmlFor="pseudonative-not-irl-answer" className="sr-only">
+            Add an optional URL source
+          </label>
+          <AnswerInput
+            id="pseudonative-not-irl-source"
+            name="pseudonativenotirlsource"
+            placeholder="Add an optional URL source"
+            // specifiedType="url"
+            // correct but I prefer formatting my own validations
+          />
+          {fetcher.data?.errors?.answerSource ? (
+            <div id="pseudonative-not-irlsource-error" aria-live="polite">
+              {fetcher.data.errors.answerSource.map((error) => (
                 <p className="mt-2 text-red-500 font-light" key={error}>
                   {error}
                 </p>

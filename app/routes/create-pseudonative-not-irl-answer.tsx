@@ -1,9 +1,13 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 
-import { createCustomizedQuestionUserQuestionAnswerByNameValueUserIdAndKind } from "~/librairies/changes/questions";
+import {
+  createCustomizedQuestionUserQuestionAnswerByNameValueUserIdAndKind,
+  createSourcedCustomizedQuestionUserQuestionAnswerByNameValueUserIdAndKind,
+} from "~/librairies/changes/questions";
 import {
   deleteUserQuestionAtUserIdAndQuestionId,
+  upsertSourcedUserQuestionAndAnswerByUserIdQuestionIdValueAndKind,
   upsertUserQuestionAndAnswerByUserIdQuestionIdValueAndKind,
 } from "~/librairies/changes/userquestions";
 import { updateUserStatusPersonalInfoById } from "~/librairies/changes/users";
@@ -28,10 +32,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const form = await request.formData();
   const pseudonativeNotIrlQuestionName = form.get("pseudonativenotirlquestion");
   const pseudonativeNotIrlAnswerValue = form.get("pseudonativenotirlanswer");
+  const pseudonativeNotIrlAnswerSource = form.get("pseudonativenotirlsource");
+  console.log(pseudonativeNotIrlAnswerValue);
+  console.log(pseudonativeNotIrlAnswerSource);
 
   const validatedFields = CreateCustomizedAnswerSchema.safeParse({
     questionInitialName: pseudonativeNotIrlQuestionName,
     answerInitialValue: pseudonativeNotIrlAnswerValue,
+    answerSource: pseudonativeNotIrlAnswerSource,
   });
 
   if (!validatedFields.success) {
@@ -44,17 +52,28 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     );
   }
 
-  const { questionInitialName, answerInitialValue } = validatedFields.data;
+  const { questionInitialName, answerInitialValue, answerSource } =
+    validatedFields.data;
 
   const question = await findPseudoQuestionByName(questionInitialName);
 
   if (!question) {
-    await createCustomizedQuestionUserQuestionAnswerByNameValueUserIdAndKind(
-      questionInitialName,
-      answerInitialValue,
-      verifiedUser.id,
-      "PSEUDONATIVE"
-    );
+    if (answerSource === "" || answerSource === undefined) {
+      await createCustomizedQuestionUserQuestionAnswerByNameValueUserIdAndKind(
+        questionInitialName,
+        answerInitialValue,
+        verifiedUser.id,
+        "PSEUDONATIVE"
+      );
+    } else {
+      await createSourcedCustomizedQuestionUserQuestionAnswerByNameValueUserIdAndKind(
+        answerSource,
+        questionInitialName,
+        answerInitialValue,
+        verifiedUser.id,
+        "PSEUDONATIVE"
+      );
+    }
 
     await updateUserStatusPersonalInfoById(
       verifiedUser.id,
@@ -124,12 +143,22 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
   // And now that I know for sure any incorrect userQuestion at userId and questionId is deleted if it existed, that's when I can create or update the new userQuestion and answer I initially intended to simply create.
 
-  await upsertUserQuestionAndAnswerByUserIdQuestionIdValueAndKind(
-    verifiedUser.id,
-    question.id,
-    answerInitialValue,
-    "PSEUDONATIVE"
-  );
+  if (answerSource === "" || answerSource === undefined) {
+    await upsertUserQuestionAndAnswerByUserIdQuestionIdValueAndKind(
+      verifiedUser.id,
+      question.id,
+      answerInitialValue,
+      "PSEUDONATIVE"
+    );
+  } else {
+    await upsertSourcedUserQuestionAndAnswerByUserIdQuestionIdValueAndKind(
+      answerSource,
+      verifiedUser.id,
+      question.id,
+      answerInitialValue,
+      "PSEUDONATIVE"
+    );
+  }
 
   if (
     userQuestion &&

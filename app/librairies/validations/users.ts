@@ -17,6 +17,9 @@ const USER_STATUS_DASHBOARD = [
   "NOWDEACTIVATED",
   "NOWREACTIVATED",
   "REDIRECTEDTODASHBOARD",
+  "CRITERIAPINNEDFORSELF",
+  "CRITERIAUNPINNEDFORSELF",
+  "CRITERIAREPINNEDFORSELF",
 ] as const;
 
 const USER_STATUS_PERSONAL_INFO = [
@@ -41,15 +44,6 @@ const USER_STATUS_PERSONAL_INFO = [
   "USERQUESTIONFRIENDSHARED",
   "USERQUESTIONFRIENDUNSHARED",
   "REDIRECTEDTOPERSONALINFO",
-] as const;
-
-const CONTACT_RELCOMBO = [
-  "none",
-  "friend",
-  "irl",
-  "i-am-blocking",
-  "has-me-blocked",
-  "blocking-blocked",
 ] as const;
 
 const UserSchema = z.object({

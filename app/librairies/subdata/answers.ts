@@ -30,6 +30,7 @@ export type UnionAnswerType =
 export type GlobalAnswerTypeByHand = {
   id: string;
   value: string;
+  source?: string;
   userQuestion: {
     id: string;
     state?: string;
@@ -108,6 +109,7 @@ export const selectUserPinnedForSelfAnswers = {
     },
   },
   value: true,
+  source: true,
   id: true,
   user: {
     select: {
@@ -166,6 +168,7 @@ export const selectUserPinnedAnswers = {
     },
   },
   value: true,
+  source: true,
   id: true,
   user: {
     select: {
@@ -216,6 +219,7 @@ export const selectUserNativeAnswers = {
     },
   },
   value: true,
+  source: true,
   id: true,
   user: {
     select: {
@@ -264,6 +268,7 @@ export const selectUserPseudonativeAnswers = {
     },
   },
   value: true,
+  source: true,
   id: true,
   user: {
     select: {
@@ -323,6 +328,7 @@ export const selectUserCustomAnswers = {
     },
   },
   value: true,
+  source: true,
   id: true,
   user: {
     select: {
@@ -379,6 +385,7 @@ export const selectUserCustomAnswer = {
     },
   },
   value: true,
+  source: true,
   id: true,
   user: {
     select: {
@@ -425,6 +432,7 @@ export const selectAnswers = {
     },
   },
   value: true,
+  source: true,
   id: true,
   user: {
     select: {

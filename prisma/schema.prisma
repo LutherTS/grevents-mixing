@@ -99,11 +99,11 @@ model UserQuestion {
   state                String       @default("NONE")
   kind                 String       @default("NONE")
   isPinned             Boolean      @default(false)
-  isPinnedForSelf      Boolean      @default(false) // NEW
+  isPinnedForSelf      Boolean      @default(false)
   createdAt            DateTime     @default(now())
   updatedAt            DateTime     @updatedAt @default(now())
   pinnedAt             DateTime?
-  pinnedForSelfAt      DateTime? // NEW
+  pinnedForSelfAt      DateTime?
   upToIrlAt            DateTime?
   downFromIrlAt        DateTime?
 
@@ -141,6 +141,7 @@ model Answer {
   id                   String       @id @default(uuid())
   state                String       @default("NONE")
   value                String
+  source               String? // NEW
   createdAt            DateTime     @default(now())
   updatedAt            DateTime     @updatedAt @default(now())
 

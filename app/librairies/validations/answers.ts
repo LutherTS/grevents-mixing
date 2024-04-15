@@ -6,6 +6,16 @@ const AnswerSchema = z.object({
   answerId: z.string().uuid(),
   answerState: z.enum(ANSWER_STATE),
   answerValue: z.string().min(1).max(200),
+  answerSource: z
+    .string({
+      invalid_type_error: "Please type a URL if you choose to do so.",
+    })
+    .url({
+      message: "Your source needs to be a URL.",
+    })
+    .optional()
+    .or(z.literal("")),
+  // https://github.com/colinhacks/zod/issues/310#issuecomment-794533682
   answerCreatedAt: z.string().datetime(),
   answerUpdatedAt: z.string().datetime(),
   userQuestionId: z.string().uuid(),
@@ -52,6 +62,7 @@ export const CreateStandardizedAnswerSchema = AnswerSchema.pick({
 export const CreateCustomizedAnswerSchema = AnswerSchema.pick({
   questionInitialName: true,
   answerInitialValue: true,
+  answerSource: true,
 });
 
 export const ModifyAnswerSchema = AnswerSchema.pick({
