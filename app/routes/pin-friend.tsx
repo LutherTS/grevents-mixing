@@ -31,9 +31,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const relCombo = defineContactRelCombo(contact);
 
-  console.log(contact.mirror.userFirst.id);
-  console.log(contact.id);
-
   if (relCombo === "friend" || relCombo === "irl") {
     await updatePinFriendbyUserIdAndContactId(
       contact.mirror.userFirst.id,
