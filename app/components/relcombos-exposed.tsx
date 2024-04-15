@@ -231,6 +231,7 @@ function DeclineFriendForm({
 }
 
 export function RelationCombinationUserFriendExposed({
+  pathname,
   contact,
   userQuestionFriendsAnswersPinnedByFriend,
   pinnedNotIrlAnswersExposed,
@@ -239,6 +240,7 @@ export function RelationCombinationUserFriendExposed({
   unpinnedSharedToContactCustomAnswersExposed,
   answersPinnedbyFriendAnswersCount,
 }: {
+  pathname: string;
   contact: Prisma.ContactGetPayload<{
     select: typeof selectContacts;
   }>;
@@ -265,6 +267,7 @@ export function RelationCombinationUserFriendExposed({
       {/* pt-2 as makeshift styling */}
       <div className="pt-2">
         <ManyUserQuestionFriendsPinned
+          pathname={pathname}
           userQuestionFriendsAnswers={userQuestionFriendsAnswersPinnedByFriend}
           label="Find their pinned by you for friend criteria below"
           notLabel="No pinned by you criteria yet."
@@ -514,6 +517,7 @@ function PinFriendForm({
 }
 
 export function RelationCombinationUserIrlExposed({
+  pathname,
   contact,
   userQuestionFriendsAnswersPinnedByFriend,
   pinnedNotAndIrlAnswersExposed,
@@ -524,6 +528,7 @@ export function RelationCombinationUserIrlExposed({
   unpinnedSharedToContactCustomAnswersExposed,
   answersPinnedbyFriendAnswersCount,
 }: {
+  pathname: string;
   contact: Prisma.ContactGetPayload<{
     select: typeof selectContacts;
   }>;
@@ -556,6 +561,7 @@ export function RelationCombinationUserIrlExposed({
       {/* pt-2 as makeshift styling */}
       <div className="pt-2">
         <ManyUserQuestionFriendsPinned
+          pathname={pathname}
           userQuestionFriendsAnswers={userQuestionFriendsAnswersPinnedByFriend}
           label="Find their pinned by you for irl criteria below"
           notLabel="No pinned by you criteria yet."

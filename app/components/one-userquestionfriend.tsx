@@ -75,8 +75,10 @@ export function ButtonCancelShareUserQuestionFriendForm({
 }
 
 export function OneUserQuestionFriendUnpinnable({
+  pathname,
   userQuestionFriend,
 }: {
+  pathname: string;
   userQuestionFriend: Prisma.UserQuestionFriendGetPayload<{
     select: typeof selectUserQuestionFriendsAnswers;
   }>;
@@ -134,10 +136,12 @@ export function OneUserQuestionFriendUnpinnable({
         </p>
         <div className="mt-2 flex justify-center">
           <ButtonUnpinnableByFriendForm
+            pathname={pathname}
             userQuestionFriend={userQuestionFriend}
           />
           <p>{userQuestionFriend.userQuestion.answer?.value}</p>
           <ButtonRePinnableByFriendForm
+            pathname={pathname}
             userQuestionFriend={userQuestionFriend}
           />
         </div>
@@ -147,8 +151,10 @@ export function OneUserQuestionFriendUnpinnable({
 }
 
 function ButtonUnpinnableByFriendForm({
+  pathname,
   userQuestionFriend,
 }: {
+  pathname: string;
   userQuestionFriend: Prisma.UserQuestionFriendGetPayload<{
     select: typeof selectUserQuestionFriendsAnswers;
   }>;
@@ -162,6 +168,7 @@ function ButtonUnpinnableByFriendForm({
         method="post"
         className="me-2 flex items-center"
       >
+        <input type="hidden" name="pathname" value={pathname} />
         <input
           type="hidden"
           name="userquestionfriendid"
@@ -177,8 +184,10 @@ function ButtonUnpinnableByFriendForm({
 }
 
 function ButtonRePinnableByFriendForm({
+  pathname,
   userQuestionFriend,
 }: {
+  pathname: string;
   userQuestionFriend: Prisma.UserQuestionFriendGetPayload<{
     select: typeof selectUserQuestionFriendsAnswers;
   }>;
@@ -192,6 +201,7 @@ function ButtonRePinnableByFriendForm({
         method="post"
         className="ms-2 flex items-center"
       >
+        <input type="hidden" name="pathname" value={pathname} />
         <input
           type="hidden"
           name="userquestionfriendid"

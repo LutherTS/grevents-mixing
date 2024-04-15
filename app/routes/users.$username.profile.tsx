@@ -50,6 +50,7 @@ import { defineContactRelCombo } from "~/utilities/contacts";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 type ProfileLoaderByHand = {
+  pathname: string;
   verifiedUser: Prisma.UserGetPayload<{
     select: typeof selectVerifiedUser;
   }>;
@@ -89,6 +90,10 @@ type ProfileLoaderByHand = {
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   invariant(params.username, "Expected params.username");
+
+  const url = new URL(request.url);
+  const pathname = url.pathname;
+  console.log(pathname);
 
   const verifiedUser = await getVerifiedUser(request);
   if (!verifiedUser) {
@@ -167,6 +172,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       ),
     ]);
     return json({
+      pathname,
       verifiedUser,
       user,
       userToVerifiedUserContact,
@@ -223,6 +229,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       ),
     ]);
     return json({
+      pathname,
       verifiedUser,
       user,
       userToVerifiedUserContact,
@@ -238,6 +245,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     });
   } else {
     return json({
+      pathname,
       verifiedUser,
       user,
       userToVerifiedUserContact,
@@ -357,6 +365,7 @@ export default function ProfilePage() {
                         "number" && (
                         <>
                           <RelationCombinationUserFriendExposed
+                            pathname={data.pathname}
                             contact={data.userToVerifiedUserContact}
                             userQuestionFriendsAnswersPinnedByFriend={
                               data.userQuestionFriendsAnswersPinnedByFriend
@@ -392,6 +401,7 @@ export default function ProfilePage() {
                         "number" && (
                         <>
                           <RelationCombinationUserIrlExposed
+                            pathname={data.pathname}
                             contact={data.userToVerifiedUserContact}
                             userQuestionFriendsAnswersPinnedByFriend={
                               data.userQuestionFriendsAnswersPinnedByFriend

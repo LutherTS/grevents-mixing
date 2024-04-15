@@ -111,10 +111,12 @@ function ManyPaginatedUserQuestionFriendsShared({
 }
 
 export function ManyUserQuestionFriendsPinned({
+  pathname,
   userQuestionFriendsAnswers,
   label,
   notLabel,
 }: {
+  pathname: string;
   userQuestionFriendsAnswers: Prisma.UserQuestionFriendGetPayload<{
     select: typeof selectUserQuestionFriendsAnswers;
   }>[];
@@ -134,6 +136,7 @@ export function ManyUserQuestionFriendsPinned({
                     return (
                       <li key={answer.id}>
                         <OneUserQuestionFriendUnpinnable
+                          pathname={pathname}
                           userQuestionFriend={answer}
                         />
                       </li>
@@ -143,6 +146,7 @@ export function ManyUserQuestionFriendsPinned({
               </>
             ) : (
               <ManyPaginatedUserQuestionFriendsPinned
+                pathname={pathname}
                 userQuestionFriendsAnswers={userQuestionFriendsAnswers}
               />
             )}
@@ -159,8 +163,10 @@ export function ManyUserQuestionFriendsPinned({
 }
 
 function ManyPaginatedUserQuestionFriendsPinned({
+  pathname,
   userQuestionFriendsAnswers,
 }: {
+  pathname: string;
   userQuestionFriendsAnswers: Prisma.UserQuestionFriendGetPayload<{
     select: typeof selectUserQuestionFriendsAnswers;
   }>[];
@@ -187,7 +193,10 @@ function ManyPaginatedUserQuestionFriendsPinned({
           {chunkedUserQuestionFriendsAnswers[position].map((answer) => {
             return (
               <li key={answer.id}>
-                <OneUserQuestionFriendUnpinnable userQuestionFriend={answer} />
+                <OneUserQuestionFriendUnpinnable
+                  pathname={pathname}
+                  userQuestionFriend={answer}
+                />
               </li>
             );
           })}
