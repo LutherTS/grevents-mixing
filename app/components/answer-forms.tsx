@@ -305,7 +305,7 @@ export function PseudonativeNotIrlAnswerForm({
               ))}
             </div>
           ) : null}
-          <label htmlFor="pseudonative-not-irl-answer" className="sr-only">
+          <label htmlFor="pseudonative-not-irl-source" className="sr-only">
             Add an optional URL source
           </label>
           <AnswerInput
@@ -316,7 +316,7 @@ export function PseudonativeNotIrlAnswerForm({
             // correct but I prefer formatting my own validations
           />
           {fetcher.data?.errors?.answerSource ? (
-            <div id="pseudonative-not-irlsource-error" aria-live="polite">
+            <div id="pseudonative-not-irl-source-error" aria-live="polite">
               {fetcher.data.errors.answerSource.map((error) => (
                 <p className="mt-2 text-red-500 font-light" key={error}>
                   {error}
@@ -371,9 +371,6 @@ export function PseudonativeIrlAnswerForm({
               Create then answer a pseudonative irl question below
             </p>
           </label>
-          <label htmlFor="pseudonative-irl-answer" className="sr-only">
-            Answer a pseudonative irl question below
-          </label>
           <AnswerInput
             id="pseudonative-irl-question"
             name="pseudonativeirlquestion"
@@ -388,6 +385,9 @@ export function PseudonativeIrlAnswerForm({
               ))}
             </div>
           ) : null}
+          <label htmlFor="pseudonative-irl-answer" className="sr-only">
+            Answer a pseudonative irl question below
+          </label>
           <AnswerInput
             id="pseudonative-irl-answer"
             name="pseudonativeirlanswer"
@@ -396,6 +396,23 @@ export function PseudonativeIrlAnswerForm({
           {fetcher.data?.errors?.answerInitialValue ? (
             <div id="pseudonative-irl-answer-error" aria-live="polite">
               {fetcher.data.errors.answerInitialValue.map((error) => (
+                <p className="mt-2 text-red-500 font-light" key={error}>
+                  {error}
+                </p>
+              ))}
+            </div>
+          ) : null}
+          <label htmlFor="pseudonative-irl-source" className="sr-only">
+            Add an optional URL source
+          </label>
+          <AnswerInput
+            id="pseudonative-irl-source"
+            name="pseudonativeirlsource"
+            placeholder="Add an optional URL source"
+          />
+          {fetcher.data?.errors?.answerSource ? (
+            <div id="pseudonative-irl-source-error" aria-live="polite">
+              {fetcher.data.errors.answerSource.map((error) => (
                 <p className="mt-2 text-red-500 font-light" key={error}>
                   {error}
                 </p>
@@ -445,9 +462,6 @@ export function CustomAnswerForm({ answerCount }: { answerCount: number }) {
               Create then answer a custom question below
             </p>
           </label>
-          <label htmlFor="custom-answer" className="sr-only">
-            Answer a custom question below
-          </label>
           <AnswerInput
             id="custom-question"
             name="customquestion"
@@ -462,6 +476,9 @@ export function CustomAnswerForm({ answerCount }: { answerCount: number }) {
               ))}
             </div>
           ) : null}
+          <label htmlFor="custom-answer" className="sr-only">
+            Answer a custom question below
+          </label>
           <AnswerInput
             id="custom-answer"
             name="customanswer"
@@ -470,6 +487,23 @@ export function CustomAnswerForm({ answerCount }: { answerCount: number }) {
           {fetcher.data?.errors?.answerInitialValue ? (
             <div id="custom-answer-error" aria-live="polite">
               {fetcher.data.errors.answerInitialValue.map((error) => (
+                <p className="mt-2 text-red-500 font-light" key={error}>
+                  {error}
+                </p>
+              ))}
+            </div>
+          ) : null}
+          <label htmlFor="custom-source" className="sr-only">
+            Add an optional URL source
+          </label>
+          <AnswerInput
+            id="custom-source"
+            name="customsource"
+            placeholder="Add an optional URL source"
+          />
+          {fetcher.data?.errors?.answerSource ? (
+            <div id="custom-source-error" aria-live="polite">
+              {fetcher.data.errors.answerSource.map((error) => (
                 <p className="mt-2 text-red-500 font-light" key={error}>
                   {error}
                 </p>

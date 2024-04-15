@@ -33,8 +33,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const pseudonativeNotIrlQuestionName = form.get("pseudonativenotirlquestion");
   const pseudonativeNotIrlAnswerValue = form.get("pseudonativenotirlanswer");
   const pseudonativeNotIrlAnswerSource = form.get("pseudonativenotirlsource");
-  console.log(pseudonativeNotIrlAnswerValue);
-  console.log(pseudonativeNotIrlAnswerSource);
 
   const validatedFields = CreateCustomizedAnswerSchema.safeParse({
     questionInitialName: pseudonativeNotIrlQuestionName,
