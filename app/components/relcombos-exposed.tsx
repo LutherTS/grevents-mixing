@@ -231,6 +231,7 @@ function DeclineFriendForm({
 }
 
 export function RelationCombinationUserFriendExposed({
+  pathname,
   contact,
   userQuestionFriendsAnswersPinnedByFriend,
   pinnedNotIrlAnswersExposed,
@@ -239,6 +240,7 @@ export function RelationCombinationUserFriendExposed({
   unpinnedSharedToContactCustomAnswersExposed,
   answersPinnedbyFriendAnswersCount,
 }: {
+  pathname: string;
   contact: Prisma.ContactGetPayload<{
     select: typeof selectContacts;
   }>;
@@ -261,9 +263,11 @@ export function RelationCombinationUserFriendExposed({
 }) {
   return (
     <>
+      <PinFriendForm contact={contact} />
       {/* pt-2 as makeshift styling */}
       <div className="pt-2">
         <ManyUserQuestionFriendsPinned
+          pathname={pathname}
           userQuestionFriendsAnswers={userQuestionFriendsAnswersPinnedByFriend}
           label="Find their pinned by you for friend criteria below"
           notLabel="No pinned by you criteria yet."
@@ -489,7 +493,31 @@ function DeclineIrlForm({
   );
 }
 
+function PinFriendForm({
+  contact,
+}: {
+  contact: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+}) {
+  return (
+    <>
+      {contact.mirror?.userFirst.pinnedFriendId !== contact.id ? (
+        <ProfileForm contact={contact} action="/pin-friend">
+          Pin {contact.userFirst.appWideName}&apos;s profile on your dashboard
+        </ProfileForm>
+      ) : (
+        <ProfileForm contact={contact} action="/unpin-friend">
+          Unpin {contact.userFirst.appWideName}&apos;s profile from your
+          dashboard
+        </ProfileForm>
+      )}
+    </>
+  );
+}
+
 export function RelationCombinationUserIrlExposed({
+  pathname,
   contact,
   userQuestionFriendsAnswersPinnedByFriend,
   pinnedNotAndIrlAnswersExposed,
@@ -500,6 +528,7 @@ export function RelationCombinationUserIrlExposed({
   unpinnedSharedToContactCustomAnswersExposed,
   answersPinnedbyFriendAnswersCount,
 }: {
+  pathname: string;
   contact: Prisma.ContactGetPayload<{
     select: typeof selectContacts;
   }>;
@@ -528,9 +557,11 @@ export function RelationCombinationUserIrlExposed({
 }) {
   return (
     <>
+      <PinFriendForm contact={contact} />
       {/* pt-2 as makeshift styling */}
       <div className="pt-2">
         <ManyUserQuestionFriendsPinned
+          pathname={pathname}
           userQuestionFriendsAnswers={userQuestionFriendsAnswersPinnedByFriend}
           label="Find their pinned by you for irl criteria below"
           notLabel="No pinned by you criteria yet."

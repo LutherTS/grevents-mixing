@@ -14,6 +14,7 @@ export const selectUser = {
   username: true,
   appWideName: true,
   friendCode: true,
+  pinnedFriendId: true,
 } satisfies Prisma.UserSelect;
 
 export const selectSignInUser = {

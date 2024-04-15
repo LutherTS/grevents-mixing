@@ -41,3 +41,49 @@ export function updateUserQuestionAndAnswer(
     },
   };
 }
+
+export function createSourcedUserQuestionAndAnswer(
+  source: string, // the only property added
+  userId: string,
+  questionId: string,
+  value: string,
+  kind?: string
+): Prisma.UserQuestionUncheckedCreateInput {
+  return {
+    userId,
+    questionId,
+    state: "LIVE",
+    kind: kind ? kind : "NONE",
+    answer: {
+      create: {
+        value,
+        source, // the only property added
+        state: "LIVE",
+        userId,
+      },
+    },
+  };
+}
+
+export function updateSourcedUserQuestionAndAnswer(
+  source: string, // the only property added
+  userId: string,
+  questionId: string,
+  value: string,
+  kind?: string
+): Prisma.UserQuestionUncheckedUpdateInput {
+  return {
+    userId,
+    questionId,
+    state: "LIVE",
+    kind: kind ? kind : "NONE",
+    answer: {
+      update: {
+        value,
+        source, // the only property added
+        state: "LIVE",
+        userId,
+      },
+    },
+  };
+}

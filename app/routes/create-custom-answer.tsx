@@ -1,9 +1,13 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 
-import { createCustomizedQuestionUserQuestionAnswerByNameValueUserIdAndKind } from "~/librairies/changes/questions";
+import {
+  createCustomizedQuestionUserQuestionAnswerByNameValueUserIdAndKind,
+  createSourcedCustomizedQuestionUserQuestionAnswerByNameValueUserIdAndKind,
+} from "~/librairies/changes/questions";
 import {
   deleteUserQuestionAtUserIdAndQuestionId,
+  upsertSourcedUserQuestionAndAnswerByUserIdQuestionIdValueAndKind,
   upsertUserQuestionAndAnswerByUserIdQuestionIdValueAndKind,
 } from "~/librairies/changes/userquestions";
 import { updateUserStatusPersonalInfoById } from "~/librairies/changes/users";
@@ -29,10 +33,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const form = await request.formData();
   const customQuestionName = form.get("customquestion");
   const customAnswerValue = form.get("customanswer");
+  const customAnswerSource = form.get("customsource");
 
   const validatedFields = CreateCustomizedAnswerSchema.safeParse({
     questionInitialName: customQuestionName,
     answerInitialValue: customAnswerValue,
+    answerSource: customAnswerSource,
   });
 
   if (!validatedFields.success) {
@@ -45,16 +51,26 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     );
   }
 
-  const { questionInitialName, answerInitialValue } = validatedFields.data;
+  const { questionInitialName, answerInitialValue, answerSource } =
+    validatedFields.data;
 
   const question = await findCustomQuestionByName(questionInitialName);
 
   if (!question) {
-    await createCustomizedQuestionUserQuestionAnswerByNameValueUserIdAndKind(
-      questionInitialName,
-      answerInitialValue,
-      verifiedUser.id
-    );
+    if (answerSource === "" || answerSource === undefined) {
+      await createCustomizedQuestionUserQuestionAnswerByNameValueUserIdAndKind(
+        questionInitialName,
+        answerInitialValue,
+        verifiedUser.id
+      );
+    } else {
+      await createSourcedCustomizedQuestionUserQuestionAnswerByNameValueUserIdAndKind(
+        answerSource,
+        questionInitialName,
+        answerInitialValue,
+        verifiedUser.id
+      );
+    }
 
     await updateUserStatusPersonalInfoById(
       verifiedUser.id,
@@ -110,11 +126,20 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
   // And now that I know for sure any incorrect userQuestion at userId and questionId is deleted if it existed, that's when I can create or update the new userQuestion and answer I initially intended to simply create.
 
-  await upsertUserQuestionAndAnswerByUserIdQuestionIdValueAndKind(
-    verifiedUser.id,
-    question.id,
-    answerInitialValue
-  );
+  if (answerSource === "" || answerSource === undefined) {
+    await upsertUserQuestionAndAnswerByUserIdQuestionIdValueAndKind(
+      verifiedUser.id,
+      question.id,
+      answerInitialValue
+    );
+  } else {
+    await upsertSourcedUserQuestionAndAnswerByUserIdQuestionIdValueAndKind(
+      answerSource,
+      verifiedUser.id,
+      question.id,
+      answerInitialValue
+    );
+  }
 
   if (
     userQuestion &&

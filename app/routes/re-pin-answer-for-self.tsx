@@ -3,7 +3,7 @@ import { redirect } from "@remix-run/node";
 
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 import { findAnswerByIdAndUserId } from "~/librairies/data/answers";
-import { rePinAnswerUserQuestionByIdAndUserId } from "~/librairies/changes/answers";
+import { rePinForSelfAnswerUserQuestionByIdAndUserId } from "~/librairies/changes/answers";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const verifiedUser = await getVerifiedUser(request);
@@ -25,7 +25,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null;
   }
 
-  await rePinAnswerUserQuestionByIdAndUserId(answer.id, verifiedUser.id);
+  await rePinForSelfAnswerUserQuestionByIdAndUserId(answer.id, verifiedUser.id);
 
   return null;
 };

@@ -9,11 +9,13 @@ import {
   GlobalAnswerTypeByHand,
   PINNED_BY_USER_ANSWERS_LIMIT,
   DEFAULT_ANSWERS_LIMIT,
+  PINNED_FOR_SELF_ANSWERS_LIMIT,
 } from "~/librairies/subdata/answers";
 import { PINNED_BY_FRIEND_ANSWERS_LIMIT } from "~/librairies/subdata/userquestionfriends";
 import { selectContacts } from "~/librairies/subdata/contacts";
 
 export type SelectContext =
+  | "Dashboard"
   | "PersonalInfo"
   | "PersonalInfoCustomized"
   | "UserCriteria"
@@ -23,6 +25,7 @@ export type SelectContext =
 
 export type AnswerComponentRequired =
   | "OneAnswer"
+  | "OneAnswerRePinnableForSelf"
   | "OneAnswerRePinnable"
   | "OneAnswerPinnable"
   | "OneAnswerPinnablePseudoable"
@@ -32,6 +35,7 @@ export type AnswerComponentRequired =
 export function OneCriteria({
   answer,
   selectContext,
+  pinnedAnswersForSelfCount,
   pinnedAnswersCount,
   otherPseudonativeAnswersCount,
   answerComponentRequired,
@@ -40,6 +44,7 @@ export function OneCriteria({
 }: {
   answer: GlobalAnswerTypeByHand;
   selectContext?: SelectContext;
+  pinnedAnswersForSelfCount?: number;
   pinnedAnswersCount?: number;
   otherPseudonativeAnswersCount?: number;
   answerComponentRequired: AnswerComponentRequired;
@@ -55,21 +60,28 @@ export function OneCriteria({
         {answerComponentRequired === "OneAnswer" && (
           <OneAnswer answer={answer} />
         )}
+        {answerComponentRequired === "OneAnswerRePinnableForSelf" && (
+          <OneAnswerRePinnableForSelf answer={answer} />
+        )}
         {answerComponentRequired === "OneAnswerRePinnable" && (
           <OneAnswerRePinnable answer={answer} />
         )}
         {answerComponentRequired === "OneAnswerPinnable" &&
+          typeof pinnedAnswersForSelfCount === "number" &&
           typeof pinnedAnswersCount === "number" && (
             <OneAnswerPinnable
               answer={answer}
+              pinnedAnswersForSelfCount={pinnedAnswersForSelfCount}
               pinnedAnswersCount={pinnedAnswersCount}
             />
           )}
         {answerComponentRequired === "OneAnswerPinnablePseudoable" &&
+          typeof pinnedAnswersForSelfCount === "number" &&
           typeof pinnedAnswersCount === "number" &&
           typeof otherPseudonativeAnswersCount === "number" && (
             <OneAnswerPinnablePseudoable
               answer={answer}
+              pinnedAnswersForSelfCount={pinnedAnswersForSelfCount}
               pinnedAnswersCount={pinnedAnswersCount}
               otherPseudonativeAnswersCount={otherPseudonativeAnswersCount}
             />
@@ -102,7 +114,7 @@ export function OneQuestion({
   // a type by hand is the only viable solution at this time
   // given variable depth and a variable number of arguments
   // https://dev.to/lucianbc/union-type-merging-in-typescript-9al
-  selectContext?: string;
+  selectContext?: SelectContext;
 }) {
   return (
     <>
@@ -113,7 +125,7 @@ export function OneQuestion({
               <span className="font-semibold">
                 {answer.userQuestion.question.name}
               </span>{" "}
-              / native
+              {/* / native */}
             </span>
           )}
         {answer.userQuestion.question.kind === "NATIVEIRL" &&
@@ -122,7 +134,7 @@ export function OneQuestion({
               <span className="font-semibold">
                 {answer.userQuestion.question.name}
               </span>{" "}
-              / native irl
+              {/* / native irl */}
             </span>
           )}
         {answer.userQuestion.question.kind === "PSEUDO" &&
@@ -131,7 +143,7 @@ export function OneQuestion({
               <span className="font-semibold">
                 {answer.userQuestion.question.name}
               </span>{" "}
-              / pseudonative
+              {/* / pseudonative */}
             </span>
           )}
         {answer.userQuestion.question.kind === "PSEUDO" &&
@@ -140,21 +152,22 @@ export function OneQuestion({
               <span className="font-semibold">
                 {answer.userQuestion.question.name}
               </span>{" "}
-              / pseudonative irl
+              {/* / pseudonative irl */}
             </span>
           )}
         {/* no link, UserQuestionFriends counted */}
         {answer.userQuestion.question.kind === "CUSTOM" &&
           answer.userQuestion.kind === "NONE" &&
           answer.userQuestion._count &&
-          (selectContext === "PersonalInfo" ||
+          (selectContext === "Dashboard" ||
+            selectContext === "PersonalInfo" ||
             selectContext === "UserCriteria" ||
             selectContext === "ModifyCriteriaCustomized") && (
             <span className="text-lime-500">
               <span className="font-semibold">
                 {answer.userQuestion.question.name}
               </span>{" "}
-              / custom{" "}
+              {/* / custom{" "} */}
               {typeof answer.userQuestion._count.userQuestionFriends ===
                 "number" &&
               answer.userQuestion._count.userQuestionFriends >= 1 ? (
@@ -173,7 +186,7 @@ export function OneQuestion({
               <span className="font-semibold">
                 {answer.userQuestion.question.name}
               </span>{" "}
-              / custom / shared to you
+              {/* / custom  */}/ shared to you
             </span>
           )}
         {/* link, UserQuestionFriends counted */}
@@ -190,7 +203,7 @@ export function OneQuestion({
                 <span className="font-semibold">
                   {answer.userQuestion.question.name}
                 </span>{" "}
-                / custom{" "}
+                {/* / custom{" "} */}
                 {typeof answer.userQuestion._count.userQuestionFriends ===
                   "number" &&
                 answer.userQuestion._count.userQuestionFriends >= 1 ? (
@@ -219,11 +232,11 @@ export function OneAnswer({ answer }: { answer: GlobalAnswerTypeByHand }) {
               : "mt-2 text-inherit"
           }
         >
-          {/* Email address, the only possible HIDDEN userQuestion so far, cannot start with https:// since it's has to abide to the email format. There is therefore no overlap. */}
-          {RegExp("^https://").test(answer.value) ? (
+          {/* Adding a source is currently only available on customized criteria. */}
+          {answer.source ? (
             <>
               <PageLinkDivless
-                href={answer.value}
+                href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
               >
                 {answer.value}
@@ -238,12 +251,103 @@ export function OneAnswer({ answer }: { answer: GlobalAnswerTypeByHand }) {
   );
 }
 
+export function OneAnswerRePinnableForSelf({
+  answer,
+}: {
+  answer: GlobalAnswerTypeByHand;
+}) {
+  return (
+    <>
+      <div className="mt-2 flex justify-center">
+        <ButtonPinnableForSelfForm answer={answer} />
+        <p
+          className={
+            answer.userQuestion.state === "HIDDEN"
+              ? "text-gray-300 dark:text-gray-700"
+              : "text-inherit"
+          }
+        >
+          {/* Adding a source is currently only available on customized criteria. */}
+          {answer.source ? (
+            <>
+              <PageLinkDivless
+                href={answer.source}
+                specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+              >
+                {answer.value}
+              </PageLinkDivless>
+            </>
+          ) : (
+            <>{answer.value}</>
+          )}
+        </p>
+        <ButtonRePinnableForSelfForm answer={answer} />
+      </div>
+    </>
+  );
+}
+
+function ButtonPinnableForSelfForm({
+  answer,
+}: {
+  answer: GlobalAnswerTypeByHand;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form
+        action="/pin-answer-for-self"
+        method="post"
+        className="me-2 flex items-center"
+      >
+        <input type="hidden" name="answerid" value={answer.id} />
+        <button
+          disabled={fetcher.state !== "idle"}
+          className={clsx(
+            "h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500",
+            {
+              "bg-sky-500 hover:bg-rose-300 dark:hover:bg-rose-700":
+                answer.userQuestion.isPinnedForSelf === true,
+              "bg-rose-500 hover:bg-sky-300 dark:hover:bg-sky-700":
+                answer.userQuestion.isPinnedForSelf === false,
+            }
+          )}
+        />
+      </fetcher.Form>
+    </>
+  );
+}
+
+function ButtonRePinnableForSelfForm({
+  answer,
+}: {
+  answer: GlobalAnswerTypeByHand;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form
+        action="/re-pin-answer-for-self"
+        method="post"
+        className="ms-2 flex items-center"
+      >
+        <input type="hidden" name="answerid" value={answer.id} />
+        <button
+          disabled={fetcher.state !== "idle"}
+          className="h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500 bg-indigo-500 hover:bg-indigo-300 dark:hover:bg-indigo-700"
+        />
+      </fetcher.Form>
+    </>
+  );
+}
+
 export function OneAnswerRePinnable({
   answer,
 }: {
   answer: GlobalAnswerTypeByHand;
 }) {
-  console.log(answer);
   return (
     <>
       <div className="mt-2 flex justify-center">
@@ -255,10 +359,11 @@ export function OneAnswerRePinnable({
               : "text-inherit"
           }
         >
-          {RegExp("^https://").test(answer.value) ? (
+          {/* Adding a source is currently only available on customized criteria. */}
+          {answer.source ? (
             <>
               <PageLinkDivless
-                href={answer.value}
+                href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
               >
                 {answer.value}
@@ -296,14 +401,25 @@ function ButtonRePinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
 
 export function OneAnswerPinnable({
   answer,
+  pinnedAnswersForSelfCount,
   pinnedAnswersCount,
 }: {
   answer: GlobalAnswerTypeByHand;
+  pinnedAnswersForSelfCount: number;
   pinnedAnswersCount: number;
 }) {
   return (
     <>
       <div className="mt-2 flex justify-center">
+        {/* If you're still allowed to pin for self */}
+        {pinnedAnswersForSelfCount < PINNED_FOR_SELF_ANSWERS_LIMIT && (
+          <ButtonPinnableForSelfForm answer={answer} />
+        )}
+        {/* If you're only allowed to unpin for self */}
+        {pinnedAnswersForSelfCount >= PINNED_FOR_SELF_ANSWERS_LIMIT &&
+          answer.userQuestion.isPinnedForSelf === true && (
+            <ButtonPinnableForSelfForm answer={answer} />
+          )}
         {/* If you're still allowed to pin */}
         {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
           <ButtonPinnableForm answer={answer} />
@@ -320,10 +436,11 @@ export function OneAnswerPinnable({
               : "text-inherit"
           }
         >
-          {RegExp("^https://").test(answer.value) ? (
+          {/* Adding a source is currently only available on customized criteria. */}
+          {answer.source ? (
             <>
               <PageLinkDivless
-                href={answer.value}
+                href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
               >
                 {answer.value}
@@ -368,16 +485,29 @@ function ButtonPinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
 
 export function OneAnswerPinnablePseudoable({
   answer,
+  pinnedAnswersForSelfCount,
   pinnedAnswersCount,
   otherPseudonativeAnswersCount,
 }: {
   answer: GlobalAnswerTypeByHand;
+  pinnedAnswersForSelfCount: number;
   pinnedAnswersCount: number;
   otherPseudonativeAnswersCount: number;
 }) {
   return (
     <>
       <div className="mt-2 flex justify-center">
+        {/* If you're still allowed to pin for self */}
+        {pinnedAnswersForSelfCount < PINNED_FOR_SELF_ANSWERS_LIMIT && (
+          <ButtonPinnableForSelfForm answer={answer} />
+        )}
+        {/* If you're only allowed to unpin for self */}
+        {pinnedAnswersForSelfCount >= PINNED_FOR_SELF_ANSWERS_LIMIT &&
+          answer.userQuestion.isPinnedForSelf === true && (
+            <ButtonPinnableForSelfForm answer={answer} />
+          )}
+        {/* If you're still allowed to pin */}
+
         {/* If you're still allowed to pin */}
         {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
           <ButtonPinnableForm answer={answer} />
@@ -388,10 +518,11 @@ export function OneAnswerPinnablePseudoable({
             <ButtonPinnableForm answer={answer} />
           )}
         <p>
-          {RegExp("^https://").test(answer.value) ? (
+          {/* Adding a source is currently only available on customized criteria. */}
+          {answer.source ? (
             <>
               <PageLinkDivless
-                href={answer.value}
+                href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
               >
                 {answer.value}
@@ -448,7 +579,14 @@ export function OneAnswerModify({
   return (
     <>
       <div className="relative mt-2 inline-flex items-center justify-center">
-        <OneAnswerModifyForm answer={answer} />
+        {(answer.userQuestion.question.kind === "NATIVE" ||
+          answer.userQuestion.question.kind === "NATIVEIRL") && (
+          <OneAnswerModifyForm answer={answer} />
+        )}
+        {(answer.userQuestion.question.kind === "PSEUDO" ||
+          answer.userQuestion.question.kind === "CUSTOM") && (
+          <OneAnswerModifySourcedForm answer={answer} />
+        )}
         <ButtonHiddableForm answer={answer} />
       </div>
     </>
@@ -490,7 +628,7 @@ function OneAnswerModifyForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
         <input type="hidden" name="answerid" value={answer.id} />
         <input
           // // ref={focusRef}
-          className="w-[32ch] max-w-[50ch] truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:!text-white disabled:placeholder:!text-gray-400 sm:w-[40ch]"
+          className="w-[32ch] max-w-[50ch] placeholder:truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:!text-white disabled:placeholder:!text-gray-400 sm:w-[40ch]"
           type="text"
           id={answer.id}
           name="answervalue"
@@ -505,6 +643,80 @@ function OneAnswerModifyForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
         {fetcher.data?.errors?.answerModifiedValue ? (
           <div id={`${answer.id}-error`} aria-live="polite">
             {fetcher.data.errors.answerModifiedValue.map((error) => (
+              <p className="mt-2 text-red-500 font-light" key={error}>
+                {error}
+              </p>
+            ))}
+          </div>
+        ) : null}
+        {fetcher.data?.message ? (
+          <div id={`${answer.id}-form-error`} aria-live="polite">
+            <p className="mt-2 text-red-500">{fetcher.data.message}</p>
+          </div>
+        ) : null}
+        {/* Currently necessary to send the full form via Enter */}
+        <button type="submit" className="hidden">
+          Submit
+        </button>
+      </fetcher.Form>
+    </>
+  );
+}
+
+type ModifyAnswerSourcedByHand = JsonifyObject<{
+  errors?: {
+    answerId?: string[];
+    answerModifiedValue?: string[];
+    answerSource?: string[];
+  };
+  message?: string;
+}>;
+
+// I'll need to DRY that up, with an input component, like AnswerModifyInput. Eventually.
+function OneAnswerModifySourcedForm({
+  answer,
+}: {
+  answer: GlobalAnswerTypeByHand;
+}) {
+  const fetcher = useFetcher<ModifyAnswerSourcedByHand>();
+
+  return (
+    <>
+      <fetcher.Form action="/modify-answer-sourced" method="post">
+        <label className="sr-only" htmlFor={answer.id}>
+          Modify answer &quot;{answer.value}&quot;
+        </label>
+        <input type="hidden" name="answerid" value={answer.id} />
+        <input
+          className="w-[32ch] max-w-[50ch] placeholder:truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:!text-white disabled:placeholder:!text-gray-400 sm:w-[40ch]"
+          type="text"
+          id={`${answer.id}-value`}
+          name="answervalue"
+          placeholder={answer.value}
+          defaultValue={answer.value}
+          disabled={fetcher.state !== "idle"}
+        />
+        {fetcher.data?.errors?.answerModifiedValue ? (
+          <div id={`${answer.id}-value-error`} aria-live="polite">
+            {fetcher.data.errors.answerModifiedValue.map((error) => (
+              <p className="mt-2 text-red-500 font-light" key={error}>
+                {error}
+              </p>
+            ))}
+          </div>
+        ) : null}
+        <input
+          className="mt-4 w-[32ch] max-w-[50ch] placeholder:truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:!text-white disabled:placeholder:!text-gray-400 sm:w-[40ch]"
+          type="text"
+          id={`${answer.id}-source`}
+          name="answersource"
+          placeholder={answer.source || "optional URL source"}
+          defaultValue={answer.source || undefined}
+          disabled={fetcher.state !== "idle"}
+        />
+        {fetcher.data?.errors?.answerSource ? (
+          <div id={`${answer.id}-source-error`} aria-live="polite">
+            {fetcher.data.errors.answerSource.map((error) => (
               <p className="mt-2 text-red-500 font-light" key={error}>
                 {error}
               </p>
@@ -574,10 +786,11 @@ export function OneAnswerPinnableByFriend({
           <ButtonPinnableByFriendForm answer={answer} contact={contact} />
         )}
         <p>
-          {RegExp("^https://").test(answer.value) ? (
+          {/* Adding a source is currently only available on customized criteria. */}
+          {answer.source ? (
             <>
               <PageLinkDivless
-                href={answer.value}
+                href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
               >
                 {answer.value}

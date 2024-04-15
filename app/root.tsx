@@ -10,15 +10,18 @@ import {
   useNavigate,
   useRouteError,
 } from "@remix-run/react";
+// import radixStyleSheet from "@radix-ui/themes/styles.css";
+// import { Theme, ThemePanel } from "@radix-ui/themes";
 
-import stylesheet from "~/tailwind.css";
+import tailwindStyleSheet from "~/tailwind.css";
 import { Main } from "./components/main";
 import { Wrapper } from "./components/wrapper";
 import { PageLink } from "./components/page-link";
 import { LinkButtonOnClick } from "./components/link-button";
 
 export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: stylesheet },
+  // { rel: "stylesheet", href: radixStyleSheet },
+  { rel: "stylesheet", href: tailwindStyleSheet },
   { rel: "stylesheet", href: "/fonts/inter/inter.css" },
 ];
 
@@ -33,8 +36,6 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-// At this point in development, I'm limiting error handling to 404 cases. Anything else, though currently caught in a common error boundary, will eventually be handled at a later time.
-// Currently working on it for deployment debugging purposes.
 export function ErrorBoundary() {
   const error = useRouteError();
   let errorMessage: string;
@@ -63,6 +64,7 @@ export function ErrorBoundary() {
           <Links />
         </head>
         <body>
+          {/* <Theme> */}
           <Main>
             <Wrapper>
               {/* Same spot as Outlet in App */}
@@ -80,6 +82,7 @@ export function ErrorBoundary() {
               </p>
             </Wrapper>
           </Main>
+          {/* </Theme> */}
           <ScrollRestoration />
           <Scripts />
           <LiveReload />
@@ -99,11 +102,14 @@ export default function App() {
         <Links />
       </head>
       <body>
+        {/* <Theme> */}
         <Main>
           <Wrapper>
             <Outlet />
           </Wrapper>
         </Main>
+        {/* <ThemePanel /> */}
+        {/* </Theme> */}
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

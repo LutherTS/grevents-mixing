@@ -18,6 +18,7 @@ import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import {
   countUserCustomAnswersByUserId,
   countUserPinnedAnswersByUserId,
+  countUserPinnedForSelfAnswersByUserId,
   countUserPseudonativeIrlAnswersByUserId,
   countUserPseudonativeNotIrlAnswersByUserId,
   findUserCustomAnswersByUserId,
@@ -28,6 +29,7 @@ import { findUserByUsername } from "~/librairies/data/users";
 import {
   DEFAULT_ANSWERS_LIMIT,
   PINNED_BY_USER_ANSWERS_LIMIT,
+  PINNED_FOR_SELF_ANSWERS_LIMIT,
 } from "~/librairies/subdata/answers";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
@@ -55,7 +57,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   }
 
   const [
-    userPinnedAnswerCount,
+    userPinnedForSelfAnswersCount,
+    userPinnedAnswersCount,
     userPseudonativeNotIrlAnswers,
     userPseudonativeNotIrlAnswersCount,
     userPseudonativeIrlAnswers,
@@ -63,6 +66,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     userCustomAnswers,
     userCustomAnswersCount,
   ] = await Promise.all([
+    countUserPinnedForSelfAnswersByUserId(user.id),
     countUserPinnedAnswersByUserId(user.id),
     findUserPseudonativeNotIrlAnswersByUserId(user.id),
     countUserPseudonativeNotIrlAnswersByUserId(user.id),
@@ -75,7 +79,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   return json({
     verifiedUser,
     user,
-    userPinnedAnswerCount,
+    userPinnedForSelfAnswersCount,
+    userPinnedAnswersCount,
     userPseudonativeNotIrlAnswers,
     userPseudonativeNotIrlAnswersCount,
     userPseudonativeIrlAnswers,
@@ -127,10 +132,16 @@ export default function PersonalInfoCustomizedPage() {
       <StatusPersonalInfoCustomizedToasts
         statusPersonalInfo={data.verifiedUser.statusPersonalInfo}
       />
-      {data.userPinnedAnswerCount >= PINNED_BY_USER_ANSWERS_LIMIT && (
+      {data.userPinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT && (
         <p className="mb-2 cursor-default text-orange-500">
           You cannot pin more than {PINNED_BY_USER_ANSWERS_LIMIT} of your own
           criteria.
+        </p>
+      )}
+      {data.userPinnedForSelfAnswersCount >= PINNED_FOR_SELF_ANSWERS_LIMIT && (
+        <p className="mb-2 cursor-default text-orange-500">
+          You cannot pin for self more than {PINNED_FOR_SELF_ANSWERS_LIMIT} of
+          your own criteria.
         </p>
       )}
       {(data.userPseudonativeNotIrlAnswersCount >= DEFAULT_ANSWERS_LIMIT ||
@@ -152,7 +163,8 @@ export default function PersonalInfoCustomizedPage() {
       <div className="space-y-4 my-4">
         <ManyCriteria
           answers={data.userPseudonativeNotIrlAnswers}
-          pinnedAnswersCount={data.userPinnedAnswerCount}
+          pinnedAnswersForSelfCount={data.userPinnedForSelfAnswersCount}
+          pinnedAnswersCount={data.userPinnedAnswersCount}
           otherPseudonativeAnswersCount={data.userPseudonativeIrlAnswersCount}
           answerComponentRequired="OneAnswerPinnablePseudoable"
           label="Find your pseudonative criteria below"
@@ -160,7 +172,8 @@ export default function PersonalInfoCustomizedPage() {
         />
         <ManyCriteria
           answers={data.userPseudonativeIrlAnswers}
-          pinnedAnswersCount={data.userPinnedAnswerCount}
+          pinnedAnswersForSelfCount={data.userPinnedForSelfAnswersCount}
+          pinnedAnswersCount={data.userPinnedAnswersCount}
           otherPseudonativeAnswersCount={
             data.userPseudonativeNotIrlAnswersCount
           }
@@ -171,7 +184,8 @@ export default function PersonalInfoCustomizedPage() {
         <ManyCriteria
           answers={data.userCustomAnswers}
           selectContext="PersonalInfoCustomized"
-          pinnedAnswersCount={data.userPinnedAnswerCount}
+          pinnedAnswersForSelfCount={data.userPinnedForSelfAnswersCount}
+          pinnedAnswersCount={data.userPinnedAnswersCount}
           answerComponentRequired="OneAnswerPinnable"
           label="Find your custom criteria below"
           notLabel="No custom criteria yet."

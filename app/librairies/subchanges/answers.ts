@@ -33,6 +33,54 @@ export function dataSignUpUserEmailAddressAnswer(
   };
 }
 
+export function dataPinForSelfAnswerUserQuestion(): Prisma.AnswerUpdateInput {
+  return {
+    userQuestion: {
+      update: {
+        isPinnedForSelf: true,
+        pinnedForSelfAt: new Date(),
+      },
+    },
+    user: {
+      update: {
+        statusDashboard: "CRITERIAPINNEDFORSELF",
+      },
+    },
+  };
+}
+
+export function dataUnpinForSelfAnswerUserQuestion(): Prisma.AnswerUpdateInput {
+  return {
+    userQuestion: {
+      update: {
+        isPinnedForSelf: false,
+        pinnedForSelfAt: null,
+      },
+    },
+    user: {
+      update: {
+        statusDashboard: "CRITERIAUNPINNEDFORSELF",
+      },
+    },
+  };
+}
+
+export function dataRePinForSelfAnswerUserQuestion(): Prisma.AnswerUpdateInput {
+  return {
+    userQuestion: {
+      update: {
+        isPinnedForSelf: true,
+        pinnedForSelfAt: new Date(),
+      },
+    },
+    user: {
+      update: {
+        statusDashboard: "CRITERIAREPINNEDFORSELF",
+      },
+    },
+  };
+}
+
 export function dataPinAnswerUserQuestion(): Prisma.AnswerUpdateInput {
   return {
     userQuestion: {
@@ -223,10 +271,12 @@ export function dataRevealAnswerUserQuestion(): Prisma.AnswerUpdateInput {
 
 export function dataUpdateAnswerValueStatusPersonalInfo(
   value: string,
-  statusPersonalInfo: string
+  statusPersonalInfo: string,
+  source?: string
 ): Prisma.AnswerUpdateInput {
   return {
     value,
+    source: source ? source : null,
     user: {
       update: {
         statusPersonalInfo,

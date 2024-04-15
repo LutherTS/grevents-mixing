@@ -14,6 +14,7 @@ import { selectContacts } from "~/librairies/subdata/contacts";
 export function ManyCriteria({
   answers,
   selectContext,
+  pinnedAnswersForSelfCount,
   pinnedAnswersCount,
   otherPseudonativeAnswersCount,
   answerComponentRequired,
@@ -24,6 +25,7 @@ export function ManyCriteria({
 }: {
   answers: UnionAnswerType;
   selectContext?: SelectContext;
+  pinnedAnswersForSelfCount?: number;
   pinnedAnswersCount?: number;
   otherPseudonativeAnswersCount?: number;
   answerComponentRequired: AnswerComponentRequired;
@@ -49,6 +51,7 @@ export function ManyCriteria({
                         <OneCriteria
                           answer={answer}
                           selectContext={selectContext}
+                          pinnedAnswersForSelfCount={pinnedAnswersForSelfCount}
                           pinnedAnswersCount={pinnedAnswersCount}
                           otherPseudonativeAnswersCount={
                             otherPseudonativeAnswersCount
@@ -68,6 +71,7 @@ export function ManyCriteria({
               <ManyPaginatedCriteria
                 answers={answers}
                 selectContext={selectContext}
+                pinnedAnswersForSelfCount={pinnedAnswersForSelfCount}
                 pinnedAnswersCount={pinnedAnswersCount}
                 otherPseudonativeAnswersCount={otherPseudonativeAnswersCount}
                 answerComponentRequired={answerComponentRequired}
@@ -92,6 +96,7 @@ export function ManyCriteria({
 function ManyPaginatedCriteria({
   answers,
   selectContext,
+  pinnedAnswersForSelfCount,
   pinnedAnswersCount,
   otherPseudonativeAnswersCount,
   answerComponentRequired,
@@ -100,6 +105,7 @@ function ManyPaginatedCriteria({
 }: {
   answers: UnionAnswerType;
   selectContext?: SelectContext;
+  pinnedAnswersForSelfCount?: number;
   pinnedAnswersCount?: number;
   otherPseudonativeAnswersCount?: number;
   answerComponentRequired: AnswerComponentRequired;
@@ -130,6 +136,7 @@ function ManyPaginatedCriteria({
                 <OneCriteria
                   answer={answer}
                   selectContext={selectContext}
+                  pinnedAnswersForSelfCount={pinnedAnswersForSelfCount}
                   pinnedAnswersCount={pinnedAnswersCount}
                   otherPseudonativeAnswersCount={otherPseudonativeAnswersCount}
                   answerComponentRequired={answerComponentRequired}

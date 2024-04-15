@@ -50,6 +50,7 @@ export const selectContacts = {
       username: true,
       appWideName: true,
       state: true,
+      pinnedFriendId: true,
     },
   },
   mirror: {
@@ -66,6 +67,7 @@ export const selectContacts = {
           username: true,
           appWideName: true,
           state: true,
+          pinnedFriendId: true,
         },
       },
     },
@@ -297,5 +299,11 @@ export function whereUniqueContactByUserFirstIdAndUserLastId(
       userFirstId,
       userLastId,
     },
+  };
+}
+
+export function whereContactById(id: string): Prisma.ContactWhereUniqueInput {
+  return {
+    id,
   };
 }

@@ -24,8 +24,11 @@ model User {
   createdAt            DateTime     @default(now())
   updatedAt            DateTime     @updatedAt @default(now())
 
-  contactFirsts        Contact[] @relation("UserFirst")
-  contactLasts         Contact[] @relation("UserLast")
+  pinnedFriendId       String?      @unique
+  pinnedFriend         Contact?     @relation("PinnedFriend", fields: [pinnedFriendId], references: [id])
+
+  contactFirsts        Contact[]    @relation("UserFirst")
+  contactLasts         Contact[]    @relation("UserLast")
 
   questions            Question[]
 
@@ -52,6 +55,7 @@ model Contact {
   irlAt                DateTime?
   blockedAt            DateTime?
   latestfoundAt        DateTime?
+  pinnedByFriendAt     DateTime?
 
   mirrorId             String?      @unique
   mirror               Contact?     @relation("MirrorContactId", fields: [mirrorId], references: [id])
@@ -69,7 +73,9 @@ model Contact {
 
   @@unique([userFirstId, userLastId])
 
-  userQuestionFriends        UserQuestionFriend[]
+  pinnedByFriend       User?        @relation("PinnedFriend")
+
+  userQuestionFriends  UserQuestionFriend[]
 }
 
 model Question {
@@ -93,9 +99,11 @@ model UserQuestion {
   state                String       @default("NONE")
   kind                 String       @default("NONE")
   isPinned             Boolean      @default(false)
+  isPinnedForSelf      Boolean      @default(false)
   createdAt            DateTime     @default(now())
   updatedAt            DateTime     @updatedAt @default(now())
   pinnedAt             DateTime?
+  pinnedForSelfAt      DateTime?
   upToIrlAt            DateTime?
   downFromIrlAt        DateTime?
 
@@ -133,6 +141,7 @@ model Answer {
   id                   String       @id @default(uuid())
   state                String       @default("NONE")
   value                String
+  source               String? // NEW
   createdAt            DateTime     @default(now())
   updatedAt            DateTime     @updatedAt @default(now())
 
@@ -169,6 +178,13 @@ model Answer {
 //   NOWDEACTIVATED
 //   NOWREACTIVATED
 //   REDIRECTEDTODASHBOARD
+//   CRITERIAPINNEDFORSELF
+//   CRITERIAUNPINNEDFORSELF
+//   CRITERIAREPINNEDFORSELF
+//   FRIENDPINNED
+//   FRIENDUNPINNED
+//   USERQUESTIONFRIENDREPINNED
+//   USERQUESTIONFRIENDUNPINNED
 // }
 
 // enum UserStatusPersonalInfo {

@@ -100,6 +100,15 @@ export const selectUserQuestionFriendsAnswers = {
       },
     },
   },
+  contact: {
+    select: {
+      userLast: {
+        select: {
+          username: true,
+        },
+      },
+    },
+  },
 } satisfies Prisma.UserQuestionFriendSelect;
 
 export function wherePinnedByFriend(

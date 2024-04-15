@@ -30,11 +30,13 @@ export type UnionAnswerType =
 export type GlobalAnswerTypeByHand = {
   id: string;
   value: string;
+  source: string | null;
   userQuestion: {
     id: string;
     state?: string;
     kind: string;
     isPinned?: boolean;
+    isPinnedForSelf?: boolean; // NEW
     question: {
       kind: string;
       name: string;
@@ -55,6 +57,17 @@ export const DEFAULT_ANSWERS_ORDER_BY = {
   },
 } satisfies Prisma.AnswerOrderByWithRelationInput;
 
+export const PINNED_FOR_SELF_ANSWERS_ORDER_BY = [
+  {
+    userQuestion: {
+      pinnedForSelfAt: "desc",
+    },
+  },
+  {
+    updatedAt: "desc",
+  },
+] satisfies Prisma.AnswerOrderByWithRelationInput[];
+
 export const PINNED_BY_USER_ANSWERS_ORDER_BY = [
   {
     userQuestion: {
@@ -67,11 +80,13 @@ export const PINNED_BY_USER_ANSWERS_ORDER_BY = [
 ] satisfies Prisma.AnswerOrderByWithRelationInput[];
 
 export const DEFAULT_ANSWERS_LIMIT = 64;
+export const PINNED_FOR_SELF_ANSWERS_LIMIT = 8;
 export const PINNED_BY_USER_ANSWERS_LIMIT = 16;
 
-export const selectUserPinnedAnswers = {
+export const selectUserPinnedForSelfAnswers = {
   userQuestion: {
     select: {
+      isPinnedForSelf: true, // NEW
       isPinned: true,
       kind: true,
       id: true,
@@ -94,6 +109,66 @@ export const selectUserPinnedAnswers = {
     },
   },
   value: true,
+  source: true,
+  id: true,
+  user: {
+    select: {
+      username: true,
+      id: true,
+    },
+  },
+} satisfies Prisma.AnswerSelect;
+
+export function whereUserPinnedForSelfAnswersByUserId(
+  id: string
+): Prisma.AnswerWhereInput {
+  return {
+    userQuestion: {
+      user: {
+        id,
+        OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
+      },
+      question: {
+        state: "LIVE",
+      },
+      isPinnedForSelf: true, // NEW
+      OR: [{ state: "LIVE" }, { state: "HIDDEN" }],
+    },
+    user: {
+      id,
+      OR: [{ state: "LIVE" }, { state: "DEACTIVATED" }],
+    },
+    state: "LIVE",
+  };
+}
+
+export const selectUserPinnedAnswers = {
+  userQuestion: {
+    select: {
+      isPinned: true,
+      isPinnedForSelf: true, // for UnionAnswerType
+      kind: true,
+      id: true,
+      state: true,
+      question: {
+        select: {
+          name: true,
+          kind: true,
+        },
+      },
+      _count: {
+        select: {
+          userQuestionFriends: {
+            where: {
+              isSharedToFriend: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  value: true,
+  source: true,
   id: true,
   user: {
     select: {
@@ -130,6 +205,7 @@ export const selectUserNativeAnswers = {
   userQuestion: {
     select: {
       isPinned: true,
+      isPinnedForSelf: true,
       kind: true,
       id: true,
       state: true,
@@ -143,6 +219,7 @@ export const selectUserNativeAnswers = {
     },
   },
   value: true,
+  source: true,
   id: true,
   user: {
     select: {
@@ -185,11 +262,13 @@ export const selectUserPseudonativeAnswers = {
         },
       },
       isPinned: true,
+      isPinnedForSelf: true,
       kind: true,
       id: true,
     },
   },
   value: true,
+  source: true,
   id: true,
   user: {
     select: {
@@ -228,6 +307,7 @@ export const selectUserCustomAnswers = {
   userQuestion: {
     select: {
       isPinned: true,
+      isPinnedForSelf: true,
       id: true,
       kind: true, // keeping for should be "NONE"
       question: {
@@ -248,6 +328,7 @@ export const selectUserCustomAnswers = {
     },
   },
   value: true,
+  source: true,
   id: true,
   user: {
     select: {
@@ -304,6 +385,7 @@ export const selectUserCustomAnswer = {
     },
   },
   value: true,
+  source: true,
   id: true,
   user: {
     select: {
@@ -340,6 +422,7 @@ export const selectAnswers = {
       kind: true,
       state: true,
       isPinned: true,
+      isPinnedForSelf: true,
       question: {
         select: {
           name: true,
@@ -349,6 +432,7 @@ export const selectAnswers = {
     },
   },
   value: true,
+  source: true,
   id: true,
   user: {
     select: {

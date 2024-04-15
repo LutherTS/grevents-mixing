@@ -16,7 +16,7 @@ export function dataUpdateUserQuestionFriendCancelSharedToFriend(): Prisma.UserQ
   };
 }
 
-export function dataUpdateUserQuestionFriendCancelPinnedByFriend(): Prisma.UserQuestionFriendUpdateInput {
+export function dataUpdateUserQuestionFriendCancelPinnedByFriendProfile(): Prisma.UserQuestionFriendUpdateInput {
   return {
     isPinnedByFriend: false,
     pinnedByFriendAt: null,
@@ -28,13 +28,45 @@ export function dataUpdateUserQuestionFriendCancelPinnedByFriend(): Prisma.UserQ
   };
 }
 
-export function dataUpdateUserQuestionFriendRePinnedByFriend(): Prisma.UserQuestionFriendUpdateInput {
+export function dataUpdateUserQuestionFriendCancelPinnedByFriendDashboard(): Prisma.UserQuestionFriendUpdateInput {
+  return {
+    isPinnedByFriend: false,
+    pinnedByFriendAt: null,
+    contact: {
+      update: {
+        userLast: {
+          update: {
+            statusDashboard: "USERQUESTIONFRIENDUNPINNED",
+          },
+        },
+      },
+    },
+  };
+}
+
+export function dataUpdateUserQuestionFriendRePinnedByFriendProfile(): Prisma.UserQuestionFriendUpdateInput {
   return {
     isPinnedByFriend: true,
     pinnedByFriendAt: new Date(),
     contact: {
       update: {
         statusOtherProfile: "USERQUESTIONFRIENDREPINNED",
+      },
+    },
+  };
+}
+
+export function dataUpdateUserQuestionFriendRePinnedByFriendDashboard(): Prisma.UserQuestionFriendUpdateInput {
+  return {
+    isPinnedByFriend: true,
+    pinnedByFriendAt: new Date(),
+    contact: {
+      update: {
+        userLast: {
+          update: {
+            statusDashboard: "USERQUESTIONFRIENDREPINNED",
+          },
+        },
       },
     },
   };

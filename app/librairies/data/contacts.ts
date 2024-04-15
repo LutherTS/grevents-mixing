@@ -14,6 +14,7 @@ import {
   whereContactByIdAndUserFirstId,
   whereContactByIdAndUserLastId,
   whereHasAccessedFromContactsByUserId,
+  whereContactById,
 } from "../subdata/contacts";
 
 const orderBy = DEFAULT_CONTACTS_ORDER_BY;
@@ -279,6 +280,16 @@ export async function countHasAccessedFromContactsByUserId(userId: string) {
   const where = whereHasAccessedFromContactsByUserId(userId);
 
   return await prisma.contact.count({
+    where,
+  });
+}
+
+export async function findContactById(id: string) {
+  const select = selectContacts;
+  const where = whereContactById(id);
+
+  return await prisma.contact.findUnique({
+    select,
     where,
   });
 }
