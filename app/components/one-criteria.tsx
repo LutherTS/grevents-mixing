@@ -710,9 +710,7 @@ function OneAnswerModifySourcedForm({
           type="text"
           id={`${answer.id}-source`}
           name="answersource"
-          placeholder={
-            answer.source ? answer.source : "Add an optional URL source"
-          }
+          placeholder={answer.source ? answer.source : "optional URL source"}
           defaultValue={answer.source}
           disabled={fetcher.state !== "idle"}
         />
