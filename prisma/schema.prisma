@@ -24,8 +24,8 @@ model User {
   createdAt            DateTime     @default(now())
   updatedAt            DateTime     @updatedAt @default(now())
 
-  pinnedFriendId       String?      @unique // NEW
-  pinnedFriend         Contact?     @relation("PinnedFriend", fields: [pinnedFriendId], references: [id]) // NEW
+  pinnedFriendId       String?      @unique // STILL NEW
+  pinnedFriend         Contact?     @relation("PinnedFriend", fields: [pinnedFriendId], references: [id]) // STILL NEW
 
   contactFirsts        Contact[]    @relation("UserFirst")
   contactLasts         Contact[]    @relation("UserLast")
@@ -55,7 +55,7 @@ model Contact {
   irlAt                DateTime?
   blockedAt            DateTime?
   latestfoundAt        DateTime?
-  pinnedByFriendAt     DateTime? // NEW
+  pinnedByFriendAt     DateTime? // STILL NEW
 
   mirrorId             String?      @unique
   mirror               Contact?     @relation("MirrorContactId", fields: [mirrorId], references: [id])
@@ -73,7 +73,7 @@ model Contact {
 
   @@unique([userFirstId, userLastId])
 
-  pinnedByFriend       User?        @relation("PinnedFriend") // NEW
+  pinnedByFriend       User?        @relation("PinnedFriend") // STILL NEW
 
   userQuestionFriends  UserQuestionFriend[]
 }
