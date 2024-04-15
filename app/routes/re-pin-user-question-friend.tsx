@@ -3,11 +3,11 @@ import { redirect } from "@remix-run/node";
 
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 import { findUserQuestionFriendByIdAndContactUserLastId } from "~/librairies/data/userquestionfriends";
-import { updateUserQuestionFriendRePinnedByFriend } from "~/librairies/changes/userquestionfriends";
+import {
+  updateUserQuestionFriendRePinnedByFriendDashboard,
+  updateUserQuestionFriendRePinnedByFriendProfile,
+} from "~/librairies/changes/userquestionfriends";
 
-// get the URL from the request to condition the toast
-// if URL is dashboard, toast is for dashboard
-// else, continue the current flow
 export const action = async ({ request }: ActionFunctionArgs) => {
   const verifiedUser = await getVerifiedUser(request);
 
@@ -18,7 +18,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const form = await request.formData();
   const userQuestionFriendId = form.get("userquestionfriendid");
   const pathname = form.get("pathname");
-  console.log(pathname);
 
   if (
     typeof userQuestionFriendId !== "string" ||
@@ -37,10 +36,23 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null;
   }
 
-  await updateUserQuestionFriendRePinnedByFriend(
-    userQuestionFriend.id,
-    verifiedUser.id
-  );
+  if (
+    pathname ===
+    `/users/${userQuestionFriend.userQuestion.answer?.user.username}/profile`
+  )
+    await updateUserQuestionFriendRePinnedByFriendProfile(
+      userQuestionFriend.id,
+      verifiedUser.id
+    );
+
+  if (
+    pathname ===
+    `/users/${userQuestionFriend.contact.userLast.username}/dashboard`
+  )
+    await updateUserQuestionFriendRePinnedByFriendDashboard(
+      userQuestionFriend.id,
+      verifiedUser.id
+    );
 
   return null;
 };

@@ -4,9 +4,11 @@ import {
   whereByIdAndContactUserLastId,
 } from "../subdata/userquestionfriends";
 import {
-  dataUpdateUserQuestionFriendCancelPinnedByFriend,
+  dataUpdateUserQuestionFriendCancelPinnedByFriendDashboard,
+  dataUpdateUserQuestionFriendCancelPinnedByFriendProfile,
   dataUpdateUserQuestionFriendCancelSharedToFriend,
-  dataUpdateUserQuestionFriendRePinnedByFriend,
+  dataUpdateUserQuestionFriendRePinnedByFriendDashboard,
+  dataUpdateUserQuestionFriendRePinnedByFriendProfile,
 } from "../subchanges/userquestionfriends";
 
 export async function updateUserQuestionFriendCancelSharedToFriend(
@@ -22,12 +24,12 @@ export async function updateUserQuestionFriendCancelSharedToFriend(
   });
 }
 
-export async function updateUserQuestionFriendCancelPinnedByFriend(
+export async function updateUserQuestionFriendCancelPinnedByFriendProfile(
   id: string,
   userLastId: string
 ) {
   const where = whereByIdAndContactUserLastId(id, userLastId);
-  const data = dataUpdateUserQuestionFriendCancelPinnedByFriend();
+  const data = dataUpdateUserQuestionFriendCancelPinnedByFriendProfile();
 
   return await prisma.userQuestionFriend.update({
     where,
@@ -35,12 +37,38 @@ export async function updateUserQuestionFriendCancelPinnedByFriend(
   });
 }
 
-export async function updateUserQuestionFriendRePinnedByFriend(
+export async function updateUserQuestionFriendCancelPinnedByFriendDashboard(
   id: string,
   userLastId: string
 ) {
   const where = whereByIdAndContactUserLastId(id, userLastId);
-  const data = dataUpdateUserQuestionFriendRePinnedByFriend();
+  const data = dataUpdateUserQuestionFriendCancelPinnedByFriendDashboard();
+
+  return await prisma.userQuestionFriend.update({
+    where,
+    data,
+  });
+}
+
+export async function updateUserQuestionFriendRePinnedByFriendProfile(
+  id: string,
+  userLastId: string
+) {
+  const where = whereByIdAndContactUserLastId(id, userLastId);
+  const data = dataUpdateUserQuestionFriendRePinnedByFriendProfile();
+
+  return await prisma.userQuestionFriend.update({
+    where,
+    data,
+  });
+}
+
+export async function updateUserQuestionFriendRePinnedByFriendDashboard(
+  id: string,
+  userLastId: string
+) {
+  const where = whereByIdAndContactUserLastId(id, userLastId);
+  const data = dataUpdateUserQuestionFriendRePinnedByFriendDashboard();
 
   return await prisma.userQuestionFriend.update({
     where,

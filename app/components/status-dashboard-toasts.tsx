@@ -70,6 +70,16 @@ export function StatusDashboardToasts({
           Friend unpinned from dashboard
         </ToastForm>
       )}
+      {statusDashboard === "USERQUESTIONFRIENDREPINNED" && (
+        <ToastForm action="/reset-user-status-dashboard">
+          Friend criteria repinned by you
+        </ToastForm>
+      )}
+      {statusDashboard === "USERQUESTIONFRIENDUNPINNED" && (
+        <ToastForm action="/reset-user-status-dashboard">
+          Friend criteria unpinned by you
+        </ToastForm>
+      )}
     </>
   );
 }
