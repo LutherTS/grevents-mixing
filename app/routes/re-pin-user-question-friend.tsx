@@ -5,6 +5,9 @@ import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 import { findUserQuestionFriendByIdAndContactUserLastId } from "~/librairies/data/userquestionfriends";
 import { updateUserQuestionFriendRePinnedByFriend } from "~/librairies/changes/userquestionfriends";
 
+// get the URL from the request to condition the toast
+// if URL is dashboard, toast is for dashboard
+// else, continue the current flow
 export const action = async ({ request }: ActionFunctionArgs) => {
   const verifiedUser = await getVerifiedUser(request);
 

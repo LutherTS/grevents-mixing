@@ -60,6 +60,16 @@ export function StatusDashboardToasts({
           Criteria repinned for self
         </ToastForm>
       )}
+      {statusDashboard === "FRIENDPINNED" && (
+        <ToastForm action="/reset-user-status-dashboard">
+          Friend pinned to dashboard
+        </ToastForm>
+      )}
+      {statusDashboard === "FRIENDPINNED" && (
+        <ToastForm action="/reset-user-status-dashboard">
+          Friend unpinned from dashboard
+        </ToastForm>
+      )}
     </>
   );
 }

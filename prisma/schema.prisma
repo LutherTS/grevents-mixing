@@ -55,7 +55,7 @@ model Contact {
   irlAt                DateTime?
   blockedAt            DateTime?
   latestfoundAt        DateTime?
-  pinnedByFriendAt     DateTime? // STILL NEW
+  pinnedByFriendAt     DateTime?
 
   mirrorId             String?      @unique
   mirror               Contact?     @relation("MirrorContactId", fields: [mirrorId], references: [id])
@@ -181,6 +181,8 @@ model Answer {
 //   CRITERIAPINNEDFORSELF
 //   CRITERIAUNPINNEDFORSELF
 //   CRITERIAREPINNEDFORSELF
+//   FRIENDPINNED
+//   FRIENDUNPINNED
 // }
 
 // enum UserStatusPersonalInfo {

@@ -168,3 +168,32 @@ export async function updateUserStatusPersonalInfoById(
     data,
   });
 }
+
+export async function updatePinFriendbyUserIdAndContactId(
+  id: string,
+  pinnedFriendId: string
+) {
+  const where: Prisma.UserWhereUniqueInput = { id };
+  const data: Prisma.UserUncheckedUpdateInput = {
+    pinnedFriendId,
+    statusDashboard: "FRIENDPINNED",
+  };
+
+  return await prisma.user.update({
+    where,
+    data,
+  });
+}
+
+export async function updateUnpinFriendbyUserId(id: string) {
+  const where: Prisma.UserWhereUniqueInput = { id };
+  const data: Prisma.UserUncheckedUpdateInput = {
+    pinnedFriendId: null,
+    statusDashboard: "FRIENDUNPINNED",
+  };
+
+  return await prisma.user.update({
+    where,
+    data,
+  });
+}
