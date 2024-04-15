@@ -129,7 +129,7 @@ export function ManyUserQuestionFriendsPinned({
           <>
             {userQuestionFriendsAnswers.length <= 4 ? (
               <>
-                <ol>
+                <ol className="space-y-4 mt-4">
                   {userQuestionFriendsAnswers.map((answer) => {
                     return (
                       <li key={answer.id}>
@@ -183,7 +183,7 @@ function ManyPaginatedUserQuestionFriendsPinned({
   return (
     <>
       {
-        <ol>
+        <ol className="space-y-4 mt-4">
           {chunkedUserQuestionFriendsAnswers[position].map((answer) => {
             return (
               <li key={answer.id}>

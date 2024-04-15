@@ -30,7 +30,7 @@ export type UnionAnswerType =
 export type GlobalAnswerTypeByHand = {
   id: string;
   value: string;
-  source?: string;
+  source: string | null;
   userQuestion: {
     id: string;
     state?: string;

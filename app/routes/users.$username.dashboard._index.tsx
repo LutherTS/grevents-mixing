@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
 import {
   isRouteErrorResponse,
@@ -10,7 +11,8 @@ import invariant from "tiny-invariant";
 import { H1 } from "~/components/h1";
 import { LinkButtonOnClick } from "~/components/link-button";
 import { ManyCriteria } from "~/components/many-criteria";
-import { PageLink } from "~/components/page-link";
+import { ManyUserQuestionFriendsPinned } from "~/components/many-userquestionfriends";
+import { PageLink, PageLinkDivless } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
 import { StatusDashboardToasts } from "~/components/status-dashboard-toasts";
 import { StatusTitleToasts } from "~/components/status-title-toasts";
@@ -22,8 +24,16 @@ import {
   countSentFriendFromContactsByUserId,
   countSentIrlFromContactsByUserId,
   countHasAccessedFromContactsByUserId,
+  findContactById,
 } from "~/librairies/data/contacts";
+import { findUserQuestionFriendsAnswersPinnedByFriend } from "~/librairies/data/userquestionfriends";
 import { findUserByUsername } from "~/librairies/data/users";
+import { selectContacts } from "~/librairies/subdata/contacts";
+import { selectUserQuestionFriendsAnswers } from "~/librairies/subdata/userquestionfriends";
+import {
+  RelationCombination,
+  defineContactRelCombo,
+} from "~/utilities/contacts";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
@@ -55,14 +65,14 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     sentFriendFromContactsCount,
     sentIrlFromContactsCount,
     hasAccessedFromContactsCount,
-    userPinnedForSelfAnswers, // NEW
+    userPinnedForSelfAnswers,
   ] = await Promise.all([
     countSentFriendToContactsByUserId(user.id),
     countSentIrlToContactsByUserId(user.id),
     countSentFriendFromContactsByUserId(user.id),
     countSentIrlFromContactsByUserId(user.id),
     countHasAccessedFromContactsByUserId(user.id),
-    findUserPinnedForSelfAnswersByUserId(user.id), // NEW
+    findUserPinnedForSelfAnswersByUserId(user.id),
   ]);
 
   const sentToContactsCount =
@@ -73,12 +83,39 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     sentIrlFromContactsCount +
     hasAccessedFromContactsCount;
 
+  let userPinnedFriend: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }> | null = null;
+
+  let userPinnedFriendAnswersPinnedByFriend:
+    | Prisma.UserQuestionFriendGetPayload<{
+        select: typeof selectUserQuestionFriendsAnswers;
+      }>[]
+    | null = null;
+
+  let relCombo: RelationCombination | "" = "";
+
+  if (user.pinnedFriendId) {
+    userPinnedFriend = await findContactById(user.pinnedFriendId);
+    if (userPinnedFriend) {
+      userPinnedFriendAnswersPinnedByFriend =
+        await findUserQuestionFriendsAnswersPinnedByFriend(
+          userPinnedFriend.userFirst.id,
+          userPinnedFriend.id
+        );
+      relCombo = defineContactRelCombo(userPinnedFriend);
+    }
+  }
+
   return json({
     verifiedUser,
     user,
     sentToContactsCount,
     sentFromContactsCount,
-    userPinnedForSelfAnswers, // NEW
+    userPinnedForSelfAnswers,
+    userPinnedFriend,
+    userPinnedFriendAnswersPinnedByFriend,
+    relCombo,
   });
 };
 
@@ -170,6 +207,43 @@ export default function DashboardPage() {
               answerComponentRequired="OneAnswerRePinnableForSelf"
               label="Find your pinned for self criteria below"
             />
+          </div>
+        )}
+        {data.userPinnedFriend && (
+          <div className="py-2">
+            <p className="font-semibold text-zinc-700 dark:text-zinc-300">
+              <PageLinkDivless
+                href={`/users/${data.userPinnedFriend.userFirst.username}/profile`}
+                specifiedClasses="font-semibold text-blue-500 hover:text-blue-400 dark:hover:text-blue-600"
+              >
+                {data.userPinnedFriend.userFirst.appWideName}
+              </PageLinkDivless>{" "}
+              /{" "}
+              <span className="text-zinc-600 dark:text-zinc-400">
+                {data.userPinnedFriend.userFirst.username}
+              </span>{" "}
+              is your pinned friend
+            </p>
+            {data.relCombo === "friend" &&
+              data.userPinnedFriendAnswersPinnedByFriend && (
+                <ManyUserQuestionFriendsPinned
+                  userQuestionFriendsAnswers={
+                    data.userPinnedFriendAnswersPinnedByFriend
+                  }
+                  label="Find their pinned by you for friend criteria below"
+                  notLabel="No pinned by you criteria yet."
+                />
+              )}
+            {data.relCombo === "irl" &&
+              data.userPinnedFriendAnswersPinnedByFriend && (
+                <ManyUserQuestionFriendsPinned
+                  userQuestionFriendsAnswers={
+                    data.userPinnedFriendAnswersPinnedByFriend
+                  }
+                  label="Find their pinned by you for irl criteria below"
+                  notLabel="No pinned by you criteria yet."
+                />
+              )}
           </div>
         )}
         <div className="py-2">
