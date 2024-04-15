@@ -271,10 +271,12 @@ export function dataRevealAnswerUserQuestion(): Prisma.AnswerUpdateInput {
 
 export function dataUpdateAnswerValueStatusPersonalInfo(
   value: string,
-  statusPersonalInfo: string
+  statusPersonalInfo: string,
+  source?: string
 ): Prisma.AnswerUpdateInput {
   return {
     value,
+    source: source ? source : null,
     user: {
       update: {
         statusPersonalInfo,

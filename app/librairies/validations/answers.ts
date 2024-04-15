@@ -69,3 +69,9 @@ export const ModifyAnswerSchema = AnswerSchema.pick({
   answerId: true,
   answerModifiedValue: true,
 });
+
+export const ModifyAnswerSourcedSchema = AnswerSchema.pick({
+  answerId: true,
+  answerModifiedValue: true,
+  answerSource: true,
+});

@@ -579,7 +579,14 @@ export function OneAnswerModify({
   return (
     <>
       <div className="relative mt-2 inline-flex items-center justify-center">
-        <OneAnswerModifyForm answer={answer} />
+        {(answer.userQuestion.question.kind === "NATIVE" ||
+          answer.userQuestion.question.kind === "NATIVEIRL") && (
+          <OneAnswerModifyForm answer={answer} />
+        )}
+        {(answer.userQuestion.question.kind === "PSEUDO" ||
+          answer.userQuestion.question.kind === "CUSTOM") && (
+          <OneAnswerModifySourcedForm answer={answer} />
+        )}
         <ButtonHiddableForm answer={answer} />
       </div>
     </>
@@ -636,6 +643,82 @@ function OneAnswerModifyForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
         {fetcher.data?.errors?.answerModifiedValue ? (
           <div id={`${answer.id}-error`} aria-live="polite">
             {fetcher.data.errors.answerModifiedValue.map((error) => (
+              <p className="mt-2 text-red-500 font-light" key={error}>
+                {error}
+              </p>
+            ))}
+          </div>
+        ) : null}
+        {fetcher.data?.message ? (
+          <div id={`${answer.id}-form-error`} aria-live="polite">
+            <p className="mt-2 text-red-500">{fetcher.data.message}</p>
+          </div>
+        ) : null}
+        {/* Currently necessary to send the full form via Enter */}
+        <button type="submit" className="hidden">
+          Submit
+        </button>
+      </fetcher.Form>
+    </>
+  );
+}
+
+type ModifyAnswerSourcedByHand = JsonifyObject<{
+  errors?: {
+    answerId?: string[];
+    answerModifiedValue?: string[];
+    answerSource?: string[];
+  };
+  message?: string;
+}>;
+
+// I'll need to DRY that up, with an input component, like AnswerModifyInput. Eventually.
+function OneAnswerModifySourcedForm({
+  answer,
+}: {
+  answer: GlobalAnswerTypeByHand;
+}) {
+  const fetcher = useFetcher<ModifyAnswerSourcedByHand>();
+
+  return (
+    <>
+      <fetcher.Form action="/modify-answer-sourced" method="post">
+        <label className="sr-only" htmlFor={answer.id}>
+          Modify answer &quot;{answer.value}&quot;
+        </label>
+        <input type="hidden" name="answerid" value={answer.id} />
+        <input
+          className="w-[32ch] max-w-[50ch] placeholder:truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:!text-white disabled:placeholder:!text-gray-400 sm:w-[40ch]"
+          type="text"
+          id={`${answer.id}-value`}
+          name="answervalue"
+          placeholder={answer.value}
+          defaultValue={answer.value}
+          disabled={fetcher.state !== "idle"}
+        />
+        {fetcher.data?.errors?.answerModifiedValue ? (
+          <div id={`${answer.id}-value-error`} aria-live="polite">
+            {fetcher.data.errors.answerModifiedValue.map((error) => (
+              <p className="mt-2 text-red-500 font-light" key={error}>
+                {error}
+              </p>
+            ))}
+          </div>
+        ) : null}
+        <input
+          className="mt-4 w-[32ch] max-w-[50ch] placeholder:truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:!text-white disabled:placeholder:!text-gray-400 sm:w-[40ch]"
+          type="text"
+          id={`${answer.id}-source`}
+          name="answersource"
+          placeholder={
+            answer.source ? answer.source : "Add an optional URL source"
+          }
+          defaultValue={answer.source}
+          disabled={fetcher.state !== "idle"}
+        />
+        {fetcher.data?.errors?.answerSource ? (
+          <div id={`${answer.id}-source-error`} aria-live="polite">
+            {fetcher.data.errors.answerSource.map((error) => (
               <p className="mt-2 text-red-500 font-light" key={error}>
                 {error}
               </p>
