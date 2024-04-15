@@ -14,8 +14,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const form = await request.formData();
   const userQuestionFriendId = form.get("userquestionfriendid");
+  const pathname = form.get("pathname");
+  console.log(pathname);
 
-  if (typeof userQuestionFriendId !== "string") {
+  if (
+    typeof userQuestionFriendId !== "string" ||
+    typeof pathname !== "string"
+  ) {
     return null;
   }
 

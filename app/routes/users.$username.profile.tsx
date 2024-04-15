@@ -93,7 +93,6 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
   const url = new URL(request.url);
   const pathname = url.pathname;
-  console.log(pathname);
 
   const verifiedUser = await getVerifiedUser(request);
   if (!verifiedUser) {

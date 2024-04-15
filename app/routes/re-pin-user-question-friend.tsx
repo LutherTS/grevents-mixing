@@ -9,11 +9,6 @@ import { updateUserQuestionFriendRePinnedByFriend } from "~/librairies/changes/u
 // if URL is dashboard, toast is for dashboard
 // else, continue the current flow
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const url = new URL(request.url);
-  console.log(url);
-
-  //
-
   const verifiedUser = await getVerifiedUser(request);
 
   if (!verifiedUser) {
@@ -22,8 +17,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const form = await request.formData();
   const userQuestionFriendId = form.get("userquestionfriendid");
+  const pathname = form.get("pathname");
+  console.log(pathname);
 
-  if (typeof userQuestionFriendId !== "string") {
+  if (
+    typeof userQuestionFriendId !== "string" ||
+    typeof pathname !== "string"
+  ) {
     return null;
   }
 

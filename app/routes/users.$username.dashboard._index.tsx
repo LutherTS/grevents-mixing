@@ -39,6 +39,9 @@ import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   invariant(params.username, "Expected params.username");
 
+  const url = new URL(request.url);
+  const pathname = url.pathname;
+
   const verifiedUser = await getVerifiedUser(request);
   if (!verifiedUser) {
     throw await kickOut(request);
@@ -108,6 +111,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   }
 
   return json({
+    pathname,
     verifiedUser,
     user,
     sentToContactsCount,
@@ -227,6 +231,7 @@ export default function DashboardPage() {
             {data.relCombo === "friend" &&
               data.userPinnedFriendAnswersPinnedByFriend && (
                 <ManyUserQuestionFriendsPinned
+                  pathname={data.pathname}
                   userQuestionFriendsAnswers={
                     data.userPinnedFriendAnswersPinnedByFriend
                   }
@@ -237,6 +242,7 @@ export default function DashboardPage() {
             {data.relCombo === "irl" &&
               data.userPinnedFriendAnswersPinnedByFriend && (
                 <ManyUserQuestionFriendsPinned
+                  pathname={data.pathname}
                   userQuestionFriendsAnswers={
                     data.userPinnedFriendAnswersPinnedByFriend
                   }
