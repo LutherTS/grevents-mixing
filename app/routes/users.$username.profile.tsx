@@ -357,7 +357,6 @@ export default function ProfilePage() {
                         "number" && (
                         <>
                           <RelationCombinationUserFriendExposed
-                            user={data.user}
                             contact={data.userToVerifiedUserContact}
                             userQuestionFriendsAnswersPinnedByFriend={
                               data.userQuestionFriendsAnswersPinnedByFriend

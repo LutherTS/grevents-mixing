@@ -8,7 +8,6 @@ import { selectAnswers } from "~/librairies/subdata/answers";
 import { selectContacts } from "~/librairies/subdata/contacts";
 import { LinkButton } from "./link-button";
 import { PageLink } from "./page-link";
-import { selectUser } from "~/librairies/subdata/users";
 
 // contact. is user
 // contact.mirror is verifiedUser
@@ -232,7 +231,6 @@ function DeclineFriendForm({
 }
 
 export function RelationCombinationUserFriendExposed({
-  user,
   contact,
   userQuestionFriendsAnswersPinnedByFriend,
   pinnedNotIrlAnswersExposed,
@@ -241,9 +239,6 @@ export function RelationCombinationUserFriendExposed({
   unpinnedSharedToContactCustomAnswersExposed,
   answersPinnedbyFriendAnswersCount,
 }: {
-  user: Prisma.UserGetPayload<{
-    select: typeof selectUser;
-  }>;
   contact: Prisma.ContactGetPayload<{
     select: typeof selectContacts;
   }>;
@@ -266,8 +261,8 @@ export function RelationCombinationUserFriendExposed({
 }) {
   return (
     <>
+      <PinFriendForm contact={contact} />
       {/* pt-2 as makeshift styling */}
-      <PinFriendForm user={user} contact={contact} />
       <div className="pt-2">
         <ManyUserQuestionFriendsPinned
           userQuestionFriendsAnswers={userQuestionFriendsAnswersPinnedByFriend}
@@ -496,19 +491,15 @@ function DeclineIrlForm({
 }
 
 function PinFriendForm({
-  user,
   contact,
 }: {
-  user: Prisma.UserGetPayload<{
-    select: typeof selectUser;
-  }>;
   contact: Prisma.ContactGetPayload<{
     select: typeof selectContacts;
   }>;
 }) {
   return (
     <>
-      {user.pinnedFriendId !== contact.id ? (
+      {contact.mirror?.userFirst.pinnedFriendId !== contact.id ? (
         <ProfileForm contact={contact} action="/pin-friend">
           Pin {contact.userFirst.appWideName}&apos;s profile on your dashboard
         </ProfileForm>
@@ -561,6 +552,7 @@ export function RelationCombinationUserIrlExposed({
 }) {
   return (
     <>
+      <PinFriendForm contact={contact} />
       {/* pt-2 as makeshift styling */}
       <div className="pt-2">
         <ManyUserQuestionFriendsPinned

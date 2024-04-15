@@ -65,7 +65,7 @@ export function StatusDashboardToasts({
           Friend pinned to dashboard
         </ToastForm>
       )}
-      {statusDashboard === "FRIENDPINNED" && (
+      {statusDashboard === "FRIENDUNPINNED" && (
         <ToastForm action="/reset-user-status-dashboard">
           Friend unpinned from dashboard
         </ToastForm>

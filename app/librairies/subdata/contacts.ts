@@ -50,6 +50,7 @@ export const selectContacts = {
       username: true,
       appWideName: true,
       state: true,
+      pinnedFriendId: true,
     },
   },
   mirror: {
@@ -66,6 +67,7 @@ export const selectContacts = {
           username: true,
           appWideName: true,
           state: true,
+          pinnedFriendId: true,
         },
       },
     },
