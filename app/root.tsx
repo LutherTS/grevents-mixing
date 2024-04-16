@@ -10,7 +10,7 @@ import {
   useNavigate,
   useRouteError,
 } from "@remix-run/react";
-// import radixStyleSheet from "@radix-ui/themes/styles.css";
+import radixStyleSheet from "@radix-ui/themes/styles.css";
 // import { Theme, ThemePanel } from "@radix-ui/themes";
 
 import tailwindStyleSheet from "~/tailwind.css";
@@ -20,7 +20,7 @@ import { PageLink } from "./components/page-link";
 import { LinkButtonOnClick } from "./components/link-button";
 
 export const links: LinksFunction = () => [
-  // { rel: "stylesheet", href: radixStyleSheet },
+  { rel: "stylesheet", href: radixStyleSheet },
   { rel: "stylesheet", href: tailwindStyleSheet },
   { rel: "stylesheet", href: "/fonts/inter/inter.css" },
 ];
@@ -117,3 +117,8 @@ export default function App() {
     </html>
   );
 }
+
+/* Notes
+I can import the Radix UI stylesheet without changes to my existing Tailwind look. The stylesheet only applies to what is wrapped in side the Theme component, which can effectively be wrapped and nested on any page.
+https://www.radix-ui.com/themes/docs/components/theme
+*/
