@@ -35,11 +35,13 @@ export function PageLinkDivless({
   relative,
   children,
   specifiedClasses,
+  specifiedTarget,
 }: {
   href: string;
   relative?: "route" | "path";
-  specifiedClasses?: string;
   children: React.ReactNode;
+  specifiedClasses?: string;
+  specifiedTarget?: string;
 }) {
   return (
     <>
@@ -51,6 +53,7 @@ export function PageLinkDivless({
             ? specifiedClasses
             : "mt-2 inline-block text-blue-500 underline hover:text-blue-400 dark:hover:text-blue-600"
         }
+        target={specifiedTarget || undefined}
       >
         {children}
       </Link>

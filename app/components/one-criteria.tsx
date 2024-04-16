@@ -238,6 +238,7 @@ export function OneAnswer({ answer }: { answer: GlobalAnswerTypeByHand }) {
               <PageLinkDivless
                 href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+                specifiedTarget="_blank"
               >
                 {answer.value}
               </PageLinkDivless>
@@ -273,6 +274,7 @@ export function OneAnswerRePinnableForSelf({
               <PageLinkDivless
                 href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+                specifiedTarget="_blank"
               >
                 {answer.value}
               </PageLinkDivless>
@@ -365,6 +367,7 @@ export function OneAnswerRePinnable({
               <PageLinkDivless
                 href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+                specifiedTarget="_blank"
               >
                 {answer.value}
               </PageLinkDivless>
@@ -442,6 +445,7 @@ export function OneAnswerPinnable({
               <PageLinkDivless
                 href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+                specifiedTarget="_blank"
               >
                 {answer.value}
               </PageLinkDivless>
@@ -524,6 +528,7 @@ export function OneAnswerPinnablePseudoable({
               <PageLinkDivless
                 href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+                specifiedTarget="_blank"
               >
                 {answer.value}
               </PageLinkDivless>
@@ -792,6 +797,7 @@ export function OneAnswerPinnableByFriend({
               <PageLinkDivless
                 href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+                specifiedTarget="_blank"
               >
                 {answer.value}
               </PageLinkDivless>

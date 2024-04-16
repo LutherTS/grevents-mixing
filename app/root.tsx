@@ -121,4 +121,7 @@ export default function App() {
 /* Notes
 I can import the Radix UI stylesheet without changes to my existing Tailwind look. The stylesheet only applies to what is wrapped in side the Theme component, which can effectively be wrapped and nested on any page.
 https://www.radix-ui.com/themes/docs/components/theme
+There are two things I'll have to do. 
+This first one is, trying to use Radix Themes inside my existing code, so inside my Main and Wrapper components, but nested inside Theme components to get an early feel of the components provided.
+Then I'll have to separate my code so that I can do away with Main and Wrapper in the root layout and have them only respond to the v1 of my applications, so on existing _index, sign-in, sign-up and users. pages.
 */
