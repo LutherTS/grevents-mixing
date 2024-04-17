@@ -57,7 +57,7 @@ export function OneCriteria({
 }) {
   return (
     <>
-      <div>
+      <div className="text-balance">
         <OneQuestion answer={answer} selectContext={selectContext} />
         {answerComponentRequired === "OneAnswer" && (
           <OneAnswer answer={answer} />
