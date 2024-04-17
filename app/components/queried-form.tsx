@@ -39,7 +39,7 @@ export function QueriedForm({
               id="user-last"
               name="userlast"
               placeholder={userLast || "userlast"}
-              defaultValue={userLast || "userlast"}
+              defaultValue={userLast || undefined}
             />
             {userLastMessage ? (
               <div id="user-last-error" aria-live="polite">
@@ -65,7 +65,7 @@ export function QueriedForm({
                 id="rel-combo"
                 name="relcombo"
                 placeholder={relCombo ? relCombo : "relcombo"}
-                defaultValue={relCombo || "relcombo"}
+                defaultValue={relCombo || undefined}
               />
               {relComboMessage ? (
                 <div id="rel-combo-error" aria-live="polite">
