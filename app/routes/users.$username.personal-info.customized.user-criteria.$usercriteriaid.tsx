@@ -17,10 +17,15 @@ import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
 import { StatusPersonalInfoCustomizedUserCriteriaToasts } from "~/components/status-personal-info-toasts";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
-import { findAnswerByUserQuestionIDAndUserID } from "~/librairies/data/answers";
+import {
+  countUserPseudonativeIrlAnswersByUserId,
+  countUserPseudonativeNotIrlAnswersByUserId,
+  findAnswerByUserQuestionIDAndUserID,
+} from "~/librairies/data/answers";
 import { findUserFriendsNotToUserQuestionByUserQuestionIdAndUserId } from "~/librairies/data/contacts";
 import { findUserQuestionFriendsByUserQuestionId } from "~/librairies/data/userquestionfriends";
 import { findUserByUsername } from "~/librairies/data/users";
+import { DEFAULT_ANSWERS_LIMIT } from "~/librairies/subdata/answers";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
@@ -57,17 +62,20 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     });
   }
 
-  const [userQuestionFriends, userFriendsNotToUserQuestion] = await Promise.all(
-    [
-      findUserQuestionFriendsByUserQuestionId(
-        userQuestionAnswer.userQuestion.id
-      ),
-      findUserFriendsNotToUserQuestionByUserQuestionIdAndUserId(
-        userQuestionAnswer.userQuestion.id,
-        user.id
-      ),
-    ]
-  );
+  const [
+    userQuestionFriends,
+    userFriendsNotToUserQuestion,
+    userPseudonativeNotIrlAnswersCount,
+    userPseudonativeIrlAnswersCount,
+  ] = await Promise.all([
+    findUserQuestionFriendsByUserQuestionId(userQuestionAnswer.userQuestion.id),
+    findUserFriendsNotToUserQuestionByUserQuestionIdAndUserId(
+      userQuestionAnswer.userQuestion.id,
+      user.id
+    ),
+    countUserPseudonativeNotIrlAnswersByUserId(user.id),
+    countUserPseudonativeIrlAnswersByUserId(user.id),
+  ]);
 
   return json({
     verifiedUser,
@@ -75,6 +83,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     userQuestionAnswer,
     userQuestionFriends,
     userFriendsNotToUserQuestion,
+    userPseudonativeNotIrlAnswersCount,
+    userPseudonativeIrlAnswersCount,
   });
 };
 
@@ -120,6 +130,22 @@ export default function UserCriteriaPage() {
       <StatusPersonalInfoCustomizedUserCriteriaToasts
         statusPersonalInfo={data.verifiedUser.statusPersonalInfo}
       />
+      {data.userQuestionAnswer.userQuestion.kind === "PSEUDONATIVE" &&
+        data.userPseudonativeIrlAnswersCount >= DEFAULT_ANSWERS_LIMIT && (
+          <p className="mb-2 cursor-default text-gray-500">
+            You cannot have more than {DEFAULT_ANSWERS_LIMIT} of a given kind of
+            criteria, pseudonative irl in this case, which is why you cannot up
+            this pseudo criteria to irl at this time.
+          </p>
+        )}
+      {data.userQuestionAnswer.userQuestion.kind === "PSEUDONATIVEIRL" &&
+        data.userPseudonativeNotIrlAnswersCount >= DEFAULT_ANSWERS_LIMIT && (
+          <p className="mb-2 cursor-default text-gray-500">
+            You cannot have more than {DEFAULT_ANSWERS_LIMIT} of a given kind of
+            criteria, pseudonative in this case, which is why you cannot down
+            this pseudo criteria from irl at this time.
+          </p>
+        )}
       <H1>
         Welcome to {data.user.appWideName}&apos;s &quot;
         {data.userQuestionAnswer.userQuestion.question.name}&quot; User

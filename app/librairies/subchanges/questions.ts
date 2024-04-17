@@ -15,7 +15,7 @@ export function dataCustomizedQuestionUserQuestionAnswerByNameValueUserIdAndKind
       create: {
         userId,
         state: "LIVE",
-        kind: kind ? kind : "NONE",
+        kind: kind || "NONE",
         answer: {
           create: {
             userId,
@@ -45,7 +45,7 @@ export function dataSourcedCustomizedQuestionUserQuestionAnswerByNameValueUserId
       create: {
         userId,
         state: "LIVE",
-        kind: kind ? kind : "NONE",
+        kind: kind || "NONE",
         answer: {
           create: {
             userId,

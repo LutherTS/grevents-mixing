@@ -133,7 +133,7 @@ function ProfileForm({
       <fetcher.Form
         action={action}
         method="post"
-        className={specifiedClasses ? specifiedClasses : "mt-2"}
+        className={specifiedClasses || "mt-2"}
       >
         <input type="hidden" name="contactid" value={contact.id} />
         <LinkButton disabled={fetcher.state !== "idle"}>{children}</LinkButton>
