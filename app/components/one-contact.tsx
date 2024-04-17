@@ -3,7 +3,7 @@ import { useFetcher } from "@remix-run/react";
 
 import { selectContacts } from "~/librairies/subdata/contacts";
 import { PageLinkDivless } from "./page-link";
-import { selectUserCustomAnswer } from "~/librairies/subdata/answers";
+import { selectUserQuestionAnswer } from "~/librairies/subdata/answers";
 
 export function OneContact({
   contact,
@@ -48,7 +48,7 @@ export function OneContactAddable({
     select: typeof selectContacts;
   }>;
   answer: Prisma.AnswerGetPayload<{
-    select: typeof selectUserCustomAnswer;
+    select: typeof selectUserQuestionAnswer;
   }>;
 }) {
   return (
@@ -87,7 +87,7 @@ export function ButtonShareUserQuestionFriendForm({
     select: typeof selectContacts;
   }>;
   answer: Prisma.AnswerGetPayload<{
-    select: typeof selectUserCustomAnswer;
+    select: typeof selectUserQuestionAnswer;
   }>;
 }) {
   const fetcher = useFetcher();

@@ -56,7 +56,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     );
   }
 
-  return null;
+  return redirect(`/users/${verifiedUser.username}/personal-info/customized`);
 };
 
 export const loader = async () => redirect("/");

@@ -14,6 +14,7 @@ import { ManyContacts } from "~/components/many-contacts";
 import { ManyUserQuestionFriendsShared } from "~/components/many-userquestionfriends";
 import { OneCriteria } from "~/components/one-criteria";
 import { PageLink } from "~/components/page-link";
+import { PseudoForm } from "~/components/pseudo-form";
 import { SignOutForm } from "~/components/sign-out-form";
 import { StatusPersonalInfoCustomizedUserCriteriaToasts } from "~/components/status-personal-info-toasts";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
@@ -162,6 +163,11 @@ export default function UserCriteriaPage() {
           selectContext="UserCriteria"
           answerComponentRequired="OneAnswerModify"
         />
+        {data.userQuestionAnswer.userQuestion.question.kind === "PSEUDO" && (
+          <>
+            <PseudoForm answer={data.userQuestionAnswer} />
+          </>
+        )}
         {data.userQuestionAnswer.userQuestion.question.kind === "CUSTOM" && (
           <>
             <ManyContacts

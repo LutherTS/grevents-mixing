@@ -5,7 +5,7 @@ import _ from "lodash";
 import { selectContacts } from "~/librairies/subdata/contacts";
 import { OneContact, OneContactAddable } from "./one-contact";
 import { LinkButtonOnClick } from "./link-button";
-import { selectUserCustomAnswer } from "~/librairies/subdata/answers";
+import { selectUserQuestionAnswer } from "~/librairies/subdata/answers";
 
 export function ManyContacts({
   contacts,
@@ -18,7 +18,7 @@ export function ManyContacts({
     select: typeof selectContacts;
   }>[];
   answer?: Prisma.AnswerGetPayload<{
-    select: typeof selectUserCustomAnswer;
+    select: typeof selectUserQuestionAnswer;
   }>;
   contactComponentRequired: string;
   label: string;
@@ -79,7 +79,7 @@ function ManyPaginatedContacts({
     select: typeof selectContacts;
   }>[];
   answer?: Prisma.AnswerGetPayload<{
-    select: typeof selectUserCustomAnswer;
+    select: typeof selectUserQuestionAnswer;
   }>;
   contactComponentRequired: string;
 }) {

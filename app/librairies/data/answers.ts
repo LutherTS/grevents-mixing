@@ -3,7 +3,7 @@ import {
   DEFAULT_ANSWERS_ORDER_BY,
   DEFAULT_ANSWERS_LIMIT,
   PINNED_BY_USER_ANSWERS_LIMIT,
-  selectUserCustomAnswer,
+  selectUserQuestionAnswer,
   selectUserCustomAnswers,
   selectUserNativeAnswers,
   selectUserPinnedAnswers,
@@ -197,7 +197,7 @@ export async function findAnswerByUserQuestionIDAndUserID(
   userQuestionId: string,
   userId: string
 ) {
-  const select = selectUserCustomAnswer;
+  const select = selectUserQuestionAnswer;
   const where = whereAnswerByUserQuestionIDAndUserID(userQuestionId, userId);
 
   return await prisma.answer.findUnique({

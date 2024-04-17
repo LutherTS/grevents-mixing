@@ -362,7 +362,7 @@ export function whereUserCustomAnswersByUserId(
 }
 
 // currently the same as selectUserCustomAnswers, without userQuestion.isPinned
-export const selectUserCustomAnswer = {
+export const selectUserQuestionAnswer = {
   userQuestion: {
     select: {
       id: true,

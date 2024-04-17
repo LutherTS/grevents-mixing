@@ -408,7 +408,7 @@ export function OneAnswerRePinnable({
   return (
     <>
       <div className="mt-2 flex justify-center">
-        <ButtonPinnableForm answer={answer} />
+        <ButtonUnpinnableForm answer={answer} />
         <p
           className={
             answer.userQuestion.state === "HIDDEN"
@@ -433,6 +433,26 @@ export function OneAnswerRePinnable({
         </p>
         <ButtonRePinnableForm answer={answer} />
       </div>
+    </>
+  );
+}
+
+function ButtonUnpinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form
+        action="/pin-answer"
+        method="post"
+        className="me-2 flex items-center"
+      >
+        <input type="hidden" name="answerid" value={answer.id} />
+        <button
+          disabled={fetcher.state !== "idle"}
+          className="h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500 bg-cyan-500 hover:bg-pink-300 dark:hover:bg-pink-700"
+        />
+      </fetcher.Form>
     </>
   );
 }
@@ -478,15 +498,6 @@ export function OneAnswerPinnable({
           answer.userQuestion.isPinnedForSelf === true && (
             <ButtonPinnableForSelfForm answer={answer} />
           )}
-        {/* If you're still allowed to pin */}
-        {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
-          <ButtonPinnableForm answer={answer} />
-        )}
-        {/* If you're only allowed to unpin */}
-        {pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
-          answer.userQuestion.isPinned === true && (
-            <ButtonPinnableForm answer={answer} />
-          )}
         <p
           className={
             answer.userQuestion.state === "HIDDEN"
@@ -509,6 +520,15 @@ export function OneAnswerPinnable({
             <>{answer.value}</>
           )}
         </p>
+        {/* If you're still allowed to pin */}
+        {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
+          <ButtonPinnableForm answer={answer} />
+        )}
+        {/* If you're only allowed to unpin */}
+        {pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
+          answer.userQuestion.isPinned === true && (
+            <ButtonPinnableForm answer={answer} />
+          )}
       </div>
     </>
   );
@@ -522,7 +542,7 @@ function ButtonPinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
       <fetcher.Form
         action="/pin-answer"
         method="post"
-        className="me-2 flex items-center"
+        className="ms-2 flex items-center"
       >
         <input type="hidden" name="answerid" value={answer.id} />
         <button
@@ -546,7 +566,6 @@ export function OneAnswerPinnablePseudoable({
   answer,
   pinnedAnswersForSelfCount,
   pinnedAnswersCount,
-  otherPseudonativeAnswersCount,
 }: {
   answer: GlobalAnswerTypeByHand;
   pinnedAnswersForSelfCount: number;
@@ -565,17 +584,6 @@ export function OneAnswerPinnablePseudoable({
           answer.userQuestion.isPinnedForSelf === true && (
             <ButtonPinnableForSelfForm answer={answer} />
           )}
-        {/* If you're still allowed to pin */}
-
-        {/* If you're still allowed to pin */}
-        {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
-          <ButtonPinnableForm answer={answer} />
-        )}
-        {/* If you're only allowed to unpin */}
-        {pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
-          answer.userQuestion.isPinned === true && (
-            <ButtonPinnableForm answer={answer} />
-          )}
         <p>
           {/* Adding a source is currently only available on customized criteria. */}
           {answer.source ? (
@@ -593,40 +601,19 @@ export function OneAnswerPinnablePseudoable({
           )}
         </p>
         {/* If both are max out, you'll have to delete an "otherPseudonativeAnswer" to re-access pseudo-answer. */}
-        {otherPseudonativeAnswersCount < DEFAULT_ANSWERS_LIMIT && (
+        {/* {otherPseudonativeAnswersCount < DEFAULT_ANSWERS_LIMIT && (
           <ButtonPseudoableForm answer={answer} />
+        )} */}
+        {/* If you're still allowed to pin */}
+        {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
+          <ButtonPinnableForm answer={answer} />
         )}
-      </div>
-    </>
-  );
-}
-
-function ButtonPseudoableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
-  const fetcher = useFetcher();
-
-  return (
-    <>
-      <fetcher.Form
-        action="/pseudo-answer"
-        method="post"
-        className="ms-2 flex items-center"
-      >
-        <input type="hidden" name="answerid" value={answer.id} />
-        <button
-          disabled={fetcher.state !== "idle"}
-          className={clsx(
-            "h-4 w-4 rounded-full bg-yellow-500 disabled:!bg-gray-500 disabled:hover:!bg-gray-500",
-            {
-              "hover:bg-emerald-300 dark:hover:bg-emerald-700":
-                answer.userQuestion.question.kind === "PSEUDO" &&
-                answer.userQuestion.kind === "PSEUDONATIVE",
-              "hover:bg-green-300 dark:hover:bg-green-700":
-                answer.userQuestion.question.kind === "PSEUDO" &&
-                answer.userQuestion.kind === "PSEUDONATIVEIRL",
-            }
+        {/* If you're only allowed to unpin */}
+        {pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
+          answer.userQuestion.isPinned === true && (
+            <ButtonPinnableForm answer={answer} />
           )}
-        />
-      </fetcher.Form>
+      </div>
     </>
   );
 }
