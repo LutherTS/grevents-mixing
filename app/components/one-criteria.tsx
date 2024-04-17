@@ -8,7 +8,6 @@ import { PageLinkDivless } from "./page-link";
 import {
   GlobalAnswerTypeByHand,
   PINNED_BY_USER_ANSWERS_LIMIT,
-  DEFAULT_ANSWERS_LIMIT,
   PINNED_FOR_SELF_ANSWERS_LIMIT,
 } from "~/librairies/subdata/answers";
 import { PINNED_BY_FRIEND_ANSWERS_LIMIT } from "~/librairies/subdata/userquestionfriends";
@@ -30,7 +29,6 @@ export type AnswerComponentRequired =
   | "OneAnswerRePinnableForSelf"
   | "OneAnswerRePinnable"
   | "OneAnswerPinnable"
-  | "OneAnswerPinnablePseudoable"
   | "OneAnswerModify"
   | "OneAnswerPinnableByFriend";
 
@@ -75,17 +73,6 @@ export function OneCriteria({
               answer={answer}
               pinnedAnswersForSelfCount={pinnedAnswersForSelfCount}
               pinnedAnswersCount={pinnedAnswersCount}
-            />
-          )}
-        {answerComponentRequired === "OneAnswerPinnablePseudoable" &&
-          typeof pinnedAnswersForSelfCount === "number" &&
-          typeof pinnedAnswersCount === "number" &&
-          typeof otherPseudonativeAnswersCount === "number" && (
-            <OneAnswerPinnablePseudoable
-              answer={answer}
-              pinnedAnswersForSelfCount={pinnedAnswersForSelfCount}
-              pinnedAnswersCount={pinnedAnswersCount}
-              otherPseudonativeAnswersCount={otherPseudonativeAnswersCount}
             />
           )}
         {answerComponentRequired === "OneAnswerModify" && (
@@ -558,62 +545,6 @@ function ButtonPinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
           )}
         />
       </fetcher.Form>
-    </>
-  );
-}
-
-export function OneAnswerPinnablePseudoable({
-  answer,
-  pinnedAnswersForSelfCount,
-  pinnedAnswersCount,
-}: {
-  answer: GlobalAnswerTypeByHand;
-  pinnedAnswersForSelfCount: number;
-  pinnedAnswersCount: number;
-  otherPseudonativeAnswersCount: number;
-}) {
-  return (
-    <>
-      <div className="mt-2 flex justify-center">
-        {/* If you're still allowed to pin for self */}
-        {pinnedAnswersForSelfCount < PINNED_FOR_SELF_ANSWERS_LIMIT && (
-          <ButtonPinnableForSelfForm answer={answer} />
-        )}
-        {/* If you're only allowed to unpin for self */}
-        {pinnedAnswersForSelfCount >= PINNED_FOR_SELF_ANSWERS_LIMIT &&
-          answer.userQuestion.isPinnedForSelf === true && (
-            <ButtonPinnableForSelfForm answer={answer} />
-          )}
-        <p>
-          {/* Adding a source is currently only available on customized criteria. */}
-          {answer.source ? (
-            <>
-              <PageLinkDivless
-                href={answer.source}
-                specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
-                specifiedTarget="_blank"
-              >
-                {answer.value}
-              </PageLinkDivless>
-            </>
-          ) : (
-            <>{answer.value}</>
-          )}
-        </p>
-        {/* If both are max out, you'll have to delete an "otherPseudonativeAnswer" to re-access pseudo-answer. */}
-        {/* {otherPseudonativeAnswersCount < DEFAULT_ANSWERS_LIMIT && (
-          <ButtonPseudoableForm answer={answer} />
-        )} */}
-        {/* If you're still allowed to pin */}
-        {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
-          <ButtonPinnableForm answer={answer} />
-        )}
-        {/* If you're only allowed to unpin */}
-        {pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
-          answer.userQuestion.isPinned === true && (
-            <ButtonPinnableForm answer={answer} />
-          )}
-      </div>
     </>
   );
 }

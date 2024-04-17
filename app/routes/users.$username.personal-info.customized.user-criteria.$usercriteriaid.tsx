@@ -163,11 +163,20 @@ export default function UserCriteriaPage() {
           selectContext="UserCriteria"
           answerComponentRequired="OneAnswerModify"
         />
-        {data.userQuestionAnswer.userQuestion.question.kind === "PSEUDO" && (
-          <>
-            <PseudoForm answer={data.userQuestionAnswer} />
-          </>
-        )}
+        {data.userQuestionAnswer.userQuestion.question.kind === "PSEUDO" &&
+          data.userQuestionAnswer.userQuestion.kind === "PSEUDONATIVE" &&
+          data.userPseudonativeIrlAnswersCount < DEFAULT_ANSWERS_LIMIT && (
+            <>
+              <PseudoForm answer={data.userQuestionAnswer} />
+            </>
+          )}
+        {data.userQuestionAnswer.userQuestion.question.kind === "PSEUDO" &&
+          data.userQuestionAnswer.userQuestion.kind === "PSEUDONATIVEIRL" &&
+          data.userPseudonativeNotIrlAnswersCount < DEFAULT_ANSWERS_LIMIT && (
+            <>
+              <PseudoForm answer={data.userQuestionAnswer} />
+            </>
+          )}
         {data.userQuestionAnswer.userQuestion.question.kind === "CUSTOM" && (
           <>
             <ManyContacts

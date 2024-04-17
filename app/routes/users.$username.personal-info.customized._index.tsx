@@ -167,7 +167,7 @@ export default function PersonalInfoCustomizedPage() {
           pinnedAnswersForSelfCount={data.userPinnedForSelfAnswersCount}
           pinnedAnswersCount={data.userPinnedAnswersCount}
           otherPseudonativeAnswersCount={data.userPseudonativeIrlAnswersCount}
-          answerComponentRequired="OneAnswerPinnablePseudoable"
+          answerComponentRequired="OneAnswerPinnable"
           label="Find your pseudonative criteria below"
           notLabel="No pseudonative criteria yet."
         />
@@ -179,7 +179,7 @@ export default function PersonalInfoCustomizedPage() {
           otherPseudonativeAnswersCount={
             data.userPseudonativeNotIrlAnswersCount
           }
-          answerComponentRequired="OneAnswerPinnablePseudoable"
+          answerComponentRequired="OneAnswerPinnable"
           label="Find your pseudonative irl criteria below"
           notLabel="No pseudonative irl criteria yet."
         />
