@@ -26,7 +26,7 @@ export function QueriedForm({
         <fieldset disabled={fetcher.state !== "idle"} className="space-y-4">
           <div>
             <label htmlFor="user-last">
-              <p className="inline">
+              <p className="inline-block">
                 Type the username of a user you are acquainted with.
               </p>
               <p className="inline-block">
@@ -38,7 +38,8 @@ export function QueriedForm({
               type="text"
               id="user-last"
               name="userlast"
-              placeholder={userLast ? userLast : "userlast"}
+              placeholder={userLast || "userlast"}
+              defaultValue={userLast || "userlast"}
             />
             {userLastMessage ? (
               <div id="user-last-error" aria-live="polite">
@@ -49,7 +50,7 @@ export function QueriedForm({
           {contact && (
             <div>
               <label htmlFor="rel-combo">
-                <p className="inline">
+                <p className="inline-block">
                   Type a relation combination between you and this user
                   you&apos;ve selected.
                 </p>
@@ -64,6 +65,7 @@ export function QueriedForm({
                 id="rel-combo"
                 name="relcombo"
                 placeholder={relCombo ? relCombo : "relcombo"}
+                defaultValue={relCombo || "relcombo"}
               />
               {relComboMessage ? (
                 <div id="rel-combo-error" aria-live="polite">
