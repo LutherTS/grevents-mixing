@@ -121,6 +121,7 @@ export function OneQuestion({
   return (
     <>
       <p className="mt-2">
+        {/* / native */}
         {answer.userQuestion.question.kind === "NATIVE" &&
           answer.userQuestion.kind === "NONE" && (
             <span className="text-violet-500">
@@ -142,12 +143,9 @@ export function OneQuestion({
                   </span>
                 </>
               )}
-              {/* <span className="font-semibold">
-                {answer.userQuestion.question.name}
-              </span>{" "} */}
-              {/* / native */}
             </span>
           )}
+        {/* / native irl */}
         {answer.userQuestion.question.kind === "NATIVEIRL" &&
           answer.userQuestion.kind === "NONE" && (
             <span className="text-purple-500">
@@ -169,9 +167,9 @@ export function OneQuestion({
                   </span>
                 </>
               )}
-              {/* / native irl */}
             </span>
           )}
+        {/* / pseudonative */}
         {answer.userQuestion.question.kind === "PSEUDO" &&
           answer.userQuestion.kind === "PSEUDONATIVE" && (
             <span className="text-green-500">
@@ -193,9 +191,9 @@ export function OneQuestion({
                   </span>
                 </>
               )}
-              {/* / pseudonative */}
             </span>
           )}
+        {/* / pseudonative irl */}
         {answer.userQuestion.question.kind === "PSEUDO" &&
           answer.userQuestion.kind === "PSEUDONATIVEIRL" && (
             <span className="text-emerald-500">
@@ -217,11 +215,9 @@ export function OneQuestion({
                   </span>
                 </>
               )}
-              {/* / pseudonative irl */}
             </span>
           )}
-        {/* no link, UserQuestionFriends counted...
-        ...now I no longer see a use for this. Except for ModifyCriteriaCustomized, which is about to get obsolete, but always UserCriteria */}
+        {/* custom, no link, UserQuestionFriends counted */}
         {answer.userQuestion.question.kind === "CUSTOM" &&
           answer.userQuestion.kind === "NONE" &&
           answer.userQuestion._count &&
@@ -240,7 +236,7 @@ export function OneQuestion({
               )}
             </span>
           )}
-        {/* no link, UserQuestionFriends not counted */}
+        {/* custom, no link, UserQuestionFriends not counted */}
         {answer.userQuestion.question.kind === "CUSTOM" &&
           answer.userQuestion.kind === "NONE" &&
           (selectContext === "QueriedPreview" ||
@@ -252,9 +248,7 @@ export function OneQuestion({
               / shared to you
             </span>
           )}
-        {/* link, UserQuestionFriends counted */}
-        {/* basically the only unused use case is: link, UserQuestionFriends not counted...
-        ...which now makes sense for all other criteria, and can be attributed directly on each about by excluding selectContext from Profile and Dashboard */}
+        {/* custom, link, UserQuestionFriends counted */}
         {answer.userQuestion.question.kind === "CUSTOM" &&
           answer.userQuestion.kind === "NONE" &&
           answer.userQuestion._count &&
@@ -263,22 +257,18 @@ export function OneQuestion({
             selectContext === "PersonalInfoCustomized") && (
             <PageLinkDivless
               href={`/users/${answer.user.username}/personal-info/customized/user-criteria/${answer.userQuestion.id}`}
-              specifiedClasses="inline-block underline"
+              specifiedClasses="inline-block underline text-lime-500 hover:text-lime-400 dark:hover:text-lime-600"
             >
-              <span className="text-lime-500 underline hover:text-lime-400 dark:hover:text-lime-600">
-                <span className="font-semibold">
-                  {answer.userQuestion.question.name}
-                </span>{" "}
-                {typeof answer.userQuestion._count.userQuestionFriends ===
-                  "number" &&
-                answer.userQuestion._count.userQuestionFriends >= 1 ? (
-                  <>
-                    / shared ({answer.userQuestion._count.userQuestionFriends})
-                  </>
-                ) : (
-                  <>/ not shared</>
-                )}
-              </span>
+              <span className="font-semibold">
+                {answer.userQuestion.question.name}
+              </span>{" "}
+              {typeof answer.userQuestion._count.userQuestionFriends ===
+                "number" &&
+              answer.userQuestion._count.userQuestionFriends >= 1 ? (
+                <>/ shared ({answer.userQuestion._count.userQuestionFriends})</>
+              ) : (
+                <>/ not shared</>
+              )}
             </PageLinkDivless>
           )}
       </p>
