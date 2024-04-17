@@ -136,16 +136,20 @@ export default function UserCriteriaPage() {
           selectContext="UserCriteria"
           answerComponentRequired="OneAnswerModify"
         />
-        <ManyContacts
-          contacts={data.userFriendsNotToUserQuestion}
-          answer={data.userQuestionAnswer}
-          contactComponentRequired="OneContactAddable"
-          label="Find your list of friend(s) to share to below"
-          notLabel="No remaining friends yet."
-        />
-        <ManyUserQuestionFriendsShared
-          userQuestionFriends={data.userQuestionFriends}
-        />
+        {data.userQuestionAnswer.userQuestion.question.kind === "CUSTOM" && (
+          <>
+            <ManyContacts
+              contacts={data.userFriendsNotToUserQuestion}
+              answer={data.userQuestionAnswer}
+              contactComponentRequired="OneContactAddable"
+              label="Find your list of friend(s) to share to below"
+              notLabel="No remaining friends yet."
+            />
+            <ManyUserQuestionFriendsShared
+              userQuestionFriends={data.userQuestionFriends}
+            />
+          </>
+        )}
       </div>
 
       <PageLink href={`../..`}>To Customized criteria</PageLink>
