@@ -17,8 +17,10 @@ import { selectContacts } from "~/librairies/subdata/contacts";
 export type SelectContext =
   | "Dashboard"
   | "PersonalInfo"
+  | "PersonalInfoStandardized"
   | "PersonalInfoCustomized"
   | "UserCriteria"
+  | "ModifyCriteriaStandardized" // bound for obsolescence
   | "ModifyCriteriaCustomized"
   | "QueriedPreview"
   | "Profile";
@@ -122,52 +124,113 @@ export function OneQuestion({
         {answer.userQuestion.question.kind === "NATIVE" &&
           answer.userQuestion.kind === "NONE" && (
             <span className="text-violet-500">
-              <span className="font-semibold">
+              {selectContext === "Dashboard" ||
+              selectContext === "PersonalInfo" ||
+              selectContext === "PersonalInfoStandardized" ? (
+                <>
+                  <PageLinkDivless
+                    href={`/users/${answer.user.username}/personal-info/customized/user-criteria/${answer.userQuestion.id}`}
+                    specifiedClasses="inline-block underline hover:text-violet-400 dark:hover:text-violet-600 font-semibold decoration-dotted"
+                  >
+                    {answer.userQuestion.question.name}
+                  </PageLinkDivless>
+                </>
+              ) : (
+                <>
+                  <span className="font-semibold">
+                    {answer.userQuestion.question.name}
+                  </span>
+                </>
+              )}
+              {/* <span className="font-semibold">
                 {answer.userQuestion.question.name}
-              </span>{" "}
+              </span>{" "} */}
               {/* / native */}
             </span>
           )}
         {answer.userQuestion.question.kind === "NATIVEIRL" &&
           answer.userQuestion.kind === "NONE" && (
             <span className="text-purple-500">
-              <span className="font-semibold">
-                {answer.userQuestion.question.name}
-              </span>{" "}
+              {selectContext === "Dashboard" ||
+              selectContext === "PersonalInfo" ||
+              selectContext === "PersonalInfoStandardized" ? (
+                <>
+                  <PageLinkDivless
+                    href={`/users/${answer.user.username}/personal-info/customized/user-criteria/${answer.userQuestion.id}`}
+                    specifiedClasses="inline-block underline hover:text-purple-400 dark:hover:text-purple-600 font-semibold decoration-dotted"
+                  >
+                    {answer.userQuestion.question.name}
+                  </PageLinkDivless>
+                </>
+              ) : (
+                <>
+                  <span className="font-semibold">
+                    {answer.userQuestion.question.name}
+                  </span>
+                </>
+              )}
               {/* / native irl */}
             </span>
           )}
         {answer.userQuestion.question.kind === "PSEUDO" &&
           answer.userQuestion.kind === "PSEUDONATIVE" && (
             <span className="text-green-500">
-              <span className="font-semibold">
-                {answer.userQuestion.question.name}
-              </span>{" "}
+              {selectContext === "Dashboard" ||
+              selectContext === "PersonalInfo" ||
+              selectContext === "PersonalInfoCustomized" ? (
+                <>
+                  <PageLinkDivless
+                    href={`/users/${answer.user.username}/personal-info/customized/user-criteria/${answer.userQuestion.id}`}
+                    specifiedClasses="inline-block underline hover:text-green-400 dark:hover:text-green-600 font-semibold decoration-dashed"
+                  >
+                    {answer.userQuestion.question.name}
+                  </PageLinkDivless>
+                </>
+              ) : (
+                <>
+                  <span className="font-semibold">
+                    {answer.userQuestion.question.name}
+                  </span>
+                </>
+              )}
               {/* / pseudonative */}
             </span>
           )}
         {answer.userQuestion.question.kind === "PSEUDO" &&
           answer.userQuestion.kind === "PSEUDONATIVEIRL" && (
             <span className="text-emerald-500">
-              <span className="font-semibold">
-                {answer.userQuestion.question.name}
-              </span>{" "}
+              {selectContext === "Dashboard" ||
+              selectContext === "PersonalInfo" ||
+              selectContext === "PersonalInfoCustomized" ? (
+                <>
+                  <PageLinkDivless
+                    href={`/users/${answer.user.username}/personal-info/customized/user-criteria/${answer.userQuestion.id}`}
+                    specifiedClasses="inline-block underline hover:text-emerald-400 dark:hover:text-emerald-600 font-semibold decoration-dashed"
+                  >
+                    {answer.userQuestion.question.name}
+                  </PageLinkDivless>
+                </>
+              ) : (
+                <>
+                  <span className="font-semibold">
+                    {answer.userQuestion.question.name}
+                  </span>
+                </>
+              )}
               {/* / pseudonative irl */}
             </span>
           )}
-        {/* no link, UserQuestionFriends counted */}
+        {/* no link, UserQuestionFriends counted...
+        ...now I no longer see a use for this. Except for ModifyCriteriaCustomized, which is about to get obsolete, but always UserCriteria */}
         {answer.userQuestion.question.kind === "CUSTOM" &&
           answer.userQuestion.kind === "NONE" &&
           answer.userQuestion._count &&
-          (selectContext === "Dashboard" ||
-            selectContext === "PersonalInfo" ||
-            selectContext === "UserCriteria" ||
+          (selectContext === "UserCriteria" ||
             selectContext === "ModifyCriteriaCustomized") && (
             <span className="text-lime-500">
               <span className="font-semibold">
                 {answer.userQuestion.question.name}
               </span>{" "}
-              {/* / custom{" "} */}
               {typeof answer.userQuestion._count.userQuestionFriends ===
                 "number" &&
               answer.userQuestion._count.userQuestionFriends >= 1 ? (
@@ -186,15 +249,18 @@ export function OneQuestion({
               <span className="font-semibold">
                 {answer.userQuestion.question.name}
               </span>{" "}
-              {/* / custom  */}/ shared to you
+              / shared to you
             </span>
           )}
         {/* link, UserQuestionFriends counted */}
-        {/* basically the only unused use case is: link, UserQuestionFriends not counted */}
+        {/* basically the only unused use case is: link, UserQuestionFriends not counted...
+        ...which now makes sense for all other criteria, and can be attributed directly on each about by excluding selectContext from Profile and Dashboard */}
         {answer.userQuestion.question.kind === "CUSTOM" &&
           answer.userQuestion.kind === "NONE" &&
           answer.userQuestion._count &&
-          selectContext === "PersonalInfoCustomized" && (
+          (selectContext === "Dashboard" ||
+            selectContext === "PersonalInfo" ||
+            selectContext === "PersonalInfoCustomized") && (
             <PageLinkDivless
               href={`/users/${answer.user.username}/personal-info/customized/user-criteria/${answer.userQuestion.id}`}
               specifiedClasses="inline-block underline"
@@ -203,7 +269,6 @@ export function OneQuestion({
                 <span className="font-semibold">
                   {answer.userQuestion.question.name}
                 </span>{" "}
-                {/* / custom{" "} */}
                 {typeof answer.userQuestion._count.userQuestionFriends ===
                   "number" &&
                 answer.userQuestion._count.userQuestionFriends >= 1 ? (

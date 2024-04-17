@@ -98,6 +98,7 @@ export default function ModifyCriteriaStandardizedPage() {
     <>
       <H1>
         Welcome to {data.user.appWideName}&apos;s Modify Criteria Standardized.
+        (Now obsolete.)
       </H1>
       <BackToDashboardLink
         href={`/users/${data.verifiedUser.username}/dashboard`}

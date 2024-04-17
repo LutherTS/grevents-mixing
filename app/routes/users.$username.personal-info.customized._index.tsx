@@ -163,6 +163,7 @@ export default function PersonalInfoCustomizedPage() {
       <div className="space-y-4 my-4">
         <ManyCriteria
           answers={data.userPseudonativeNotIrlAnswers}
+          selectContext="PersonalInfoCustomized"
           pinnedAnswersForSelfCount={data.userPinnedForSelfAnswersCount}
           pinnedAnswersCount={data.userPinnedAnswersCount}
           otherPseudonativeAnswersCount={data.userPseudonativeIrlAnswersCount}
@@ -172,6 +173,7 @@ export default function PersonalInfoCustomizedPage() {
         />
         <ManyCriteria
           answers={data.userPseudonativeIrlAnswers}
+          selectContext="PersonalInfoCustomized"
           pinnedAnswersForSelfCount={data.userPinnedForSelfAnswersCount}
           pinnedAnswersCount={data.userPinnedAnswersCount}
           otherPseudonativeAnswersCount={
@@ -192,10 +194,10 @@ export default function PersonalInfoCustomizedPage() {
         />
       </div>
 
-      <PageLink href={`modify-criteria`}>Modify</PageLink>
+      {/* <PageLink href={`modify-criteria`}>Modify</PageLink> */}
       <PageLink href={`add-criteria`}>Add customized criteria</PageLink>
       <PageLink href={`..`}>To Personal Info</PageLink>
-      <PageLink href={`../standardized`}>To Standardized criteria</PageLink>
+      <PageLink href={`../standardized`}>To Standardized Criteria</PageLink>
     </>
   );
 }

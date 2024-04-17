@@ -367,6 +367,7 @@ export const selectUserCustomAnswer = {
     select: {
       id: true,
       kind: true,
+      state: true,
       question: {
         select: {
           name: true,
@@ -404,7 +405,7 @@ export function whereAnswerByUserQuestionIDAndUserID(
     userId,
     state: "LIVE",
     userQuestion: {
-      state: "LIVE",
+      OR: [{ state: "LIVE" }, { state: "HIDDEN" }],
       question: {
         state: "LIVE",
       },

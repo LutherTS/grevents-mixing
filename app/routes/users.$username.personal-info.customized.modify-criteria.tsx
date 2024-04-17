@@ -99,6 +99,7 @@ export default function ModifyCriteriaCustomizedPage() {
     <>
       <H1>
         Welcome to {data.user.appWideName}&apos;s Modify Criteria Customized.
+        (Now obsolete.)
       </H1>
       <BackToDashboardLink
         href={`/users/${data.verifiedUser.username}/dashboard`}
