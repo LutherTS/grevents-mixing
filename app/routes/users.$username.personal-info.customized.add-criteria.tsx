@@ -7,15 +7,11 @@ import {
 } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
-import {
-  CustomAnswerForm,
-  PseudonativeIrlAnswerForm,
-  PseudonativeNotIrlAnswerForm,
-} from "~/components/answer-forms";
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
 import { LinkButtonOnClick } from "~/components/link-button";
 import { PageLink } from "~/components/page-link";
+import { PaginatedCustomizedAnswerForms } from "~/components/paginated-answer-forms";
 import { SignOutForm } from "~/components/sign-out-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import {
@@ -116,13 +112,13 @@ export default function AddCriteriaCustomizedPage() {
       {data.verifiedUser && <SignOutForm />}
 
       <div className="space-y-4 my-4">
-        <PseudonativeNotIrlAnswerForm
-          answerCount={data.userPseudonativeNotIrlAnswersCount}
+        <PaginatedCustomizedAnswerForms
+          pseudonativeNotIrlAnswersCount={
+            data.userPseudonativeNotIrlAnswersCount
+          }
+          pseudonativeIrlAnswersCount={data.userPseudonativeIrlAnswersCount}
+          customAnswersCount={data.userCustomAnswersCount}
         />
-        <PseudonativeIrlAnswerForm
-          answerCount={data.userPseudonativeIrlAnswersCount}
-        />
-        <CustomAnswerForm answerCount={data.userCustomAnswersCount} />
       </div>
 
       <PageLink href={`..`}>Cancel</PageLink>
