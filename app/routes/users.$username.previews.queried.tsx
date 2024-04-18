@@ -114,7 +114,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const userLast = url.searchParams.get("userlast") || "";
   let relCombo = url.searchParams.get("relcombo") || "";
 
-  if (userLast === "" && relCombo === "") {
+  if (userLast === "") {
     return json({
       verifiedUser,
       user,
