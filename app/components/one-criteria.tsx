@@ -118,7 +118,7 @@ export function OneQuestion({
               selectContext === "PersonalInfoStandardized" ? (
                 <>
                   <PageLinkDivless
-                    href={`/users/${answer.user.username}/personal-info/customized/user-criteria/${answer.userQuestion.id}`}
+                    href={`/users/${answer.user.username}/personal-info/user-criteria/${answer.userQuestion.id}`}
                     specifiedClasses="inline-block underline hover:text-violet-400 dark:hover:text-violet-600 font-semibold decoration-dotted"
                   >
                     {answer.userQuestion.question.name}
@@ -142,7 +142,7 @@ export function OneQuestion({
               selectContext === "PersonalInfoStandardized" ? (
                 <>
                   <PageLinkDivless
-                    href={`/users/${answer.user.username}/personal-info/customized/user-criteria/${answer.userQuestion.id}`}
+                    href={`/users/${answer.user.username}/personal-info/user-criteria/${answer.userQuestion.id}`}
                     specifiedClasses="inline-block underline hover:text-purple-400 dark:hover:text-purple-600 font-semibold decoration-dotted"
                   >
                     {answer.userQuestion.question.name}
@@ -166,7 +166,7 @@ export function OneQuestion({
               selectContext === "PersonalInfoCustomized" ? (
                 <>
                   <PageLinkDivless
-                    href={`/users/${answer.user.username}/personal-info/customized/user-criteria/${answer.userQuestion.id}`}
+                    href={`/users/${answer.user.username}/personal-info/user-criteria/${answer.userQuestion.id}`}
                     specifiedClasses="inline-block underline hover:text-green-400 dark:hover:text-green-600 font-semibold decoration-dashed"
                   >
                     {answer.userQuestion.question.name}
@@ -190,7 +190,7 @@ export function OneQuestion({
               selectContext === "PersonalInfoCustomized" ? (
                 <>
                   <PageLinkDivless
-                    href={`/users/${answer.user.username}/personal-info/customized/user-criteria/${answer.userQuestion.id}`}
+                    href={`/users/${answer.user.username}/personal-info/user-criteria/${answer.userQuestion.id}`}
                     specifiedClasses="inline-block underline hover:text-emerald-400 dark:hover:text-emerald-600 font-semibold decoration-dashed"
                   >
                     {answer.userQuestion.question.name}
@@ -244,7 +244,7 @@ export function OneQuestion({
             selectContext === "PersonalInfo" ||
             selectContext === "PersonalInfoCustomized") && (
             <PageLinkDivless
-              href={`/users/${answer.user.username}/personal-info/customized/user-criteria/${answer.userQuestion.id}`}
+              href={`/users/${answer.user.username}/personal-info/user-criteria/${answer.userQuestion.id}`}
               specifiedClasses="inline-block underline text-lime-500 hover:text-lime-400 dark:hover:text-lime-600"
             >
               <span className="font-semibold">
