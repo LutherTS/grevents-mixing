@@ -12,6 +12,7 @@ import {
 } from "~/librairies/subdata/answers";
 import { PINNED_BY_FRIEND_ANSWERS_LIMIT } from "~/librairies/subdata/userquestionfriends";
 import { selectContacts } from "~/librairies/subdata/contacts";
+import { FormButton } from "./form-button";
 
 export type SelectContext =
   | "Dashboard"
@@ -627,15 +628,24 @@ function OneAnswerModifyForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
             ))}
           </div>
         ) : null}
+        {answer.userQuestion.question.kind === "NATIVE" &&
+        answer.userQuestion.question.name === "Email address" ? (
+          <>
+            {/* Currently necessary to send the full form via Enter */}
+            <button type="submit" className="hidden">
+              Submit
+            </button>
+          </>
+        ) : (
+          <>
+            <FormButton>Modify criteria</FormButton>
+          </>
+        )}
         {fetcher.data?.message ? (
           <div id={`${answer.id}-form-error`} aria-live="polite">
             <p className="mt-2 text-red-500">{fetcher.data.message}</p>
           </div>
         ) : null}
-        {/* Currently necessary to send the full form via Enter */}
-        <button type="submit" className="hidden">
-          Submit
-        </button>
       </fetcher.Form>
     </>
   );

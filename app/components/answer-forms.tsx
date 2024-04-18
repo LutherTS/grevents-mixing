@@ -4,6 +4,7 @@ import { JsonifyObject } from "type-fest/source/jsonify";
 
 import { DEFAULT_ANSWERS_LIMIT } from "~/librairies/subdata/answers";
 import { selectUnansweredNativeQuestions } from "~/librairies/subdata/questions";
+import { FormButton } from "./form-button";
 
 type CreateStardardizedAnswerByHand = JsonifyObject<{
   errors?: {
@@ -81,6 +82,7 @@ export function NativeNotIrlAnswerForm({
               ))}
             </div>
           ) : null}
+          <FormButton>Add criteria</FormButton>
           {fetcher.data?.message ? (
             <div id="native-not-irl-answer-form-error" aria-live="polite">
               <p className="mt-2 text-red-500">{fetcher.data.message}</p>
@@ -160,6 +162,7 @@ export function NativeIrlAnswerForm({
               ))}
             </div>
           ) : null}
+          <FormButton>Add criteria</FormButton>
           {fetcher.data?.message ? (
             <div id="native-irl-answer-form-error" aria-live="polite">
               <p className="mt-2 text-red-500">{fetcher.data.message}</p>
@@ -324,15 +327,12 @@ export function PseudonativeNotIrlAnswerForm({
               ))}
             </div>
           ) : null}
+          <FormButton>Add criteria</FormButton>
           {fetcher.data?.message ? (
             <div id="pseudonative-not-irl-answer-form-error" aria-live="polite">
               <p className="mt-2 text-red-500">{fetcher.data.message}</p>
             </div>
           ) : null}
-          {/* Currently necessary to send the full form via Enter */}
-          <button type="submit" className="hidden">
-            Submit
-          </button>
         </fieldset>
       </fetcher.Form>
     </>
@@ -419,15 +419,12 @@ export function PseudonativeIrlAnswerForm({
               ))}
             </div>
           ) : null}
+          <FormButton>Add criteria</FormButton>
           {fetcher.data?.message ? (
             <div id="pseudonative-irl-answer-form-error" aria-live="polite">
               <p className="mt-2 text-red-500">{fetcher.data.message}</p>
             </div>
           ) : null}
-          {/* Currently necessary to send the full form via Enter */}
-          <button type="submit" className="hidden">
-            Submit
-          </button>
         </fieldset>
       </fetcher.Form>
     </>
@@ -510,15 +507,12 @@ export function CustomAnswerForm({ answerCount }: { answerCount: number }) {
               ))}
             </div>
           ) : null}
+          <FormButton>Add criteria</FormButton>
           {fetcher.data?.message ? (
             <div id="custom-answer-form-error" aria-live="polite">
               <p className="mt-2 text-red-500">{fetcher.data.message}</p>
             </div>
           ) : null}
-          {/* Currently necessary to send the full form via Enter */}
-          <button type="submit" className="hidden">
-            Submit
-          </button>
         </fieldset>
       </fetcher.Form>
     </>
