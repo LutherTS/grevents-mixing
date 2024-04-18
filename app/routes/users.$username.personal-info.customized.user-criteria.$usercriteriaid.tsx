@@ -193,7 +193,14 @@ export default function UserCriteriaPage() {
         )}
       </div>
 
-      <PageLink href={`../..`}>To Customized criteria</PageLink>
+      {(data.userQuestionAnswer.userQuestion.question.kind === "NATIVE" ||
+        data.userQuestionAnswer.userQuestion.question.kind === "NATIVEIRL") && (
+        <PageLink href={`../..`}>To Standardized criteria</PageLink>
+      )}
+      {(data.userQuestionAnswer.userQuestion.question.kind === "PSEUDO" ||
+        data.userQuestionAnswer.userQuestion.question.kind === "CUSTOM") && (
+        <PageLink href={`../..`}>To Customized criteria</PageLink>
+      )}
       <PageLink href={`../../..`}>To Personal Info</PageLink>
     </>
   );
