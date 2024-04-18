@@ -139,7 +139,19 @@ export function OneUserQuestionFriendUnpinnable({
             pathname={pathname}
             userQuestionFriend={userQuestionFriend}
           />
-          <p>{userQuestionFriend.userQuestion.answer?.value}</p>
+          {userQuestionFriend.userQuestion.answer?.source ? (
+            <>
+              <PageLinkDivless
+                href={userQuestionFriend.userQuestion.answer?.source}
+                specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+                specifiedTarget="_blank"
+              >
+                {userQuestionFriend.userQuestion.answer?.value}
+              </PageLinkDivless>
+            </>
+          ) : (
+            <>{userQuestionFriend.userQuestion.answer?.value}</>
+          )}
           <ButtonRePinnableByFriendForm
             pathname={pathname}
             userQuestionFriend={userQuestionFriend}

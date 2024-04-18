@@ -89,6 +89,7 @@ export const selectUserQuestionFriendsAnswers = {
       answer: {
         select: {
           value: true,
+          source: true,
           id: true,
           user: {
             select: {
