@@ -38,7 +38,6 @@ export function OneCriteria({
   selectContext,
   pinnedAnswersForSelfCount,
   pinnedAnswersCount,
-  otherPseudonativeAnswersCount,
   answerComponentRequired,
   contact,
   answersPinnedbyFriendAnswersCount,
@@ -295,6 +294,9 @@ export function OneAnswer({ answer }: { answer: GlobalAnswerTypeByHand }) {
   );
 }
 
+/* NOTE:
+There's no two ways around this, I need this button flow to remain and to be corrected, alternatives simply do not look the same.
+ */
 export function OneAnswerRePinnableForSelf({
   answer,
 }: {
@@ -311,7 +313,6 @@ export function OneAnswerRePinnableForSelf({
               : "text-inherit"
           }
         >
-          {/* Adding a source is currently only available on customized criteria. */}
           {answer.source ? (
             <>
               <PageLinkDivless
@@ -404,7 +405,6 @@ export function OneAnswerRePinnable({
               : "text-inherit"
           }
         >
-          {/* Adding a source is currently only available on customized criteria. */}
           {answer.source ? (
             <>
               <PageLinkDivless
@@ -493,7 +493,6 @@ export function OneAnswerPinnable({
               : "text-inherit"
           }
         >
-          {/* Adding a source is currently only available on customized criteria. */}
           {answer.source ? (
             <>
               <PageLinkDivless
@@ -775,7 +774,6 @@ export function OneAnswerPinnableByFriend({
           <ButtonPinnableByFriendForm answer={answer} contact={contact} />
         )}
         <p>
-          {/* Adding a source is currently only available on customized criteria. */}
           {answer.source ? (
             <>
               <PageLinkDivless
