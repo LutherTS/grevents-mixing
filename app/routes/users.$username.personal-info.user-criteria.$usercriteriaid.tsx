@@ -178,7 +178,8 @@ export default function UserCriteriaPage() {
             </>
           )}
         {data.userQuestionAnswer.userQuestion.question.kind === "CUSTOM" && (
-          <>
+          <div className="pt-2 space-y-4">
+            {/* spacing to accomodate for new button Modify criteria */}
             <ManyContacts
               contacts={data.userFriendsNotToUserQuestion}
               answer={data.userQuestionAnswer}
@@ -189,11 +190,10 @@ export default function UserCriteriaPage() {
             <ManyUserQuestionFriendsShared
               userQuestionFriends={data.userQuestionFriends}
             />
-          </>
+          </div>
         )}
       </div>
 
-      {/* All links below to change after new routing. */}
       {(data.userQuestionAnswer.userQuestion.question.kind === "NATIVE" ||
         data.userQuestionAnswer.userQuestion.question.kind === "NATIVEIRL") && (
         <PageLink href={`../../standardized`}>

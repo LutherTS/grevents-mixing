@@ -638,7 +638,9 @@ function OneAnswerModifyForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
           </>
         ) : (
           <>
-            <FormButton>Modify criteria</FormButton>
+            <FormButton specifiedClasses="mt-4 w-full max-w-[40ch] rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-400 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-blue-600 dark:disabled:hover:!bg-gray-500">
+              Modify criteria
+            </FormButton>
           </>
         )}
         {fetcher.data?.message ? (
@@ -711,15 +713,14 @@ function OneAnswerModifySourcedForm({
             ))}
           </div>
         ) : null}
+        <FormButton specifiedClasses="mt-4 w-full max-w-[40ch] rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-400 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-blue-600 dark:disabled:hover:!bg-gray-500">
+          Modify criteria
+        </FormButton>
         {fetcher.data?.message ? (
           <div id={`${answer.id}-form-error`} aria-live="polite">
             <p className="mt-2 text-red-500">{fetcher.data.message}</p>
           </div>
         ) : null}
-        {/* Currently necessary to send the full form via Enter */}
-        <button type="submit" className="hidden">
-          Submit
-        </button>
       </fetcher.Form>
     </>
   );
