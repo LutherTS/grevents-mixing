@@ -396,8 +396,10 @@ function ButtonRePinnableForSelfForm({
 
 function LinkButtonPinnableForSelfForm({
   answer,
+  pinnedAnswersForSelfCount,
 }: {
   answer: GlobalAnswerTypeByHand;
+  pinnedAnswersForSelfCount?: number;
 }) {
   const fetcher = useFetcher();
 
@@ -410,7 +412,12 @@ function LinkButtonPinnableForSelfForm({
       >
         <input type="hidden" name="answerid" value={answer.id} />
         <button
-          disabled={fetcher.state !== "idle"}
+          disabled={
+            fetcher.state !== "idle" ||
+            (typeof pinnedAnswersForSelfCount === "number" &&
+              pinnedAnswersForSelfCount >= PINNED_FOR_SELF_ANSWERS_LIMIT &&
+              answer.userQuestion.isPinnedForSelf === false)
+          }
           className={clsx(
             "disabled:!text-gray-500 disabled:hover:!text-gray-500",
             {
@@ -463,7 +470,7 @@ export function OneAnswerRePinnable({
   return (
     <>
       <div className="mt-2 flex justify-center">
-        <ButtonUnpinnableForm answer={answer} />
+        {/* <ButtonUnpinnableForm answer={answer} /> */}
         <p
           className={
             answer.userQuestion.state === "HIDDEN"
@@ -485,8 +492,12 @@ export function OneAnswerRePinnable({
             <>{answer.value}</>
           )}
         </p>
-        <ButtonRePinnableForm answer={answer} />
+        {/* <ButtonRePinnableForm answer={answer} /> */}
       </div>
+      <p className="mt-2">
+        <LinkButtonPinnableForm answer={answer} /> &nbsp;/&nbsp;{" "}
+        <LinkButtonRePinnableForm answer={answer} />
+      </p>
     </>
   );
 }
@@ -531,6 +542,66 @@ function ButtonRePinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
   );
 }
 
+function LinkButtonPinnableForm({
+  answer,
+  pinnedAnswersCount,
+}: {
+  answer: GlobalAnswerTypeByHand;
+  pinnedAnswersCount?: number;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form action="/pin-answer" method="post" className="inline">
+        <input type="hidden" name="answerid" value={answer.id} />
+        <button
+          disabled={
+            fetcher.state !== "idle" ||
+            (typeof pinnedAnswersCount === "number" &&
+              pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
+              answer.userQuestion.isPinned === false)
+          }
+          className={clsx(
+            "disabled:!text-gray-500 disabled:hover:!text-gray-500",
+            {
+              "text-cyan-500 hover:text-pink-300 dark:hover:text-pink-700":
+                answer.userQuestion.isPinned === true,
+              "text-pink-500 hover:text-cyan-300 dark:hover:text-cyan-700":
+                answer.userQuestion.isPinned === false,
+            }
+          )}
+        >
+          {answer.userQuestion.isPinned === true && <>Unpin</>}
+          {answer.userQuestion.isPinned === false && <>Pin</>}
+        </button>
+      </fetcher.Form>
+    </>
+  );
+}
+
+function LinkButtonRePinnableForm({
+  answer,
+}: {
+  answer: GlobalAnswerTypeByHand;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form action="/re-pin-answer" method="post" className="inline">
+        <input type="hidden" name="answerid" value={answer.id} />
+        <button
+          disabled={fetcher.state !== "idle"}
+          className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-indigo-500 hover:text-indigo-300 dark:hover:text-indigo-700"
+        >
+          Repin
+        </button>
+      </fetcher.Form>
+    </>
+  );
+}
+
 export function OneAnswerPinnable({
   answer,
   pinnedAnswersForSelfCount,
@@ -544,14 +615,14 @@ export function OneAnswerPinnable({
     <>
       <div className="mt-2 flex justify-center">
         {/* If you're still allowed to pin for self */}
-        {pinnedAnswersForSelfCount < PINNED_FOR_SELF_ANSWERS_LIMIT && (
+        {/* {pinnedAnswersForSelfCount < PINNED_FOR_SELF_ANSWERS_LIMIT && (
           <ButtonPinnableForSelfForm answer={answer} />
-        )}
+        )} */}
         {/* If you're only allowed to unpin for self */}
-        {pinnedAnswersForSelfCount >= PINNED_FOR_SELF_ANSWERS_LIMIT &&
+        {/* {pinnedAnswersForSelfCount >= PINNED_FOR_SELF_ANSWERS_LIMIT &&
           answer.userQuestion.isPinnedForSelf === true && (
             <ButtonPinnableForSelfForm answer={answer} />
-          )}
+          )} */}
         <p
           className={
             answer.userQuestion.state === "HIDDEN"
@@ -574,15 +645,26 @@ export function OneAnswerPinnable({
           )}
         </p>
         {/* If you're still allowed to pin */}
-        {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
+        {/* {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
           <ButtonPinnableForm answer={answer} />
-        )}
+        )} */}
         {/* If you're only allowed to unpin */}
-        {pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
+        {/* {pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
           answer.userQuestion.isPinned === true && (
             <ButtonPinnableForm answer={answer} />
-          )}
+          )} */}
       </div>
+      <p className="mt-2">
+        <LinkButtonPinnableForm
+          answer={answer}
+          pinnedAnswersCount={pinnedAnswersCount}
+        />{" "}
+        &nbsp;/&nbsp;{" "}
+        <LinkButtonPinnableForSelfForm
+          answer={answer}
+          pinnedAnswersForSelfCount={pinnedAnswersForSelfCount}
+        />
+      </p>
     </>
   );
 }
