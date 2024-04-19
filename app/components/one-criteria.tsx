@@ -296,6 +296,7 @@ export function OneAnswer({ answer }: { answer: GlobalAnswerTypeByHand }) {
 
 /* NOTE:
 There's no two ways around this, I need this button flow to remain and to be corrected, alternatives simply do not look the same.
+...Or since this is purely functional, I'll just have the actions wrote down below. 
  */
 export function OneAnswerRePinnableForSelf({
   answer,
@@ -305,7 +306,7 @@ export function OneAnswerRePinnableForSelf({
   return (
     <>
       <div className="mt-2 flex justify-center">
-        <ButtonPinnableForSelfForm answer={answer} />
+        {/* <ButtonPinnableForSelfForm answer={answer} /> */}
         <p
           className={
             answer.userQuestion.state === "HIDDEN"
@@ -327,8 +328,12 @@ export function OneAnswerRePinnableForSelf({
             <>{answer.value}</>
           )}
         </p>
-        <ButtonRePinnableForSelfForm answer={answer} />
+        {/* <ButtonRePinnableForSelfForm answer={answer} /> */}
       </div>
+      <p className="mt-2">
+        <LinkButtonPinnableForSelfForm answer={answer} /> &nbsp;/&nbsp;{" "}
+        <LinkButtonRePinnableForSelfForm answer={answer} />
+      </p>
     </>
   );
 }
@@ -384,6 +389,67 @@ function ButtonRePinnableForSelfForm({
           disabled={fetcher.state !== "idle"}
           className="h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500 bg-indigo-500 hover:bg-indigo-300 dark:hover:bg-indigo-700"
         />
+      </fetcher.Form>
+    </>
+  );
+}
+
+function LinkButtonPinnableForSelfForm({
+  answer,
+}: {
+  answer: GlobalAnswerTypeByHand;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form
+        action="/pin-answer-for-self"
+        method="post"
+        className="inline"
+      >
+        <input type="hidden" name="answerid" value={answer.id} />
+        <button
+          disabled={fetcher.state !== "idle"}
+          className={clsx(
+            "disabled:!text-gray-500 disabled:hover:!text-gray-500",
+            {
+              "text-sky-500 hover:text-rose-300 dark:hover:text-rose-700":
+                answer.userQuestion.isPinnedForSelf === true,
+              "text-rose-500 hover:text-sky-300 dark:hover:text-sky-700":
+                answer.userQuestion.isPinnedForSelf === false,
+            }
+          )}
+        >
+          {answer.userQuestion.isPinnedForSelf === true && <>Unpin for self</>}
+          {answer.userQuestion.isPinnedForSelf === false && <>Pin for self</>}
+        </button>
+      </fetcher.Form>
+    </>
+  );
+}
+
+function LinkButtonRePinnableForSelfForm({
+  answer,
+}: {
+  answer: GlobalAnswerTypeByHand;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form
+        action="/re-pin-answer-for-self"
+        method="post"
+        className="inline"
+      >
+        <input type="hidden" name="answerid" value={answer.id} />
+        <button
+          disabled={fetcher.state !== "idle"}
+          className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-indigo-500 hover:text-indigo-300 dark:hover:text-indigo-700"
+        >
+          Repin for self
+        </button>
       </fetcher.Form>
     </>
   );
