@@ -7,7 +7,7 @@ import {
 } from "@remix-run/react";
 
 import { H1 } from "~/components/h1";
-import { TextButtonOnClick } from "~/components/link-button";
+import { TextButtonOnClick } from "~/components/text-button";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
 import { getVerifiedUser } from "~/utilities/server/session.server";

@@ -17,7 +17,7 @@ import tailwindStyleSheet from "~/tailwind.css";
 import { Main } from "./components/main";
 import { Wrapper } from "./components/wrapper";
 import { PageLink } from "./components/page-link";
-import { TextButtonOnClick } from "./components/link-button";
+import { TextButtonOnClick } from "./components/text-button";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: radixStyleSheet },

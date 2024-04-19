@@ -6,7 +6,7 @@ import { ManyUserQuestionFriendsPinned } from "./many-userquestionfriends";
 import { selectUserQuestionFriendsAnswers } from "~/librairies/subdata/userquestionfriends";
 import { selectAnswers } from "~/librairies/subdata/answers";
 import { selectContacts } from "~/librairies/subdata/contacts";
-import { TextButton } from "./link-button";
+import { TextButton } from "./text-button";
 import { PageLink } from "./page-link";
 
 // contact. is user

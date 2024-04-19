@@ -9,7 +9,7 @@ import {
 import invariant from "tiny-invariant";
 
 import { H1 } from "~/components/h1";
-import { TextButtonOnClick } from "~/components/link-button";
+import { TextButtonOnClick } from "~/components/text-button";
 import { ManyCriteria } from "~/components/many-criteria";
 import { ManyUserQuestionFriendsPinned } from "~/components/many-userquestionfriends";
 import { PageLink, PageLinkDivless } from "~/components/page-link";

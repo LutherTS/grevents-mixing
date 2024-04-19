@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Prisma } from "@prisma/client";
 
-import { TextButtonOnClick } from "./link-button";
+import { TextButtonOnClick } from "./text-button";
 import {
   CustomAnswerForm,
   NativeIrlAnswerForm,

@@ -13,7 +13,7 @@ import { DeactivateReactivateForms } from "~/components/deactivate-forms";
 import { EmailForm } from "~/components/email-form";
 import { FriendCodeForm } from "~/components/friend-code-form";
 import { H1 } from "~/components/h1";
-import { TextButtonOnClick } from "~/components/link-button";
+import { TextButtonOnClick } from "~/components/text-button";
 import { PageLink } from "~/components/page-link";
 import { PasswordForm } from "~/components/password-form";
 import { SignOutForm } from "~/components/sign-out-form";

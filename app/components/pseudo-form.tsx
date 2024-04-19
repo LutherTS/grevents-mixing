@@ -1,7 +1,7 @@
 import { useFetcher } from "@remix-run/react";
 import { Prisma } from "@prisma/client";
 
-import { TextButton } from "./link-button";
+import { TextButton } from "./text-button";
 import { selectUserQuestionAnswer } from "~/librairies/subdata/answers";
 
 export function PseudoForm({

@@ -4,7 +4,7 @@ import _ from "lodash";
 
 import { selectContacts } from "~/librairies/subdata/contacts";
 import { OneContact, OneContactAddable } from "./one-contact";
-import { TextButtonOnClick } from "./link-button";
+import { TextButtonOnClick } from "./text-button";
 import { selectUserQuestionAnswer } from "~/librairies/subdata/answers";
 
 export function ManyContacts({

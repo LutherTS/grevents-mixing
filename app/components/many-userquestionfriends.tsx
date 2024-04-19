@@ -6,7 +6,7 @@ import {
   selectUserQuestionFriends,
   selectUserQuestionFriendsAnswers,
 } from "~/librairies/subdata/userquestionfriends";
-import { TextButtonOnClick } from "./link-button";
+import { TextButtonOnClick } from "./text-button";
 import {
   OneUserQuestionFriendRemovable,
   OneUserQuestionFriendUnpinnable,

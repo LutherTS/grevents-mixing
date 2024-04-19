@@ -2,7 +2,7 @@ import { useState } from "react";
 import _ from "lodash";
 import { Prisma } from "@prisma/client";
 
-import { TextButtonOnClick } from "./link-button";
+import { TextButtonOnClick } from "./text-button";
 import { UnionAnswerType } from "~/librairies/subdata/answers";
 import {
   AnswerComponentRequired,

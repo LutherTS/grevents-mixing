@@ -17,7 +17,7 @@ import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import { ManyCriteria } from "~/components/many-criteria";
 import { StatusPersonalInfoToasts } from "~/components/status-personal-info-toasts";
-import { TextButtonOnClick } from "~/components/link-button";
+import { TextButtonOnClick } from "~/components/text-button";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   invariant(params.username, "Expected params.username");

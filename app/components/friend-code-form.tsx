@@ -1,6 +1,6 @@
 import { useFetcher } from "@remix-run/react";
 
-import { TextButton } from "./link-button";
+import { TextButton } from "./text-button";
 
 export function FriendCodeForm() {
   const fetcher = useFetcher();

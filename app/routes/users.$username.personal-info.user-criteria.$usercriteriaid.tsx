@@ -9,7 +9,7 @@ import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
-import { TextButtonOnClick } from "~/components/link-button";
+import { TextButtonOnClick } from "~/components/text-button";
 import { ManyContacts } from "~/components/many-contacts";
 import { ManyUserQuestionFriendsShared } from "~/components/many-userquestionfriends";
 import { OneCriteria } from "~/components/one-criteria";
