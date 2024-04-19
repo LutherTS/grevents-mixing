@@ -164,7 +164,6 @@ export default function PersonalInfoStandardizedPage() {
         />
       </div>
 
-      {/* <PageLink href={`modify-criteria`}>Modify</PageLink> */}
       <PageLink href={`add-criteria`}>Add standardized criteria</PageLink>
       <PageLink href={`..`}>To Personal Info</PageLink>
       <PageLink href={`../customized`}>To Customized Criteria</PageLink>

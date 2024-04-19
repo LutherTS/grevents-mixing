@@ -4,7 +4,7 @@ import { redirect } from "@remix-run/node";
 import { updateDeactivateUserById } from "~/librairies/changes/users";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
-// could have been one route but having two routes saves me one database round trip at this time
+// could have been one common route with reactivate-profile but having two routes saves me one database round trip at this time
 export const action = async ({ request }: ActionFunctionArgs) => {
   const verifiedUser = await getVerifiedUser(request);
 

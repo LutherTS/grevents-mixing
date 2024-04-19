@@ -4,6 +4,7 @@ import { prisma } from "~/utilities/server/db.server";
 import { selectVerifiedUser } from "../subdata/users";
 
 // if statusTitle is undefined, resetUserStatusTitleById
+// could be one updateUserStatusByIdAndStatus
 export async function updateUserStatusTitleById(
   id: string,
   statusTitle?: string

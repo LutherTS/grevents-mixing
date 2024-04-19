@@ -17,3 +17,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export const loader = async () => redirect("/");
+
+/*
+could be one updateUserStatusByIdAndStatus function and one conditional reset-user-status route
+*/

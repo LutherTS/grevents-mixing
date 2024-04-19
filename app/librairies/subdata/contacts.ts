@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+
 import {
   DEFAULT_USERS_ORDER_BY_1ST,
   DEFAULT_USERS_ORDER_BY_2ND,

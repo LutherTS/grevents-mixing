@@ -85,8 +85,8 @@ type QueriedPreviewLoaderByHand = {
   relComboMessage?: string;
 };
 
-// This is going to be weird, or rather unexpected...
-// But all validations will have to be made from the loader.
+// This is may be weird, or rather unexpected...
+// But all validations are made from the loader.
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   invariant(params.username, "Expected params.username");
 

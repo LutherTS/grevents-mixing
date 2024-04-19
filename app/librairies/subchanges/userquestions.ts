@@ -42,6 +42,7 @@ export function updateUserQuestionAndAnswer(
   };
 }
 
+// same as createUserQuestionAndAnswer with source added
 export function createSourcedUserQuestionAndAnswer(
   source: string, // the only property added
   userId: string,
@@ -65,6 +66,7 @@ export function createSourcedUserQuestionAndAnswer(
   };
 }
 
+// same as updateUserQuestionAndAnswer with source added
 export function updateSourcedUserQuestionAndAnswer(
   source: string, // the only property added
   userId: string,
