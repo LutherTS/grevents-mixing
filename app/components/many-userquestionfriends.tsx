@@ -6,7 +6,7 @@ import {
   selectUserQuestionFriends,
   selectUserQuestionFriendsAnswers,
 } from "~/librairies/subdata/userquestionfriends";
-import { LinkButtonOnClick } from "./link-button";
+import { TextButtonOnClick } from "./link-button";
 import {
   OneUserQuestionFriendRemovable,
   OneUserQuestionFriendUnpinnable,
@@ -92,19 +92,19 @@ function ManyPaginatedUserQuestionFriendsShared({
         })}
       </ol>
       <p className="mt-2">
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handlePreviousPosition}
           disabled={position === 0}
         >
           Previous
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
         &nbsp;/&nbsp;
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handleNextPosition}
           disabled={position === chunkedUserQuestionFriends.length - 1}
         >
           Next
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
       </p>
     </>
   );
@@ -203,19 +203,19 @@ function ManyPaginatedUserQuestionFriendsPinned({
         </ol>
       }
       <p className="mt-2">
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handlePreviousPosition}
           disabled={position === 0}
         >
           Previous
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
         &nbsp;/&nbsp;
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handleNextPosition}
           disabled={position === chunkedUserQuestionFriendsAnswers.length - 1}
         >
           Next
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
       </p>
     </>
   );

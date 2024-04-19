@@ -330,14 +330,14 @@ export function OneAnswerRePinnableForSelf({
       </div>
       {/* new */}
       <p className="mt-2">
-        <LinkButtonPinnableForSelfForm answer={answer} /> /{" "}
-        <LinkButtonRePinnableForSelfForm answer={answer} />
+        <TextButtonPinnableForSelfForm answer={answer} /> /{" "}
+        <TextButtonRePinnableForSelfForm answer={answer} />
       </p>
     </>
   );
 }
 
-function LinkButtonPinnableForSelfForm({
+function TextButtonPinnableForSelfForm({
   answer,
   pinnedAnswersForSelfCount,
 }: {
@@ -379,7 +379,7 @@ function LinkButtonPinnableForSelfForm({
   );
 }
 
-function LinkButtonRePinnableForSelfForm({
+function TextButtonRePinnableForSelfForm({
   answer,
 }: {
   answer: GlobalAnswerTypeByHand;
@@ -441,14 +441,14 @@ export function OneAnswerRePinnable({
       </div>
       {/* new */}
       <p className="mt-2">
-        <LinkButtonPinnableForm answer={answer} /> /{" "}
-        <LinkButtonRePinnableForm answer={answer} />
+        <TextButtonPinnableForm answer={answer} /> /{" "}
+        <TextButtonRePinnableForm answer={answer} />
       </p>
     </>
   );
 }
 
-function LinkButtonPinnableForm({
+function TextButtonPinnableForm({
   answer,
   pinnedAnswersCount,
 }: {
@@ -486,7 +486,7 @@ function LinkButtonPinnableForm({
   );
 }
 
-function LinkButtonRePinnableForm({
+function TextButtonRePinnableForm({
   answer,
 }: {
   answer: GlobalAnswerTypeByHand;
@@ -564,12 +564,12 @@ export function OneAnswerPinnable({
       </div>
       {/* new */}
       <p className="mt-2">
-        <LinkButtonPinnableForm
+        <TextButtonPinnableForm
           answer={answer}
           pinnedAnswersCount={pinnedAnswersCount}
         />{" "}
         /{" "}
-        <LinkButtonPinnableForSelfForm
+        <TextButtonPinnableForSelfForm
           answer={answer}
           pinnedAnswersForSelfCount={pinnedAnswersForSelfCount}
         />
@@ -820,7 +820,7 @@ export function OneAnswerPinnableByFriend({
       </div>
       {/* new */}
       <p className="mt-2">
-        <LinkButtonPinnableByFriendForm
+        <TextButtonPinnableByFriendForm
           answer={answer}
           contact={contact}
           answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
@@ -830,7 +830,7 @@ export function OneAnswerPinnableByFriend({
   );
 }
 
-function LinkButtonPinnableByFriendForm({
+function TextButtonPinnableByFriendForm({
   answer,
   contact,
   answersPinnedbyFriendAnswersCount,

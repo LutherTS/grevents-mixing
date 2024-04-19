@@ -161,12 +161,12 @@ export function OneUserQuestionFriendUnpinnable({
         </div>
         {/* new */}
         <p className="mt-2">
-          <LinkButtonUnpinnableByFriendForm
+          <TextButtonUnpinnableByFriendForm
             pathname={pathname}
             userQuestionFriend={userQuestionFriend}
           />{" "}
           /{" "}
-          <LinkButtonRePinnableByFriendForm
+          <TextButtonRePinnableByFriendForm
             pathname={pathname}
             userQuestionFriend={userQuestionFriend}
           />
@@ -176,7 +176,7 @@ export function OneUserQuestionFriendUnpinnable({
   );
 }
 
-function LinkButtonUnpinnableByFriendForm({
+function TextButtonUnpinnableByFriendForm({
   pathname,
   userQuestionFriend,
 }: {
@@ -211,7 +211,7 @@ function LinkButtonUnpinnableByFriendForm({
   );
 }
 
-function LinkButtonRePinnableByFriendForm({
+function TextButtonRePinnableByFriendForm({
   pathname,
   userQuestionFriend,
 }: {

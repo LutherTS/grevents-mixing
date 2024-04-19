@@ -9,7 +9,7 @@ import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
-import { LinkButtonOnClick } from "~/components/link-button";
+import { TextButtonOnClick } from "~/components/link-button";
 import { ManyContacts } from "~/components/many-contacts";
 import { ManyUserQuestionFriendsShared } from "~/components/many-userquestionfriends";
 import { OneCriteria } from "~/components/one-criteria";
@@ -112,12 +112,12 @@ export function ErrorBoundary() {
       </div>
       <PageLink href={`/`}>Return home</PageLink>
       <p className="mt-2">
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handlePreviousNavigation}
           disabled={false}
         >
           Or go back to the previous page
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
       </p>
     </>
   );

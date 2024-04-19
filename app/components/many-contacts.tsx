@@ -4,7 +4,7 @@ import _ from "lodash";
 
 import { selectContacts } from "~/librairies/subdata/contacts";
 import { OneContact, OneContactAddable } from "./one-contact";
-import { LinkButtonOnClick } from "./link-button";
+import { TextButtonOnClick } from "./link-button";
 import { selectUserQuestionAnswer } from "~/librairies/subdata/answers";
 
 export function ManyContacts({
@@ -112,19 +112,19 @@ function ManyPaginatedContacts({
         })}
       </ol>
       <p className="mt-2">
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handlePreviousPosition}
           disabled={position === 0}
         >
           Previous
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
         &nbsp;/&nbsp;
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handleNextPosition}
           disabled={position === chunkedContacts.length - 1}
         >
           Next
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
       </p>
     </>
   );

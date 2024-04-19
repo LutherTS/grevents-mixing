@@ -1,6 +1,6 @@
 import { MouseEventHandler } from "react";
 
-export function LinkButton({
+export function TextButton({
   disabled,
   children,
   specifiedClasses,
@@ -24,7 +24,7 @@ export function LinkButton({
   );
 }
 
-export function LinkButtonOnClick({
+export function TextButtonOnClick({
   handleClick,
   disabled,
   children,

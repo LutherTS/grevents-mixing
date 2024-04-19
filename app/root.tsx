@@ -17,7 +17,7 @@ import tailwindStyleSheet from "~/tailwind.css";
 import { Main } from "./components/main";
 import { Wrapper } from "./components/wrapper";
 import { PageLink } from "./components/page-link";
-import { LinkButtonOnClick } from "./components/link-button";
+import { TextButtonOnClick } from "./components/link-button";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: radixStyleSheet },
@@ -73,12 +73,12 @@ export function ErrorBoundary() {
               </div>
               <PageLink href={`/`}>Return home</PageLink>
               <p className="mt-2">
-                <LinkButtonOnClick
+                <TextButtonOnClick
                   handleClick={handlePreviousNavigation}
                   disabled={false}
                 >
                   Or go back to the previous page
-                </LinkButtonOnClick>
+                </TextButtonOnClick>
               </p>
             </Wrapper>
           </Main>

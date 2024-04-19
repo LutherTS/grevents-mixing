@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Prisma } from "@prisma/client";
 
-import { LinkButtonOnClick } from "./link-button";
+import { TextButtonOnClick } from "./link-button";
 import {
   CustomAnswerForm,
   NativeIrlAnswerForm,
@@ -55,19 +55,19 @@ export function PaginatedStandardizedAnswerForms({
         </>
       )}
       <p className="mt-4">
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handlePreviousPosition}
           disabled={position === 0}
         >
           Native
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
         &nbsp;/&nbsp;
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handleNextPosition}
           disabled={position === 1}
         >
           Native irl
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
       </p>
     </>
   );
@@ -118,26 +118,26 @@ export function PaginatedCustomizedAnswerForms({
         </>
       )}
       <p className="mt-4">
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handlePseudonativePosition}
           disabled={position === 0}
         >
           Pseudonative
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
         &nbsp;/&nbsp;
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handlePseudonativeIrlPosition}
           disabled={position === 1}
         >
           Pseudonative irl
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
         &nbsp;/&nbsp;
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handleCustomPosition}
           disabled={position === 2}
         >
           Custom
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
       </p>
     </>
   );

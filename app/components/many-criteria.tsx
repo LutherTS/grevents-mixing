@@ -2,7 +2,7 @@ import { useState } from "react";
 import _ from "lodash";
 import { Prisma } from "@prisma/client";
 
-import { LinkButtonOnClick } from "./link-button";
+import { TextButtonOnClick } from "./link-button";
 import { UnionAnswerType } from "~/librairies/subdata/answers";
 import {
   AnswerComponentRequired,
@@ -151,19 +151,19 @@ function ManyPaginatedCriteria({
         </ol>
       }
       <p className="mt-4">
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handlePreviousPosition}
           disabled={position === 0}
         >
           Previous
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
         &nbsp;/&nbsp;
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handleNextPosition}
           disabled={position === chunkedAnswers.length - 1}
         >
           Next
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
       </p>
     </>
   );

@@ -17,7 +17,7 @@ import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import { ManyCriteria } from "~/components/many-criteria";
 import { StatusPersonalInfoToasts } from "~/components/status-personal-info-toasts";
-import { LinkButtonOnClick } from "~/components/link-button";
+import { TextButtonOnClick } from "~/components/link-button";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   invariant(params.username, "Expected params.username");
@@ -70,12 +70,12 @@ export function ErrorBoundary() {
       </div>
       <PageLink href={`/`}>Return home</PageLink>
       <p className="mt-2">
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handlePreviousNavigation}
           disabled={false}
         >
           Or go back to the previous page
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
       </p>
     </>
   );
