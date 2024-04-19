@@ -1,5 +1,6 @@
 import { useState } from "react";
 import _ from "lodash";
+import { Prisma } from "@prisma/client";
 
 import { LinkButtonOnClick } from "./link-button";
 import { UnionAnswerType } from "~/librairies/subdata/answers";
@@ -8,7 +9,6 @@ import {
   OneCriteria,
   SelectContext,
 } from "./one-criteria";
-import { Prisma } from "@prisma/client";
 import { selectContacts } from "~/librairies/subdata/contacts";
 
 export function ManyCriteria({
