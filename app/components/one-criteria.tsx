@@ -922,9 +922,9 @@ export function OneAnswerPinnableByFriend({
   return (
     <>
       <div className="mt-2 flex justify-center">
-        {answersPinnedbyFriendAnswersCount < PINNED_BY_FRIEND_ANSWERS_LIMIT && (
+        {/* {answersPinnedbyFriendAnswersCount < PINNED_BY_FRIEND_ANSWERS_LIMIT && (
           <ButtonPinnableByFriendForm answer={answer} contact={contact} />
-        )}
+        )} */}
         <p>
           {answer.source ? (
             <>
@@ -941,35 +941,74 @@ export function OneAnswerPinnableByFriend({
           )}
         </p>
       </div>
+      <p className="mt-2">
+        <LinkButtonPinnableByFriendForm
+          answer={answer}
+          contact={contact}
+          answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
+        />
+      </p>
     </>
   );
 }
 
-function ButtonPinnableByFriendForm({
+function LinkButtonPinnableByFriendForm({
   answer,
   contact,
+  answersPinnedbyFriendAnswersCount,
 }: {
   answer: GlobalAnswerTypeByHand;
   contact: Prisma.ContactGetPayload<{
     select: typeof selectContacts;
   }>;
+  answersPinnedbyFriendAnswersCount: number;
 }) {
   const fetcher = useFetcher();
 
   return (
     <>
-      <fetcher.Form
-        action="/pin-user-question-friend"
-        method="post"
-        className="me-2 flex items-center"
-      >
+      <fetcher.Form action="/pin-user-question-friend" method="post">
         <input type="hidden" name="answerid" value={answer.id} />
         <input type="hidden" name="contactid" value={contact.id} />
         <button
-          disabled={fetcher.state !== "idle"}
-          className="h-4 w-4 rounded-full bg-pink-500 hover:bg-cyan-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-cyan-700"
-        />
+          disabled={
+            fetcher.state !== "idle" ||
+            answersPinnedbyFriendAnswersCount >= PINNED_BY_FRIEND_ANSWERS_LIMIT
+          }
+          className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-sky-500 hover:text-sky-300 dark:hover:text-sky-700"
+        >
+          Pin for you
+        </button>
       </fetcher.Form>
     </>
   );
 }
+
+// function ButtonPinnableByFriendForm({
+//   answer,
+//   contact,
+// }: {
+//   answer: GlobalAnswerTypeByHand;
+//   contact: Prisma.ContactGetPayload<{
+//     select: typeof selectContacts;
+//   }>;
+// }) {
+//   const fetcher = useFetcher();
+
+//   return (
+//     <>
+//       <fetcher.Form
+//         action="/pin-user-question-friend"
+//         method="post"
+//         className="me-2 flex items-center"
+//       >
+//         <input type="hidden" name="answerid" value={answer.id} />
+//         <input type="hidden" name="contactid" value={contact.id} />
+//         <button
+//           disabled={fetcher.state !== "idle"}
+//           className="h-4 w-4 rounded-full bg-pink-500 hover:bg-cyan-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-cyan-700"
+//         />
+//       </fetcher.Form>
+//     </>
+//   );
+// }

@@ -135,10 +135,10 @@ export function OneUserQuestionFriendUnpinnable({
             )}
         </p>
         <div className="mt-2 flex justify-center">
-          <ButtonUnpinnableByFriendForm
+          {/* <ButtonUnpinnableByFriendForm
             pathname={pathname}
             userQuestionFriend={userQuestionFriend}
-          />
+          /> */}
           {userQuestionFriend.userQuestion.answer?.source ? (
             <>
               <PageLinkDivless
@@ -152,17 +152,28 @@ export function OneUserQuestionFriendUnpinnable({
           ) : (
             <>{userQuestionFriend.userQuestion.answer?.value}</>
           )}
-          <ButtonRePinnableByFriendForm
+          {/* <ButtonRePinnableByFriendForm
+            pathname={pathname}
+            userQuestionFriend={userQuestionFriend}
+          /> */}
+        </div>
+        <p className="mt-2">
+          <LinkButtonUnpinnableByFriendForm
+            pathname={pathname}
+            userQuestionFriend={userQuestionFriend}
+          />{" "}
+          /{" "}
+          <LinkButtonRePinnableByFriendForm
             pathname={pathname}
             userQuestionFriend={userQuestionFriend}
           />
-        </div>
+        </p>
       </div>
     </>
   );
 }
 
-function ButtonUnpinnableByFriendForm({
+function LinkButtonUnpinnableByFriendForm({
   pathname,
   userQuestionFriend,
 }: {
@@ -178,7 +189,7 @@ function ButtonUnpinnableByFriendForm({
       <fetcher.Form
         action="/unpin-user-question-friend"
         method="post"
-        className="me-2 flex items-center"
+        className="inline"
       >
         <input type="hidden" name="pathname" value={pathname} />
         <input
@@ -188,14 +199,16 @@ function ButtonUnpinnableByFriendForm({
         />
         <button
           disabled={fetcher.state !== "idle"}
-          className="h-4 w-4 rounded-full bg-cyan-500 hover:bg-pink-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-pink-700"
-        />
+          className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-sky-500 hover:text-sky-300 dark:hover:text-sky-700"
+        >
+          Unpin for you
+        </button>
       </fetcher.Form>
     </>
   );
 }
 
-function ButtonRePinnableByFriendForm({
+function LinkButtonRePinnableByFriendForm({
   pathname,
   userQuestionFriend,
 }: {
@@ -211,7 +224,7 @@ function ButtonRePinnableByFriendForm({
       <fetcher.Form
         action="/re-pin-user-question-friend"
         method="post"
-        className="ms-2 flex items-center"
+        className="inline"
       >
         <input type="hidden" name="pathname" value={pathname} />
         <input
@@ -221,9 +234,77 @@ function ButtonRePinnableByFriendForm({
         />
         <button
           disabled={fetcher.state !== "idle"}
-          className="h-4 w-4 rounded-full bg-indigo-500 hover:bg-indigo-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-indigo-700"
-        />
+          className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-indigo-500 hover:text-indigo-300 dark:hover:text-indigo-700"
+        >
+          Repin for you
+        </button>
       </fetcher.Form>
     </>
   );
 }
+
+// function ButtonUnpinnableByFriendForm({
+//   pathname,
+//   userQuestionFriend,
+// }: {
+//   pathname: string;
+//   userQuestionFriend: Prisma.UserQuestionFriendGetPayload<{
+//     select: typeof selectUserQuestionFriendsAnswers;
+//   }>;
+// }) {
+//   const fetcher = useFetcher();
+
+//   return (
+//     <>
+//       <fetcher.Form
+//         action="/unpin-user-question-friend"
+//         method="post"
+//         className="me-2 flex items-center"
+//       >
+//         <input type="hidden" name="pathname" value={pathname} />
+//         <input
+//           type="hidden"
+//           name="userquestionfriendid"
+//           value={userQuestionFriend.id}
+//         />
+//         <button
+//           disabled={fetcher.state !== "idle"}
+//           className="h-4 w-4 rounded-full bg-cyan-500 hover:bg-pink-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-pink-700"
+//         />
+//       </fetcher.Form>
+//     </>
+//   );
+// }
+
+// function ButtonRePinnableByFriendForm({
+//   pathname,
+//   userQuestionFriend,
+// }: {
+//   pathname: string;
+//   userQuestionFriend: Prisma.UserQuestionFriendGetPayload<{
+//     select: typeof selectUserQuestionFriendsAnswers;
+//   }>;
+// }) {
+//   const fetcher = useFetcher();
+
+//   return (
+//     <>
+//       <fetcher.Form
+//         action="/re-pin-user-question-friend"
+//         method="post"
+//         className="ms-2 flex items-center"
+//       >
+//         <input type="hidden" name="pathname" value={pathname} />
+//         <input
+//           type="hidden"
+//           name="userquestionfriendid"
+//           value={userQuestionFriend.id}
+//         />
+//         <button
+//           disabled={fetcher.state !== "idle"}
+//           className="h-4 w-4 rounded-full bg-indigo-500 hover:bg-indigo-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-indigo-700"
+//         />
+//       </fetcher.Form>
+//     </>
+//   );
+// }
