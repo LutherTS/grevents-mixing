@@ -72,7 +72,7 @@ export function QueriedForm({
                   <p className="mt-4 text-red-500">{relComboMessage}</p>
                 </div>
               ) : null}
-              {/* Currently necessary to send the full form via Enter */}
+              {/* necessary to send the full form via Enter */}
               <button type="submit" className="hidden">
                 Submit
               </button>
