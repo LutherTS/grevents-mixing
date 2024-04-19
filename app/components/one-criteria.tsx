@@ -331,65 +331,9 @@ export function OneAnswerRePinnableForSelf({
         {/* <ButtonRePinnableForSelfForm answer={answer} /> */}
       </div>
       <p className="mt-2">
-        <LinkButtonPinnableForSelfForm answer={answer} /> &nbsp;/&nbsp;{" "}
+        <LinkButtonPinnableForSelfForm answer={answer} /> /{" "}
         <LinkButtonRePinnableForSelfForm answer={answer} />
       </p>
-    </>
-  );
-}
-
-function ButtonPinnableForSelfForm({
-  answer,
-}: {
-  answer: GlobalAnswerTypeByHand;
-}) {
-  const fetcher = useFetcher();
-
-  return (
-    <>
-      <fetcher.Form
-        action="/pin-answer-for-self"
-        method="post"
-        className="me-2 flex items-center"
-      >
-        <input type="hidden" name="answerid" value={answer.id} />
-        <button
-          disabled={fetcher.state !== "idle"}
-          className={clsx(
-            "h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500",
-            {
-              "bg-sky-500 hover:bg-rose-300 dark:hover:bg-rose-700":
-                answer.userQuestion.isPinnedForSelf === true,
-              "bg-rose-500 hover:bg-sky-300 dark:hover:bg-sky-700":
-                answer.userQuestion.isPinnedForSelf === false,
-            }
-          )}
-        />
-      </fetcher.Form>
-    </>
-  );
-}
-
-function ButtonRePinnableForSelfForm({
-  answer,
-}: {
-  answer: GlobalAnswerTypeByHand;
-}) {
-  const fetcher = useFetcher();
-
-  return (
-    <>
-      <fetcher.Form
-        action="/re-pin-answer-for-self"
-        method="post"
-        className="ms-2 flex items-center"
-      >
-        <input type="hidden" name="answerid" value={answer.id} />
-        <button
-          disabled={fetcher.state !== "idle"}
-          className="h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500 bg-indigo-500 hover:bg-indigo-300 dark:hover:bg-indigo-700"
-        />
-      </fetcher.Form>
     </>
   );
 }
@@ -418,15 +362,16 @@ function LinkButtonPinnableForSelfForm({
               pinnedAnswersForSelfCount >= PINNED_FOR_SELF_ANSWERS_LIMIT &&
               answer.userQuestion.isPinnedForSelf === false)
           }
-          className={clsx(
-            "disabled:!text-gray-500 disabled:hover:!text-gray-500",
-            {
-              "text-sky-500 hover:text-rose-300 dark:hover:text-rose-700":
-                answer.userQuestion.isPinnedForSelf === true,
-              "text-rose-500 hover:text-sky-300 dark:hover:text-sky-700":
-                answer.userQuestion.isPinnedForSelf === false,
-            }
-          )}
+          // className={clsx(
+          //   "disabled:!text-gray-500 disabled:hover:!text-gray-500",
+          //   {
+          //     "text-sky-500 hover:text-rose-300 dark:hover:text-rose-700":
+          //       answer.userQuestion.isPinnedForSelf === true,
+          //     "text-rose-500 hover:text-sky-300 dark:hover:text-sky-700":
+          //       answer.userQuestion.isPinnedForSelf === false,
+          //   }
+          // )}
+          className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-sky-500 hover:text-sky-300 dark:hover:text-sky-700"
         >
           {answer.userQuestion.isPinnedForSelf === true && <>Unpin for self</>}
           {answer.userQuestion.isPinnedForSelf === false && <>Pin for self</>}
@@ -454,6 +399,7 @@ function LinkButtonRePinnableForSelfForm({
         <button
           disabled={fetcher.state !== "idle"}
           className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-indigo-500 hover:text-indigo-300 dark:hover:text-indigo-700"
+          // className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-blue-500 hover:text-blue-300 dark:hover:text-blue-700"
         >
           Repin for self
         </button>
@@ -461,6 +407,62 @@ function LinkButtonRePinnableForSelfForm({
     </>
   );
 }
+
+// function ButtonPinnableForSelfForm({
+//   answer,
+// }: {
+//   answer: GlobalAnswerTypeByHand;
+// }) {
+//   const fetcher = useFetcher();
+
+//   return (
+//     <>
+//       <fetcher.Form
+//         action="/pin-answer-for-self"
+//         method="post"
+//         className="me-2 flex items-center"
+//       >
+//         <input type="hidden" name="answerid" value={answer.id} />
+//         <button
+//           disabled={fetcher.state !== "idle"}
+//           className={clsx(
+//             "h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500",
+//             {
+//               "bg-sky-500 hover:bg-rose-300 dark:hover:bg-rose-700":
+//                 answer.userQuestion.isPinnedForSelf === true,
+//               "bg-rose-500 hover:bg-sky-300 dark:hover:bg-sky-700":
+//                 answer.userQuestion.isPinnedForSelf === false,
+//             }
+//           )}
+//         />
+//       </fetcher.Form>
+//     </>
+//   );
+// }
+
+// function ButtonRePinnableForSelfForm({
+//   answer,
+// }: {
+//   answer: GlobalAnswerTypeByHand;
+// }) {
+//   const fetcher = useFetcher();
+
+//   return (
+//     <>
+//       <fetcher.Form
+//         action="/re-pin-answer-for-self"
+//         method="post"
+//         className="ms-2 flex items-center"
+//       >
+//         <input type="hidden" name="answerid" value={answer.id} />
+//         <button
+//           disabled={fetcher.state !== "idle"}
+//           className="h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500 bg-indigo-500 hover:bg-indigo-300 dark:hover:bg-indigo-700"
+//         />
+//       </fetcher.Form>
+//     </>
+//   );
+// }
 
 export function OneAnswerRePinnable({
   answer,
@@ -495,49 +497,9 @@ export function OneAnswerRePinnable({
         {/* <ButtonRePinnableForm answer={answer} /> */}
       </div>
       <p className="mt-2">
-        <LinkButtonPinnableForm answer={answer} /> &nbsp;/&nbsp;{" "}
+        <LinkButtonPinnableForm answer={answer} /> /{" "}
         <LinkButtonRePinnableForm answer={answer} />
       </p>
-    </>
-  );
-}
-
-function ButtonUnpinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
-  const fetcher = useFetcher();
-
-  return (
-    <>
-      <fetcher.Form
-        action="/pin-answer"
-        method="post"
-        className="me-2 flex items-center"
-      >
-        <input type="hidden" name="answerid" value={answer.id} />
-        <button
-          disabled={fetcher.state !== "idle"}
-          className="h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500 bg-cyan-500 hover:bg-pink-300 dark:hover:bg-pink-700"
-        />
-      </fetcher.Form>
-    </>
-  );
-}
-
-function ButtonRePinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
-  const fetcher = useFetcher();
-
-  return (
-    <>
-      <fetcher.Form
-        action="/re-pin-answer"
-        method="post"
-        className="ms-2 flex items-center"
-      >
-        <input type="hidden" name="answerid" value={answer.id} />
-        <button
-          disabled={fetcher.state !== "idle"}
-          className="h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500 bg-indigo-500 hover:bg-indigo-300 dark:hover:bg-indigo-700"
-        />
-      </fetcher.Form>
     </>
   );
 }
@@ -562,15 +524,16 @@ function LinkButtonPinnableForm({
               pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
               answer.userQuestion.isPinned === false)
           }
-          className={clsx(
-            "disabled:!text-gray-500 disabled:hover:!text-gray-500",
-            {
-              "text-cyan-500 hover:text-pink-300 dark:hover:text-pink-700":
-                answer.userQuestion.isPinned === true,
-              "text-pink-500 hover:text-cyan-300 dark:hover:text-cyan-700":
-                answer.userQuestion.isPinned === false,
-            }
-          )}
+          // className={clsx(
+          //   "disabled:!text-gray-500 disabled:hover:!text-gray-500",
+          //   {
+          //     "text-cyan-500 hover:text-pink-300 dark:hover:text-pink-700":
+          //       answer.userQuestion.isPinned === true,
+          //     "text-pink-500 hover:text-cyan-300 dark:hover:text-cyan-700":
+          //       answer.userQuestion.isPinned === false,
+          //   }
+          // )}
+          className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-sky-500 hover:text-sky-300 dark:hover:text-sky-700"
         >
           {answer.userQuestion.isPinned === true && <>Unpin</>}
           {answer.userQuestion.isPinned === false && <>Pin</>}
@@ -594,6 +557,7 @@ function LinkButtonRePinnableForm({
         <button
           disabled={fetcher.state !== "idle"}
           className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-indigo-500 hover:text-indigo-300 dark:hover:text-indigo-700"
+          // className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-blue-500 hover:text-blue-300 dark:hover:text-blue-700"
         >
           Repin
         </button>
@@ -601,6 +565,46 @@ function LinkButtonRePinnableForm({
     </>
   );
 }
+
+// function ButtonUnpinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
+//   const fetcher = useFetcher();
+
+//   return (
+//     <>
+//       <fetcher.Form
+//         action="/pin-answer"
+//         method="post"
+//         className="me-2 flex items-center"
+//       >
+//         <input type="hidden" name="answerid" value={answer.id} />
+//         <button
+//           disabled={fetcher.state !== "idle"}
+//           className="h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500 bg-cyan-500 hover:bg-pink-300 dark:hover:bg-pink-700"
+//         />
+//       </fetcher.Form>
+//     </>
+//   );
+// }
+
+// function ButtonRePinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
+//   const fetcher = useFetcher();
+
+//   return (
+//     <>
+//       <fetcher.Form
+//         action="/re-pin-answer"
+//         method="post"
+//         className="ms-2 flex items-center"
+//       >
+//         <input type="hidden" name="answerid" value={answer.id} />
+//         <button
+//           disabled={fetcher.state !== "idle"}
+//           className="h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500 bg-indigo-500 hover:bg-indigo-300 dark:hover:bg-indigo-700"
+//         />
+//       </fetcher.Form>
+//     </>
+//   );
+// }
 
 export function OneAnswerPinnable({
   answer,
@@ -614,11 +618,11 @@ export function OneAnswerPinnable({
   return (
     <>
       <div className="mt-2 flex justify-center">
-        {/* If you're still allowed to pin for self */}
+        {/* if you're still allowed to pin for self */}
         {/* {pinnedAnswersForSelfCount < PINNED_FOR_SELF_ANSWERS_LIMIT && (
           <ButtonPinnableForSelfForm answer={answer} />
         )} */}
-        {/* If you're only allowed to unpin for self */}
+        {/* if you're only allowed to unpin for self */}
         {/* {pinnedAnswersForSelfCount >= PINNED_FOR_SELF_ANSWERS_LIMIT &&
           answer.userQuestion.isPinnedForSelf === true && (
             <ButtonPinnableForSelfForm answer={answer} />
@@ -644,11 +648,11 @@ export function OneAnswerPinnable({
             <>{answer.value}</>
           )}
         </p>
-        {/* If you're still allowed to pin */}
+        {/* if you're still allowed to pin */}
         {/* {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
           <ButtonPinnableForm answer={answer} />
         )} */}
-        {/* If you're only allowed to unpin */}
+        {/* if you're only allowed to unpin */}
         {/* {pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
           answer.userQuestion.isPinned === true && (
             <ButtonPinnableForm answer={answer} />
@@ -659,7 +663,7 @@ export function OneAnswerPinnable({
           answer={answer}
           pinnedAnswersCount={pinnedAnswersCount}
         />{" "}
-        &nbsp;/&nbsp;{" "}
+        /{" "}
         <LinkButtonPinnableForSelfForm
           answer={answer}
           pinnedAnswersForSelfCount={pinnedAnswersForSelfCount}
@@ -669,33 +673,33 @@ export function OneAnswerPinnable({
   );
 }
 
-function ButtonPinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
-  const fetcher = useFetcher();
+// function ButtonPinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
+//   const fetcher = useFetcher();
 
-  return (
-    <>
-      <fetcher.Form
-        action="/pin-answer"
-        method="post"
-        className="ms-2 flex items-center"
-      >
-        <input type="hidden" name="answerid" value={answer.id} />
-        <button
-          disabled={fetcher.state !== "idle"}
-          className={clsx(
-            "h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500",
-            {
-              "bg-cyan-500 hover:bg-pink-300 dark:hover:bg-pink-700":
-                answer.userQuestion.isPinned === true,
-              "bg-pink-500 hover:bg-cyan-300 dark:hover:bg-cyan-700":
-                answer.userQuestion.isPinned === false,
-            }
-          )}
-        />
-      </fetcher.Form>
-    </>
-  );
-}
+//   return (
+//     <>
+//       <fetcher.Form
+//         action="/pin-answer"
+//         method="post"
+//         className="ms-2 flex items-center"
+//       >
+//         <input type="hidden" name="answerid" value={answer.id} />
+//         <button
+//           disabled={fetcher.state !== "idle"}
+//           className={clsx(
+//             "h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500",
+//             {
+//               "bg-cyan-500 hover:bg-pink-300 dark:hover:bg-pink-700":
+//                 answer.userQuestion.isPinned === true,
+//               "bg-pink-500 hover:bg-cyan-300 dark:hover:bg-cyan-700":
+//                 answer.userQuestion.isPinned === false,
+//             }
+//           )}
+//         />
+//       </fetcher.Form>
+//     </>
+//   );
+// }
 
 export function OneAnswerModify({
   answer,
