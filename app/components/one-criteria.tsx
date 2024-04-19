@@ -361,10 +361,18 @@ function LinkButtonPinnableForSelfForm({
               pinnedAnswersForSelfCount >= PINNED_FOR_SELF_ANSWERS_LIMIT &&
               answer.userQuestion.isPinnedForSelf === false)
           }
-          className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-sky-500 hover:text-sky-300 dark:hover:text-sky-700"
+          className="disabled:!text-gray-500 disabled:hover:!text-gray-500"
         >
-          {answer.userQuestion.isPinnedForSelf === true && <>Unpin for self</>}
-          {answer.userQuestion.isPinnedForSelf === false && <>Pin for self</>}
+          {answer.userQuestion.isPinnedForSelf === true && (
+            <span className="text-cyan-500 hover:text-cyan-300 dark:hover:text-cyan-700">
+              Unpin for self
+            </span>
+          )}
+          {answer.userQuestion.isPinnedForSelf === false && (
+            <span className="text-sky-500 hover:text-sky-300 dark:hover:text-sky-700">
+              Pin for self
+            </span>
+          )}
         </button>
       </fetcher.Form>
     </>
@@ -460,10 +468,18 @@ function LinkButtonPinnableForm({
               pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
               answer.userQuestion.isPinned === false)
           }
-          className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-sky-500 hover:text-sky-300 dark:hover:text-sky-700"
+          className="disabled:!text-gray-500 disabled:hover:!text-gray-500"
         >
-          {answer.userQuestion.isPinned === true && <>Unpin</>}
-          {answer.userQuestion.isPinned === false && <>Pin</>}
+          {answer.userQuestion.isPinned === true && (
+            <span className="text-cyan-500 hover:text-cyan-300 dark:hover:text-cyan-700">
+              Unpin
+            </span>
+          )}
+          {answer.userQuestion.isPinned === false && (
+            <span className="text-sky-500 hover:text-sky-300 dark:hover:text-sky-700">
+              Pin
+            </span>
+          )}
         </button>
       </fetcher.Form>
     </>

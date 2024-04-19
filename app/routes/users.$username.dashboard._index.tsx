@@ -195,7 +195,7 @@ export default function DashboardPage() {
             href={`../notifications`}
             specifiedClasses={
               data.sentFromContactsCount > 0
-                ? "mt-2 inline-block text-cyan-500 underline hover:text-cyan-400 dark:hover:text-cyan-600"
+                ? "mt-2 inline-block text-teal-500 underline hover:text-cyan-400 dark:hover:text-cyan-600"
                 : undefined
             }
           >
