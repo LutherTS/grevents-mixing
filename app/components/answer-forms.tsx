@@ -4,6 +4,7 @@ import { JsonifyObject } from "type-fest/source/jsonify";
 
 import { DEFAULT_ANSWERS_LIMIT } from "~/librairies/subdata/answers";
 import { selectUnansweredNativeQuestions } from "~/librairies/subdata/questions";
+import { FormButton } from "./form-button";
 
 type CreateStardardizedAnswerByHand = JsonifyObject<{
   errors?: {
@@ -81,6 +82,9 @@ export function NativeNotIrlAnswerForm({
               ))}
             </div>
           ) : null}
+          <FormButton specifiedClasses="mt-4 w-full max-w-[40ch] rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-400 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-blue-600 dark:disabled:hover:!bg-gray-500">
+            Add criteria
+          </FormButton>
           {fetcher.data?.message ? (
             <div id="native-not-irl-answer-form-error" aria-live="polite">
               <p className="mt-2 text-red-500">{fetcher.data.message}</p>
@@ -160,6 +164,9 @@ export function NativeIrlAnswerForm({
               ))}
             </div>
           ) : null}
+          <FormButton specifiedClasses="mt-4 w-full max-w-[40ch] rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-400 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-blue-600 dark:disabled:hover:!bg-gray-500">
+            Add criteria
+          </FormButton>
           {fetcher.data?.message ? (
             <div id="native-irl-answer-form-error" aria-live="polite">
               <p className="mt-2 text-red-500">{fetcher.data.message}</p>
@@ -224,7 +231,7 @@ export function AnswerInput({
     <>
       <input
         className="mt-4 w-[32ch] max-w-[50ch] placeholder:truncate rounded bg-gray-50 px-2 text-center text-black disabled:!bg-gray-500 disabled:!text-white disabled:placeholder:!text-gray-400 sm:w-[40ch]"
-        type={specifiedType ? specifiedType : "text"}
+        type={specifiedType || "text"}
         id={id}
         name={name}
         placeholder={placeholder}
@@ -324,15 +331,14 @@ export function PseudonativeNotIrlAnswerForm({
               ))}
             </div>
           ) : null}
+          <FormButton specifiedClasses="mt-4 w-full max-w-[40ch] rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-400 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-blue-600 dark:disabled:hover:!bg-gray-500">
+            Add criteria
+          </FormButton>
           {fetcher.data?.message ? (
             <div id="pseudonative-not-irl-answer-form-error" aria-live="polite">
               <p className="mt-2 text-red-500">{fetcher.data.message}</p>
             </div>
           ) : null}
-          {/* Currently necessary to send the full form via Enter */}
-          <button type="submit" className="hidden">
-            Submit
-          </button>
         </fieldset>
       </fetcher.Form>
     </>
@@ -419,15 +425,14 @@ export function PseudonativeIrlAnswerForm({
               ))}
             </div>
           ) : null}
+          <FormButton specifiedClasses="mt-4 w-full max-w-[40ch] rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-400 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-blue-600 dark:disabled:hover:!bg-gray-500">
+            Add criteria
+          </FormButton>
           {fetcher.data?.message ? (
             <div id="pseudonative-irl-answer-form-error" aria-live="polite">
               <p className="mt-2 text-red-500">{fetcher.data.message}</p>
             </div>
           ) : null}
-          {/* Currently necessary to send the full form via Enter */}
-          <button type="submit" className="hidden">
-            Submit
-          </button>
         </fieldset>
       </fetcher.Form>
     </>
@@ -510,15 +515,14 @@ export function CustomAnswerForm({ answerCount }: { answerCount: number }) {
               ))}
             </div>
           ) : null}
+          <FormButton specifiedClasses="mt-4 w-full max-w-[40ch] rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-400 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-blue-600 dark:disabled:hover:!bg-gray-500">
+            Add criteria
+          </FormButton>
           {fetcher.data?.message ? (
             <div id="custom-answer-form-error" aria-live="polite">
               <p className="mt-2 text-red-500">{fetcher.data.message}</p>
             </div>
           ) : null}
-          {/* Currently necessary to send the full form via Enter */}
-          <button type="submit" className="hidden">
-            Submit
-          </button>
         </fieldset>
       </fetcher.Form>
     </>

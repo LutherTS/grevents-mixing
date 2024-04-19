@@ -9,7 +9,7 @@ import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
-import { LinkButtonOnClick } from "~/components/link-button";
+import { TextButtonOnClick } from "~/components/text-button";
 import { ManyCriteria } from "~/components/many-criteria";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
@@ -113,12 +113,12 @@ export function ErrorBoundary() {
       </div>
       <PageLink href={`/`}>Return home</PageLink>
       <p className="mt-2">
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handlePreviousNavigation}
           disabled={false}
         >
           Or go back to the previous page
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
       </p>
     </>
   );
@@ -163,21 +163,23 @@ export default function PersonalInfoCustomizedPage() {
       <div className="space-y-4 my-4">
         <ManyCriteria
           answers={data.userPseudonativeNotIrlAnswers}
+          selectContext="PersonalInfoCustomized"
           pinnedAnswersForSelfCount={data.userPinnedForSelfAnswersCount}
           pinnedAnswersCount={data.userPinnedAnswersCount}
           otherPseudonativeAnswersCount={data.userPseudonativeIrlAnswersCount}
-          answerComponentRequired="OneAnswerPinnablePseudoable"
+          answerComponentRequired="OneAnswerPinnable"
           label="Find your pseudonative criteria below"
           notLabel="No pseudonative criteria yet."
         />
         <ManyCriteria
           answers={data.userPseudonativeIrlAnswers}
+          selectContext="PersonalInfoCustomized"
           pinnedAnswersForSelfCount={data.userPinnedForSelfAnswersCount}
           pinnedAnswersCount={data.userPinnedAnswersCount}
           otherPseudonativeAnswersCount={
             data.userPseudonativeNotIrlAnswersCount
           }
-          answerComponentRequired="OneAnswerPinnablePseudoable"
+          answerComponentRequired="OneAnswerPinnable"
           label="Find your pseudonative irl criteria below"
           notLabel="No pseudonative irl criteria yet."
         />
@@ -192,10 +194,9 @@ export default function PersonalInfoCustomizedPage() {
         />
       </div>
 
-      <PageLink href={`modify-criteria`}>Modify</PageLink>
       <PageLink href={`add-criteria`}>Add customized criteria</PageLink>
       <PageLink href={`..`}>To Personal Info</PageLink>
-      <PageLink href={`../standardized`}>To Standardized criteria</PageLink>
+      <PageLink href={`../standardized`}>To Standardized Criteria</PageLink>
     </>
   );
 }

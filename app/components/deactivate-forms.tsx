@@ -1,6 +1,6 @@
 import { useFetcher } from "@remix-run/react";
 
-import { LinkButton } from "./link-button";
+import { TextButton } from "./text-button";
 
 export function DeactivateReactivateForms({ state }: { state: string }) {
   return (
@@ -18,9 +18,9 @@ function DeactivateForm() {
   return (
     <>
       <fetcher.Form action="/deactivate-profile" method="post" className="mt-4">
-        <LinkButton disabled={disabled}>
+        <TextButton disabled={disabled}>
           Click to deactivate your profile
-        </LinkButton>
+        </TextButton>
       </fetcher.Form>
       <p className="mt-2">
         All other users will no longer be able to see your Profile page.
@@ -36,9 +36,9 @@ function ReactivateForm() {
   return (
     <>
       <fetcher.Form action="/reactivate-profile" method="post" className="mt-4">
-        <LinkButton disabled={disabled}>
+        <TextButton disabled={disabled}>
           Click to reactivate your profile
-        </LinkButton>
+        </TextButton>
       </fetcher.Form>
       <p className="mt-2">
         All your friends will once again have access to your profile.

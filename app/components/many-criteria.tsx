@@ -1,14 +1,14 @@
 import { useState } from "react";
 import _ from "lodash";
+import { Prisma } from "@prisma/client";
 
-import { LinkButtonOnClick } from "./link-button";
+import { TextButtonOnClick } from "./text-button";
 import { UnionAnswerType } from "~/librairies/subdata/answers";
 import {
   AnswerComponentRequired,
   OneCriteria,
   SelectContext,
 } from "./one-criteria";
-import { Prisma } from "@prisma/client";
 import { selectContacts } from "~/librairies/subdata/contacts";
 
 export function ManyCriteria({
@@ -151,19 +151,19 @@ function ManyPaginatedCriteria({
         </ol>
       }
       <p className="mt-4">
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handlePreviousPosition}
           disabled={position === 0}
         >
           Previous
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
         &nbsp;/&nbsp;
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handleNextPosition}
           disabled={position === chunkedAnswers.length - 1}
         >
           Next
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
       </p>
     </>
   );

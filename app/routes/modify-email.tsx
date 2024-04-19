@@ -5,7 +5,6 @@ import { updateUserEmailByIdAndAnswerId } from "~/librairies/changes/users";
 import { findEmailAddressAnswerByUserId } from "~/librairies/data/answers";
 import { EmailUserSchema } from "~/librairies/validations/users";
 import { prisma } from "~/utilities/server/db.server";
-
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {

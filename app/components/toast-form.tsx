@@ -20,9 +20,7 @@ export function ToastForm({
         <button
           disabled={fetcher.state !== "idle"}
           className={
-            specifiedClasses
-              ? specifiedClasses
-              : "text-green-500 disabled:!text-gray-500"
+            specifiedClasses || "text-green-500 disabled:!text-gray-500"
           }
         >
           {children}
@@ -54,9 +52,7 @@ export function ContactToastForm({
         <button
           disabled={fetcher.state !== "idle"}
           className={
-            specifiedClasses
-              ? specifiedClasses
-              : "text-green-500 disabled:!text-gray-500"
+            specifiedClasses || "text-green-500 disabled:!text-gray-500"
           }
         >
           {children}

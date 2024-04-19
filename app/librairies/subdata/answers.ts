@@ -36,7 +36,7 @@ export type GlobalAnswerTypeByHand = {
     state?: string;
     kind: string;
     isPinned?: boolean;
-    isPinnedForSelf?: boolean; // NEW
+    isPinnedForSelf?: boolean;
     question: {
       kind: string;
       name: string;
@@ -86,7 +86,7 @@ export const PINNED_BY_USER_ANSWERS_LIMIT = 16;
 export const selectUserPinnedForSelfAnswers = {
   userQuestion: {
     select: {
-      isPinnedForSelf: true, // NEW
+      isPinnedForSelf: true,
       isPinned: true,
       kind: true,
       id: true,
@@ -131,7 +131,7 @@ export function whereUserPinnedForSelfAnswersByUserId(
       question: {
         state: "LIVE",
       },
-      isPinnedForSelf: true, // NEW
+      isPinnedForSelf: true,
       OR: [{ state: "LIVE" }, { state: "HIDDEN" }],
     },
     user: {
@@ -362,11 +362,12 @@ export function whereUserCustomAnswersByUserId(
 }
 
 // currently the same as selectUserCustomAnswers, without userQuestion.isPinned
-export const selectUserCustomAnswer = {
+export const selectUserQuestionAnswer = {
   userQuestion: {
     select: {
       id: true,
       kind: true,
+      state: true,
       question: {
         select: {
           name: true,
@@ -404,7 +405,7 @@ export function whereAnswerByUserQuestionIDAndUserID(
     userId,
     state: "LIVE",
     userQuestion: {
-      state: "LIVE",
+      OR: [{ state: "LIVE" }, { state: "HIDDEN" }],
       question: {
         state: "LIVE",
       },

@@ -9,7 +9,7 @@ import {
 import invariant from "tiny-invariant";
 
 import { H1 } from "~/components/h1";
-import { LinkButtonOnClick } from "~/components/link-button";
+import { TextButtonOnClick } from "~/components/text-button";
 import { ManyCriteria } from "~/components/many-criteria";
 import { ManyUserQuestionFriendsPinned } from "~/components/many-userquestionfriends";
 import { PageLink, PageLinkDivless } from "~/components/page-link";
@@ -147,12 +147,12 @@ export function ErrorBoundary() {
       </div>
       <PageLink href={`/`}>Return home</PageLink>
       <p className="mt-2">
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handlePreviousNavigation}
           disabled={false}
         >
           Or go back to the previous page
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
       </p>
     </>
   );
@@ -160,7 +160,6 @@ export function ErrorBoundary() {
 
 export default function DashboardPage() {
   const data = useLoaderData<typeof loader>();
-  console.log(data);
   // If I don't want to use "data." everywhere, I can always destructure from useLoaderData.
   // If there's loader and action data, I can also then call data (loader data) loaderData and action data actionData.
 
@@ -196,7 +195,7 @@ export default function DashboardPage() {
             href={`../notifications`}
             specifiedClasses={
               data.sentFromContactsCount > 0
-                ? "mt-2 inline-block text-cyan-500 underline hover:text-cyan-400 dark:hover:text-cyan-600"
+                ? "mt-2 inline-block text-teal-500 underline hover:text-cyan-400 dark:hover:text-cyan-600"
                 : undefined
             }
           >
@@ -213,45 +212,46 @@ export default function DashboardPage() {
             />
           </div>
         )}
-        {data.userPinnedFriend && (
-          <div className="py-2">
-            <p className="font-semibold text-zinc-700 dark:text-zinc-300">
-              <PageLinkDivless
-                href={`/users/${data.userPinnedFriend.userFirst.username}/profile`}
-                specifiedClasses="font-semibold text-blue-500 hover:text-blue-400 dark:hover:text-blue-600"
-              >
-                {data.userPinnedFriend.userFirst.appWideName}
-              </PageLinkDivless>{" "}
-              /{" "}
-              <span className="text-zinc-600 dark:text-zinc-400">
-                {data.userPinnedFriend.userFirst.username}
-              </span>{" "}
-              is your pinned friend
-            </p>
-            {data.relCombo === "friend" &&
-              data.userPinnedFriendAnswersPinnedByFriend && (
-                <ManyUserQuestionFriendsPinned
-                  pathname={data.pathname}
-                  userQuestionFriendsAnswers={
-                    data.userPinnedFriendAnswersPinnedByFriend
-                  }
-                  label="Find their pinned by you for friend criteria below"
-                  notLabel="No pinned by you criteria yet."
-                />
-              )}
-            {data.relCombo === "irl" &&
-              data.userPinnedFriendAnswersPinnedByFriend && (
-                <ManyUserQuestionFriendsPinned
-                  pathname={data.pathname}
-                  userQuestionFriendsAnswers={
-                    data.userPinnedFriendAnswersPinnedByFriend
-                  }
-                  label="Find their pinned by you for irl criteria below"
-                  notLabel="No pinned by you criteria yet."
-                />
-              )}
-          </div>
-        )}
+        {data.userPinnedFriend &&
+          (data.relCombo === "friend" || data.relCombo === "irl") && (
+            <div className="py-2">
+              <p className="font-semibold text-zinc-700 dark:text-zinc-300">
+                <PageLinkDivless
+                  href={`/users/${data.userPinnedFriend.userFirst.username}/profile`}
+                  specifiedClasses="font-semibold text-blue-500 hover:text-blue-400 dark:hover:text-blue-600"
+                >
+                  {data.userPinnedFriend.userFirst.appWideName}
+                </PageLinkDivless>{" "}
+                /{" "}
+                <span className="text-zinc-600 dark:text-zinc-400">
+                  {data.userPinnedFriend.userFirst.username}
+                </span>{" "}
+                is your pinned friend
+              </p>
+              {data.relCombo === "friend" &&
+                data.userPinnedFriendAnswersPinnedByFriend && (
+                  <ManyUserQuestionFriendsPinned
+                    pathname={data.pathname}
+                    userQuestionFriendsAnswers={
+                      data.userPinnedFriendAnswersPinnedByFriend
+                    }
+                    label="Find their pinned by you for friend criteria below"
+                    notLabel="No pinned by you criteria yet."
+                  />
+                )}
+              {data.relCombo === "irl" &&
+                data.userPinnedFriendAnswersPinnedByFriend && (
+                  <ManyUserQuestionFriendsPinned
+                    pathname={data.pathname}
+                    userQuestionFriendsAnswers={
+                      data.userPinnedFriendAnswersPinnedByFriend
+                    }
+                    label="Find their pinned by you for irl criteria below"
+                    notLabel="No pinned by you criteria yet."
+                  />
+                )}
+            </div>
+          )}
         <div className="py-2">
           <p className="mt-2 underline text-fuchsia-200 dark:text-fuchsia-800">
             My groups

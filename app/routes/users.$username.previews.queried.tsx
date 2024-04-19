@@ -15,7 +15,7 @@ import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
-import { LinkButtonOnClick } from "~/components/link-button";
+import { TextButtonOnClick } from "~/components/text-button";
 import { ManyCriteria } from "~/components/many-criteria";
 import { PageLink } from "~/components/page-link";
 import { QueriedForm } from "~/components/queried-form";
@@ -85,8 +85,8 @@ type QueriedPreviewLoaderByHand = {
   relComboMessage?: string;
 };
 
-// This is going to be weird, or rather unexpected...
-// But all validations will have to be made from the loader.
+// This is may be weird, or rather unexpected...
+// But all validations are made from the loader.
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   invariant(params.username, "Expected params.username");
 
@@ -114,7 +114,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const userLast = url.searchParams.get("userlast") || "";
   let relCombo = url.searchParams.get("relcombo") || "";
 
-  if (userLast === "" && relCombo === "") {
+  if (userLast === "") {
     return json({
       verifiedUser,
       user,
@@ -309,12 +309,12 @@ export function ErrorBoundary() {
       </div>
       <PageLink href={`/`}>Return home</PageLink>
       <p className="mt-2">
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handlePreviousNavigation}
           disabled={false}
         >
           Or go back to the previous page
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
       </p>
     </>
   );

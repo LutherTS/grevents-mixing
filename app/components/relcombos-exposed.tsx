@@ -6,7 +6,7 @@ import { ManyUserQuestionFriendsPinned } from "./many-userquestionfriends";
 import { selectUserQuestionFriendsAnswers } from "~/librairies/subdata/userquestionfriends";
 import { selectAnswers } from "~/librairies/subdata/answers";
 import { selectContacts } from "~/librairies/subdata/contacts";
-import { LinkButton } from "./link-button";
+import { TextButton } from "./text-button";
 import { PageLink } from "./page-link";
 
 // contact. is user
@@ -133,10 +133,10 @@ function ProfileForm({
       <fetcher.Form
         action={action}
         method="post"
-        className={specifiedClasses ? specifiedClasses : "mt-2"}
+        className={specifiedClasses || "mt-2"}
       >
         <input type="hidden" name="contactid" value={contact.id} />
-        <LinkButton disabled={fetcher.state !== "idle"}>{children}</LinkButton>
+        <TextButton disabled={fetcher.state !== "idle"}>{children}</TextButton>
       </fetcher.Form>
     </>
   );

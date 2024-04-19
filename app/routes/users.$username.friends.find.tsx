@@ -15,7 +15,7 @@ import invariant from "tiny-invariant";
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { FindForm } from "~/components/find-form";
 import { H1 } from "~/components/h1";
-import { LinkButtonOnClick } from "~/components/link-button";
+import { TextButtonOnClick } from "~/components/text-button";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
 import {
@@ -152,12 +152,12 @@ export function ErrorBoundary() {
       </div>
       <PageLink href={`/`}>Return home</PageLink>
       <p className="mt-2">
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handlePreviousNavigation}
           disabled={false}
         >
           Or go back to the previous page
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
       </p>
     </>
   );

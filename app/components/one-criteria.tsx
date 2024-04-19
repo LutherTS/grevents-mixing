@@ -8,17 +8,19 @@ import { PageLinkDivless } from "./page-link";
 import {
   GlobalAnswerTypeByHand,
   PINNED_BY_USER_ANSWERS_LIMIT,
-  DEFAULT_ANSWERS_LIMIT,
   PINNED_FOR_SELF_ANSWERS_LIMIT,
 } from "~/librairies/subdata/answers";
 import { PINNED_BY_FRIEND_ANSWERS_LIMIT } from "~/librairies/subdata/userquestionfriends";
 import { selectContacts } from "~/librairies/subdata/contacts";
+import { FormButton } from "./form-button";
 
 export type SelectContext =
   | "Dashboard"
   | "PersonalInfo"
+  | "PersonalInfoStandardized"
   | "PersonalInfoCustomized"
   | "UserCriteria"
+  | "ModifyCriteriaStandardized" // bound for obsolescence
   | "ModifyCriteriaCustomized"
   | "QueriedPreview"
   | "Profile";
@@ -28,7 +30,6 @@ export type AnswerComponentRequired =
   | "OneAnswerRePinnableForSelf"
   | "OneAnswerRePinnable"
   | "OneAnswerPinnable"
-  | "OneAnswerPinnablePseudoable"
   | "OneAnswerModify"
   | "OneAnswerPinnableByFriend";
 
@@ -37,7 +38,6 @@ export function OneCriteria({
   selectContext,
   pinnedAnswersForSelfCount,
   pinnedAnswersCount,
-  otherPseudonativeAnswersCount,
   answerComponentRequired,
   contact,
   answersPinnedbyFriendAnswersCount,
@@ -75,17 +75,6 @@ export function OneCriteria({
               pinnedAnswersCount={pinnedAnswersCount}
             />
           )}
-        {answerComponentRequired === "OneAnswerPinnablePseudoable" &&
-          typeof pinnedAnswersForSelfCount === "number" &&
-          typeof pinnedAnswersCount === "number" &&
-          typeof otherPseudonativeAnswersCount === "number" && (
-            <OneAnswerPinnablePseudoable
-              answer={answer}
-              pinnedAnswersForSelfCount={pinnedAnswersForSelfCount}
-              pinnedAnswersCount={pinnedAnswersCount}
-              otherPseudonativeAnswersCount={otherPseudonativeAnswersCount}
-            />
-          )}
         {answerComponentRequired === "OneAnswerModify" && (
           <OneAnswerModify answer={answer} />
         )}
@@ -119,55 +108,112 @@ export function OneQuestion({
   return (
     <>
       <p className="mt-2">
+        {/* native */}
         {answer.userQuestion.question.kind === "NATIVE" &&
           answer.userQuestion.kind === "NONE" && (
             <span className="text-violet-500">
-              <span className="font-semibold">
-                {answer.userQuestion.question.name}
-              </span>{" "}
-              {/* / native */}
+              {selectContext === "Dashboard" ||
+              selectContext === "PersonalInfo" ||
+              selectContext === "PersonalInfoStandardized" ? (
+                <>
+                  <PageLinkDivless
+                    href={`/users/${answer.user.username}/personal-info/user-criteria/${answer.userQuestion.id}`}
+                    specifiedClasses="inline-block underline hover:text-violet-400 dark:hover:text-violet-600 font-semibold decoration-dotted"
+                  >
+                    {answer.userQuestion.question.name}
+                  </PageLinkDivless>
+                </>
+              ) : (
+                <>
+                  <span className="font-semibold">
+                    {answer.userQuestion.question.name}
+                  </span>
+                </>
+              )}
             </span>
           )}
+        {/* native irl */}
         {answer.userQuestion.question.kind === "NATIVEIRL" &&
           answer.userQuestion.kind === "NONE" && (
             <span className="text-purple-500">
-              <span className="font-semibold">
-                {answer.userQuestion.question.name}
-              </span>{" "}
-              {/* / native irl */}
+              {selectContext === "Dashboard" ||
+              selectContext === "PersonalInfo" ||
+              selectContext === "PersonalInfoStandardized" ? (
+                <>
+                  <PageLinkDivless
+                    href={`/users/${answer.user.username}/personal-info/user-criteria/${answer.userQuestion.id}`}
+                    specifiedClasses="inline-block underline hover:text-purple-400 dark:hover:text-purple-600 font-semibold decoration-dotted"
+                  >
+                    {answer.userQuestion.question.name}
+                  </PageLinkDivless>
+                </>
+              ) : (
+                <>
+                  <span className="font-semibold">
+                    {answer.userQuestion.question.name}
+                  </span>
+                </>
+              )}
             </span>
           )}
+        {/* pseudonative */}
         {answer.userQuestion.question.kind === "PSEUDO" &&
           answer.userQuestion.kind === "PSEUDONATIVE" && (
             <span className="text-green-500">
-              <span className="font-semibold">
-                {answer.userQuestion.question.name}
-              </span>{" "}
-              {/* / pseudonative */}
+              {selectContext === "Dashboard" ||
+              selectContext === "PersonalInfo" ||
+              selectContext === "PersonalInfoCustomized" ? (
+                <>
+                  <PageLinkDivless
+                    href={`/users/${answer.user.username}/personal-info/user-criteria/${answer.userQuestion.id}`}
+                    specifiedClasses="inline-block underline hover:text-green-400 dark:hover:text-green-600 font-semibold decoration-dashed"
+                  >
+                    {answer.userQuestion.question.name}
+                  </PageLinkDivless>
+                </>
+              ) : (
+                <>
+                  <span className="font-semibold">
+                    {answer.userQuestion.question.name}
+                  </span>
+                </>
+              )}
             </span>
           )}
+        {/* pseudonative irl */}
         {answer.userQuestion.question.kind === "PSEUDO" &&
           answer.userQuestion.kind === "PSEUDONATIVEIRL" && (
             <span className="text-emerald-500">
-              <span className="font-semibold">
-                {answer.userQuestion.question.name}
-              </span>{" "}
-              {/* / pseudonative irl */}
+              {selectContext === "Dashboard" ||
+              selectContext === "PersonalInfo" ||
+              selectContext === "PersonalInfoCustomized" ? (
+                <>
+                  <PageLinkDivless
+                    href={`/users/${answer.user.username}/personal-info/user-criteria/${answer.userQuestion.id}`}
+                    specifiedClasses="inline-block underline hover:text-emerald-400 dark:hover:text-emerald-600 font-semibold decoration-dashed"
+                  >
+                    {answer.userQuestion.question.name}
+                  </PageLinkDivless>
+                </>
+              ) : (
+                <>
+                  <span className="font-semibold">
+                    {answer.userQuestion.question.name}
+                  </span>
+                </>
+              )}
             </span>
           )}
-        {/* no link, UserQuestionFriends counted */}
+        {/* custom, no link, UserQuestionFriends counted */}
         {answer.userQuestion.question.kind === "CUSTOM" &&
           answer.userQuestion.kind === "NONE" &&
           answer.userQuestion._count &&
-          (selectContext === "Dashboard" ||
-            selectContext === "PersonalInfo" ||
-            selectContext === "UserCriteria" ||
+          (selectContext === "UserCriteria" ||
             selectContext === "ModifyCriteriaCustomized") && (
             <span className="text-lime-500">
               <span className="font-semibold">
                 {answer.userQuestion.question.name}
               </span>{" "}
-              {/* / custom{" "} */}
               {typeof answer.userQuestion._count.userQuestionFriends ===
                 "number" &&
               answer.userQuestion._count.userQuestionFriends >= 1 ? (
@@ -177,7 +223,7 @@ export function OneQuestion({
               )}
             </span>
           )}
-        {/* no link, UserQuestionFriends not counted */}
+        {/* custom, no link, UserQuestionFriends not counted */}
         {answer.userQuestion.question.kind === "CUSTOM" &&
           answer.userQuestion.kind === "NONE" &&
           (selectContext === "QueriedPreview" ||
@@ -186,34 +232,30 @@ export function OneQuestion({
               <span className="font-semibold">
                 {answer.userQuestion.question.name}
               </span>{" "}
-              {/* / custom  */}/ shared to you
+              / shared to you
             </span>
           )}
-        {/* link, UserQuestionFriends counted */}
-        {/* basically the only unused use case is: link, UserQuestionFriends not counted */}
+        {/* custom, link, UserQuestionFriends counted */}
         {answer.userQuestion.question.kind === "CUSTOM" &&
           answer.userQuestion.kind === "NONE" &&
           answer.userQuestion._count &&
-          selectContext === "PersonalInfoCustomized" && (
+          (selectContext === "Dashboard" ||
+            selectContext === "PersonalInfo" ||
+            selectContext === "PersonalInfoCustomized") && (
             <PageLinkDivless
-              href={`/users/${answer.user.username}/personal-info/customized/user-criteria/${answer.userQuestion.id}`}
-              specifiedClasses="inline-block underline"
+              href={`/users/${answer.user.username}/personal-info/user-criteria/${answer.userQuestion.id}`}
+              specifiedClasses="inline-block underline text-lime-500 hover:text-lime-400 dark:hover:text-lime-600"
             >
-              <span className="text-lime-500 underline hover:text-lime-400 dark:hover:text-lime-600">
-                <span className="font-semibold">
-                  {answer.userQuestion.question.name}
-                </span>{" "}
-                {/* / custom{" "} */}
-                {typeof answer.userQuestion._count.userQuestionFriends ===
-                  "number" &&
-                answer.userQuestion._count.userQuestionFriends >= 1 ? (
-                  <>
-                    / shared ({answer.userQuestion._count.userQuestionFriends})
-                  </>
-                ) : (
-                  <>/ not shared</>
-                )}
-              </span>
+              <span className="font-semibold">
+                {answer.userQuestion.question.name}
+              </span>{" "}
+              {typeof answer.userQuestion._count.userQuestionFriends ===
+                "number" &&
+              answer.userQuestion._count.userQuestionFriends >= 1 ? (
+                <>/ shared ({answer.userQuestion._count.userQuestionFriends})</>
+              ) : (
+                <>/ not shared</>
+              )}
             </PageLinkDivless>
           )}
       </p>
@@ -238,6 +280,7 @@ export function OneAnswer({ answer }: { answer: GlobalAnswerTypeByHand }) {
               <PageLinkDivless
                 href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+                specifiedTarget="_blank"
               >
                 {answer.value}
               </PageLinkDivless>
@@ -259,7 +302,8 @@ export function OneAnswerRePinnableForSelf({
   return (
     <>
       <div className="mt-2 flex justify-center">
-        <ButtonPinnableForSelfForm answer={answer} />
+        {/* old */}
+        {/* <ButtonPinnableForSelfForm answer={answer} /> */}
         <p
           className={
             answer.userQuestion.state === "HIDDEN"
@@ -267,12 +311,12 @@ export function OneAnswerRePinnableForSelf({
               : "text-inherit"
           }
         >
-          {/* Adding a source is currently only available on customized criteria. */}
           {answer.source ? (
             <>
               <PageLinkDivless
                 href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+                specifiedTarget="_blank"
               >
                 {answer.value}
               </PageLinkDivless>
@@ -281,16 +325,24 @@ export function OneAnswerRePinnableForSelf({
             <>{answer.value}</>
           )}
         </p>
-        <ButtonRePinnableForSelfForm answer={answer} />
+        {/* old */}
+        {/* <ButtonRePinnableForSelfForm answer={answer} /> */}
       </div>
+      {/* new */}
+      <p className="mt-2">
+        <TextButtonPinnableForSelfForm answer={answer} /> /{" "}
+        <TextButtonRePinnableForSelfForm answer={answer} />
+      </p>
     </>
   );
 }
 
-function ButtonPinnableForSelfForm({
+function TextButtonPinnableForSelfForm({
   answer,
+  pinnedAnswersForSelfCount,
 }: {
   answer: GlobalAnswerTypeByHand;
+  pinnedAnswersForSelfCount?: number;
 }) {
   const fetcher = useFetcher();
 
@@ -299,27 +351,35 @@ function ButtonPinnableForSelfForm({
       <fetcher.Form
         action="/pin-answer-for-self"
         method="post"
-        className="me-2 flex items-center"
+        className="inline"
       >
         <input type="hidden" name="answerid" value={answer.id} />
         <button
-          disabled={fetcher.state !== "idle"}
-          className={clsx(
-            "h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500",
-            {
-              "bg-sky-500 hover:bg-rose-300 dark:hover:bg-rose-700":
-                answer.userQuestion.isPinnedForSelf === true,
-              "bg-rose-500 hover:bg-sky-300 dark:hover:bg-sky-700":
-                answer.userQuestion.isPinnedForSelf === false,
-            }
+          disabled={
+            fetcher.state !== "idle" ||
+            (typeof pinnedAnswersForSelfCount === "number" &&
+              pinnedAnswersForSelfCount >= PINNED_FOR_SELF_ANSWERS_LIMIT &&
+              answer.userQuestion.isPinnedForSelf === false)
+          }
+          className="disabled:!text-gray-500 disabled:hover:!text-gray-500"
+        >
+          {answer.userQuestion.isPinnedForSelf === true && (
+            <span className="text-cyan-500 hover:text-cyan-300 dark:hover:text-cyan-700">
+              Unpin for self
+            </span>
           )}
-        />
+          {answer.userQuestion.isPinnedForSelf === false && (
+            <span className="text-sky-500 hover:text-sky-300 dark:hover:text-sky-700">
+              Pin for self
+            </span>
+          )}
+        </button>
       </fetcher.Form>
     </>
   );
 }
 
-function ButtonRePinnableForSelfForm({
+function TextButtonRePinnableForSelfForm({
   answer,
 }: {
   answer: GlobalAnswerTypeByHand;
@@ -331,13 +391,15 @@ function ButtonRePinnableForSelfForm({
       <fetcher.Form
         action="/re-pin-answer-for-self"
         method="post"
-        className="ms-2 flex items-center"
+        className="inline"
       >
         <input type="hidden" name="answerid" value={answer.id} />
         <button
           disabled={fetcher.state !== "idle"}
-          className="h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500 bg-indigo-500 hover:bg-indigo-300 dark:hover:bg-indigo-700"
-        />
+          className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-indigo-500 hover:text-indigo-300 dark:hover:text-indigo-700"
+        >
+          Repin for self
+        </button>
       </fetcher.Form>
     </>
   );
@@ -351,7 +413,8 @@ export function OneAnswerRePinnable({
   return (
     <>
       <div className="mt-2 flex justify-center">
-        <ButtonPinnableForm answer={answer} />
+        {/* old */}
+        {/* <ButtonUnpinnableForm answer={answer} /> */}
         <p
           className={
             answer.userQuestion.state === "HIDDEN"
@@ -359,12 +422,12 @@ export function OneAnswerRePinnable({
               : "text-inherit"
           }
         >
-          {/* Adding a source is currently only available on customized criteria. */}
           {answer.source ? (
             <>
               <PageLinkDivless
                 href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+                specifiedTarget="_blank"
               >
                 {answer.value}
               </PageLinkDivless>
@@ -373,27 +436,73 @@ export function OneAnswerRePinnable({
             <>{answer.value}</>
           )}
         </p>
-        <ButtonRePinnableForm answer={answer} />
+        {/* old */}
+        {/* <ButtonRePinnableForm answer={answer} /> */}
       </div>
+      {/* new */}
+      <p className="mt-2">
+        <TextButtonPinnableForm answer={answer} /> /{" "}
+        <TextButtonRePinnableForm answer={answer} />
+      </p>
     </>
   );
 }
 
-function ButtonRePinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
+function TextButtonPinnableForm({
+  answer,
+  pinnedAnswersCount,
+}: {
+  answer: GlobalAnswerTypeByHand;
+  pinnedAnswersCount?: number;
+}) {
   const fetcher = useFetcher();
 
   return (
     <>
-      <fetcher.Form
-        action="/re-pin-answer"
-        method="post"
-        className="ms-2 flex items-center"
-      >
+      <fetcher.Form action="/pin-answer" method="post" className="inline">
+        <input type="hidden" name="answerid" value={answer.id} />
+        <button
+          disabled={
+            fetcher.state !== "idle" ||
+            (typeof pinnedAnswersCount === "number" &&
+              pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
+              answer.userQuestion.isPinned === false)
+          }
+          className="disabled:!text-gray-500 disabled:hover:!text-gray-500"
+        >
+          {answer.userQuestion.isPinned === true && (
+            <span className="text-cyan-500 hover:text-cyan-300 dark:hover:text-cyan-700">
+              Unpin
+            </span>
+          )}
+          {answer.userQuestion.isPinned === false && (
+            <span className="text-sky-500 hover:text-sky-300 dark:hover:text-sky-700">
+              Pin
+            </span>
+          )}
+        </button>
+      </fetcher.Form>
+    </>
+  );
+}
+
+function TextButtonRePinnableForm({
+  answer,
+}: {
+  answer: GlobalAnswerTypeByHand;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form action="/re-pin-answer" method="post" className="inline">
         <input type="hidden" name="answerid" value={answer.id} />
         <button
           disabled={fetcher.state !== "idle"}
-          className="h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500 bg-indigo-500 hover:bg-indigo-300 dark:hover:bg-indigo-700"
-        />
+          className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-indigo-500 hover:text-indigo-300 dark:hover:text-indigo-700"
+        >
+          Repin
+        </button>
       </fetcher.Form>
     </>
   );
@@ -411,24 +520,16 @@ export function OneAnswerPinnable({
   return (
     <>
       <div className="mt-2 flex justify-center">
-        {/* If you're still allowed to pin for self */}
-        {pinnedAnswersForSelfCount < PINNED_FOR_SELF_ANSWERS_LIMIT && (
+        {/* old */}
+        {/* if you're still allowed to pin for self */}
+        {/* {pinnedAnswersForSelfCount < PINNED_FOR_SELF_ANSWERS_LIMIT && (
           <ButtonPinnableForSelfForm answer={answer} />
-        )}
-        {/* If you're only allowed to unpin for self */}
-        {pinnedAnswersForSelfCount >= PINNED_FOR_SELF_ANSWERS_LIMIT &&
+        )} */}
+        {/* if you're only allowed to unpin for self */}
+        {/* {pinnedAnswersForSelfCount >= PINNED_FOR_SELF_ANSWERS_LIMIT &&
           answer.userQuestion.isPinnedForSelf === true && (
             <ButtonPinnableForSelfForm answer={answer} />
-          )}
-        {/* If you're still allowed to pin */}
-        {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
-          <ButtonPinnableForm answer={answer} />
-        )}
-        {/* If you're only allowed to unpin */}
-        {pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
-          answer.userQuestion.isPinned === true && (
-            <ButtonPinnableForm answer={answer} />
-          )}
+          )} */}
         <p
           className={
             answer.userQuestion.state === "HIDDEN"
@@ -436,12 +537,12 @@ export function OneAnswerPinnable({
               : "text-inherit"
           }
         >
-          {/* Adding a source is currently only available on customized criteria. */}
           {answer.source ? (
             <>
               <PageLinkDivless
                 href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+                specifiedTarget="_blank"
               >
                 {answer.value}
               </PageLinkDivless>
@@ -450,123 +551,29 @@ export function OneAnswerPinnable({
             <>{answer.value}</>
           )}
         </p>
-      </div>
-    </>
-  );
-}
-
-function ButtonPinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
-  const fetcher = useFetcher();
-
-  return (
-    <>
-      <fetcher.Form
-        action="/pin-answer"
-        method="post"
-        className="me-2 flex items-center"
-      >
-        <input type="hidden" name="answerid" value={answer.id} />
-        <button
-          disabled={fetcher.state !== "idle"}
-          className={clsx(
-            "h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500",
-            {
-              "bg-cyan-500 hover:bg-pink-300 dark:hover:bg-pink-700":
-                answer.userQuestion.isPinned === true,
-              "bg-pink-500 hover:bg-cyan-300 dark:hover:bg-cyan-700":
-                answer.userQuestion.isPinned === false,
-            }
-          )}
-        />
-      </fetcher.Form>
-    </>
-  );
-}
-
-export function OneAnswerPinnablePseudoable({
-  answer,
-  pinnedAnswersForSelfCount,
-  pinnedAnswersCount,
-  otherPseudonativeAnswersCount,
-}: {
-  answer: GlobalAnswerTypeByHand;
-  pinnedAnswersForSelfCount: number;
-  pinnedAnswersCount: number;
-  otherPseudonativeAnswersCount: number;
-}) {
-  return (
-    <>
-      <div className="mt-2 flex justify-center">
-        {/* If you're still allowed to pin for self */}
-        {pinnedAnswersForSelfCount < PINNED_FOR_SELF_ANSWERS_LIMIT && (
-          <ButtonPinnableForSelfForm answer={answer} />
-        )}
-        {/* If you're only allowed to unpin for self */}
-        {pinnedAnswersForSelfCount >= PINNED_FOR_SELF_ANSWERS_LIMIT &&
-          answer.userQuestion.isPinnedForSelf === true && (
-            <ButtonPinnableForSelfForm answer={answer} />
-          )}
-        {/* If you're still allowed to pin */}
-
-        {/* If you're still allowed to pin */}
-        {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
+        {/* old */}
+        {/* if you're still allowed to pin */}
+        {/* {pinnedAnswersCount < PINNED_BY_USER_ANSWERS_LIMIT && (
           <ButtonPinnableForm answer={answer} />
-        )}
-        {/* If you're only allowed to unpin */}
-        {pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
+        )} */}
+        {/* if you're only allowed to unpin */}
+        {/* {pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
           answer.userQuestion.isPinned === true && (
             <ButtonPinnableForm answer={answer} />
-          )}
-        <p>
-          {/* Adding a source is currently only available on customized criteria. */}
-          {answer.source ? (
-            <>
-              <PageLinkDivless
-                href={answer.source}
-                specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
-              >
-                {answer.value}
-              </PageLinkDivless>
-            </>
-          ) : (
-            <>{answer.value}</>
-          )}
-        </p>
-        {/* If both are max out, you'll have to delete an "otherPseudonativeAnswer" to re-access pseudo-answer. */}
-        {otherPseudonativeAnswersCount < DEFAULT_ANSWERS_LIMIT && (
-          <ButtonPseudoableForm answer={answer} />
-        )}
+          )} */}
       </div>
-    </>
-  );
-}
-
-function ButtonPseudoableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
-  const fetcher = useFetcher();
-
-  return (
-    <>
-      <fetcher.Form
-        action="/pseudo-answer"
-        method="post"
-        className="ms-2 flex items-center"
-      >
-        <input type="hidden" name="answerid" value={answer.id} />
-        <button
-          disabled={fetcher.state !== "idle"}
-          className={clsx(
-            "h-4 w-4 rounded-full bg-yellow-500 disabled:!bg-gray-500 disabled:hover:!bg-gray-500",
-            {
-              "hover:bg-emerald-300 dark:hover:bg-emerald-700":
-                answer.userQuestion.question.kind === "PSEUDO" &&
-                answer.userQuestion.kind === "PSEUDONATIVE",
-              "hover:bg-green-300 dark:hover:bg-green-700":
-                answer.userQuestion.question.kind === "PSEUDO" &&
-                answer.userQuestion.kind === "PSEUDONATIVEIRL",
-            }
-          )}
+      {/* new */}
+      <p className="mt-2">
+        <TextButtonPinnableForm
+          answer={answer}
+          pinnedAnswersCount={pinnedAnswersCount}
+        />{" "}
+        /{" "}
+        <TextButtonPinnableForSelfForm
+          answer={answer}
+          pinnedAnswersForSelfCount={pinnedAnswersForSelfCount}
         />
-      </fetcher.Form>
+      </p>
     </>
   );
 }
@@ -649,15 +656,26 @@ function OneAnswerModifyForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
             ))}
           </div>
         ) : null}
+        {answer.userQuestion.question.kind === "NATIVE" &&
+        answer.userQuestion.question.name === "Email address" ? (
+          <>
+            {/* necessary to send the full form via Enter */}
+            <button type="submit" className="hidden">
+              Submit
+            </button>
+          </>
+        ) : (
+          <>
+            <FormButton specifiedClasses="mt-4 w-full max-w-[40ch] rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-400 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-blue-600 dark:disabled:hover:!bg-gray-500">
+              Modify criteria
+            </FormButton>
+          </>
+        )}
         {fetcher.data?.message ? (
           <div id={`${answer.id}-form-error`} aria-live="polite">
             <p className="mt-2 text-red-500">{fetcher.data.message}</p>
           </div>
         ) : null}
-        {/* Currently necessary to send the full form via Enter */}
-        <button type="submit" className="hidden">
-          Submit
-        </button>
       </fetcher.Form>
     </>
   );
@@ -672,7 +690,6 @@ type ModifyAnswerSourcedByHand = JsonifyObject<{
   message?: string;
 }>;
 
-// I'll need to DRY that up, with an input component, like AnswerModifyInput. Eventually.
 function OneAnswerModifySourcedForm({
   answer,
 }: {
@@ -723,15 +740,14 @@ function OneAnswerModifySourcedForm({
             ))}
           </div>
         ) : null}
+        <FormButton specifiedClasses="mt-4 w-full max-w-[40ch] rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-400 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-blue-600 dark:disabled:hover:!bg-gray-500">
+          Modify criteria
+        </FormButton>
         {fetcher.data?.message ? (
           <div id={`${answer.id}-form-error`} aria-live="polite">
             <p className="mt-2 text-red-500">{fetcher.data.message}</p>
           </div>
         ) : null}
-        {/* Currently necessary to send the full form via Enter */}
-        <button type="submit" className="hidden">
-          Submit
-        </button>
       </fetcher.Form>
     </>
   );
@@ -782,16 +798,17 @@ export function OneAnswerPinnableByFriend({
   return (
     <>
       <div className="mt-2 flex justify-center">
-        {answersPinnedbyFriendAnswersCount < PINNED_BY_FRIEND_ANSWERS_LIMIT && (
+        {/* old */}
+        {/* {answersPinnedbyFriendAnswersCount < PINNED_BY_FRIEND_ANSWERS_LIMIT && (
           <ButtonPinnableByFriendForm answer={answer} contact={contact} />
-        )}
+        )} */}
         <p>
-          {/* Adding a source is currently only available on customized criteria. */}
           {answer.source ? (
             <>
               <PageLinkDivless
                 href={answer.source}
                 specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+                specifiedTarget="_blank"
               >
                 {answer.value}
               </PageLinkDivless>
@@ -801,35 +818,203 @@ export function OneAnswerPinnableByFriend({
           )}
         </p>
       </div>
+      {/* new */}
+      <p className="mt-2">
+        <TextButtonPinnableByFriendForm
+          answer={answer}
+          contact={contact}
+          answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
+        />
+      </p>
     </>
   );
 }
 
-function ButtonPinnableByFriendForm({
+function TextButtonPinnableByFriendForm({
   answer,
   contact,
+  answersPinnedbyFriendAnswersCount,
 }: {
   answer: GlobalAnswerTypeByHand;
   contact: Prisma.ContactGetPayload<{
     select: typeof selectContacts;
   }>;
+  answersPinnedbyFriendAnswersCount: number;
 }) {
   const fetcher = useFetcher();
 
   return (
     <>
-      <fetcher.Form
-        action="/pin-user-question-friend"
-        method="post"
-        className="me-2 flex items-center"
-      >
+      <fetcher.Form action="/pin-user-question-friend" method="post">
         <input type="hidden" name="answerid" value={answer.id} />
         <input type="hidden" name="contactid" value={contact.id} />
         <button
-          disabled={fetcher.state !== "idle"}
-          className="h-4 w-4 rounded-full bg-pink-500 hover:bg-cyan-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-cyan-700"
-        />
+          disabled={
+            fetcher.state !== "idle" ||
+            answersPinnedbyFriendAnswersCount >= PINNED_BY_FRIEND_ANSWERS_LIMIT
+          }
+          className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-sky-500 hover:text-sky-300 dark:hover:text-sky-700"
+        >
+          Pin for you
+        </button>
       </fetcher.Form>
     </>
   );
 }
+
+/* ARCHIVES
+All previous buttons will be kept as comments below. And their implementation will still remain in the code above as comments, until I manage to find a solution the problem I showcased here: https://play.tailwindcss.com/ID2X1qT2KU.
+*/
+
+// function ButtonPinnableForSelfForm({
+//   answer,
+// }: {
+//   answer: GlobalAnswerTypeByHand;
+// }) {
+//   const fetcher = useFetcher();
+
+//   return (
+//     <>
+//       <fetcher.Form
+//         action="/pin-answer-for-self"
+//         method="post"
+//         className="me-2 flex items-center"
+//       >
+//         <input type="hidden" name="answerid" value={answer.id} />
+//         <button
+//           disabled={fetcher.state !== "idle"}
+//           className={clsx(
+//             "h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500",
+//             {
+//               "bg-sky-500 hover:bg-rose-300 dark:hover:bg-rose-700":
+//                 answer.userQuestion.isPinnedForSelf === true,
+//               "bg-rose-500 hover:bg-sky-300 dark:hover:bg-sky-700":
+//                 answer.userQuestion.isPinnedForSelf === false,
+//             }
+//           )}
+//         />
+//       </fetcher.Form>
+//     </>
+//   );
+// }
+
+// function ButtonRePinnableForSelfForm({
+//   answer,
+// }: {
+//   answer: GlobalAnswerTypeByHand;
+// }) {
+//   const fetcher = useFetcher();
+
+//   return (
+//     <>
+//       <fetcher.Form
+//         action="/re-pin-answer-for-self"
+//         method="post"
+//         className="ms-2 flex items-center"
+//       >
+//         <input type="hidden" name="answerid" value={answer.id} />
+//         <button
+//           disabled={fetcher.state !== "idle"}
+//           className="h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500 bg-indigo-500 hover:bg-indigo-300 dark:hover:bg-indigo-700"
+//         />
+//       </fetcher.Form>
+//     </>
+//   );
+// }
+
+// function ButtonUnpinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
+//   const fetcher = useFetcher();
+
+//   return (
+//     <>
+//       <fetcher.Form
+//         action="/pin-answer"
+//         method="post"
+//         className="me-2 flex items-center"
+//       >
+//         <input type="hidden" name="answerid" value={answer.id} />
+//         <button
+//           disabled={fetcher.state !== "idle"}
+//           className="h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500 bg-cyan-500 hover:bg-pink-300 dark:hover:bg-pink-700"
+//         />
+//       </fetcher.Form>
+//     </>
+//   );
+// }
+
+// function ButtonRePinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
+//   const fetcher = useFetcher();
+
+//   return (
+//     <>
+//       <fetcher.Form
+//         action="/re-pin-answer"
+//         method="post"
+//         className="ms-2 flex items-center"
+//       >
+//         <input type="hidden" name="answerid" value={answer.id} />
+//         <button
+//           disabled={fetcher.state !== "idle"}
+//           className="h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500 bg-indigo-500 hover:bg-indigo-300 dark:hover:bg-indigo-700"
+//         />
+//       </fetcher.Form>
+//     </>
+//   );
+// }
+
+// function ButtonPinnableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
+//   const fetcher = useFetcher();
+
+//   return (
+//     <>
+//       <fetcher.Form
+//         action="/pin-answer"
+//         method="post"
+//         className="ms-2 flex items-center"
+//       >
+//         <input type="hidden" name="answerid" value={answer.id} />
+//         <button
+//           disabled={fetcher.state !== "idle"}
+//           className={clsx(
+//             "h-4 w-4 rounded-full disabled:!bg-gray-500 disabled:hover:!bg-gray-500",
+//             {
+//               "bg-cyan-500 hover:bg-pink-300 dark:hover:bg-pink-700":
+//                 answer.userQuestion.isPinned === true,
+//               "bg-pink-500 hover:bg-cyan-300 dark:hover:bg-cyan-700":
+//                 answer.userQuestion.isPinned === false,
+//             }
+//           )}
+//         />
+//       </fetcher.Form>
+//     </>
+//   );
+// }
+
+// function ButtonPinnableByFriendForm({
+//   answer,
+//   contact,
+// }: {
+//   answer: GlobalAnswerTypeByHand;
+//   contact: Prisma.ContactGetPayload<{
+//     select: typeof selectContacts;
+//   }>;
+// }) {
+//   const fetcher = useFetcher();
+
+//   return (
+//     <>
+//       <fetcher.Form
+//         action="/pin-user-question-friend"
+//         method="post"
+//         className="me-2 flex items-center"
+//       >
+//         <input type="hidden" name="answerid" value={answer.id} />
+//         <input type="hidden" name="contactid" value={contact.id} />
+//         <button
+//           disabled={fetcher.state !== "idle"}
+//           className="h-4 w-4 rounded-full bg-pink-500 hover:bg-cyan-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-cyan-700"
+//         />
+//       </fetcher.Form>
+//     </>
+//   );
+// }

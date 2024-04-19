@@ -7,14 +7,11 @@ import {
 } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
-import {
-  NativeIrlAnswerForm,
-  NativeNotIrlAnswerForm,
-} from "~/components/answer-forms";
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
-import { LinkButtonOnClick } from "~/components/link-button";
+import { TextButtonOnClick } from "~/components/text-button";
 import { PageLink } from "~/components/page-link";
+import { PaginatedStandardizedAnswerForms } from "~/components/paginated-answer-forms";
 import { SignOutForm } from "~/components/sign-out-form";
 import { updateUserStatusDashboardById } from "~/librairies/changes/users";
 import {
@@ -96,12 +93,12 @@ export function ErrorBoundary() {
       </div>
       <PageLink href={`/`}>Return home</PageLink>
       <p className="mt-2">
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handlePreviousNavigation}
           disabled={false}
         >
           Or go back to the previous page
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
       </p>
     </>
   );
@@ -121,13 +118,11 @@ export default function AddCriteriaStandardizedPage() {
       {data.verifiedUser && <SignOutForm />}
 
       <div className="space-y-4 my-4">
-        <NativeNotIrlAnswerForm
-          answerCount={data.userNativeNotIrlAnswersCount}
-          nativeQuestions={data.unansweredNativeNotIrlQuestions}
-        />
-        <NativeIrlAnswerForm
-          answerCount={data.userNativeIrlAnswersCount}
-          nativeQuestions={data.unansweredNativeIrlQuestions}
+        <PaginatedStandardizedAnswerForms
+          nativeNotIrlQuestions={data.unansweredNativeNotIrlQuestions}
+          nativeNotIrlAnswersCount={data.userNativeNotIrlAnswersCount}
+          nativeIrlQuestions={data.unansweredNativeIrlQuestions}
+          nativeIrlAnswersCount={data.userNativeIrlAnswersCount}
         />
       </div>
 

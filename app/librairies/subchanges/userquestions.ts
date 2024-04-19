@@ -10,7 +10,7 @@ export function createUserQuestionAndAnswer(
     userId,
     questionId,
     state: "LIVE",
-    kind: kind ? kind : "NONE",
+    kind: kind || "NONE",
     answer: {
       create: {
         value,
@@ -31,7 +31,7 @@ export function updateUserQuestionAndAnswer(
     userId,
     questionId,
     state: "LIVE",
-    kind: kind ? kind : "NONE",
+    kind: kind || "NONE",
     answer: {
       update: {
         value,
@@ -42,6 +42,7 @@ export function updateUserQuestionAndAnswer(
   };
 }
 
+// same as createUserQuestionAndAnswer with source added
 export function createSourcedUserQuestionAndAnswer(
   source: string, // the only property added
   userId: string,
@@ -53,7 +54,7 @@ export function createSourcedUserQuestionAndAnswer(
     userId,
     questionId,
     state: "LIVE",
-    kind: kind ? kind : "NONE",
+    kind: kind || "NONE",
     answer: {
       create: {
         value,
@@ -65,6 +66,7 @@ export function createSourcedUserQuestionAndAnswer(
   };
 }
 
+// same as updateUserQuestionAndAnswer with source added
 export function updateSourcedUserQuestionAndAnswer(
   source: string, // the only property added
   userId: string,
@@ -76,7 +78,7 @@ export function updateSourcedUserQuestionAndAnswer(
     userId,
     questionId,
     state: "LIVE",
-    kind: kind ? kind : "NONE",
+    kind: kind || "NONE",
     answer: {
       update: {
         value,

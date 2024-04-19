@@ -9,7 +9,7 @@ import invariant from "tiny-invariant";
 
 import { BackToDashboardLink } from "~/components/back-to-dashboard-link";
 import { H1 } from "~/components/h1";
-import { LinkButtonOnClick } from "~/components/link-button";
+import { TextButtonOnClick } from "~/components/text-button";
 import { ManyCriteria } from "~/components/many-criteria";
 import { PageLink } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
@@ -80,12 +80,12 @@ export function ErrorBoundary() {
       </div>
       <PageLink href={`/`}>Return home</PageLink>
       <p className="mt-2">
-        <LinkButtonOnClick
+        <TextButtonOnClick
           handleClick={handlePreviousNavigation}
           disabled={false}
         >
           Or go back to the previous page
-        </LinkButtonOnClick>
+        </TextButtonOnClick>
       </p>
     </>
   );
@@ -98,6 +98,7 @@ export default function ModifyCriteriaStandardizedPage() {
     <>
       <H1>
         Welcome to {data.user.appWideName}&apos;s Modify Criteria Standardized.
+        (Now obsolete.)
       </H1>
       <BackToDashboardLink
         href={`/users/${data.verifiedUser.username}/dashboard`}
