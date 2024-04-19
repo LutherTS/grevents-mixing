@@ -202,7 +202,7 @@ function LinkButtonUnpinnableByFriendForm({
         />
         <button
           disabled={fetcher.state !== "idle"}
-          className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-sky-500 hover:text-sky-300 dark:hover:text-sky-700"
+          className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-cyan-500 hover:text-cyan-300 dark:hover:text-cyan-700"
         >
           Unpin for you
         </button>
