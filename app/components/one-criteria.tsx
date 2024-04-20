@@ -337,6 +337,8 @@ export function OneAnswerRePinnableForSelf({
   );
 }
 
+// For style purposes I'm going to have to render two buttons,
+// because span colors override those of disabled.
 function TextButtonPinnableForSelfForm({
   answer,
   pinnedAnswersForSelfCount,
@@ -361,18 +363,18 @@ function TextButtonPinnableForSelfForm({
               pinnedAnswersForSelfCount >= PINNED_FOR_SELF_ANSWERS_LIMIT &&
               answer.userQuestion.isPinnedForSelf === false)
           }
-          className="disabled:!text-gray-500 disabled:hover:!text-gray-500"
+          className={clsx(
+            "disabled:!text-gray-500 disabled:hover:!text-gray-500",
+            {
+              "text-cyan-500 hover:text-cyan-300 dark:hover:text-cyan-700":
+                answer.userQuestion.isPinnedForSelf === true,
+              "text-sky-500 hover:text-sky-300 dark:hover:text-sky-700":
+                answer.userQuestion.isPinnedForSelf === false,
+            }
+          )}
         >
-          {answer.userQuestion.isPinnedForSelf === true && (
-            <span className="text-cyan-500 hover:text-cyan-300 dark:hover:text-cyan-700">
-              Unpin for self
-            </span>
-          )}
-          {answer.userQuestion.isPinnedForSelf === false && (
-            <span className="text-sky-500 hover:text-sky-300 dark:hover:text-sky-700">
-              Pin for self
-            </span>
-          )}
+          {answer.userQuestion.isPinnedForSelf === true && <>Unpin for self</>}
+          {answer.userQuestion.isPinnedForSelf === false && <>Pin for self</>}
         </button>
       </fetcher.Form>
     </>
@@ -468,18 +470,18 @@ function TextButtonPinnableForm({
               pinnedAnswersCount >= PINNED_BY_USER_ANSWERS_LIMIT &&
               answer.userQuestion.isPinned === false)
           }
-          className="disabled:!text-gray-500 disabled:hover:!text-gray-500"
+          className={clsx(
+            "disabled:!text-gray-500 disabled:hover:!text-gray-500",
+            {
+              "text-cyan-500 hover:text-cyan-300 dark:hover:text-cyan-700":
+                answer.userQuestion.isPinned === true,
+              "text-sky-500 hover:text-sky-300 dark:hover:text-sky-700":
+                answer.userQuestion.isPinned === false,
+            }
+          )}
         >
-          {answer.userQuestion.isPinned === true && (
-            <span className="text-cyan-500 hover:text-cyan-300 dark:hover:text-cyan-700">
-              Unpin
-            </span>
-          )}
-          {answer.userQuestion.isPinned === false && (
-            <span className="text-sky-500 hover:text-sky-300 dark:hover:text-sky-700">
-              Pin
-            </span>
-          )}
+          {answer.userQuestion.isPinned === true && <>Unpin</>}
+          {answer.userQuestion.isPinned === false && <>Pin</>}
         </button>
       </fetcher.Form>
     </>
