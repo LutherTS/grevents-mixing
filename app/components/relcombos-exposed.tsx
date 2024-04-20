@@ -263,7 +263,14 @@ export function RelationCombinationUserFriendExposed({
 }) {
   return (
     <>
-      <PinFriendForm contact={contact} />
+      <div>
+        <PinFriendForm contact={contact} />
+        <PageLink
+          href={`/users/${contact.mirror?.userFirst.username}/previews/queried?userlast=${contact.userFirst.username}&relcombo=friend`}
+        >
+          See what {contact.userFirst.appWideName} sees on your profile
+        </PageLink>
+      </div>
       {/* pt-2 as makeshift styling */}
       <div className="pt-2">
         <ManyUserQuestionFriendsPinned
@@ -557,7 +564,14 @@ export function RelationCombinationUserIrlExposed({
 }) {
   return (
     <>
-      <PinFriendForm contact={contact} />
+      <div>
+        <PinFriendForm contact={contact} />
+        <PageLink
+          href={`/users/${contact.mirror?.userFirst.username}/previews/queried?userlast=${contact.userFirst.username}&relcombo=irl`}
+        >
+          See what {contact.userFirst.appWideName} sees on your profile
+        </PageLink>
+      </div>
       {/* pt-2 as makeshift styling */}
       <div className="pt-2">
         <ManyUserQuestionFriendsPinned
