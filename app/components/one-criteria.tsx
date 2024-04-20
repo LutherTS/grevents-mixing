@@ -669,7 +669,10 @@ function OneAnswerModifyForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
           </>
         ) : (
           <>
-            <FormButton specifiedClasses="mt-4 w-full max-w-[40ch] rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-400 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-blue-600 dark:disabled:hover:!bg-gray-500">
+            <FormButton
+              disabled={fetcher.state !== "idle"}
+              specifiedClasses="mt-4 w-full max-w-[40ch] rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-400 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-blue-600 dark:disabled:hover:!bg-gray-500"
+            >
               Modify criteria
             </FormButton>
           </>
@@ -743,7 +746,10 @@ function OneAnswerModifySourcedForm({
             ))}
           </div>
         ) : null}
-        <FormButton specifiedClasses="mt-4 w-full max-w-[40ch] rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-400 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-blue-600 dark:disabled:hover:!bg-gray-500">
+        <FormButton
+          disabled={fetcher.state !== "idle"}
+          specifiedClasses="mt-4 w-full max-w-[40ch] rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-400 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-blue-600 dark:disabled:hover:!bg-gray-500"
+        >
           Modify criteria
         </FormButton>
         {fetcher.data?.message ? (
