@@ -54,7 +54,7 @@ export function PaginatedStandardizedAnswerForms({
           />
         </>
       )}
-      <p className="mt-4">
+      <p className="mt-4 font-semibold">
         <TextButtonOnClick
           handleClick={handlePreviousPosition}
           disabled={position === 0}
@@ -117,7 +117,7 @@ export function PaginatedCustomizedAnswerForms({
           <CustomAnswerForm answerCount={customAnswersCount} />
         </>
       )}
-      <p className="mt-4">
+      <p className="mt-4 font-semibold">
         <TextButtonOnClick
           handleClick={handlePseudonativePosition}
           disabled={position === 0}

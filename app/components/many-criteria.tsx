@@ -150,7 +150,7 @@ function ManyPaginatedCriteria({
           })}
         </ol>
       }
-      <p className="mt-4">
+      <p className="mt-4 font-semibold">
         <TextButtonOnClick
           handleClick={handlePreviousPosition}
           disabled={position === 0}

@@ -594,7 +594,8 @@ export function OneAnswerModify({
           answer.userQuestion.question.kind === "CUSTOM") && (
           <OneAnswerModifySourcedForm answer={answer} />
         )}
-        <ButtonHiddableForm answer={answer} />
+        {/* old */}
+        {/* <ButtonHiddableForm answer={answer} /> */}
       </div>
     </>
   );
@@ -749,37 +750,6 @@ function OneAnswerModifySourcedForm({
           </div>
         ) : null}
       </fetcher.Form>
-    </>
-  );
-}
-
-function ButtonHiddableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
-  const fetcher = useFetcher();
-
-  return (
-    <>
-      {answer.userQuestion.question.kind === "NATIVE" &&
-        answer.userQuestion.question.name === "Email address" && (
-          <form
-            action="/hide-user-question"
-            method="post"
-            className="absolute right-4 flex items-center"
-          >
-            <input type="hidden" name="answerid" value={answer.id} />
-            <button
-              disabled={fetcher.state !== "idle"}
-              className={clsx(
-                "h-4 w-4 rounded-full disabled:!bg-gray-400 disabled:hover:!bg-gray-400 dark:disabled:!bg-gray-600 dark:disabled:hover:!bg-gray-600",
-                {
-                  "bg-cyan-500 hover:bg-pink-300 dark:hover:bg-pink-700":
-                    answer.userQuestion.state === "LIVE",
-                  "bg-pink-500 hover:bg-cyan-300 dark:hover:bg-cyan-700":
-                    answer.userQuestion.state === "HIDDEN",
-                }
-              )}
-            />
-          </form>
-        )}
     </>
   );
 }
@@ -986,6 +956,37 @@ All previous buttons will be kept as comments below. And their implementation wi
 //           )}
 //         />
 //       </fetcher.Form>
+//     </>
+//   );
+// }
+
+// function ButtonHiddableForm({ answer }: { answer: GlobalAnswerTypeByHand }) {
+//   const fetcher = useFetcher();
+
+//   return (
+//     <>
+//       {answer.userQuestion.question.kind === "NATIVE" &&
+//         answer.userQuestion.question.name === "Email address" && (
+//           <form
+//             action="/hide-user-question"
+//             method="post"
+//             className="absolute right-4 flex items-center"
+//           >
+//             <input type="hidden" name="answerid" value={answer.id} />
+//             <button
+//               disabled={fetcher.state !== "idle"}
+//               className={clsx(
+//                 "h-4 w-4 rounded-full disabled:!bg-gray-400 disabled:hover:!bg-gray-400 dark:disabled:!bg-gray-600 dark:disabled:hover:!bg-gray-600",
+//                 {
+//                   "bg-cyan-500 hover:bg-pink-300 dark:hover:bg-pink-700":
+//                     answer.userQuestion.state === "LIVE",
+//                   "bg-pink-500 hover:bg-cyan-300 dark:hover:bg-cyan-700":
+//                     answer.userQuestion.state === "HIDDEN",
+//                 }
+//               )}
+//             />
+//           </form>
+//         )}
 //     </>
 //   );
 // }

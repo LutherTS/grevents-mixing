@@ -91,7 +91,7 @@ function ManyPaginatedUserQuestionFriendsShared({
           );
         })}
       </ol>
-      <p className="mt-2">
+      <p className="mt-2 font-semibold">
         <TextButtonOnClick
           handleClick={handlePreviousPosition}
           disabled={position === 0}
@@ -202,7 +202,7 @@ function ManyPaginatedUserQuestionFriendsPinned({
           })}
         </ol>
       }
-      <p className="mt-2">
+      <p className="mt-2 font-semibold">
         <TextButtonOnClick
           handleClick={handlePreviousPosition}
           disabled={position === 0}
