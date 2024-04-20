@@ -17,9 +17,9 @@ export function OneUserQuestionFriendRemovable({
   return (
     <>
       <div className="mt-2 flex justify-center">
-        <ButtonCancelShareUserQuestionFriendForm
+        {/* <ButtonCancelShareUserQuestionFriendForm
           userQuestionFriend={userQuestionFriend}
-        />
+        /> */}
         <p>
           {userQuestionFriend.contact.userLast.state === "DEACTIVATED" ? (
             <>
@@ -40,11 +40,17 @@ export function OneUserQuestionFriendRemovable({
           / {userQuestionFriend.contact.userLast.username}
         </p>
       </div>
+      {/* new */}
+      <p className="mt-2">
+        <TextButtonCancelShareUserQuestionFriendForm
+          userQuestionFriend={userQuestionFriend}
+        />
+      </p>
     </>
   );
 }
 
-export function ButtonCancelShareUserQuestionFriendForm({
+function TextButtonCancelShareUserQuestionFriendForm({
   userQuestionFriend,
 }: {
   userQuestionFriend: Prisma.UserQuestionFriendGetPayload<{
@@ -55,11 +61,7 @@ export function ButtonCancelShareUserQuestionFriendForm({
 
   return (
     <>
-      <fetcher.Form
-        action="/unshare-user-question-friend"
-        method="post"
-        className="me-2 flex items-center"
-      >
+      <fetcher.Form action="/unshare-user-question-friend" method="post">
         <input
           type="hidden"
           name="userquestionfriendid"
@@ -67,8 +69,10 @@ export function ButtonCancelShareUserQuestionFriendForm({
         />
         <button
           disabled={fetcher.state !== "idle"}
-          className="h-4 w-4 rounded-full bg-pink-500 hover:bg-pink-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-pink-700"
-        />
+          className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-cyan-500 hover:text-cyan-300 dark:hover:text-cyan-700"
+        >
+          Unshare from {userQuestionFriend.contact.userLast.appWideName}
+        </button>
       </fetcher.Form>
     </>
   );
@@ -249,6 +253,36 @@ function TextButtonRePinnableByFriendForm({
 /* ARCHIVES
 All previous buttons will be kept as comments below. And their implementation will still remain in the code above as comments, until I manage to find a solution the problem I showcased here: https://play.tailwindcss.com/ID2X1qT2KU.
 */
+
+// function ButtonCancelShareUserQuestionFriendForm({
+//   userQuestionFriend,
+// }: {
+//   userQuestionFriend: Prisma.UserQuestionFriendGetPayload<{
+//     select: typeof selectUserQuestionFriends;
+//   }>;
+// }) {
+//   const fetcher = useFetcher();
+
+//   return (
+//     <>
+//       <fetcher.Form
+//         action="/unshare-user-question-friend"
+//         method="post"
+//         className="me-2 flex items-center"
+//       >
+//         <input
+//           type="hidden"
+//           name="userquestionfriendid"
+//           value={userQuestionFriend.id}
+//         />
+//         <button
+//           disabled={fetcher.state !== "idle"}
+//           className="h-4 w-4 rounded-full bg-pink-500 hover:bg-pink-300 disabled:!bg-gray-500 disabled:hover:!bg-gray-500 dark:hover:bg-pink-700"
+//         />
+//       </fetcher.Form>
+//     </>
+//   );
+// }
 
 // function ButtonUnpinnableByFriendForm({
 //   pathname,
