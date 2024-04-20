@@ -28,6 +28,7 @@ import { findUserQuestionFriendsByUserQuestionId } from "~/librairies/data/userq
 import { findUserByUsername } from "~/librairies/data/users";
 import { DEFAULT_ANSWERS_LIMIT } from "~/librairies/subdata/answers";
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
+import { HideEmailForm } from "~/components/hide-email-form";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   invariant(params.username, "Expected params.username");
@@ -163,6 +164,13 @@ export default function UserCriteriaPage() {
           selectContext="UserCriteria"
           answerComponentRequired="OneAnswerModify"
         />
+        {data.userQuestionAnswer.userQuestion.question.kind === "NATIVE" &&
+          data.userQuestionAnswer.userQuestion.question.name ===
+            "Email address" && (
+            <>
+              <HideEmailForm answer={data.userQuestionAnswer} />
+            </>
+          )}
         {data.userQuestionAnswer.userQuestion.question.kind === "PSEUDO" &&
           data.userQuestionAnswer.userQuestion.kind === "PSEUDONATIVE" &&
           data.userPseudonativeIrlAnswersCount < DEFAULT_ANSWERS_LIMIT && (
