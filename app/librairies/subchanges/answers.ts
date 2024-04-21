@@ -239,42 +239,6 @@ export function dataUpsertAnswerUserQuestionFriendPinnedByFriend(
   };
 }
 
-// contact here has verifiedUser as userLast
-export function dataUpsertAnswerUserQuestionFriendPinnedOfFriends(
-  userQuestionId: string,
-  contactId: string
-): Prisma.AnswerUpdateInput {
-  return {
-    userQuestion: {
-      update: {
-        userQuestionFriends: {
-          upsert: {
-            where: {
-              userQuestionId_contactId: { userQuestionId, contactId },
-            },
-            create: {
-              isPinnedOfFriends: true, // new
-              pinnedOfFriendsAt: new Date(), // new
-              state: "LIVE",
-              contactId,
-            },
-            update: {
-              isPinnedOfFriends: true, // new
-              pinnedOfFriendsAt: new Date(), // new
-              state: "LIVE",
-            },
-          },
-        },
-      },
-    },
-    user: {
-      update: {
-        statusDashboard: "OFFRIENDSPINNED",
-      },
-    },
-  };
-}
-
 export function dataHideAnswerUserQuestion(): Prisma.AnswerUpdateInput {
   return {
     userQuestion: {

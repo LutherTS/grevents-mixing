@@ -2,12 +2,12 @@ import type { ActionFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
-import { upsertAnswerUserQuestionFriendPinnedOfFriends } from "~/librairies/changes/answers";
 import {
   countUserQuestionFriendsAnswersPinnedOfFriends,
   findUserQuestionFriendByIdAndContactUserLastId,
 } from "~/librairies/data/userquestionfriends";
 import { PINNED_OF_FRIENDS_ANSWERS_LIMIT } from "~/librairies/subdata/userquestionfriends";
+import { updateUserQuestionFriendPinnedOfFriends } from "~/librairies/changes/userquestionfriends";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const verifiedUser = await getVerifiedUser(request);
@@ -45,11 +45,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null;
   }
 
-  await upsertAnswerUserQuestionFriendPinnedOfFriends(
-    userQuestionFriend.userQuestion.answer.id,
-    userQuestionFriend.userQuestion.id,
-    userQuestionFriend.contact.id
-  );
+  await updateUserQuestionFriendPinnedOfFriends(userQuestionFriend.id);
 
   return redirect(
     `/users/${userQuestionFriend.contact.userLast.username}/dashboard`

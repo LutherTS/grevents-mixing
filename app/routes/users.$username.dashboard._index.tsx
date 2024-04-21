@@ -11,7 +11,10 @@ import invariant from "tiny-invariant";
 import { H1 } from "~/components/h1";
 import { TextButtonOnClick } from "~/components/text-button";
 import { ManyCriteria } from "~/components/many-criteria";
-import { ManyUserQuestionFriendsPinned } from "~/components/many-userquestionfriends";
+import {
+  ManyUserQuestionFriendsPinned,
+  ManyUserQuestionFriendsPinnedOfFriends,
+} from "~/components/many-userquestionfriends";
 import { PageLink, PageLinkDivless } from "~/components/page-link";
 import { SignOutForm } from "~/components/sign-out-form";
 import { StatusDashboardToasts } from "~/components/status-dashboard-toasts";
@@ -26,7 +29,10 @@ import {
   countHasAccessedFromContactsByUserId,
   findContactById,
 } from "~/librairies/data/contacts";
-import { findUserQuestionFriendsAnswersPinnedByFriend } from "~/librairies/data/userquestionfriends";
+import {
+  findUserQuestionFriendsAnswersPinnedByFriend,
+  findUserQuestionFriendsAnswersPinnedOfFriends,
+} from "~/librairies/data/userquestionfriends";
 import { findUserByUsername } from "~/librairies/data/users";
 import { selectContacts } from "~/librairies/subdata/contacts";
 import { selectUserQuestionFriendsAnswers } from "~/librairies/subdata/userquestionfriends";
@@ -69,6 +75,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     sentIrlFromContactsCount,
     hasAccessedFromContactsCount,
     userPinnedForSelfAnswers,
+    userQuestionFriendsAnswersPinnedOfFriends,
   ] = await Promise.all([
     countSentFriendToContactsByUserId(user.id),
     countSentIrlToContactsByUserId(user.id),
@@ -76,6 +83,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     countSentIrlFromContactsByUserId(user.id),
     countHasAccessedFromContactsByUserId(user.id),
     findUserPinnedForSelfAnswersByUserId(user.id),
+    findUserQuestionFriendsAnswersPinnedOfFriends(user.id),
   ]);
 
   const sentToContactsCount =
@@ -119,6 +127,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     userPinnedForSelfAnswers,
     userPinnedFriend,
     userPinnedFriendAnswersPinnedByFriend,
+    userQuestionFriendsAnswersPinnedOfFriends,
     relCombo,
   });
 };
@@ -160,6 +169,7 @@ export function ErrorBoundary() {
 
 export default function DashboardPage() {
   const data = useLoaderData<typeof loader>();
+  console.log(data);
   // If I don't want to use "data." everywhere, I can always destructure from useLoaderData.
   // If there's loader and action data, I can also then call data (loader data) loaderData and action data actionData.
 
@@ -209,6 +219,16 @@ export default function DashboardPage() {
               selectContext="Dashboard"
               answerComponentRequired="OneAnswerRePinnableForSelf"
               label="Find your pinned for self criteria below"
+            />
+          </div>
+        )}
+        {data.userQuestionFriendsAnswersPinnedOfFriends.length > 0 && (
+          <div className="py-2">
+            <ManyUserQuestionFriendsPinnedOfFriends
+              userQuestionFriendsAnswers={
+                data.userQuestionFriendsAnswersPinnedOfFriends
+              }
+              label="Find your pinned of friends criteria below"
             />
           </div>
         )}

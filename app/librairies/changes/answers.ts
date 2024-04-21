@@ -17,7 +17,6 @@ import {
   dataUpdateAnswerStateDeletedStatusPersonalInfo,
   dataUpdateAnswerValueStatusPersonalInfo,
   dataUpsertAnswerUserQuestionFriendPinnedByFriend,
-  dataUpsertAnswerUserQuestionFriendPinnedOfFriends,
   dataUpsertAnswerUserQuestionFriendSharedToFriend,
 } from "../subchanges/answers";
 
@@ -150,23 +149,6 @@ export async function upsertAnswerUserQuestionFriendPinnedByFriend(
 ) {
   const where = whereAnswerByIdAndContactId(id, contactId);
   const data = dataUpsertAnswerUserQuestionFriendPinnedByFriend(
-    userQuestionId,
-    contactId
-  );
-
-  return await prisma.answer.update({
-    where,
-    data,
-  });
-}
-
-export async function upsertAnswerUserQuestionFriendPinnedOfFriends(
-  id: string,
-  userQuestionId: string,
-  contactId: string
-) {
-  const where = whereAnswerByIdAndContactId(id, contactId);
-  const data = dataUpsertAnswerUserQuestionFriendPinnedOfFriends(
     userQuestionId,
     contactId
   );

@@ -10,6 +10,7 @@ import { TextButtonOnClick } from "./text-button";
 import {
   OneUserQuestionFriendRemovable,
   OneUserQuestionFriendUnpinnable,
+  OneUserQuestionFriendUnpinnableOfFriends,
 } from "./one-userquestionfriend";
 
 export function ManyUserQuestionFriendsShared({
@@ -195,6 +196,104 @@ function ManyPaginatedUserQuestionFriendsPinned({
               <li key={answer.id}>
                 <OneUserQuestionFriendUnpinnable
                   pathname={pathname}
+                  userQuestionFriend={answer}
+                />
+              </li>
+            );
+          })}
+        </ol>
+      }
+      <p className="mt-2 font-semibold">
+        <TextButtonOnClick
+          handleClick={handlePreviousPosition}
+          disabled={position === 0}
+        >
+          Previous
+        </TextButtonOnClick>
+        &nbsp;/&nbsp;
+        <TextButtonOnClick
+          handleClick={handleNextPosition}
+          disabled={position === chunkedUserQuestionFriendsAnswers.length - 1}
+        >
+          Next
+        </TextButtonOnClick>
+      </p>
+    </>
+  );
+}
+
+export function ManyUserQuestionFriendsPinnedOfFriends({
+  userQuestionFriendsAnswers,
+  label,
+}: {
+  userQuestionFriendsAnswers: Prisma.UserQuestionFriendGetPayload<{
+    select: typeof selectUserQuestionFriendsAnswers;
+  }>[];
+  label: string;
+}) {
+  return (
+    <>
+      <div>
+        <p className="mt-2 font-semibold text-zinc-500">{label}</p>
+        {userQuestionFriendsAnswers.length > 0 && (
+          <>
+            {userQuestionFriendsAnswers.length <= 4 ? (
+              <>
+                <ol className="space-y-4 mt-4">
+                  {userQuestionFriendsAnswers.map((answer) => {
+                    return (
+                      <li key={answer.id}>
+                        <OneUserQuestionFriendUnpinnableOfFriends
+                          userQuestionFriend={answer}
+                        />
+                      </li>
+                    );
+                  })}
+                </ol>
+              </>
+            ) : (
+              <ManyPaginatedUserQuestionFriendsPinnedOfFriends
+                userQuestionFriendsAnswers={userQuestionFriendsAnswers}
+              />
+            )}
+          </>
+        )}
+      </div>
+    </>
+  );
+}
+
+// still haven't found and made the refactor for ManyPaginated
+function ManyPaginatedUserQuestionFriendsPinnedOfFriends({
+  userQuestionFriendsAnswers,
+}: {
+  userQuestionFriendsAnswers: Prisma.UserQuestionFriendGetPayload<{
+    select: typeof selectUserQuestionFriendsAnswers;
+  }>[];
+}) {
+  const chunkedUserQuestionFriendsAnswers = _.chunk(
+    userQuestionFriendsAnswers,
+    4
+  );
+
+  const [position, setPosition] = useState(0);
+
+  function handlePreviousPosition() {
+    setPosition(position - 1);
+  }
+
+  function handleNextPosition() {
+    setPosition(position + 1);
+  }
+
+  return (
+    <>
+      {
+        <ol className="space-y-4 mt-4">
+          {chunkedUserQuestionFriendsAnswers[position].map((answer) => {
+            return (
+              <li key={answer.id}>
+                <OneUserQuestionFriendUnpinnableOfFriends
                   userQuestionFriend={answer}
                 />
               </li>

@@ -71,3 +71,19 @@ export function dataUpdateUserQuestionFriendRePinnedByFriendDashboard(): Prisma.
     },
   };
 }
+
+export function dataUpdateUserQuestionFriendPinnedOfFriends(): Prisma.UserQuestionFriendUpdateInput {
+  return {
+    isPinnedOfFriends: true,
+    pinnedOfFriendsAt: new Date(),
+    contact: {
+      update: {
+        userLast: {
+          update: {
+            statusDashboard: "OFFRIENDSPINNED",
+          },
+        },
+      },
+    },
+  };
+}

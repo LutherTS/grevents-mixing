@@ -269,11 +269,7 @@ function TextButtonPinnableOfFriendsForm({
 
   return (
     <>
-      <fetcher.Form
-        action="/re-pin-user-question-friend"
-        method="post"
-        className="inline"
-      >
+      <fetcher.Form action="/pin-of-friends" method="post" className="inline">
         <input type="hidden" name="pathname" value={pathname} />
         <input
           type="hidden"
@@ -303,6 +299,164 @@ function TextButtonPinnableOfFriendsForm({
           {userQuestionFriend.isPinnedOfFriends === false && (
             <>Pin of friends</>
           )}
+        </button>
+      </fetcher.Form>
+    </>
+  );
+}
+
+export function OneUserQuestionFriendUnpinnableOfFriends({
+  userQuestionFriend,
+}: {
+  userQuestionFriend: Prisma.UserQuestionFriendGetPayload<{
+    select: typeof selectUserQuestionFriendsAnswers;
+  }>;
+}) {
+  return (
+    <>
+      <div>
+        <p className="mt-2">
+          {/* native */}
+          {userQuestionFriend.userQuestion.question.kind === "NATIVE" &&
+            userQuestionFriend.userQuestion.kind === "NONE" && (
+              <span className="text-violet-500">
+                <span className="font-semibold">
+                  {userQuestionFriend.userQuestion.question.name}
+                </span>
+              </span>
+            )}
+          {/* native irl */}
+          {userQuestionFriend.userQuestion.question.kind === "NATIVEIRL" &&
+            userQuestionFriend.userQuestion.kind === "NONE" && (
+              <span className="text-purple-500">
+                <span className="font-semibold">
+                  {userQuestionFriend.userQuestion.question.name}
+                </span>
+              </span>
+            )}
+          {/* pseudonative */}
+          {userQuestionFriend.userQuestion.question.kind === "PSEUDO" &&
+            userQuestionFriend.userQuestion.kind === "PSEUDONATIVE" && (
+              <span className="text-green-500">
+                <span className="font-semibold">
+                  {userQuestionFriend.userQuestion.question.name}
+                </span>
+              </span>
+            )}
+          {/* pseudonative irl */}
+          {userQuestionFriend.userQuestion.question.kind === "PSEUDO" &&
+            userQuestionFriend.userQuestion.kind === "PSEUDONATIVEIRL" && (
+              <span className="text-emerald-500">
+                <span className="font-semibold">
+                  {userQuestionFriend.userQuestion.question.name}
+                </span>
+              </span>
+            )}
+          {/* custom, no link, UserQuestionFriends not counted */}
+          {userQuestionFriend.userQuestion.question.kind === "CUSTOM" &&
+            userQuestionFriend.userQuestion.kind === "NONE" && (
+              <span className="text-lime-500">
+                <span className="font-semibold">
+                  {userQuestionFriend.userQuestion.question.name}
+                </span>{" "}
+                / shared to you
+              </span>
+            )}
+        </p>
+        <div className="mt-2 flex justify-center">
+          {userQuestionFriend.userQuestion.answer?.source ? (
+            <>
+              <PageLinkDivless
+                href={userQuestionFriend.userQuestion.answer?.source}
+                specifiedClasses="inline-block text-black dark:text-white underline hover:text-neutral-500 dark:hover:text-neutral-500"
+                specifiedTarget="_blank"
+              >
+                {userQuestionFriend.userQuestion.answer?.value}
+              </PageLinkDivless>
+            </>
+          ) : (
+            <>{userQuestionFriend.userQuestion.answer?.value}</>
+          )}
+        </div>
+        {/* of friend */}
+        <p className="mt-2">
+          of{" "}
+          <PageLinkDivless
+            href={`/users/${userQuestionFriend.userQuestion.answer?.user.username}/profile`}
+            specifiedClasses="font-semibold text-blue-500 hover:text-blue-400 dark:hover:text-blue-600"
+          >
+            {userQuestionFriend.userQuestion.answer?.user.appWideName}
+          </PageLinkDivless>{" "}
+          / {userQuestionFriend.userQuestion.answer?.user.username}
+        </p>
+        <p className="mt-2">
+          <TextButtonUnpinnableOfFriendsForm
+            userQuestionFriend={userQuestionFriend}
+          />{" "}
+          /{" "}
+          <TextButtonRePinnableOfFriendsForm
+            userQuestionFriend={userQuestionFriend}
+          />
+        </p>
+      </div>
+    </>
+  );
+}
+
+function TextButtonUnpinnableOfFriendsForm({
+  userQuestionFriend,
+}: {
+  userQuestionFriend: Prisma.UserQuestionFriendGetPayload<{
+    select: typeof selectUserQuestionFriendsAnswers;
+  }>;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form action="/unpin-of-friends" method="post" className="inline">
+        <input
+          type="hidden"
+          name="userquestionfriendid"
+          value={userQuestionFriend.id}
+        />
+        <button
+          disabled={fetcher.state !== "idle"}
+          className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-cyan-500 hover:text-cyan-300 dark:hover:text-cyan-700"
+        >
+          Unpin of friends
+        </button>
+      </fetcher.Form>
+    </>
+  );
+}
+
+function TextButtonRePinnableOfFriendsForm({
+  userQuestionFriend,
+}: {
+  userQuestionFriend: Prisma.UserQuestionFriendGetPayload<{
+    select: typeof selectUserQuestionFriendsAnswers;
+  }>;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form
+        action="/re-pin-of-friends"
+        method="post"
+        className="inline"
+      >
+        <input
+          type="hidden"
+          name="userquestionfriendid"
+          value={userQuestionFriend.id}
+        />
+        <button
+          disabled={fetcher.state !== "idle"}
+          className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-indigo-500 hover:text-indigo-300 dark:hover:text-indigo-700"
+        >
+          Repin of friends
         </button>
       </fetcher.Form>
     </>

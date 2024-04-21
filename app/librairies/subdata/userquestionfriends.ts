@@ -106,6 +106,7 @@ export const selectUserQuestionFriendsAnswers = {
           user: {
             select: {
               username: true,
+              appWideName: true,
               id: true,
             },
           },
@@ -120,6 +121,7 @@ export const selectUserQuestionFriendsAnswers = {
         select: {
           username: true,
           id: true,
+          appWideName: true,
         },
       },
     },
@@ -162,24 +164,21 @@ export function wherePinnedByFriend(
   };
 }
 
-// same as wherePinnedByFriend,
-// removing contactId,
-// replacing isPinnedByFriend with isPinnedOfFriends
 export function wherePinnedOfFriends(
-  userId: string
+  userLastId: string
 ): Prisma.UserQuestionFriendWhereInput {
   return {
-    isPinnedOfFriends: true, // new
+    isPinnedOfFriends: true,
     state: "LIVE",
     contact: {
-      state: "LIVE",
-      userFirst: {
+      userLastId,
+      userLast: {
         state: "LIVE",
-        id: userId, // new
       },
       mirror: {
         state: "LIVE",
       },
+      state: "LIVE",
     },
     OR: [
       {
@@ -191,7 +190,6 @@ export function wherePinnedOfFriends(
     ],
     userQuestion: {
       answer: {
-        userId,
         user: {
           state: "LIVE",
         },
