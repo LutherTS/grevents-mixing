@@ -87,6 +87,7 @@ export function whereUserQuestionFriendsByUserQuestionId(
 // this is a repurpose, a rewiring, from selectAnswers
 export const selectUserQuestionFriendsAnswers = {
   id: true,
+  isPinnedOfFriends: true,
   userQuestion: {
     select: {
       id: true,
@@ -114,9 +115,11 @@ export const selectUserQuestionFriendsAnswers = {
   },
   contact: {
     select: {
+      id: true,
       userLast: {
         select: {
           username: true,
+          id: true,
         },
       },
     },

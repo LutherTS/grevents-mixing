@@ -2,10 +2,11 @@ import type { ActionFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 
 import { getVerifiedUser, kickOut } from "~/utilities/server/session.server";
-import { findAnswerByIdAndContactId } from "~/librairies/data/answers";
-import { findContactByIdAndUserLastId } from "~/librairies/data/contacts";
 import { upsertAnswerUserQuestionFriendPinnedOfFriends } from "~/librairies/changes/answers";
-import { countUserQuestionFriendsAnswersPinnedOfFriends } from "~/librairies/data/userquestionfriends";
+import {
+  countUserQuestionFriendsAnswersPinnedOfFriends,
+  findUserQuestionFriendByIdAndContactUserLastId,
+} from "~/librairies/data/userquestionfriends";
 import { PINNED_OF_FRIENDS_ANSWERS_LIMIT } from "~/librairies/subdata/userquestionfriends";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -16,30 +17,26 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 
   const form = await request.formData();
-  const answerId = form.get("answerid");
-  const contactId = form.get("contactid");
+  const userQuestionFriendId = form.get("userquestionfriendid");
 
-  if (typeof contactId !== "string" || typeof answerId !== "string") {
+  if (typeof userQuestionFriendId !== "string") {
     return null;
   }
 
-  const contact = await findContactByIdAndUserLastId(
-    contactId,
-    verifiedUser.id
-  );
+  const userQuestionFriend =
+    await findUserQuestionFriendByIdAndContactUserLastId(
+      userQuestionFriendId,
+      verifiedUser.id
+    );
 
-  if (!contact?.mirror) {
-    return null;
-  }
-
-  const answer = await findAnswerByIdAndContactId(answerId, contact.id);
-
-  if (!answer) {
+  if (!userQuestionFriend?.userQuestion.answer) {
     return null;
   }
 
   const userQuestionFriendsAnswersPinnedOfFriendsCount =
-    await countUserQuestionFriendsAnswersPinnedOfFriends(answer.user.id);
+    await countUserQuestionFriendsAnswersPinnedOfFriends(
+      userQuestionFriend.contact.userLast.id
+    );
 
   if (
     userQuestionFriendsAnswersPinnedOfFriendsCount >=
@@ -49,12 +46,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 
   await upsertAnswerUserQuestionFriendPinnedOfFriends(
-    answer.id,
-    answer.userQuestion.id,
-    contact.id
+    userQuestionFriend.userQuestion.answer.id,
+    userQuestionFriend.userQuestion.id,
+    userQuestionFriend.contact.id
   );
 
-  return redirect(`/users/${answer.user.username}/dashboard`);
+  return redirect(
+    `/users/${userQuestionFriend.contact.userLast.username}/dashboard`
+  );
 };
 
 export const loader = async () => redirect("/");

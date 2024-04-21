@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { Prisma } from "@prisma/client";
 import { useFetcher } from "@remix-run/react";
 
@@ -173,6 +174,11 @@ export function OneUserQuestionFriendUnpinnable({
           <TextButtonRePinnableByFriendForm
             pathname={pathname}
             userQuestionFriend={userQuestionFriend}
+          />{" "}
+          /{" "}
+          <TextButtonPinnableOfFriendsForm
+            pathname={pathname}
+            userQuestionFriend={userQuestionFriend}
           />
         </p>
       </div>
@@ -244,6 +250,59 @@ function TextButtonRePinnableByFriendForm({
           className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-indigo-500 hover:text-indigo-300 dark:hover:text-indigo-700"
         >
           Repin for you
+        </button>
+      </fetcher.Form>
+    </>
+  );
+}
+
+function TextButtonPinnableOfFriendsForm({
+  pathname,
+  userQuestionFriend,
+}: {
+  pathname: string;
+  userQuestionFriend: Prisma.UserQuestionFriendGetPayload<{
+    select: typeof selectUserQuestionFriendsAnswers;
+  }>;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form
+        action="/re-pin-user-question-friend"
+        method="post"
+        className="inline"
+      >
+        <input type="hidden" name="pathname" value={pathname} />
+        <input
+          type="hidden"
+          name="userquestionfriendid"
+          value={userQuestionFriend.id}
+        />
+        <button
+          disabled={
+            fetcher.state !== "idle" ||
+            userQuestionFriend.isPinnedOfFriends === true
+          }
+          className={clsx(
+            "disabled:!text-gray-500 disabled:hover:!text-gray-500",
+            {
+              // unused, since if true button is disabled
+              // this is to mean that unpin is only to be done on dashboard
+              "text-cyan-500 hover:text-cyan-300 dark:hover:text-cyan-700":
+                userQuestionFriend.isPinnedOfFriends === true,
+              "text-sky-500 hover:text-sky-300 dark:hover:text-sky-700":
+                userQuestionFriend.isPinnedOfFriends === false,
+            }
+          )}
+        >
+          {userQuestionFriend.isPinnedOfFriends === true && (
+            <>Pinned of friends</>
+          )}
+          {userQuestionFriend.isPinnedOfFriends === false && (
+            <>Pin of friends</>
+          )}
         </button>
       </fetcher.Form>
     </>
