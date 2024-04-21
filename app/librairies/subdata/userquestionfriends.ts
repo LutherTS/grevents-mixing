@@ -29,9 +29,18 @@ export const PINNED_BY_FRIEND_ANSWERS_ORDER_BY = [
   },
 ] satisfies Prisma.UserQuestionFriendOrderByWithRelationInput[];
 
+export const PINNED_OF_FRIENDS_ANSWERS_ORDER_BY = [
+  {
+    pinnedOfFriendsAt: "desc",
+  },
+  {
+    updatedAt: "desc",
+  },
+] satisfies Prisma.UserQuestionFriendOrderByWithRelationInput[];
+
 export const PINNED_BY_FRIEND_ANSWERS_LIMIT = 8;
 
-export const PINNED_OF_FRIENDS_ANSWERS_LIMIT = 16;
+export const PINNED_OF_FRIENDS_ANSWERS_LIMIT = 32;
 
 export const selectUserQuestionFriends = {
   id: true,
@@ -126,6 +135,44 @@ export function wherePinnedByFriend(
       state: "LIVE",
       userFirst: {
         state: "LIVE",
+      },
+      mirror: {
+        state: "LIVE",
+      },
+    },
+    OR: [
+      {
+        contact: isFriend,
+      },
+      {
+        contact: isIrl,
+      },
+    ],
+    userQuestion: {
+      answer: {
+        userId,
+        user: {
+          state: "LIVE",
+        },
+      },
+    },
+  };
+}
+
+// same as wherePinnedByFriend,
+// removing contactId,
+// replacing isPinnedByFriend with isPinnedOfFriends
+export function wherePinnedOfFriends(
+  userId: string
+): Prisma.UserQuestionFriendWhereInput {
+  return {
+    isPinnedOfFriends: true, // new
+    state: "LIVE",
+    contact: {
+      state: "LIVE",
+      userFirst: {
+        state: "LIVE",
+        id: userId, // new
       },
       mirror: {
         state: "LIVE",

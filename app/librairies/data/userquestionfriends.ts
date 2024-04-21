@@ -3,11 +3,14 @@ import {
   DEFAULT_USERQUESTIONFRIENDS_ORDER_BY,
   PINNED_BY_FRIEND_ANSWERS_LIMIT,
   PINNED_BY_FRIEND_ANSWERS_ORDER_BY,
+  PINNED_OF_FRIENDS_ANSWERS_LIMIT,
+  PINNED_OF_FRIENDS_ANSWERS_ORDER_BY,
   selectUserQuestionFriends,
   selectUserQuestionFriendsAnswers,
   whereByIdAndContactUserFirstId,
   whereByIdAndContactUserLastId,
   wherePinnedByFriend,
+  wherePinnedOfFriends,
   whereUserQuestionFriendsByUserQuestionId,
 } from "../subdata/userquestionfriends";
 import { ARBITRARY_CONTACTS_LIMIT } from "../subdata/contacts";
@@ -78,6 +81,30 @@ export async function findUserQuestionFriendByIdAndContactUserLastId(
 
   return await prisma.userQuestionFriend.findUnique({
     select,
+    where,
+  });
+}
+
+export async function findUserQuestionFriendsAnswersPinnedOfFriends(
+  userId: string
+) {
+  const select = selectUserQuestionFriendsAnswers;
+  const where = wherePinnedOfFriends(userId);
+
+  return await prisma.userQuestionFriend.findMany({
+    select,
+    where,
+    orderBy: PINNED_OF_FRIENDS_ANSWERS_ORDER_BY,
+    take: PINNED_OF_FRIENDS_ANSWERS_LIMIT,
+  });
+}
+
+export async function countUserQuestionFriendsAnswersPinnedOfFriends(
+  userId: string
+) {
+  const where = wherePinnedOfFriends(userId);
+
+  return await prisma.userQuestionFriend.count({
     where,
   });
 }

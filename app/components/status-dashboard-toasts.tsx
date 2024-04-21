@@ -80,6 +80,22 @@ export function StatusDashboardToasts({
           Friend criteria unpinned by you
         </ToastForm>
       )}
+      {statusDashboard === "OFFRIENDSPINNED" && (
+        <ToastForm action="/reset-user-status-dashboard">
+          Friend criteria pinned to dashboard
+        </ToastForm>
+      )}
+      {/* incoming... */}
+      {statusDashboard === "OFFRIENDSUNPINNED" && (
+        <ToastForm action="/reset-user-status-dashboard">
+          Friend criteria repinned on dashboard
+        </ToastForm>
+      )}
+      {statusDashboard === "OFFRIENDSUNPINNED" && (
+        <ToastForm action="/reset-user-status-dashboard">
+          Friend criteria unpinned from dashboard
+        </ToastForm>
+      )}
     </>
   );
 }

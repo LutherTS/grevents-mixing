@@ -800,25 +800,11 @@ export function OneAnswerPinnableByFriend({
         </p>
       </div>
       {/* new */}
-      {/* <p className="mt-2">
-        <TextButtonPinnableByFriendForm
-          answer={answer}
-          contact={contact}
-          answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
-        />
-      </p> */}
-      {/* working on pinnedOfFriends */}
       <p className="mt-2">
         <TextButtonPinnableByFriendForm
           answer={answer}
           contact={contact}
           answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
-        />{" "}
-        /{" "}
-        <TextButtonPinnableOfFriendsForm
-          answer={answer}
-          contact={contact}
-          answersPinnedOfFriendsAnswersCount={answersPinnedbyFriendAnswersCount}
         />
       </p>
     </>
@@ -861,6 +847,8 @@ function TextButtonPinnableByFriendForm({
   );
 }
 
+// The button will need to shift to UserQuestionFriends
+// Then I can even condition the string of the form action between pin-of-friends and unpin-of-friends depending on isPinnedOfFriends
 function TextButtonPinnableOfFriendsForm({
   answer,
   contact,
@@ -876,11 +864,7 @@ function TextButtonPinnableOfFriendsForm({
 
   return (
     <>
-      <fetcher.Form
-        action="/pin-user-question-friend"
-        method="post"
-        className="inline"
-      >
+      <fetcher.Form action="/pin-of-friends" method="post" className="inline">
         <input type="hidden" name="answerid" value={answer.id} />
         <input type="hidden" name="contactid" value={contact.id} />
         <button
@@ -891,7 +875,26 @@ function TextButtonPinnableOfFriendsForm({
           }
           className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-sky-500 hover:text-sky-300 dark:hover:text-sky-700"
         >
-          Pin of friends
+          {/* This is a huge caveat that's going to be required
+          or not...
+          because I may/could need the userQuestionFriends for this
+          what I need to do is find a solution to
+          get the connected UserQuestionFriend in the select
+          from the contact and userQuestion. */}
+          {/* There's a simpler solution. But one that's going to appear like
+          a bug. But then one that's going to be consistant with the ongoing approach of have always the Pin for you button available.
+          A user doesn't need 
+          Or I can also make this available only on pinned for you criteria, since they're UserQuestionFriend based, where I could even decide that a Pin of friends button is deactivated if the friend in question is already the pinned friend.
+          Then if friend is pinned friend, I can say below the unpin bottom that, since friend is already your pinned friend, there is no use in pinning of friends one their criteria */}
+          {/* ...That's an entire flow I need to rethink, in which case I'll end and restructure my work on pinnedOfFriends for now. */}
+          {/* But real quick, from the get-go, it's only fair that only answer worthy of being pinned for you are worth pinning of friends.
+          So that's going to be on profile:
+          - Unpin for you / Repin for you / Pin of friends
+          - Pin for you
+          And on dashboard:
+          - Unpin of friends / Repin of friends */}
+          {answer.userQuestion.isPinned === true && <>Pin of friends</>}
+          {answer.userQuestion.isPinned === false && <>Unpin of friends</>}
         </button>
       </fetcher.Form>
     </>
