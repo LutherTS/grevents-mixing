@@ -124,10 +124,12 @@ model UserQuestionFriend {
   state                String       @default("NONE")
   isSharedToFriend     Boolean      @default(false)
   isPinnedByFriend     Boolean      @default(false)
+  isPinnedOfFriends    Boolean      @default(false) // new
   createdAt            DateTime     @default(now())
   updatedAt            DateTime     @updatedAt @default(now())
   sharedToFriendAt     DateTime?
   pinnedByFriendAt     DateTime?
+  pinnedOfFriendsAt    DateTime? // new
 
   userQuestionId       String
   userQuestion         UserQuestion @relation(fields: [userQuestionId], references: [id])
