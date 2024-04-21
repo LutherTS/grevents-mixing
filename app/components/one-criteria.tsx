@@ -10,7 +10,10 @@ import {
   PINNED_BY_USER_ANSWERS_LIMIT,
   PINNED_FOR_SELF_ANSWERS_LIMIT,
 } from "~/librairies/subdata/answers";
-import { PINNED_BY_FRIEND_ANSWERS_LIMIT } from "~/librairies/subdata/userquestionfriends";
+import {
+  PINNED_BY_FRIEND_ANSWERS_LIMIT,
+  PINNED_OF_FRIENDS_ANSWERS_LIMIT,
+} from "~/librairies/subdata/userquestionfriends";
 import { selectContacts } from "~/librairies/subdata/contacts";
 import { FormButton } from "./form-button";
 
@@ -797,11 +800,25 @@ export function OneAnswerPinnableByFriend({
         </p>
       </div>
       {/* new */}
+      {/* <p className="mt-2">
+        <TextButtonPinnableByFriendForm
+          answer={answer}
+          contact={contact}
+          answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
+        />
+      </p> */}
+      {/* working on pinnedOfFriends */}
       <p className="mt-2">
         <TextButtonPinnableByFriendForm
           answer={answer}
           contact={contact}
           answersPinnedbyFriendAnswersCount={answersPinnedbyFriendAnswersCount}
+        />{" "}
+        /{" "}
+        <TextButtonPinnableOfFriendsForm
+          answer={answer}
+          contact={contact}
+          answersPinnedOfFriendsAnswersCount={answersPinnedbyFriendAnswersCount}
         />
       </p>
     </>
@@ -823,7 +840,11 @@ function TextButtonPinnableByFriendForm({
 
   return (
     <>
-      <fetcher.Form action="/pin-user-question-friend" method="post">
+      <fetcher.Form
+        action="/pin-user-question-friend"
+        method="post"
+        className="inline"
+      >
         <input type="hidden" name="answerid" value={answer.id} />
         <input type="hidden" name="contactid" value={contact.id} />
         <button
@@ -834,6 +855,43 @@ function TextButtonPinnableByFriendForm({
           className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-sky-500 hover:text-sky-300 dark:hover:text-sky-700"
         >
           Pin for you
+        </button>
+      </fetcher.Form>
+    </>
+  );
+}
+
+function TextButtonPinnableOfFriendsForm({
+  answer,
+  contact,
+  answersPinnedOfFriendsAnswersCount,
+}: {
+  answer: GlobalAnswerTypeByHand;
+  contact: Prisma.ContactGetPayload<{
+    select: typeof selectContacts;
+  }>;
+  answersPinnedOfFriendsAnswersCount: number;
+}) {
+  const fetcher = useFetcher();
+
+  return (
+    <>
+      <fetcher.Form
+        action="/pin-user-question-friend"
+        method="post"
+        className="inline"
+      >
+        <input type="hidden" name="answerid" value={answer.id} />
+        <input type="hidden" name="contactid" value={contact.id} />
+        <button
+          disabled={
+            fetcher.state !== "idle" ||
+            answersPinnedOfFriendsAnswersCount >=
+              PINNED_OF_FRIENDS_ANSWERS_LIMIT
+          }
+          className="disabled:!text-gray-500 disabled:hover:!text-gray-500 text-sky-500 hover:text-sky-300 dark:hover:text-sky-700"
+        >
+          Pin of friends
         </button>
       </fetcher.Form>
     </>

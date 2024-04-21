@@ -31,6 +31,8 @@ export const PINNED_BY_FRIEND_ANSWERS_ORDER_BY = [
 
 export const PINNED_BY_FRIEND_ANSWERS_LIMIT = 8;
 
+export const PINNED_OF_FRIENDS_ANSWERS_LIMIT = 16;
+
 export const selectUserQuestionFriends = {
   id: true,
   contact: {
