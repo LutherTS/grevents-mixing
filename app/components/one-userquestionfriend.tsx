@@ -174,12 +174,18 @@ export function OneUserQuestionFriendUnpinnable({
           <TextButtonRePinnableByFriendForm
             pathname={pathname}
             userQuestionFriend={userQuestionFriend}
-          />{" "}
-          /{" "}
-          <TextButtonPinnableOfFriendsForm
-            pathname={pathname}
-            userQuestionFriend={userQuestionFriend}
           />
+          {pathname !==
+            `/users/${userQuestionFriend.contact.userLast.username}/dashboard` && (
+            <>
+              {" "}
+              /{" "}
+              <TextButtonPinnableOfFriendsForm
+                pathname={pathname}
+                userQuestionFriend={userQuestionFriend}
+              />
+            </>
+          )}
         </p>
       </div>
     </>

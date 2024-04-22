@@ -213,7 +213,7 @@ export default function DashboardPage() {
           </PageLink>
         </div>
         {data.userPinnedForSelfAnswers.length > 0 && (
-          <div className="py-2">
+          <div className="pt-2">
             <ManyCriteria
               answers={data.userPinnedForSelfAnswers}
               selectContext="Dashboard"
@@ -222,20 +222,10 @@ export default function DashboardPage() {
             />
           </div>
         )}
-        {data.userQuestionFriendsAnswersPinnedOfFriends.length > 0 && (
-          <div className="py-2">
-            <ManyUserQuestionFriendsPinnedOfFriends
-              userQuestionFriendsAnswers={
-                data.userQuestionFriendsAnswersPinnedOfFriends
-              }
-              label="Find your pinned of friends criteria below"
-            />
-          </div>
-        )}
         {data.userPinnedFriend &&
           (data.relCombo === "friend" || data.relCombo === "irl") && (
-            <div className="py-2">
-              <p className="font-semibold text-zinc-700 dark:text-zinc-300">
+            <div className="pt-2">
+              <p className="mt-2 font-semibold text-zinc-700 dark:text-zinc-300">
                 <PageLinkDivless
                   href={`/users/${data.userPinnedFriend.userFirst.username}/profile`}
                   specifiedClasses="font-semibold text-blue-500 hover:text-blue-400 dark:hover:text-blue-600"
@@ -272,6 +262,16 @@ export default function DashboardPage() {
                 )}
             </div>
           )}
+        {data.userQuestionFriendsAnswersPinnedOfFriends.length > 0 && (
+          <div className="pt-2">
+            <ManyUserQuestionFriendsPinnedOfFriends
+              userQuestionFriendsAnswers={
+                data.userQuestionFriendsAnswersPinnedOfFriends
+              }
+              label="Find your pinned of friends criteria below"
+            />
+          </div>
+        )}
         <div className="py-2">
           <p className="mt-2 underline text-fuchsia-200 dark:text-fuchsia-800">
             My groups
