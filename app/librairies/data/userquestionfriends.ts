@@ -11,6 +11,7 @@ import {
   whereByIdAndContactUserLastId,
   wherePinnedByFriend,
   wherePinnedOfFriends,
+  wherePinnedOfFriendsDeactivated,
   whereUserQuestionFriendsByUserQuestionId,
 } from "../subdata/userquestionfriends";
 import { ARBITRARY_CONTACTS_LIMIT } from "../subdata/contacts";
@@ -103,6 +104,16 @@ export async function countUserQuestionFriendsAnswersPinnedOfFriends(
   userId: string
 ) {
   const where = wherePinnedOfFriends(userId);
+
+  return await prisma.userQuestionFriend.count({
+    where,
+  });
+}
+
+export async function countUserQuestionFriendsAnswersPinnedOfFriendsDeactivated(
+  userId: string
+) {
+  const where = wherePinnedOfFriendsDeactivated(userId);
 
   return await prisma.userQuestionFriend.count({
     where,

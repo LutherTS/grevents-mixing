@@ -198,6 +198,40 @@ export function wherePinnedOfFriends(
   };
 }
 
+export function wherePinnedOfFriendsDeactivated(
+  userLastId: string
+): Prisma.UserQuestionFriendWhereInput {
+  return {
+    isPinnedOfFriends: true,
+    state: "LIVE",
+    contact: {
+      userLastId,
+      userLast: {
+        state: "LIVE",
+      },
+      mirror: {
+        state: "LIVE",
+      },
+      state: "LIVE",
+    },
+    OR: [
+      {
+        contact: isFriend,
+      },
+      {
+        contact: isIrl,
+      },
+    ],
+    userQuestion: {
+      answer: {
+        user: {
+          state: "DEACTIVATED",
+        },
+      },
+    },
+  };
+}
+
 export function whereByIdAndContactUserFirstId(
   id: string,
   userFirstId: string
