@@ -116,6 +116,8 @@ export function ManyUserQuestionFriendsPinned({
   userQuestionFriendsAnswers,
   label,
   notLabel,
+  userQuestionFriendsAnswersPinnedOfFriendsCount,
+  userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount,
 }: {
   pathname: string;
   userQuestionFriendsAnswers: Prisma.UserQuestionFriendGetPayload<{
@@ -123,6 +125,8 @@ export function ManyUserQuestionFriendsPinned({
   }>[];
   label: string;
   notLabel: string;
+  userQuestionFriendsAnswersPinnedOfFriendsCount?: number;
+  userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount?: number;
 }) {
   return (
     <>
@@ -139,6 +143,12 @@ export function ManyUserQuestionFriendsPinned({
                         <OneUserQuestionFriendUnpinnable
                           pathname={pathname}
                           userQuestionFriend={answer}
+                          userQuestionFriendsAnswersPinnedOfFriendsCount={
+                            userQuestionFriendsAnswersPinnedOfFriendsCount
+                          }
+                          userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount={
+                            userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount
+                          }
                         />
                       </li>
                     );
@@ -149,6 +159,12 @@ export function ManyUserQuestionFriendsPinned({
               <ManyPaginatedUserQuestionFriendsPinned
                 pathname={pathname}
                 userQuestionFriendsAnswers={userQuestionFriendsAnswers}
+                userQuestionFriendsAnswersPinnedOfFriendsCount={
+                  userQuestionFriendsAnswersPinnedOfFriendsCount
+                }
+                userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount={
+                  userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount
+                }
               />
             )}
           </>
@@ -166,11 +182,15 @@ export function ManyUserQuestionFriendsPinned({
 function ManyPaginatedUserQuestionFriendsPinned({
   pathname,
   userQuestionFriendsAnswers,
+  userQuestionFriendsAnswersPinnedOfFriendsCount,
+  userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount,
 }: {
   pathname: string;
   userQuestionFriendsAnswers: Prisma.UserQuestionFriendGetPayload<{
     select: typeof selectUserQuestionFriendsAnswers;
   }>[];
+  userQuestionFriendsAnswersPinnedOfFriendsCount?: number;
+  userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount?: number;
 }) {
   const chunkedUserQuestionFriendsAnswers = _.chunk(
     userQuestionFriendsAnswers,
@@ -197,6 +217,12 @@ function ManyPaginatedUserQuestionFriendsPinned({
                 <OneUserQuestionFriendUnpinnable
                   pathname={pathname}
                   userQuestionFriend={answer}
+                  userQuestionFriendsAnswersPinnedOfFriendsCount={
+                    userQuestionFriendsAnswersPinnedOfFriendsCount
+                  }
+                  userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount={
+                    userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount
+                  }
                 />
               </li>
             );

@@ -306,3 +306,5 @@ model Answer {
 //   LIVE
 //   DELETED
 // }
+
+// npx prisma migrate

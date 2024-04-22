@@ -36,6 +36,8 @@ import {
 import { findContactByUserFirstIdAndUserLastId } from "~/librairies/data/contacts";
 import {
   countUserQuestionFriendsAnswersPinnedByFriend,
+  countUserQuestionFriendsAnswersPinnedOfFriends,
+  countUserQuestionFriendsAnswersPinnedOfFriendsDeactivated,
   findUserQuestionFriendsAnswersPinnedByFriend,
 } from "~/librairies/data/userquestionfriends";
 import { findUserByUsername } from "~/librairies/data/users";
@@ -43,6 +45,7 @@ import { selectAnswers } from "~/librairies/subdata/answers";
 import { selectContacts } from "~/librairies/subdata/contacts";
 import {
   PINNED_BY_FRIEND_ANSWERS_LIMIT,
+  PINNED_OF_FRIENDS_ANSWERS_LIMIT,
   selectUserQuestionFriendsAnswers,
 } from "~/librairies/subdata/userquestionfriends";
 import { selectUser, selectVerifiedUser } from "~/librairies/subdata/users";
@@ -86,6 +89,8 @@ type ProfileLoaderByHand = {
     select: typeof selectAnswers;
   }>[];
   userQuestionFriendsAnswersPinnedByFriendCount?: number;
+  userQuestionFriendsAnswersPinnedOfFriendsCount?: number;
+  userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount?: number;
 };
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
@@ -135,6 +140,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   let userUnpinnedSharedToContactCustomAnswersExposed;
   let userQuestionFriendsAnswersPinnedByFriendCount; // honestly optional,
   // can be obtained by userQuestionFriendsAnswersPinnedByFriend.length
+  let userQuestionFriendsAnswersPinnedOfFriendsCount;
+  let userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount;
 
   if (userToVerifiedUserContact && relCombo === "friend") {
     [
@@ -144,6 +151,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       userUnpinnedPseudonativeNotIrlAnswersExposed,
       userUnpinnedSharedToContactCustomAnswersExposed,
       userQuestionFriendsAnswersPinnedByFriendCount,
+      userQuestionFriendsAnswersPinnedOfFriendsCount,
+      userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount,
     ] = await Promise.all([
       findUserQuestionFriendsAnswersPinnedByFriend(
         user.id,
@@ -169,6 +178,10 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
         user.id,
         userToVerifiedUserContact.id
       ),
+      countUserQuestionFriendsAnswersPinnedOfFriends(verifiedUser.id),
+      countUserQuestionFriendsAnswersPinnedOfFriendsDeactivated(
+        verifiedUser.id
+      ),
     ]);
     return json({
       pathname,
@@ -182,6 +195,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       userUnpinnedPseudonativeNotIrlAnswersExposed,
       userUnpinnedSharedToContactCustomAnswersExposed,
       userQuestionFriendsAnswersPinnedByFriendCount,
+      userQuestionFriendsAnswersPinnedOfFriendsCount,
+      userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount,
     });
   } else if (userToVerifiedUserContact && relCombo === "irl") {
     [
@@ -193,6 +208,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       userUnpinnedPseudonativeIrlAnswersExposed,
       userUnpinnedSharedToContactCustomAnswersExposed,
       userQuestionFriendsAnswersPinnedByFriendCount,
+      userQuestionFriendsAnswersPinnedOfFriendsCount,
+      userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount,
     ] = await Promise.all([
       findUserQuestionFriendsAnswersPinnedByFriend(
         user.id,
@@ -226,6 +243,10 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
         user.id,
         userToVerifiedUserContact.id
       ),
+      countUserQuestionFriendsAnswersPinnedOfFriends(verifiedUser.id),
+      countUserQuestionFriendsAnswersPinnedOfFriendsDeactivated(
+        verifiedUser.id
+      ),
     ]);
     return json({
       pathname,
@@ -241,6 +262,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       userUnpinnedPseudonativeIrlAnswersExposed,
       userUnpinnedSharedToContactCustomAnswersExposed,
       userQuestionFriendsAnswersPinnedByFriendCount,
+      userQuestionFriendsAnswersPinnedOfFriendsCount,
+      userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount,
     });
   } else {
     return json({
@@ -289,6 +312,7 @@ export function ErrorBoundary() {
 
 export default function ProfilePage() {
   const data: ProfileLoaderByHand = useLoaderData();
+  console.log(data);
 
   return (
     <>
@@ -304,6 +328,18 @@ export default function ProfilePage() {
           <p className="mb-2 cursor-default text-orange-500">
             You cannot pin more than {PINNED_BY_FRIEND_ANSWERS_LIMIT} of your
             friend&apos;s criteria.
+          </p>
+        )}
+      {typeof data.userQuestionFriendsAnswersPinnedOfFriendsCount ===
+        "number" &&
+        typeof data.userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount ===
+          "number" &&
+        data.userQuestionFriendsAnswersPinnedOfFriendsCount -
+          data.userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount >=
+          PINNED_OF_FRIENDS_ANSWERS_LIMIT && (
+          <p className="mb-2 cursor-default text-orange-500">
+            You cannot pin more than {PINNED_OF_FRIENDS_ANSWERS_LIMIT} of your
+            common friends&apos; criteria.
           </p>
         )}
       <H1>Welcome to {data.user.appWideName}&apos;s Profile.</H1>
@@ -361,6 +397,10 @@ export default function ProfilePage() {
                       data.userUnpinnedPseudonativeNotIrlAnswersExposed &&
                       data.userUnpinnedSharedToContactCustomAnswersExposed &&
                       typeof data.userQuestionFriendsAnswersPinnedByFriendCount ===
+                        "number" &&
+                      typeof data.userQuestionFriendsAnswersPinnedOfFriendsCount ===
+                        "number" &&
+                      typeof data.userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount ===
                         "number" && (
                         <>
                           <RelationCombinationUserFriendExposed
@@ -384,6 +424,12 @@ export default function ProfilePage() {
                             answersPinnedbyFriendAnswersCount={
                               data.userQuestionFriendsAnswersPinnedByFriendCount
                             }
+                            userQuestionFriendsAnswersPinnedOfFriendsCount={
+                              data.userQuestionFriendsAnswersPinnedOfFriendsCount
+                            }
+                            userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount={
+                              data.userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount
+                            }
                           />
                         </>
                       )}
@@ -397,6 +443,10 @@ export default function ProfilePage() {
                       data.userUnpinnedPseudonativeIrlAnswersExposed &&
                       data.userUnpinnedSharedToContactCustomAnswersExposed &&
                       typeof data.userQuestionFriendsAnswersPinnedByFriendCount ===
+                        "number" &&
+                      typeof data.userQuestionFriendsAnswersPinnedOfFriendsCount ===
+                        "number" &&
+                      typeof data.userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount ===
                         "number" && (
                         <>
                           <RelationCombinationUserIrlExposed
@@ -425,6 +475,12 @@ export default function ProfilePage() {
                             }
                             answersPinnedbyFriendAnswersCount={
                               data.userQuestionFriendsAnswersPinnedByFriendCount
+                            }
+                            userQuestionFriendsAnswersPinnedOfFriendsCount={
+                              data.userQuestionFriendsAnswersPinnedOfFriendsCount
+                            }
+                            userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount={
+                              data.userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount
                             }
                           />
                         </>

@@ -3,6 +3,7 @@ import { Prisma } from "@prisma/client";
 import { useFetcher } from "@remix-run/react";
 
 import {
+  PINNED_OF_FRIENDS_ANSWERS_LIMIT,
   selectUserQuestionFriends,
   selectUserQuestionFriendsAnswers,
 } from "~/librairies/subdata/userquestionfriends";
@@ -82,11 +83,15 @@ function TextButtonCancelShareUserQuestionFriendForm({
 export function OneUserQuestionFriendUnpinnable({
   pathname,
   userQuestionFriend,
+  userQuestionFriendsAnswersPinnedOfFriendsCount,
+  userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount,
 }: {
   pathname: string;
   userQuestionFriend: Prisma.UserQuestionFriendGetPayload<{
     select: typeof selectUserQuestionFriendsAnswers;
   }>;
+  userQuestionFriendsAnswersPinnedOfFriendsCount?: number;
+  userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount?: number;
 }) {
   return (
     <>
@@ -176,16 +181,26 @@ export function OneUserQuestionFriendUnpinnable({
             userQuestionFriend={userQuestionFriend}
           />
           {pathname !==
-            `/users/${userQuestionFriend.contact.userLast.username}/dashboard` && (
-            <>
-              {" "}
-              /{" "}
-              <TextButtonPinnableOfFriendsForm
-                pathname={pathname}
-                userQuestionFriend={userQuestionFriend}
-              />
-            </>
-          )}
+            `/users/${userQuestionFriend.contact.userLast.username}/dashboard` &&
+            typeof userQuestionFriendsAnswersPinnedOfFriendsCount ===
+              "number" &&
+            typeof userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount ===
+              "number" && (
+              <>
+                {" "}
+                /{" "}
+                <TextButtonPinnableOfFriendsForm
+                  pathname={pathname}
+                  userQuestionFriend={userQuestionFriend}
+                  userQuestionFriendsAnswersPinnedOfFriendsCount={
+                    userQuestionFriendsAnswersPinnedOfFriendsCount
+                  }
+                  userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount={
+                    userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount
+                  }
+                />
+              </>
+            )}
         </p>
       </div>
     </>
@@ -265,11 +280,15 @@ function TextButtonRePinnableByFriendForm({
 function TextButtonPinnableOfFriendsForm({
   pathname,
   userQuestionFriend,
+  userQuestionFriendsAnswersPinnedOfFriendsCount,
+  userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount,
 }: {
   pathname: string;
   userQuestionFriend: Prisma.UserQuestionFriendGetPayload<{
     select: typeof selectUserQuestionFriendsAnswers;
   }>;
+  userQuestionFriendsAnswersPinnedOfFriendsCount: number;
+  userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount: number;
 }) {
   const fetcher = useFetcher();
 
@@ -285,7 +304,10 @@ function TextButtonPinnableOfFriendsForm({
         <button
           disabled={
             fetcher.state !== "idle" ||
-            userQuestionFriend.isPinnedOfFriends === true
+            userQuestionFriend.isPinnedOfFriends === true ||
+            userQuestionFriendsAnswersPinnedOfFriendsCount -
+              userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount >=
+              PINNED_OF_FRIENDS_ANSWERS_LIMIT
           }
           className={clsx(
             "disabled:!text-gray-500 disabled:hover:!text-gray-500",

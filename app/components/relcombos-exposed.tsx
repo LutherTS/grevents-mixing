@@ -239,6 +239,8 @@ export function RelationCombinationUserFriendExposed({
   unpinnedPseudonativeNotIrlAnswersExposed,
   unpinnedSharedToContactCustomAnswersExposed,
   answersPinnedbyFriendAnswersCount,
+  userQuestionFriendsAnswersPinnedOfFriendsCount,
+  userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount,
 }: {
   pathname: string;
   contact: Prisma.ContactGetPayload<{
@@ -260,6 +262,8 @@ export function RelationCombinationUserFriendExposed({
     select: typeof selectAnswers;
   }>[];
   answersPinnedbyFriendAnswersCount: number;
+  userQuestionFriendsAnswersPinnedOfFriendsCount: number;
+  userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount: number;
 }) {
   return (
     <>
@@ -278,6 +282,12 @@ export function RelationCombinationUserFriendExposed({
           userQuestionFriendsAnswers={userQuestionFriendsAnswersPinnedByFriend}
           label="Find their pinned by you for friend criteria below"
           notLabel="No pinned by you criteria yet."
+          userQuestionFriendsAnswersPinnedOfFriendsCount={
+            userQuestionFriendsAnswersPinnedOfFriendsCount
+          }
+          userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount={
+            userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount
+          }
         />
       </div>
       <ManyCriteria
@@ -534,6 +544,8 @@ export function RelationCombinationUserIrlExposed({
   unpinnedPseudonativeIrlAnswersExposed,
   unpinnedSharedToContactCustomAnswersExposed,
   answersPinnedbyFriendAnswersCount,
+  userQuestionFriendsAnswersPinnedOfFriendsCount,
+  userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount,
 }: {
   pathname: string;
   contact: Prisma.ContactGetPayload<{
@@ -561,6 +573,8 @@ export function RelationCombinationUserIrlExposed({
     select: typeof selectAnswers;
   }>[];
   answersPinnedbyFriendAnswersCount: number;
+  userQuestionFriendsAnswersPinnedOfFriendsCount: number;
+  userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount: number;
 }) {
   return (
     <>
@@ -579,6 +593,12 @@ export function RelationCombinationUserIrlExposed({
           userQuestionFriendsAnswers={userQuestionFriendsAnswersPinnedByFriend}
           label="Find their pinned by you for irl criteria below"
           notLabel="No pinned by you criteria yet."
+          userQuestionFriendsAnswersPinnedOfFriendsCount={
+            userQuestionFriendsAnswersPinnedOfFriendsCount
+          }
+          userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount={
+            userQuestionFriendsAnswersPinnedOfFriendsDeactivatedCount
+          }
         />
       </div>
       <ManyCriteria
