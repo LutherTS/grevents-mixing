@@ -339,7 +339,7 @@ export default function ProfilePage() {
           PINNED_OF_FRIENDS_ANSWERS_LIMIT && (
           <p className="mb-2 cursor-default text-orange-500">
             You cannot pin more than {PINNED_OF_FRIENDS_ANSWERS_LIMIT} of your
-            common friends&apos; criteria.
+            friends&apos; criteria.
           </p>
         )}
       <H1>Welcome to {data.user.appWideName}&apos;s Profile.</H1>

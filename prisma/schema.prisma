@@ -307,4 +307,4 @@ model Answer {
 //   DELETED
 // }
 
-// npx prisma migrate
+// npx prisma migrate dev
