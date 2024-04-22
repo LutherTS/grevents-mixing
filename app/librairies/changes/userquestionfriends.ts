@@ -11,6 +11,7 @@ import {
   dataUpdateUserQuestionFriendRePinnedByFriendDashboard,
   dataUpdateUserQuestionFriendRePinnedByFriendProfile,
   dataUpdateUserQuestionFriendRePinnedOfFriends,
+  dataUpdateUserQuestionFriendUnpinnedOfFriends,
 } from "../subchanges/userquestionfriends";
 
 export async function updateUserQuestionFriendCancelSharedToFriend(
@@ -94,6 +95,19 @@ export async function updateUserQuestionFriendRePinnedOfFriends(
 ) {
   const where = whereByIdAndContactUserLastId(id, userLastId);
   const data = dataUpdateUserQuestionFriendRePinnedOfFriends();
+
+  return await prisma.userQuestionFriend.update({
+    where,
+    data,
+  });
+}
+
+export async function updateUserQuestionFriendUnpinnedOfFriends(
+  id: string,
+  userLastId: string
+) {
+  const where = whereByIdAndContactUserLastId(id, userLastId);
+  const data = dataUpdateUserQuestionFriendUnpinnedOfFriends();
 
   return await prisma.userQuestionFriend.update({
     where,
