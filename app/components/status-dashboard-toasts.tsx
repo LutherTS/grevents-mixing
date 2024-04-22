@@ -86,7 +86,7 @@ export function StatusDashboardToasts({
         </ToastForm>
       )}
       {/* incoming... */}
-      {statusDashboard === "OFFRIENDSUNPINNED" && (
+      {statusDashboard === "OFFRIENDSREPINNED" && (
         <ToastForm action="/reset-user-status-dashboard">
           Friend criteria repinned on dashboard
         </ToastForm>

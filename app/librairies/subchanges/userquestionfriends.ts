@@ -87,3 +87,19 @@ export function dataUpdateUserQuestionFriendPinnedOfFriends(): Prisma.UserQuesti
     },
   };
 }
+
+export function dataUpdateUserQuestionFriendRePinnedOfFriends(): Prisma.UserQuestionFriendUpdateInput {
+  return {
+    isPinnedOfFriends: true,
+    pinnedOfFriendsAt: new Date(),
+    contact: {
+      update: {
+        userLast: {
+          update: {
+            statusDashboard: "OFFRIENDSREPINNED",
+          },
+        },
+      },
+    },
+  };
+}

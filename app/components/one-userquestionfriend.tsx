@@ -379,7 +379,7 @@ export function OneUserQuestionFriendUnpinnableOfFriends({
           )}
         </div>
         {/* of friend */}
-        <p className="mt-2">
+        <p className="mt-2 text-blue-700 dark:text-blue-300">
           of{" "}
           <PageLinkDivless
             href={`/users/${userQuestionFriend.userQuestion.answer?.user.username}/profile`}
