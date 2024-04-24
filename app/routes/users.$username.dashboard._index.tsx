@@ -278,10 +278,16 @@ export default function DashboardPage() {
           </div>
         )}
         <div className="py-2">
-          <p className="mt-2 underline text-fuchsia-200 dark:text-fuchsia-800">
+          <p
+            className="mt-2 underline text-fuchsia-200 dark:text-fuchsia-800 cursor-default"
+            title="In planning..."
+          >
             My groups
           </p>
-          <p className="mt-2 underline text-fuchsia-200 dark:text-fuchsia-800">
+          <p
+            className="mt-2 underline text-fuchsia-200 dark:text-fuchsia-800 cursor-default"
+            title="In planning..."
+          >
             My events
           </p>
         </div>
