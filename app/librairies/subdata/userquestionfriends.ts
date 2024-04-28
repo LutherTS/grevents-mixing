@@ -156,6 +156,7 @@ export function wherePinnedByFriend(
     userQuestion: {
       answer: {
         userId,
+        state: "LIVE",
         user: {
           state: "LIVE",
         },
@@ -190,6 +191,7 @@ export function wherePinnedOfFriends(
     ],
     userQuestion: {
       answer: {
+        state: "LIVE",
         user: {
           state: "LIVE",
         },
@@ -224,6 +226,7 @@ export function wherePinnedOfFriendsDeactivated(
     ],
     userQuestion: {
       answer: {
+        state: "LIVE",
         user: {
           state: "DEACTIVATED",
         },
